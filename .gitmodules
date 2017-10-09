@@ -2,3 +2,7 @@
 	path = sites/all/themes/hitsa/hitsa-fe
 	url = https://MadisLoikWiseman@bitbucket.org/WisemanInteractive/hitsa-fe.git
 	branch = master
+[submodule "sites/all/themes/hitsa/static"]
+	path = sites/all/themes/hitsa/static
+	url = https://MadisLoikWiseman@bitbucket.org/WisemanInteractive/hitsa-fe.git
+	branch = master
