@@ -1,0 +1,4 @@
+[submodule "sites/all/themes/hitsa/hitsa-fe"]
+	path = sites/all/themes/hitsa/hitsa-fe
+	url = https://MadisLoikWiseman@bitbucket.org/WisemanInteractive/hitsa-fe.git
+	branch = master
