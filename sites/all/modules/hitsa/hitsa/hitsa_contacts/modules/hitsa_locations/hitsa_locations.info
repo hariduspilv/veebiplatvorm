@@ -1,0 +1,8 @@
+name = HITSA asukohad
+description = "HITSA asukohad"
+core = 7.x
+package = HITSA
+version = "7.x-dev"
+
+dependencies[] = hitsa_contacts
+dependencies[] = geolocation_googlemaps

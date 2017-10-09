@@ -1,0 +1,9 @@
+name = Hitsa sisu info
+description = "Hitsa erinevale sisule info lisamise süsteem"
+dependencies[] = date
+dependencies[] = entityreference
+dependencies[] = date_popup
+dependencies[] = i18n_taxonomy
+core = 7.x
+package = HITSA
+version = "7.x-dev"

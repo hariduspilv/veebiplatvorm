@@ -1,0 +1,19 @@
+{
+    college: {
+        types: [{
+            0: 'Kevadsemester',
+            1: 'Sügissemester',
+        }, ],
+        labels: [{
+            0:[{
+                langcode : 'et',
+                label : 'Kevadsemester',
+            },
+            {
+                langcode : 'en',
+                label : 'Springsemester',
+            }
+            ]
+        }],
+    },
+}

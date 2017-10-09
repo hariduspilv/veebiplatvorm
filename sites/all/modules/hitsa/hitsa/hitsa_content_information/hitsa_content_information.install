@@ -1,0 +1,48 @@
+<?php
+    /**
+     * @file
+     * Siin failis loome taxonommia
+     */
+    function hitsa_content_information_install() {
+        ///////////////////Defineerime ära muutujad////////////
+        $voc_name = 'content_information';
+        ///////////////////Defineerime sõnastiku nimed(labelid)/////////////////////////////
+        $voc_label = st('Sisu informatsioon');
+        //////////////////Koodi osa////////////////////////////
+        
+        //////////////////Kontrollime kas sõnastik eksisteerib//////////////////////////////
+        $vocab = taxonomy_vocabulary_machine_name_load($voc_name);
+        if (empty($vocab)) {
+            ////////////////Kui ei eksisteeri loome uue sõnastiku
+            $new_taxonomy = (object) array(
+                'name' => $voc_label,
+                'description' => st('Here you can enter general information that preceeds content'),
+                'machine_name' => $voc_name,
+                'language' => 'und',
+                'i18n_mode' => 4,
+            );  
+            taxonomy_vocabulary_save($new_taxonomy);  
+        }   
+        /////Loome väljad sõnastikule///////////
+        hitsa_content_information_create_fields($voc_name);
+    }
+    
+    /**
+     * hook_uninstall
+    */
+    function hitsa_content_information_uninstall() {
+        ///Defineerime muutujad
+        $voc_name = 'content_information';
+        ///Laeme s6nastiku
+        $vocab = taxonomy_vocabulary_machine_name_load($voc_name);
+        $vid = $vocab->vid;
+        ////Kustutame sonastiku
+        taxonomy_vocabulary_delete($vid);
+        
+        ////Kustutame loodud valjad
+        $instances = field_info_instances('taxonomy_term', $voc_name);
+        foreach ($instances as $instance) {
+            field_delete_instance($instance);
+        }
+        
+    }

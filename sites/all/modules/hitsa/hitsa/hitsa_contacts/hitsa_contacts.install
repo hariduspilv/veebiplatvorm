@@ -1,0 +1,669 @@
+<?php
+
+/*
+* Implements hook_install.
+*/
+function hitsa_contacts_install() {
+  node_types_rebuild();
+  $types = node_type_get_types();
+  
+  // Add custom vocabularies
+  hitsa_contacts_add_custom_vocabularies();
+  
+  // Add custom paragraphs
+  hitsa_contacts_add_custom_paragraphs();
+  
+  // Adds fields to contact content type
+  hitsa_contacts_add_custom_fields();
+  
+  // Add menu links
+  hitsa_contacts_add_menu_links();
+  
+  // Add "Contact Us" webform
+  hitsa_contacts_add_contact_form();
+}
+
+/*
+* Implements hook_uninstall.
+*/
+function hitsa_contacts_uninstall() {
+  $contact_types = array('contact');
+  foreach($contact_types as $c) {
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+    $result = db_query($sql, array(':type' => $c));
+    $node_ids = array();
+    foreach ($result as $row) {
+      $node_ids[] = $row->nid;
+    }
+    node_delete_multiple($node_ids); // Delete all contact nodes
+    node_type_delete($c); // Delete contact content type
+  }
+  hitsa_contacts_delete_custom_fields();
+  hitsa_contacts_delete_custom_paragraphs();
+  field_purge_batch(500);
+  hitsa_contacts_delete_custom_vocabularies(); // Delete contact vocabularies
+  hitsa_contacts_delete_contact_form(); // Delete "Contact Us" webform
+}
+
+/*
+* Implements hook_enable.
+*/
+function hitsa_contacts_enable() {
+  
+}
+
+/*
+* Implements hook_disable.
+*/
+function hitsa_contacts_disable() {
+  
+}
+
+function _hitsa_contacts_installed_fields() {
+  $t = get_t();
+  
+  return array(
+    // Contact fields
+    'contact_id' => array(
+      'field_name' => 'contact_id',
+      'label' => $t('Import ID'),
+      'type' => 'text',
+    ),
+    'first_name' => array(
+      'field_name' => 'first_name',
+      'label' => $t('First name'),
+      'type' => 'text',
+    ),
+    'last_name' => array(
+      'field_name' => 'last_name',
+      'label' => $t('Last name'),
+      'type' => 'text',
+    ),
+    'contact_image' => array(
+      'field_name' => 'contact_image',
+      'label' => $t('Image'),
+      'type' => 'image',
+    ),
+    'job_position' => array(
+      'field_name' => 'job_position',
+      'label' => $t('Position'),
+      'type' => 'entityreference',
+      'settings' => array(
+        'target_type' => 'taxonomy_term',
+        'handler' => 'base',
+        'handler_settings' => array(
+          'target_bundles' => array(
+            'contacts_job_position',
+          ),
+        ),
+      ),
+    ),
+    'phone_nr' => array(
+      'field_name' => 'phone_nr',
+      'label' => $t('Phone Nr.'),
+      'type' => 'text',
+    ),
+    'e_mail' => array(
+      'field_name' => 'e_mail',
+      'label' => $t('E-Mail'),
+      'type' => 'email',
+    ),
+    'additional_info' => array(
+      'field_name' => 'additional_info',
+      'label' => $t('Additional info'),
+      'type' => 'text_long',
+    ),
+    'reception_times' => array(
+      'field_name' => 'reception_times',
+      'label' => $t('Reception times'),
+      'type' => 'text_long',
+    ),
+    'contact_cv' => array(
+      'field_name' => 'contact_cv',
+      'label' => $t('CV'),
+      'type' => 'link_field',
+    ),
+    'contact_departments' => array(
+      'field_name' => 'contact_departments',
+      'label' => $t('Departments'),
+      'type' => 'paragraphs',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+    ),
+    // Paragraph fields
+    'job_department' => array(
+      'field_name' => 'job_department',
+      'label' => $t('Department'),
+      'type' => 'entityreference',
+      'settings' => array(
+        'target_type' => 'taxonomy_term',
+        'handler' => 'base',
+        'handler_settings' => array(
+          'target_bundles' => array(
+            'contacts_department',
+          ),
+        ),
+      ),
+    ),
+    'department_weight' => array(
+      'field_name' => 'department_weight',
+      'label' => $t('Department weight'),
+      'type' => 'number_integer',
+    ),
+  );
+}
+
+function _hitsa_contacts_installed_instances() {
+  $t = get_t();
+  return array(
+    'contact_id' => array(
+      'field_name' => 'contact_id',
+      'bundle' => 'contact',
+      'label' => $t('Import ID'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+    ),
+    'first_name' => array(
+      'field_name' => 'first_name',
+      'bundle' => 'contact',
+      'label' => $t('First name'),
+      'required' => 1,
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'last_name' => array(
+      'field_name' => 'last_name',
+      'bundle' => 'contact',
+      'label' => $t('Last name'),
+      'required' => 1,
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'contact_image' => array(
+      'field_name' => 'contact_image',
+      'bundle' => 'contact',
+      'label' => $t('Image'),
+      'widget' => array(
+        'type' => 'media_generic',
+        'module' => 'media',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'image',
+        )
+      )
+    ),
+    'job_position' => array(
+      'field_name' => 'job_position',
+      'bundle' => 'contact',
+      'label' => $t('Job Position'),
+      'widget' => array(
+        'type' => 'options_select',
+        'module' => 'options',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'entityreference_label',
+        )
+      )
+    ),
+    'phone_nr' => array(
+      'field_name' => 'phone_nr',
+      'bundle' => 'contact',
+      'label' => $t('Phone Nr.'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'e_mail' => array(
+      'field_name' => 'e_mail',
+      'bundle' => 'contact',
+      'label' => $t('E-Mail'),
+      'widget' => array(
+        'type' => 'email_textfield',
+        'module' => 'email',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'email_default',
+        )
+      )
+    ),
+    'additional_info' => array(
+      'field_name' => 'additional_info',
+      'bundle' => 'contact',
+      'label' => $t('Additional info'),
+      'widget' => array(
+        'type' => 'text_textarea',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'reception_times' => array(
+      'field_name' => 'reception_times',
+      'bundle' => 'contact',
+      'label' => $t('Reception times'),
+      'widget' => array(
+        'type' => 'text_textarea',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'contact_cv' => array(
+      'field_name' => 'contact_cv',
+      'bundle' => 'contact',
+      'label' => $t('Contact CV'),
+      'widget' => array(
+        'type' => 'link_field',
+        'module' => 'link',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'link_default',
+        ),
+      ),
+      'settings' => array(
+        'title' => 'none',
+      ),
+    ),
+    'contact_departments' => array(
+      'field_name' => 'contact_departments',
+      'bundle' => 'contact',
+      'label' => $t('Departments'),
+      'widget' => array(
+        'type' => 'paragraphs_embed',
+        'module' => 'paragraphs',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'paragraphs_view',
+        ),
+      ),
+      'settings' => array(
+        'title' => $t('Department'),
+        'title_multiple' => $t('Departments'),
+        'default_edit_mode' => 'closed',
+        'add_mode' => 'select',
+        'allowed_bundles' => array(
+          'contacts_department' => 'contacts_department',
+        ),
+      ),
+    ),
+    // Paragraph fields
+    'job_department' => array(
+      'field_name' => 'job_department',
+      'entity_type' => 'paragraphs_item',
+      'bundle' => 'contacts_department',
+      'label' => $t('Department'),
+      'widget' => array(
+        'type' => 'options_select',
+        'module' => 'options',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'entityreference_label',
+        )
+      )
+    ),
+    'department_weight' => array(
+      'field_name' => 'department_weight',
+      'entity_type' => 'paragraphs_item',
+      'bundle' => 'contacts_department',
+      'label' => $t('Department weight'),
+      'widget' => array(
+        'type' => 'number',
+        'module' => 'number',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'number_integer',
+        )
+      )
+    ),
+  );
+}
+
+function hitsa_contacts_add_custom_fields() {
+  foreach (_hitsa_contacts_installed_fields() as $field) {
+        field_create_field($field);
+  }
+  foreach (_hitsa_contacts_installed_instances() as $field_instance) {
+      $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
+      print_r($field_instance);
+      field_create_instance($field_instance);
+  }
+}
+
+function hitsa_contacts_delete_custom_fields() {
+    foreach (array_keys(_hitsa_contacts_installed_fields()) as $field) {
+        field_delete_field($field);
+    }
+    $instances = field_info_instances('node', 'contact');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
+}
+
+/*
+* Hitsa contacts paragraphs
+*/
+function _hitsa_contacts_paragraphs() {
+  $t = get_t();
+  $paragraphs = array();
+  
+  $paragraphs['contacts_department'] = (object) array(
+    'name' => $t('Contact Department'),
+    'bundle' => 'contacts_department',
+    'locked' => 0,
+  );
+  
+  return $paragraphs;
+}
+
+function hitsa_contacts_add_custom_paragraphs() {
+  foreach (_hitsa_contacts_paragraphs() as $bundle) {
+    paragraphs_bundle_save($bundle);
+  }
+}
+
+function hitsa_contacts_delete_custom_paragraphs() {
+  foreach (_hitsa_contacts_paragraphs() as $bundle) {
+    paragraphs_bundle_delete($bundle);
+  }
+}
+
+/*
+* Hitsa contacts vocabularies
+*/
+function _hitsa_contacts_vocabularies() {
+  $vocabularies = array();
+  
+  $vocabularies['contacts_job_position'] =
+    array(
+      'vocabulary' => (object) array(
+        'name' => t('Job positions'),
+        'description' => t('Contact job positions'),
+        'machine_name' => 'contacts_job_position',
+        'i18n_mode' => I18N_MODE_LOCALIZE,
+      ),
+      'terms' => array(
+        (object) array(
+         'name' => t('Headmaster'),
+        ),
+        (object) array(
+         'name' => t('Development Manager'),
+        ),
+        (object) array(
+         'name' => t('Study counselor'),
+        ),
+        (object) array(
+         'name' => t('Mathematics'),
+        ),
+        (object) array(
+         'name' => t('History'),
+        ),
+      ),
+    );
+  
+  $vocabularies['contacts_department'] =
+    array(
+      'vocabulary' => (object) array(
+        'name' => t('Department'),
+        'description' => t('Contact department'),
+        'machine_name' => 'contacts_department',
+        'i18n_mode' => I18N_MODE_LOCALIZE,
+      ),
+      'terms' => array(
+        (object) array(
+         'name' => t('Management'),
+        ),
+        (object) array(
+         'name' => t('Teachers'),
+        ),
+        (object) array(
+         'name' => t('Managing board'),
+        ),
+        (object) array(
+         'name' => t('Employees'),
+        ),
+      ),
+    );
+    
+  return $vocabularies;
+}
+
+function hitsa_contacts_add_custom_vocabularies() {
+  // Create vocabulary
+  foreach (_hitsa_contacts_vocabularies() as $v) {
+    taxonomy_vocabulary_save($v['vocabulary']);
+    
+    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+    if($vocab) {
+      variable_set('hitsa_contacts_' . $vocab->machine_name . '_vid' , $vocab->vid);
+    }
+    if(!empty($v['terms']) && $vocab) {
+      // Add generic terms
+      foreach($v['terms'] as $term) {
+        $term->vid = $vocab->vid;
+        taxonomy_term_save($term);
+      }
+    }
+  }
+}
+
+function hitsa_contacts_delete_custom_vocabularies() {
+  foreach (_hitsa_contacts_vocabularies() as $v) {
+    if(!empty($v['vocabulary'])) {
+      $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+      variable_del('hitsa_contacts_' . $vocab->machine_name . '_vid');
+      taxonomy_vocabulary_delete($vocab->vid);
+    }
+  }
+}
+
+/*
+* Hitsa contacts menu links
+*/
+function _hitsa_contacts_menu_links() {
+  $t = get_t();
+  
+  $menu_links = array();
+  
+  $hitsa_main_menu_name = variable_get('hitsa_main_menu_name');
+  if(!empty($hitsa_main_menu_name)) {
+    $menu_links[] = array(
+      'link_path' => 'contact',
+      'link_title' => $t('Contact'),
+      'menu_name' => $hitsa_main_menu_name,
+      'weight' => 10,
+    );
+  }
+  
+  return $menu_links;
+}
+
+function hitsa_contacts_add_menu_links() {
+  foreach (_hitsa_contacts_menu_links() as $link) {
+    menu_link_save($link);
+  }
+}
+
+function hitsa_contacts_delete_menu_links() {
+  foreach (_hitsa_contacts_menu_links() as $link) {
+    menu_link_delete(NULL, $link['link_path']);
+  }
+}
+
+/*
+* Hitsa contacts image styles
+*/
+function _hitsa_contacts_image_styles() {
+  $image_styles = array(
+    array(
+      'style' => array(
+		    'name' => 'hitsa_contacts_page_image',
+		    'label' => 'Contacts Page Image (100 x 100)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale_and_crop',
+		    'data' => array(
+		      'width' => 100,
+		      'height' => 100,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
+  );
+  
+  return $image_styles;
+}
+
+function hitsa_contacts_add_image_styles() {
+  foreach(_hitsa_contacts_image_styles() as $style_array) {
+    $style = image_style_save($style_array['style']);
+    $effect = $style_array['effect'];
+    $effect['isid'] = $style['isid'];
+    image_effect_save($effect);
+  }
+}
+
+function hitsa_contacts_delete_image_styles() {
+  foreach(_hitsa_contacts_image_styles() as $style_array) {
+    $style = image_style_load($style_array['style']['name']);
+    image_style_delete($style);
+  }
+}
+
+/*
+* "Contact us" webform.
+*/
+function hitsa_contacts_add_contact_form() {
+  $node = new stdClass();
+  $node->type = 'webform';
+  node_object_prepare($node);
+  $node->title = 'Contact Us';
+  $node->language = 'en';
+  $node->body[LANGUAGE_NONE][0]['value']   = '';
+  $node->body[LANGUAGE_NONE][0]['format']  = 'full_html';
+  $node->uid = 1;
+  $node->promote = 0;
+  $node->comment = 0;
+  
+  // Create the webform components.
+  $components = array(
+    array(
+      'name' => 'Your name',
+      'form_key' => 'name',
+      'type' => 'textfield',
+      'required' => 1,
+      'weight' => 0,
+      'pid' => 0,
+    ),
+    array(
+      'name' => 'Your e-mail',
+      'form_key' => 'e_mail',
+      'type' => 'email',
+      'required' => 1,
+      'weight' => 1,
+      'pid' => 0,
+    ),
+    array(
+      'name' => 'Message',
+      'form_key' => 'message',
+      'type' => 'textarea',
+      'required' => 1,
+      'weight' => 2,
+      'pid' => 0,
+      'extra' => array(
+        'description' => '* marked fields are required'
+      ),
+    ),
+    array(
+      'name' => 'Join mailing list',
+      'form_key' => 'join_mailing_list',
+      'type' => 'select',
+      'required' => 0,
+      'weight' => 3,
+      'pid' => 0,
+      'extra' => array(
+        'items' => 'join_mailing_list|Join the school mailing list',
+        'multiple' => 1,
+        'title_display' => 'none',
+      ),
+    ),
+  );
+  
+  // Attach the webform to the node.
+  $node->webform = array(
+    'confirmation' => '',
+    'confirmation_format' => NULL,
+    'redirect_url' => '',
+    'status' => '1',
+    'block' => '0',
+    'teaser' => '0',
+    'allow_draft' => '0',
+    'auto_save' => '0',
+    'submit_notice' => '1',
+    'submit_text' => '',
+    'submit_limit' => '-1', // User can submit more than once.
+    'submit_interval' => '-1',
+    'total_submit_limit' => '-1',
+    'total_submit_interval' => '-1',
+    'record_exists' => TRUE,
+    'roles' => array(
+      0 => '1', // Anonymous user can submit this webform.
+    ),
+    'components' => $components,
+  );
+  
+  // Save the node.
+  node_save($node);
+  variable_set('hitsa_contacts_contact_us_webform_nid', $node->nid);
+}
+
+function hitsa_contacts_delete_contact_form() {
+  $contact_us_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
+  node_delete($contact_us_nid);
+  variable_del('hitsa_contacts_contact_us_webform_nid');
+}

@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function ddf_schema() {
+  $schema = array();
+
+  $schema['ddf'] = array(
+    'description' => 'Dynamic field dependencies.',
+    'fields' => array(
+      'field_name' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'description' => 'The name of controlling field.',
+      ),
+      'entity_type' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ),
+      'bundle' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ),
+      'dependent_field_name' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'description' => 'The name of controlled field.',
+      ),
+      'data' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'description' => 'Serialized data containing dependency properties.',
+      ),
+    ),
+    'primary key' => array('field_name', 'entity_type', 'bundle', 'dependent_field_name'),
+  );
+
+  return $schema;
+}

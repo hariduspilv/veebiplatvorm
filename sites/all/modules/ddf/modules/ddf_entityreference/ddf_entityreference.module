@@ -1,0 +1,119 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function ddf_entityreference_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'entityreference') {
+    return 'plugins/' . $plugin;
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_ddf_update_widget().
+ */
+function ddf_entityreference_ddf_update_widget($dependent_field, $parameters, $selector, $entity, $settings, $controlling_field_name, $entity_type, $bundle) {
+  if ($dependent_field['type'] != 'entityreference') {
+    return NULL;
+  }
+  EntityReference_SelectionHandler_DDF::storeControllingFieldValues($parameters, $entity_type, $entity);
+  $field = field_info_field($dependent_field['field_name']);
+  $instance = field_info_instance($entity_type, $dependent_field['field_name'], $bundle);
+  if ($instance['widget']['type'] != 'options_select') {
+    return NULL;
+  }
+  $form = array();
+  $form_state = array();
+  $element = array('#entity_type' => $entity_type, '#entity' => $entity, '#required' => $instance['required']);
+  $element = options_field_widget_form($form, $form_state, $dependent_field, $instance, LANGUAGE_NONE, array(), 0, $element);
+
+  $default_items = field_get_default_value($entity_type, $entity, $field, $instance, LANGUAGE_NONE);
+  $context = array(
+    'form' => $form,
+    'field' => $field,
+    'instance' => $instance,
+    'langcode' => LANGUAGE_NONE,
+    'items' => $default_items,
+    'delta' => 0,
+  );
+  drupal_alter(array('field_widget_form', 'field_widget_' . $instance['widget']['type'] . '_form'), $element, $form_state, $context);
+
+  $result = '';
+  if (isset($element['#options'])) {
+    if (!empty($element['#properties'])) {
+      $position = NULL;
+      if ((isset($element['#properties']['empty_option'])) && ($element['#properties']['empty_option'] == 'option_select')) {
+        if (count($element['#options']) == 2) {
+          $position = 1;
+        }
+      }
+      elseif (!isset($element['#properties']['empty_option'])) {
+        if (count($element['#options']) == 1) {
+          $position = 0;
+        }
+      }
+      if (!is_null($position)) {
+        $keys = array_keys($element['#options']);
+        if (isset($keys[$position])) {
+          $element['#value'] = $keys[$position];
+        }
+      }
+    }
+    $result = form_select_options($element);
+  }
+
+  $commands = array();
+  $command = ajax_command_html($selector, $result);
+  $command['command'] = 'ddf_insertnowrap';
+  $commands[] = $command;
+
+  // If chosen is applied, it can't be updated by attachBehavior().
+  $commands[] = ajax_command_invoke($selector, 'trigger', array('liszt:updated'));
+  $commands[] = ajax_command_invoke($selector, 'trigger', array('chosen:updated'));
+
+  // Options are changed, so run 'change' handlers.
+  $commands[] = ajax_command_invoke($selector, 'trigger', array('change'));
+
+  return $commands;
+}
+
+/**
+ * Implements hook_field_update_field().
+ */
+function ddf_entityreference_field_update_field($field, $prior_field, $has_data) {
+  if ($field['type'] != 'entityreference') {
+    return;
+  }
+  // We need 'bundles' element of the field structure.
+  $field = field_info_field($field['field_name']);
+
+  // Remove old dependencies.
+  foreach ($field['bundles'] as $entity_type => $bundles) {
+    foreach ($bundles as $bundle) {
+      ddf_remove_dependency($field['field_name'], $entity_type, $bundle);
+    }
+  }
+  // Add new dependencies.
+  if (isset($field['settings']['handler_settings']['view']['args'])) {
+    $controlling_fields = array();
+    foreach ($field['settings']['handler_settings']['view']['args'] as $arg) {
+      $matches = array();
+      if (preg_match('/^\{([^{}]+)\}$/', $arg, $matches)) {
+        $field_name = $matches[1];
+        if (!empty($controlling_fields[$field_name])) {
+          // Do not try to re-add the same dependency.
+          continue;
+        }
+        $controlling_fields[$field_name] = TRUE;
+        foreach ($field['bundles'] as $entity_type => $bundles) {
+          foreach ($bundles as $bundle) {
+            if (field_info_instance($entity_type, $field_name, $bundle)) {
+              ddf_add_dependency($field_name, $field['field_name'], $entity_type, $bundle, array('type' => 'options'));
+            }
+          }
+        }
+      }
+    }
+  }
+}

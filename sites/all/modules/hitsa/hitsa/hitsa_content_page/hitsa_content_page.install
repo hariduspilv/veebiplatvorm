@@ -1,0 +1,336 @@
+<?php
+
+/*
+* Implements hook_install.
+*/
+function hitsa_content_page_install() {
+  node_types_rebuild();
+  $types = node_type_get_types();
+  
+  hitsa_content_page_add_custom_paragraphs();
+  
+  // Adds body field to content page type
+  node_add_body_field($types['content_page']);
+  hitsa_content_page_add_custom_fields();
+  
+}
+
+/*
+* Implements hook_uninstall.
+*/
+function hitsa_content_page_uninstall() {
+  $article_type = 'content_page';
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+  $result = db_query($sql, array(':type' => $article_type));
+  $node_ids = array();
+  foreach ($result as $row) {
+    $node_ids[] = $row->nid;
+  }
+  node_delete_multiple($node_ids); // Delete all content nodes
+  hitsa_content_page_delete_custom_fields();
+  node_type_delete($article_type); // Delete content type
+  hitsa_content_page_delete_custom_paragraphs(); // Delete paragraphs
+  field_purge_batch(500);
+}
+
+/*
+* Implements hook_enable.
+*/
+function hitsa_content_page_enable() {
+  
+}
+
+/*
+* Implements hook_disable.
+*/
+function hitsa_content_page_disable() {
+  
+}
+
+function _hitsa_content_page_installed_fields() {
+  $t = get_t();
+  
+  return array(
+    'cp_gallery' => array(
+      'field_name' => 'cp_gallery',
+      'label' => $t('Gallery'),
+      'type' => 'image',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+    ),
+    'cp_webform_ref' => array(
+      'field_name' => 'cp_webform_ref',
+      'label' => $t('Input form'),
+      'type' => 'entityreference',
+      'settings' => array(
+        'target_type' => 'node',
+        'handler_settings' => array(
+          'target_bundles' => array(
+            'webform' => 'webform',
+          ),
+        ),
+      ),
+    ),
+    'cp_type' => array(
+      'field_name' => 'cp_type',
+      'label' => $t('Content Page Type'),
+      'type' => 'list_text',
+      'settings' => array(
+        'allowed_values' => array(
+          'content_page' => $t('Content Page'),
+          'subpage' => $t('Subpage'),
+        ),
+      ),
+    ),
+    'cp_header_text' => array(
+      'field_name' => 'cp_header_text',
+      'label' => $t('Header text'),
+      'type' => 'text_long',
+    ),
+    'cp_display_style' => array(
+      'field_name' => 'cp_display_style',
+      'label' => $t('Content Page Display Style'),
+      'type' => 'list_text',
+      'settings' => array(
+        'allowed_values' => array(
+          'tabbed' => $t('Tabbed'),
+          'grid' => $t('Grid'),
+        ),
+      ),
+    ),
+    'cp_subpages' => array(
+      'field_name' => 'cp_subpages',
+      'label' => $t('Subpages'),
+      'type' => 'paragraphs',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+    ),
+    // Subpage Reference Paragraph
+    'cp_intermediate_title' => array(
+      'field_name' => 'cp_intermediate_title',
+      'label' => $t('Intermediate title'),
+      'type' => 'text',
+      'bundles' => array(
+        'paragraphs_item' => array(
+          'subpage_ref',
+        ),
+      ),
+    ),
+    'cp_subpage_ref_nid' => array(
+      'field_name' => 'cp_subpage_ref_nid',
+      'label' => $t('Subpage'),
+      'type' => 'entityreference',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+      'settings' => array(
+        'target_type' => 'node',
+        'handler_settings' => array(
+          'target_bundles' => array(
+            'content_page' => 'content_page',
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+function _hitsa_content_page_installed_instances() {
+  $t = get_t();
+  return array(
+    'cp_gallery' => array(
+      'field_name' => 'cp_gallery',
+      'type' => 'image',
+      'label' => $t('Gallery'),
+      'widget' => array(
+        'type' => 'media_generic',
+        'module' => 'media',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => $t('Gallery'),
+          'type' => 'image',
+        ),
+      ),
+    ),
+    'cp_webform_ref' => array(
+      'label' => $t('Input form'),
+      'field_name' => 'cp_webform_ref',
+      'widget' => array(
+        'type' => 'options_select',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'label' => 'entityreference_label',
+        ),
+      ),
+    ),
+    'cp_type' => array(
+      'field_name' => 'cp_type',
+      'label' => $t('Content Page Type'),
+      'widget' => array(
+        'type' => 'options_select',
+        'module' => 'options',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'list_default',
+        ),
+      ),
+      'required' => 1,
+    ),
+    'cp_header_text' => array(
+      'field_name' => 'cp_header_text',
+      'label' => $t('Header text'),
+      'widget' => array(
+        'type' => 'text_textarea',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        ),
+      ),
+    ),
+    'cp_display_style' => array(
+      'field_name' => 'cp_display_style',
+      'label' => $t('Content Page Style'),
+      'widget' => array(
+        'type' => 'options_select',
+        'module' => 'options',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'list_default',
+        ),
+      ),
+      'default_value' => 'tabbed',
+      'required' => 1,
+    ),
+    'cp_subpages' => array(
+      'field_name' => 'cp_subpages',
+      'label' => $t('Subpages'),
+      'widget' => array(
+        'type' => 'paragraphs_embed',
+        'module' => 'paragraphs',
+      ),
+      'settings' => array(
+        'title' => $t('Content'),
+        'title_multiple' => $t('Content'),
+        'default_edit_mode' => 'closed',
+        'add_mode' => 'button',
+        'allowed_bundles' => array(
+          'subpage_ref' => 'subpage_ref',
+        ),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'paragraphs_view',
+        ),
+      ),
+    ),
+    // Subpage Paragraph
+    'cp_intermediate_title' => array(
+      'field_name' => 'cp_intermediate_title',
+      'entity_type' => 'paragraphs_item',
+      'bundle' => 'subpage_ref',
+      'label' => $t('Intermediate title'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        ),
+      ),
+    ),
+    'cp_subpage_ref_nid' => array(
+      'label' => $t('Subpage'),
+      'field_name' => 'cp_subpage_ref_nid',
+      'entity_type' => 'paragraphs_item',
+      'bundle' => 'subpage_ref',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+      'settings' => array(
+        'target_type' => 'node',
+        'handler_settings' => array(
+          'target_bundles' => array(
+            'content_page' => 'content_page',
+            'catering' => 'catering',
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+function hitsa_content_page_add_custom_fields() {
+  foreach (_hitsa_content_page_installed_fields() as $field) {
+        field_create_field($field);
+  }
+  foreach (_hitsa_content_page_installed_instances() as $field_instance) {
+      $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
+      $field_instance['bundle'] = !empty($field_instance['bundle']) ? $field_instance['bundle'] : 'content_page';
+      print_r($field_instance);
+      field_create_instance($field_instance);
+  }
+}
+
+function hitsa_content_page_delete_custom_fields() {
+    foreach (array_keys(_hitsa_content_page_installed_fields()) as $field) {
+        field_delete_field($field);
+    }
+    $instances = field_info_instances('node', 'content_page');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
+}
+
+/*
+* Hitsa content page paragraphs
+*/
+function _hitsa_content_page_paragraphs() {
+  $t = get_t();
+  $paragraphs = array();
+  
+  $paragraphs['subpage_ref'] = (object) array(
+    'name' => $t('Subpage reference'),
+    'bundle' => 'subpage_ref',
+    'locked' => 0,
+  );
+  
+  return $paragraphs;
+}
+
+function hitsa_content_page_add_custom_paragraphs() {
+  foreach (_hitsa_content_page_paragraphs() as $bundle) {
+    paragraphs_bundle_save($bundle);
+  }
+}
+
+function hitsa_content_page_delete_custom_paragraphs() {
+  foreach (_hitsa_content_page_paragraphs() as $bundle) {
+    paragraphs_bundle_delete($bundle->bundle);
+  }
+}
+
+function hitsa_content_page_add_custom_vocabularies() {
+  // Create vocabulary
+  foreach (_hitsa_content_page_vocabularies() as $v) {
+    taxonomy_vocabulary_save($v['vocabulary']);
+    
+    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+    if($vocab) {
+      variable_set('hitsa_content_page_' . $vocab->machine_name . '_vid' , $vocab->vid);
+    }
+    if(!empty($v['terms']) && $vocab) {
+      // Add generic terms
+      foreach($v['terms'] as $term) {
+        $term->vid = $vocab->vid;
+        taxonomy_term_save($term);
+      }
+    }
+  }
+}

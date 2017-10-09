@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implements hook_node_info()
+ */
+function hitsa_services_node_info() {
+  return array(
+    'service' => array(
+      'name' => t('Service'),
+      'base' => 'service',
+      'description' => t('Service node type'),
+      'has_title' => TRUE,
+      'title_label' => t('Title'),
+    ),
+  );
+}
+
+/**
+ * Implement hook_form()
+ */
+function service_form($node, $form_state) {
+  return node_content_form($node, $form_state);
+}
+
+function hitsa_services_menu() {
+  $items['services'] = array(
+    'title' => 'Services',
+    'page callback' => 'hitsa_services_page',
+    'access arguments' => array('access content'),
+  );
+  
+  return $items;
+  
+}
+
+function hitsa_services_page() {
+  return 'ok';
+}

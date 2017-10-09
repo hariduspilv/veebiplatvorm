@@ -1,0 +1,197 @@
+<?php
+
+/*
+* Implements hook_install.
+*/
+function hitsa_locations_install() {
+  node_types_rebuild();
+  $types = node_type_get_types();
+  
+  // Adds fields to location content type
+  hitsa_locations_add_custom_fields();
+}
+
+/*
+* Implements hook_uninstall.
+*/
+function hitsa_locations_uninstall() {
+  $contact_types = array('contact_location');
+  foreach($contact_types as $c) {
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+    $result = db_query($sql, array(':type' => $c));
+    $node_ids = array();
+    foreach ($result as $row) {
+      $node_ids[] = $row->nid;
+    }
+    node_delete_multiple($node_ids); // Delete all contact nodes
+    node_type_delete($c); // Delete contact content type
+  }
+  hitsa_locations_delete_custom_fields();
+  field_purge_batch(500);
+}
+
+function _hitsa_locations_installed_fields() {
+  $t = get_t();
+  
+  return array(
+    'location_address' => array(
+      'field_name' => 'location_address',
+      'label' => $t('Address'),
+      'type' => 'text',
+    ),
+    'location_visiting_hours' => array(
+      'field_name' => 'location_visiting_hours',
+      'label' => $t('Visiting hours'),
+      'type' => 'text',
+    ),
+    'location_coordinates' => array(
+      'field_name' => 'location_coordinates',
+      'label' => $t('Coordinates'),
+      'type' => 'geolocation_latlng',
+    ),
+    'location_parking' => array(
+      'field_name' => 'location_parking',
+      'label' => $t('Parking'),
+      'type' => 'text_long',
+    ),
+    'location_transport' => array(
+      'field_name' => 'location_transport',
+      'label' => $t('Transportation'),
+      'type' => 'text_long',
+    ),
+  );
+}
+
+function _hitsa_locations_installed_instances() {
+  $t = get_t();
+  
+  return array(
+    'phone_nr' => array(
+      'field_name' => 'phone_nr',
+      'bundle' => 'contact_location',
+      'label' => $t('Phone Nr.'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'e_mail' => array(
+      'field_name' => 'e_mail',
+      'bundle' => 'contact_location',
+      'label' => $t('E-Mail'),
+      'widget' => array(
+        'type' => 'email_textfield',
+        'module' => 'email',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'email_default',
+        )
+      )
+    ),
+    'location_address' => array(
+      'field_name' => 'location_address',
+      'bundle' => 'contact_location',
+      'label' => $t('Address'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'location_visiting_hours' => array(
+      'field_name' => 'location_visiting_hours',
+      'bundle' => 'contact_location',
+      'label' => $t('Visiting hours'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'location_parking' => array(
+      'field_name' => 'location_parking',
+      'bundle' => 'contact_location',
+      'label' => $t('Parking'),
+      'widget' => array(
+        'type' => 'text_textarea',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'location_transport' => array(
+      'field_name' => 'location_transport',
+      'bundle' => 'contact_location',
+      'label' => $t('Transportation'),
+      'widget' => array(
+        'type' => 'text_textarea',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'location_coordinates' => array(
+      'field_name' => 'location_coordinates',
+      'bundle' => 'contact_location',
+      'label' => $t('Coordinates'),
+      'required' => 0,
+      'widget' => array(
+        'type' => 'geolocation_googlemap',
+        'module' => 'geolocation_googlemaps',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'geolocation_text',
+        )
+      )
+    ),
+  );
+}
+
+function hitsa_locations_add_custom_fields() {
+  foreach (_hitsa_locations_installed_fields() as $field) {
+        field_create_field($field);
+  }
+  foreach (_hitsa_locations_installed_instances() as $field_instance) {
+      $field_instance['entity_type'] = 'node';
+      print_r($field_instance);
+      field_create_instance($field_instance);
+  }
+}
+
+function hitsa_locations_delete_custom_fields() {
+    foreach (array_keys(_hitsa_locations_installed_fields()) as $field) {
+        field_delete_field($field);
+    }
+    $instances = field_info_instances('node', 'contact_location');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
+}

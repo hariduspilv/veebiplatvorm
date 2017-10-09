@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * Implements hook_node_info()
+ */
+function hitsa_content_page_node_info() {
+  return array(
+    'content_page' => array(
+      'name' => t('Content page'),
+      'base' => 'content_page',
+      'description' => t('A multipurpose content page.'),
+      'has_title' => TRUE,
+      'title_label' => t('Title'),
+    ),
+  );
+}
+
+/**
+ * Implement hook_form()
+ */
+function content_page_form($node, $form_state) {
+  return node_content_form($node, $form_state);
+}
+
+/**
+ * Implement hook_form_alter()
+ */
+function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
+  if($form_id === 'content_page_node_form') {
+
+    if(isset($form['cp_type'])) {
+      $form['cp_type'][LANGUAGE_NONE]['#ajax'] = array(
+        'callback' => 'hitsa_content_page_update_page_type',
+        'wrapper' => $form['#id'],
+        'method' => 'replace',
+      );
+
+      $content_page_type = !empty($form_state['input']['cp_type'][LANGUAGE_NONE]) ? 
+        $form_state['input']['cp_type'][LANGUAGE_NONE] : NULL;
+
+      // Hide certain fields depending on content page type.
+      if($content_page_type !== 'content_page') {
+        $form['cp_header_text']['#access'] = FALSE;
+        $form['cp_display_style']['#access'] = FALSE;
+        $form['cp_subpages']['#access'] = FALSE;
+      }
+    }
+  }
+}
+
+function hitsa_content_page_update_page_type($form, &$form_state) {
+  return $form;
+}

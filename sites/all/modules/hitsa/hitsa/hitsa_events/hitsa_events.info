@@ -1,0 +1,11 @@
+name = Hitsa sündmuste kalender
+description = "Hitsa sündmuste kalender"
+dependencies[] = date
+dependencies[] = entityreference
+dependencies[] = date_popup
+dependencies[] = hitsa_core
+dependencies[] = i18n_taxonomy
+dependencies[] = conditional_fields
+core = 7.x
+package = HITSA
+version = "7.x-dev"

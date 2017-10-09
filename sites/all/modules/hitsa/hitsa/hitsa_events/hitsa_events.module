@@ -1,0 +1,1290 @@
+<?php
+/**
+ * @file
+ * Functional part for events
+ */
+/**
+ * Implements hook_menu().
+ */
+function hitsa_events_menu()
+{
+
+
+    $items['calendar'] = array(
+      'title' => '',
+      'page callback' => 'hitsa_events_calendar_page',
+      'access arguments' => array('access content'),
+    );
+    $items['training_calendar'] = array(
+      'title' => '',
+      'page callback' => 'hitsa_events_training_calendar',
+      'access arguments' => array('access content'),
+    );
+    $items['api/events'] = array(
+      'title' => check_plain(t('Calendar')),
+      'page callback' => 'hitsa_events_endpoint',
+      'access arguments' => array('access content'),
+    );
+    return $items;
+ /* Your code here */
+}
+function hitsa_events_block_info() {
+  // This example comes from node.module.
+  $blocks['fornt_page_events'] = array(
+    'info' => t('Front page calendar events'),
+    'cache' => DRUPAL_NO_CACHE
+  );
+  return $blocks;
+}
+function hitsa_events_block_view($delta = '') {
+  // This example is adapted from node.module.
+  $block = array();
+  switch ($delta) {
+    case 'fornt_page_events':
+      $block['subject'] = t('');
+      $block['content'] = array(
+        '#markup' => hitsa_events_front_page_block(),
+      );
+      break;
+  }
+  return $block;
+}
+
+function hitsa_events_disable_content_type($type)
+{
+    $type_info = node_type_load($type);
+    $type_info->module = 'node';
+    $type_info->custom = 1;
+    $type_info->modified = 1;
+    $type_info->locked = 0;
+    $type_info->disabled = 1;
+    node_type_save($type_info);
+}
+/**
+ * Implements hook_node_prepare().
+ */
+function hitsa_events_node_prepare($node)
+{
+
+    $site_language = language_default();
+    $node->language = $site_language->language;
+    return $node;
+}
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hitsa_events_preprocess_node(&$variables)
+{
+    if (!empty($variables['type']) && $variables['type']=='event') {
+        if (!empty($variables['event_date'])) {
+            if (!empty($variables['event_date'][0])) {
+
+            }
+        }
+    }
+/**
+ * Sample code from the api example.
+ *  // This example is from rdf_preprocess_image(). It adds an RDF attribute
+ *  // to the image hook's variables.
+ *  $['attributes']['typeof'] = array('foaf:Image');
+ */
+
+ /* Your code here */
+}
+/**
+ * Implements hook_form_alter().
+ */
+function hitsa_events_form_alter(&$form, &$form_state, $form_id)
+{
+
+    switch ($form_id) {
+        case 'event_node_form':
+            $form['period']['#access']=FALSE;
+            hitsa_events_add_types(variable_get('school_type'));
+            break;
+    
+        default:
+            # code...
+            break;
+    }
+}
+function hitsa_events_create_fields($bundle)
+{
+    //Defineerime ara valjade array
+    field_cache_clear();
+    $instances = array();
+
+   ///////////////////////////////////////////////////////////////HITSA Sündmuse sisu osa///////////////////////////////////////////////////////////////
+    $field_name = 'body';
+    if (field_info_field($field_name)) {
+        $field = field_info_field($field_name);
+    } else {
+        $field = array(
+        'field_name' => $field_name,
+        'type' => 'text_with_summary',
+        'module' => 'text',
+        'cardinality' => 1,
+        'entity_types' => array('node'),
+        'translatable' => true,
+        );
+        $field = field_create_field($field);
+    }
+    $instance = array(
+      'field_name' => $field['field_name'],
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+      'label' => st('Calendar event'),
+      'description' =>  '',
+      'required' => 0,
+      'widget' => array(
+        'type' => 'text_textarea_with_summary',
+        'settings' => array(
+          'rows' => 20,
+          'summary_rows' => 5,
+        ),
+        'weight' => 0,
+        'module' => 'text',
+      ),
+      'settings' => array('display_summary' => true),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'text_default',
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'type' => 'text_summary_or_trimmed',
+        ),
+        'hitsa_event' => array(
+          'label' => 'hidden',
+          'type' => 'text_summary_or_trimmed'
+        ),
+      ),
+    );
+    $instances[] = $instance;
+   ///////////////////////////////////////////////////////////////HITSA Sündmuse alguse kuupäev///////////////////////////////////////////////////////////////
+    $field_name = 'event_date';
+  //  Kontrollime, kas väli eksisteerib
+    if (field_info_field( $field_name )) {
+        $field = field_info_field($field_name);
+    } else {
+        $field = array(
+          'entity_types' => array(),
+          'field_name' => 'event_date',
+          'label' => st('Date'),
+          'module' => 'date',
+          'settings' => array(
+            'cache_count' => 4,
+            'cache_enabled' => 0,
+            'granularity' => array(
+              'day' => 'day',
+              'hour' => 0,
+              'minute' => 0,
+              'month' => 'month',
+              'second' => 0,
+              'year' => 'year',
+            ),
+            'timezone_db' => '',
+            'todate' => 'required',
+            'tz_handling' => 'none',
+          ),
+          'translatable' => 0,
+          'type' => 'datestamp',
+        );
+
+        $field = field_create_field( $field );
+    }
+  //  Create the field.
+        $instance = array(
+          'bundle' => $bundle,
+          'deleted' => 0,
+          'description' => st('Date period when event takes place'),
+          'display' => array(
+            'default' => array(
+              'label' => 'above',
+              'module' => 'date',
+              'settings' => array(
+                'format_type' => 'long',
+                'fromto' => 'both',
+                'multiple_from' => '',
+                'multiple_number' => '',
+                'multiple_to' => '',
+                'show_remaining_days' => FALSE,
+              ),
+              'type' => 'date_default',
+              'weight' => 1,
+            ),
+            'teaser' => array(
+              'label' => 'above',
+              'settings' => array(),
+              'type' => 'hidden',
+              'weight' => 0,
+            ),
+          ),
+          'entity_type' => 'node',
+          'field_name' => 'event_date',
+          'label' => st('Date'),
+          'required' => 0,
+          'settings' => array(
+            'default_value' => 'now',
+            'default_value2' => 'same',
+            'default_value_code' => '',
+            'default_value_code2' => '',
+            'user_register_form' => FALSE,
+          ),
+          'widget' => array(
+            'active' => 1,
+            'module' => 'date',
+            'settings' => array(
+              'increment' => 15,
+              'input_format' => 'd/m/Y',
+              'input_format_custom' => '',
+              'label_position' => 'above',
+              'no_fieldset' => 0,
+              'text_parts' => array(),
+              'year_range' => '-3:+3',
+            ),
+            'type' => 'date_popup',
+            'weight' => 3,
+          ));
+          
+        $instances[] = $instance;
+///////////////////////////////////////////////////////////////HITSA Sündmuse veerand///////////////////////////////////////////////////////////////
+    //Küsime mutujuatest  perioodi tüübi
+    $period = 'time_periods';
+    // Paneme paika masina nimi
+    $field_name = 'period';
+    if (field_info_field($field_name)) {
+        $field = field_info_field($field_name);
+    } else {
+        $field = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => $field_name,
+        'indexes' => array(
+          'tid' => array(
+            0 => 'tid',
+          ),
+        ),
+        'locked' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'allowed_values' => array(
+            0 => array(
+              'vocabulary' => $period,
+              'parent' => 0,
+            ),
+          ),
+          'entity_translation_sync' => false,
+
+        ),
+        'translatable' => 1,
+        'type' => 'taxonomy_term_reference',
+        );
+        $field = field_create_field($field);
+    }
+    $instance = array(
+      'bundle' => $bundle,
+      'default_value' => null,
+      'deleted' => 0,
+      'description' => 'Siin määratakse ära, millisesse semestrisse aine kuulub',
+      'entity_type' => 'node',
+      'field_name' => $field['field_name'],
+      'label' => st('Time period when event takes place'),
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'user_register_form' => false,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => 1,
+      ),
+    
+      
+      );
+      $instances[] =  $instance;
+///////////////////////////////////////////////////////////////HITSA Sündmuse sildid///////////////////////////////////////////////////////////////
+    // Paneme paika masina nime
+    $field_name = 'event_tags';
+    if (field_info_field($field_name)) {
+        $field = field_info_field($field_name);
+    } else {
+        $field = array(
+        'active' => 1,
+        'cardinality' => -1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => $field_name,
+        'indexes' => array(
+          'tid' => array(
+            0 => 'tid',
+          ),
+        ),
+        'locked' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'allowed_values' => array(
+            0 => array(
+              'vocabulary' => 'hitsa_event_tags',
+              'parent' => 0,
+            ),
+          ),
+          'entity_translation_sync' => false,
+
+        ),
+        'translatable' => 1,
+        'type' => 'taxonomy_term_reference',
+        );
+        $field = field_create_field($field);
+    }
+    $instance = array(
+      'bundle' => $bundle,
+      'default_value' => null,
+      'deleted' => 0,
+      'description' => 'Tag, millega saab sisule viidata. Terminid tuleb komaga Üksteisest eraldada',
+      'entity_type' => 'node',
+      'field_name' => $field['field_name'],
+      'label' => st('Tags'),
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'user_register_form' => false,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => 1,
+      ),
+    
+      
+      );
+      $instances[] =  $instance;
+///////////////////////////////////////////////////////////////HITSA Sündmuse toimumise asukoht///////////////////////////////////////////////////////////////
+      $field_name = 'locations';
+    if (field_info_field($field_name)) {
+        $field = field_info_field($field_name);
+    } else {
+        $field = array(
+          'active' => 1,
+          'cardinality' => -1,
+          'deleted' => 0,
+          'entity_types' => array(),
+          'field_name' => $field_name,
+          'indexes' => array(
+          'tid' => array(
+            0 => 'tid',
+          ),
+          ),
+          'locked' => 0,
+          'module' => 'taxonomy',
+          'settings' => array(
+          'allowed_values' => array(
+            0 => array(
+              'vocabulary' => 'hitsa_locations',
+              'parent' => 0,
+            ),
+          ),
+          'entity_translation_sync' => false,
+          ),
+          'translatable' => 1,
+          'type' => 'taxonomy_term_reference',
+        );
+        $field = field_create_field($field);
+    }
+
+        $instance = array(
+          'bundle' => $bundle,
+          'default_value' => null,
+          'deleted' => 0,
+          'description' => 'Sündmuse toimiumise asukoht',
+          'entity_type' => 'node',
+          'field_name' => $field['field_name'],
+          'label' => st('Location'),
+          'required' => 0,
+          'settings' => array(
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
+          ),
+          'widget' => array(
+            'active' => 0,
+            'module' => 'taxonomy',
+            'settings' => array(
+              'autocomplete_path' => 'taxonomy/autocomplete',
+              'size' => 60,
+            ),
+            'type' => 'taxonomy_autocomplete',
+            'weight' => 1,
+          ),
+        
+          
+          );
+        $instances[]  = $instance;
+    
+
+  //  Create an instance of the field and bind it to the bundle.
+    foreach ($instances as $instance) {
+        field_create_instance($instance);
+    }
+    return ;
+}
+/**
+ * Implements hook_entity_info_alter().
+ * Lisame Kalendri elemendile kuvamise view_mode
+ */
+function hitsa_events_entity_info_alter(&$entity_info)
+{
+    $entity_info['node']['view modes'] += array(
+    'hitsa_event' => array(
+      'label' => t('Calendar element'),
+      'custom settings' => false,
+    ),
+    );
+}
+function hitsa_events_add_types($school_type){
+  $vocab = taxonomy_vocabulary_machine_name_load($school_type);
+  $module_path = drupal_get_path('module','hitsa_events');
+
+  $type_file  = $module_path.'/includes/time_type.json';
+
+  $json = file_get_contents($type_file);
+  $json = json_decode($json);
+  if (!empty($json) && !empty($json->schools)) {
+    foreach ($json->schools as $key => $school) {
+      if($school->type==$school_type){     
+        $vocab = taxonomy_vocabulary_machine_name_load($school->time_period_vocab_name);
+        if(empty($vocab)){
+            $new_taxonomy = (object) array(
+                'name' => $school->time_period_vocab_label,
+                'description' => t('Here you can enter time periods'),
+                'machine_name' => $school->time_period_vocab_name,
+            );
+            $new_taxonomy->i18n_mode = 1;  
+            taxonomy_vocabulary_save($new_taxonomy); 
+            
+        }
+        $vocab = taxonomy_vocabulary_machine_name_load($school->time_period_vocab_name);
+        foreach ($school->time_type as $key => $time_type) {
+          $term = new stdClass();
+          $term->name = $time_type->en;
+          $term->vid = $vocab->vid;
+          $term->language = 'en';
+          taxonomy_term_save($term);
+          unset($time_type->en);
+          foreach ($time_type as $time_key => $time_element) {
+            $context = array(
+              'term',
+              $term->tid,
+              'name',
+            );
+            $textgroup = 'taxonomy';
+            i18n_string_textgroup($textgroup)->update_translation($context, $time_key, $time_element);
+          }
+        } 
+
+      }
+    }
+  }
+
+}
+function hitsa_events_calendar_page()
+{
+    $build = array();
+    $build['events'] = array(
+      '#markup' => hitsa_events_calendar_page_html(),
+      );
+    return $build;
+}
+function hitsa_events_calendar_page_html(){
+  global $language;
+  $events = hitsa_core_get_content_by_type('node','event', $language->language);
+  if (isset($events['node'])) {
+   
+    $event_nids = array_keys($events['node']);
+    $events = entity_load('node', $event_nids);
+    
+  } 
+  $periods  = array();
+  if (!empty($events)) {
+    $output = '';
+    $events_array= array();
+    if (is_array($events)) {
+      foreach ($events as $event) {
+        if(!empty($event->field_event_type)){
+          if($event->field_event_type['und'][0]['value']=='training'){
+            continue;
+          }
+        }
+        else{
+          continue;
+        }
+        $event_html = hitsa_events_event_html($event);
+        $events_array[]=$event_html;
+        // $output.= $event_html['html'];
+        
+        $periods[$event_html['period']->tid] = $event_html['period'];
+        $periods[$event_html['period']->tid]->events[] = array('date' => $event_html['start_date'],'html'=>$event_html['html']);
+      }
+    }
+  }
+  usort($periods, function($a, $b) {
+    return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
+}); 
+    $output .= '
+      
+      <div class="row">
+         <div class="col-9">
+            
+            <div class="block">'; 
+    $output .= '<h2 class="block-title">'.t('Calendar').'</h2>';
+    $output .= '<div class="row">
+                  <div class="col-12">
+                     <h3>Filtreeri sündmusi</h3>
+                  </div><!--/col-12-->
+               </div><!--/row-->
+               ';
+    $output .= '<form method="post" action="kalender.html">
+               <div class="row">
+                  <div class="col-8">
+                     
+                     <div class="btn-bar">
+                        <span class="btn-input">
+                           <input type="radio" name="category" value="0" checked />
+                           <span class="btn btn-xs btn-alternate">Kõik</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input">
+                           <input type="radio" name="category" value="1" />
+                           <span class="btn btn-xs btn-alternate">Õppetöö</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Huvitegevus</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 1</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 2</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 3</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 4</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 5</span>
+                        </span><!--/btn-input-->
+
+                     </div><!--/btn-bar-->
+                     
+                  </div><!--/col-8-->
+                  <div class="col-4">
+                     <a href="javascript:void(0);" class="cta-link pull-right before-plus" data-toggle="hiddenFilter" data-class="\'active\' : hiddenFilter">Veel valikuid</a>
+                  </div><!--/col-4-->
+               </div><!--/row-->
+               </form>';
+    $output .= '<div class="row-spacer"></div>';
+    $output .= '<div class="row">';
+    $output .= '<div class="col-12">';
+    $output.='<div class="accordion" data-plugin="accordion">';
+  foreach ($periods as $period) {
+    $output.= '<div class="accordion-entry">';
+    $output.= '<div class="accordion-title">'.$period->name.'</div>';
+    $output.= '<div class="accordion-content">';
+    $events_count=count($period->events);
+    $i=0;
+    
+    usort($period->events, function($a, $b) {
+        return $a['date'] - $b['date'];
+    });
+    foreach ($period->events as $key => $event_html) {
+        $time = time();
+        $date = date('dmY',$time);
+        $date_out = '<div class="object-dateseparator"><span>'.t('today').', '.strftime('%d. %B',$time).'</span></div>';
+        $tomorrow=FALSE;
+        if (!empty($period->events[$key-1])) {
+          if ($time>$period->events[$key-1]['date']) {
+            if($event_html['date']>=$time){
+              
+              
+            }
+          }
+        }
+        if (!empty($period->events[$key+1])) {
+          if ($time<$period->events[$key+1]['date']) {
+            if($event_html['date']<=$time){
+              $tomorrow=TRUE;
+              
+            }
+          }
+        
+          // code...
+        }
+        
+        $output .= $event_html['html'];
+        $output .= ($i!=$events_count-1&&!$tomorrow)?'<hr />':'';
+        if($tomorrow){
+          $output.= $date_out;
+        }
+      
+      $i++;  
+    }
+    $output.='</div><!--/accordion-content-->';
+    $output.= '</div><!--/accordion-entry-->';
+  }
+  $output.='</div><!--/accordion-->';
+  $output.='</div><!--/col-12-->';
+  $output.='</div><!--/row-->';
+  $output.= '
+            </div><!--/block-->
+            
+         </div><!--/col-9-->';
+  $right_side = hitsa_events_get_time_period_block();
+  $output.= $right_side;
+  $api = url('api/events');
+  
+  $output.='
+  <div data-url="'.$api.'"></div>
+  ';
+
+  return ($output);
+}
+function hitsa_events_endpoint()
+{   
+
+    global $language;
+    $textured_nodes = '';
+    $q = db_select('node', 'n');
+    $q -> fields('n');
+    $q -> condition('n.type', 'event', '=');
+    $q -> condition('n.language', $language->language, '=');
+    $r = $q -> execute();
+    $nodes=array();
+    foreach ($r as $key => $node) {
+        $nodes[$node->nid] = $node->nid;
+    }
+    
+    
+    if (!empty($nodes)) {
+        $textured_nodes = hitsa_events_get_nodes_html($nodes);
+    }
+    if (!empty($textured_nodes)) {
+      print($textured_nodes);
+    }
+}
+
+function hitsa_events_get_nodes_html($nodes)
+{   
+    global $language;
+    $period = NULL;
+    $nodes = node_load_multiple($nodes);
+    $data = array();
+    $data['labels'] = array(
+      'read_more' => t('Read more'),
+      'close'     => t('Close'),
+    );
+    $nodes_out=array();
+    foreach ($nodes as $key => $node) {
+      $node=node_load($node->nid);
+      if (!empty($node->period)) {
+        if (!empty($node->period[$language->language])) {
+          $term = taxonomy_term_load($node->period[$language->language][0]['tid']);
+            if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
+              $term = i18n_taxonomy_term_get_translation($term, $language->language); // The important part!
+            }
+          $nodes_out[$term->name][$node->nid]=$node;
+        }
+      }
+    }
+    if (!empty($nodes_out)) {
+      $data['category']=array();
+      $i = 0;
+      foreach ($nodes_out as $category_key => $time_period) {
+        
+        $data['category'][$i]=array(
+          'title' => $category_key,
+          'list'  => array(),
+          );
+        foreach ($time_period as $event) {
+          if (!empty($event->site_tags)) {
+            if (!empty($event->site_tags[$language->language])) {
+              $tags=array();
+              foreach ($event->site_tags[$language->language] as $tag) {
+                $tag = taxonomy_term_load($tag['tid']);
+                $tag = i18n_taxonomy_term_get_translation($tag, $language->language); 
+                $tags[] = array(
+                  'title' => $tag->name,
+                  'url'   => url('taxonomy/term/'.$tag->tid),
+                  );
+              }
+            }
+          }
+          if (!empty($event->locations)) {
+            if (!empty($event->locations[$language->language])) {
+             $term ='';
+             $term = $event->locations[$language->language][0]['tid'];
+             $term = taxonomy_term_load($term);
+             $location = i18n_taxonomy_term_get_translation($term, $language->language); 
+             
+            }
+          }
+          $body = '';
+          if(!empty($event->body)){
+            if (!empty($event->body['und'])) {
+              $body = $event->body['und'][0]['value'];
+            }
+            elseif (!empty($event -> body[$language->language])) {
+              $body = $event->body[$language->language][0]['value'];
+            }
+          }
+          $data['category'][$i]['list'][]=array(
+            'id' => $event->nid,
+            'timestamp' => $event->event_date['und'][0]['value'],
+            'title' => $event->title,
+            'location' => $location->name,
+            'tags' => $tags,
+            'content' => $body,
+            );
+          unset($term);
+        }
+        
+        $i++;
+      }
+    }
+    return json_encode($data);
+}
+
+function hitsa_events_event_html($event=NULL,$type=NULL){
+  global $language;
+  $time = time();
+  setlocale(LC_CTYPE,'et_EE');
+  if(!empty($event->period)){
+    $period = taxonomy_term_load($event->period[$language->language][0]['tid']);
+    
+  }
+  
+  $output='';
+  $object_class = '';
+  if (!empty($event->event_date)) {
+    $start_date = !empty($event->event_date['und'][0]['value'])?$event->event_date['und'][0]['value']:NULL;
+    $end_date = !empty($event->event_date['und'][0]['value2'])?$event->event_date['und'][0]['value2']:NULL;
+    $time_hours_minutes = (!empty($start_date))?t('Takes place on: ') . date('G:i',$start_date):NULL;
+    if($type=='training'){
+     $time_hours_minutes = '<span class="before-calendar">'.date('j.m',$start_date). ' - '.date('j.m',$end_date).'</span>';
+      
+    }
+    
+    if($start_date<$time and $end_date<$time){
+      $object_class = 'object-inactive';
+    }
+    
+    $locations = array();
+    if (!empty($event->locations) and $type!='training') {
+      foreach ($event->locations[$language->language] as $location) {
+        $location = taxonomy_term_load($location['tid']);
+        $locations[$location->name] = $location->name;
+      }
+      $location_ready='';
+      foreach ($locations as $location) {
+        $location_ready = t('Location:').' '.(empty($location_ready))?$location: $location_ready. ', '. $location;
+      }
+    }
+    $tags = array();
+    if (!empty($event->event_tags)) {
+      foreach ($event->event_tags[$language->language] as $tag) {
+        $tag = taxonomy_term_load($tag['tid']);
+        $tags[$tag->name] = $tag->name;
+      }
+      $tags_ready='';
+      foreach ($tags as $tag) {
+        $tags_ready .= '<li><a href="">'.$tag.'</a></li>';
+      }
+    }
+    $training_tags='';
+    $training_cost=NULL;
+    if ($type=='training') {
+      if(!empty($event->field_training_cost)){
+        $training_cost =  '<span class="before-money">'.$event->field_training_cost['und'][0]['value'].' €</span>';
+      }
+      if (!empty($event->field_taining_tags)) {
+        $tags = array();
+        foreach ($event->field_taining_tags['und'] as $training_tag) {
+          $tag = taxonomy_term_load($training_tag['target_id']);
+          $tags[$tag->name] = $tag->name;
+        }
+        foreach($tags as $tag){
+          $training_tags.='<li><a href="">'.$tag.'</a></li>';
+        }
+      }
+    }
+    
+    if($event->title=='Fere'){
+      if(!empty($event->field_registration_form)){
+        $webform = $event->field_registration_form['und'][0]['target_id'];
+        $webform = 'webform_client_form_'.$webform;
+      }
+
+    }
+    $output.= '<div class="object object-event '.$object_class.'">';
+    $output.= '<div class="object-inner">';
+    $output.= '<a href class="object-date">';
+    $output.= '<span class="object-date_day">';
+    $output.= date('d',$start_date);
+    $output.= '</span>';
+    $output.= '<span class="object-date_month">';
+    $output.= strftime('%B',$start_date);
+    $output.= '</span>';
+    $output.= '</a><!--/object-date-->';
+    $output.= '<span class="object-content">';
+    $output.= '<a href="" class="object-title">';
+    $output.= $event->title;
+    $output.= '</a>';
+    $output.= '<span class="object-footer">';
+    $output.= (!empty($location_ready)) ? $location_ready.', ':'';
+    $output.= (!empty($time_hours_minutes))?$time_hours_minutes . '':'';
+    $output.= ($type=='training'&&!empty($training_cost))?' '.$training_cost.' ':'';
+    $output.= '<br />';
+    $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
+    $output.= ($type=='training')?'<a class="before-register">'.t('Register to training').'</a>':'';
+    $output.= (!empty($tags_ready)&&$type!='training')?'<ul class="tags">':'';
+    $output.= (!empty($tags_ready)&&$type!='training')?$tags_ready:'';
+    $output.= (!empty($tags_ready)&&$type!='training')?'</ul><!--/tags-->':'';
+    $output.= (!empty($training_tags)&&$type=='training')?'<ul class="tags">':'';
+    $output.= (!empty($training_tags)&&$type=='training')?$training_tags:'';
+    $output.= (!empty($training_tags)&&$type=='training')?'</ul><!--/tags-->':'';
+    $output.= '</span><!--/object-footer-->';
+    $output.= '</span><!--/object-content-->';
+    $output.= '<span class="object-button">';
+    $output.= '<!-- toggle muutuja on ID.. OBJEKTI ID -->';
+    $output.= '<a href="javascript:void(0);" class="btn" data-toggle="object-details_'.$event->nid.'" data-hide="object-details_'.$event->nid.'">'.t('Read more').'</a>';
+    $output.= '<div data-show="object-details_'.$event->nid.'">';
+    $output.= '<a href="" class="btn-circle before-share"></a>';
+    $output.= '<a href="javascript:window.print();" class="btn-circle before-print"></a>';
+    $output.= '<a href="javascript:void(0);" data-toggle="object-details_'.$event->nid.'" class="btn btn-transparent after-close">'.t('Close').'</a>';
+    $output.= '</div><!--/object-details_'.$event->nid.'-->';
+    $output.= '</span><!--/object-button-->';
+    $output.= '</div><!--/object-inner-->';
+    $output.= '<div class="object-details" data-show="object-details_'.$event->nid.'">';
+    $output.= '<p>';
+    $output.= (!empty($event->body))?$event->body['und'][0]['value']:'';
+    $output.= '</p>';
+    $output.= '</div>';
+    $output.= '</div>';
+    
+  }
+  return array('html' => $output,'period' => $period,'start_date'=>$start_date);
+}
+
+function hitsa_events_get_time_period_block(){
+  $time_period_block_title =  variable_get('period_title');
+  $time_periods = hitsa_events_get_time_periods();
+  $output = '';
+  $output .= '<div class="col-3">
+            <div class="block block-narrow">';
+  $output .= (!empty($time_period_block_title))?'<h2 class="block-title">'.$time_period_block_title.'</h2>':'';
+  $output .= '<div class="row">';
+  $output .= $time_periods;
+  $output .= '</div><!--/row-->';
+  $output.='</div><!--/block-->
+            
+         </div><!--/col-3-->';
+  return $output;
+}
+function hitsa_events_get_time_periods(){
+  $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_periods');
+  $time_periods = taxonomy_get_tree($time_periods_vocabulary->vid,0,NULL,TRUE);
+  
+  $output = '';
+  $time_periods_count = count($time_periods);
+  $i=0;
+  foreach ($time_periods as $time_period) {
+        if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
+          $time_period = i18n_taxonomy_localize_terms($time_period); // The important part!
+        }
+        $time_period_start = (!empty($time_period->field_time_period_dates))?$time_period->field_time_period_dates['und'][0]['value']:NULL;
+        $time_period_end = NULL;
+        if($time_period->field_time_period_dates['und'][0]['value2']!=$time_period->field_time_period_dates['und'][0]['value']){
+          $time_period_end = $time_period->field_time_period_dates['und'][0]['value2'];
+        }
+        $dated_start = (!empty($time_period_start))?strftime('%d. %B',$time_period_start):NULL; 
+        $dated_end = (!empty($time_period_end))?strftime('%d. %B',$time_period_end):NULL; 
+        $output.='          <div class="col-12">';
+        $output.='             <a href="" class="object object-small object-horizontal object-inactive">';
+        $output.='                <span class="object-inner">';
+        $output.='                   <span class="object-content">';
+        $output.='                      <span class="object-title">'.t($time_period->name).'</span>';
+        $output.='                      <span class="object-footer">';
+        $output.= (!empty($dated_start))?'<span class="before-calendar">'.$dated_start:'';
+        $output.= (!empty($dated_end))?' - '.$dated_end:'';
+        $output.= (!empty($dated_start))?'</span>':'';
+        $output.='                      </span><!--/object-footer-->';
+        $output.='                   </span><!--/object-content-->';
+        $output.='                </span><!--/object-inner-->';
+        $output.='             </a><!--/object-->';
+        $output.='          </div><!--/col-12-->';
+        $output.=($i!=$time_periods_count-1)?'          <hr />':'';
+        $i++;
+  }
+  return $output;
+}
+function hitsa_events_front_page_block(){
+  global $language;
+  $events = hitsa_core_get_content_by_type('node','event', $language->language,$conditions=array('event_type'=>'event'));
+  if (isset($events['node'])) {
+   
+    $event_nids = array_keys($events['node']);
+    $events = entity_load('node', $event_nids);
+    
+  } 
+  $time = time();
+  
+  foreach ($events as $key => $event) {
+    if(!empty($event->field_event_type)){
+      if($event->field_event_type['und'][0]['value']!='training'){
+        
+        if (!empty($event->event_date)) {
+          $event_start_date = $event->event_date['und'][0]['value'];
+          $event_end_date = $event->event_date['und'][0]['value2'];
+          if($event_start_date>$time){
+            
+          }
+          elseif ($event_start_date<$time && $time<$event_end_date) {
+            // code...
+          }
+          else{
+            unset($events[$key]);
+          }
+          //dpm($event);
+        }
+          }
+      else{
+        unset($events[$key]);
+      }
+    }
+    else{
+      unset($events[$key]);
+    }
+  }
+  if (!empty($events)) {
+    $event_tags = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
+    $event_tags = taxonomy_get_tree($event_tags->vid);
+    
+    $events_array = array();
+    foreach ($events as $key => $event) {
+      if (!empty($event->event_tags)) {
+        foreach ($event->event_tags[$language->language] as $tags) {
+          $loaded_tag = taxonomy_term_load($tags['tid']);
+          $loaded_tag = i18n_taxonomy_localize_terms($loaded_tag);
+          
+          $events_array[$loaded_tag->name][] = $event; 
+        }
+      }
+    }
+    $output = '<div class="block" data-plugin="tabs">';
+    $output.= '<h2 class="block-title">'.t('Events calendar').'</h2>';
+    $output.= '           ';
+    $output.= '           <div class="row pull-up">';
+    $output.= '              <div class="col-12">';
+    $i=0;
+    foreach ($events_array as $key => $event_type) {
+      $output.='<a href="javascript:void(0);" data-target="tab-'.$i.'" class="link-tab">'.$key.'</a>';
+      $i++;
+    }
+    $output.= '              </div><!--/col-12-->';
+    $output.= '           </div><!--/row-->';
+    $events_count = count($events);
+    $j=0;
+    foreach ($events_array as $key => $event_type) {
+      $i=0;
+      $output .= '<div data-tab="tab-'.$j.'">';
+      
+      usort($event_type, function($a, $b) {
+        return $a->event_date['und'][0]['value'] - $b->event_date['und'][0]['value'];
+      }); 
+      $event_type_count = count($event_type);
+      $location='';
+      foreach ($event_type as $event) {
+        
+        if(!empty($event->locations)){
+          if(!empty($event->locations[$language->language][0]))
+          {
+            $location = taxonomy_term_load($event->locations[$language->language][0]['tid']);
+            $location = i18n_taxonomy_localize_terms($location);
+            $location = $location->name;
+          }
+        }
+        else{
+          $location = NULL;
+        }
+        if($i==0 || $i==2){
+          $output.= '<div class="row">';
+        }
+        
+        $output.= '<div class="col-6">';
+        $output.= '                <div class="object object-event">';
+        $output.= '                   <div class="object-inner">';
+        $output.= '                      <a href="" class="object-date">';
+        $output.= '                         <span class="object-date_day">23</span>';
+        $output.= '                         <span class="object-date_month">Veebruar</span>';
+        $output.= '                      </a><!--/object-date-->';
+        $output.= '                      <span class="object-content">';
+        $output.= '                         <a href="" class="object-title">'.$event->title.'</a>';
+        $output.= '                         <span class="object-footer">';
+        $output.= (!empty($location))?'                     '.t('Location').': '.$location:'';
+        $output.= '                             , Kell 10:00<br />';
+        $output.= '                            <a href="" class="before-tourism">'.t('Add to calendar').'</a>';
+        $output.= '                         </span><!--/object-footer-->';
+        $output.= '                      </span><!--/object-content-->';
+        $output.= '                   </div><!--/object-inner-->';
+        $output.= '                </div><!--/object-->';
+        $output.= '             </div><!--/col-6-->';
+        if($i==1 || $i==3||$i==$event_type_count-1){
+          $output.= ' </div><!--/row-->';
+        }
+        
+          if($i==1||$i==3){
+           $output.=' <hr />';
+           $output.=' <div class="row-spacer"></div>';
+          }
+          if ($i==3||$i==$event_type_count-1) {
+            // code...
+           $output.=' <div class="row">';
+           $output.='          <div class="col-12">';
+           $output.='             <a href="" class="btn btn-filled">'.t($key.' event').'</a>';
+           $output.='          </div><!--/col-12-->';
+           $output.='       </div><!--/row-->';          }
+        $i++;
+        
+        if($i==4){
+          break;
+        }
+      }
+      $output.= '</div><!--/data-tab-'.$j.'-->';
+      $j++;
+    }
+    
+    
+    $output.= '</div><!--/block-->';
+    
+    return $output;
+  }
+  
+  
+}
+function hitsa_events_node_presave($node){
+  
+  if($node->type=='event'){
+    $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_periods');
+    $time_periods = taxonomy_get_tree($time_periods_vocabulary->vid);
+    $period_start = NULL;
+    $period_end = NULL;
+    $event_date = NULL;
+    $time_period_tid =  NULL;
+    if (!empty($node->event_date)) {
+      $event_date = $node->event_date['und'][0]['value'];
+    }
+    foreach ($time_periods as $time_period) {
+      $loaded_period = taxonomy_term_load($time_period->tid);
+      if (!empty($loaded_period->field_time_period_dates)) {
+        $period_start = $loaded_period->field_time_period_dates['und'][0]['value'];
+        $period_end = $loaded_period->field_time_period_dates['und'][0]['value2'];
+        if ($event_date>=$period_start && $event_date<=$period_end) {
+          $time_period_tid = $time_period->tid;
+        }
+      }
+    }
+    if ($time_period_tid) {
+      if (isset($node->period)) {
+        global $language;
+        $node->period[$language->language][0]['tid'] = $time_period_tid;
+      }
+    }
+  }
+}
+function hitsa_events_training_calendar(){
+  global $language;
+  $events = hitsa_core_get_content_by_type('node','event', $language->language,$conditions=array('event_type'=>'training'));
+  
+  if (isset($events['node'])) {
+   
+    $event_nids = array_keys($events['node']);
+    $events = entity_load('node', $event_nids);
+    
+  } 
+  $periods  = array();
+  if (!empty($events)) {
+    $output = '';
+    $events_array= array();
+    if (is_array($events)) {
+      foreach ($events as $event) {
+        $event_html = hitsa_events_event_html($event,$type='training');
+        $events_array[]=$event_html;
+        // $output.= $event_html['html'];
+        
+        $periods[$event_html['period']->tid] = $event_html['period'];
+        $periods[$event_html['period']->tid]->events[] = array('date' => $event_html['start_date'],'html'=>$event_html['html']);
+      }
+    }
+  }
+  usort($periods, function($a, $b) {
+    return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
+}); 
+    $output .= '
+      
+      <div class="row">
+         <div class="col-9">
+            
+            <div class="block">'; 
+    $output .= '<h2 class="block-title">'.t('Calendar').'</h2>';
+    $output .= '<div class="row">
+                  <div class="col-12">
+                     <h3>Filtreeri sündmusi</h3>
+                  </div><!--/col-12-->
+               </div><!--/row-->
+               ';
+    $output .= '<form method="post" action="kalender.html">
+               <div class="row">
+                  <div class="col-8">
+                     
+                     <div class="btn-bar">
+                        <span class="btn-input">
+                           <input type="radio" name="category" value="0" checked />
+                           <span class="btn btn-xs btn-alternate">Kõik</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input">
+                           <input type="radio" name="category" value="1" />
+                           <span class="btn btn-xs btn-alternate">Õppetöö</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Huvitegevus</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 1</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 2</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 3</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 4</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
+                           <input type="radio" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Peidus valik 5</span>
+                        </span><!--/btn-input-->
+
+                     </div><!--/btn-bar-->
+                     
+                  </div><!--/col-8-->
+                  <div class="col-4">
+                     <a href="javascript:void(0);" class="cta-link pull-right before-plus" data-toggle="hiddenFilter" data-class="\'active\' : hiddenFilter">Veel valikuid</a>
+                  </div><!--/col-4-->
+               </div><!--/row-->
+               </form>';
+    $output .= '<div class="row-spacer"></div>';
+    $output .= '<div class="row">';
+    $output .= '<div class="col-12">';
+    $output.='<div class="accordion" data-plugin="accordion">';
+  foreach ($periods as $period) {
+    $output.= '<div class="accordion-entry">';
+    $output.= '<div class="accordion-title">'.$period->name.'</div>';
+    $output.= '<div class="accordion-content">';
+    $events_count=count($period->events);
+    $i=0;
+    
+    usort($period->events, function($a, $b) {
+        return $a['date'] - $b['date'];
+    });
+    foreach ($period->events as $key => $event_html) {
+        $time = time();
+        $date = date('dmY',$time);
+        $date_out = '<div class="object-dateseparator"><span>'.t('today').', '.strftime('%d. %B',$time).'</span></div>';
+        $tomorrow=FALSE;
+        if (!empty($period->events[$key-1])) {
+          if ($time>$period->events[$key-1]['date']) {
+            if($event_html['date']>=$time){
+              
+              
+            }
+          }
+        }
+        if (!empty($period->events[$key+1])) {
+          if ($time<$period->events[$key+1]['date']) {
+            if($event_html['date']<=$time){
+              $tomorrow=TRUE;
+              
+            }
+          }
+        
+          // code...
+        }
+        
+        $output .= $event_html['html'];
+        $output .= ($i!=$events_count-1&&!$tomorrow)?'<hr />':'';
+        if($tomorrow){
+          $output.= $date_out;
+        }
+      
+      $i++;  
+    }
+    $output.='</div><!--/accordion-content-->';
+    $output.= '</div><!--/accordion-entry-->';
+  }
+  $output.='</div><!--/accordion-->';
+  $output.='</div><!--/col-12-->';
+  $output.='</div><!--/row-->';
+  $output.= '
+            </div><!--/block-->
+            
+         </div><!--/col-9-->';
+  $right_side = hitsa_events_get_time_period_block();
+  $output.= $right_side;
+  $api = url('api/events');
+  
+  $output.='
+  <div data-url="'.$api.'"></div>
+  ';
+
+  return ($output);
+
+}

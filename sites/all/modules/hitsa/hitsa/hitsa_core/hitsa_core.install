@@ -1,0 +1,271 @@
+<?php
+
+function hitsa_core_install() {
+  hitsa_core_add_custom_menus();
+  hitsa_core_add_custom_vocabularies();
+  hitsa_core_add_custom_date_formats();
+  hitsa_core_add_custom_fields();
+  hitsa_core_add_image_styles();
+}
+
+function hitsa_core_uninstall() {
+  hitsa_core_delete_custom_menus();
+  hitsa_core_delete_custom_vocabularies();
+  hitsa_core_delete_custom_date_formats();
+  hitsa_core_delete_custom_fields();
+  hitsa_core_delete_image_styles();
+}
+
+/*
+* Hitsa core fields
+*/
+function _hitsa_core_installed_fields() {
+  $t = get_t();
+  
+  return array(
+    'academic_year_period' => array(
+      'field_name' => 'academic_year_period',
+      'label' => $t('Period'),
+      'type' => 'datestamp',
+      'module' => 'date',
+      'required' => FALSE,
+      'settings' => array(
+        'granularity' => array(
+          'month' => 'month',
+          'day' => 'day',
+          'year' => 'year',
+          'hour' => 'hour',
+          'minute' => 'minute',
+          'second' => 'second',
+        ),
+        'todate' => 'required',
+      ),
+    ),
+    'academic_year' => array(
+      'field_name' => 'academic_year',
+      'label' => $t('Academic year'),
+      'type' => 'taxonomy_term_reference',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'academic_years',
+            'parent' => 0,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+function _hitsa_core_installed_instances() {
+  $t = get_t();
+
+  return array(
+    'academic_year_period' => array(
+      'label' => $t('Period'),
+      'field_name' => 'academic_year_period',
+      'entity_type' => 'taxonomy_term',
+      'bundle' => 'academic_years',
+      'widget' => array(
+        'type' => 'date_text',
+        'module' => 'date',
+      ),
+    ),
+  );
+}
+
+function hitsa_core_add_custom_fields() {
+  foreach (_hitsa_core_installed_fields() as $field) {
+        field_create_field($field);
+  }
+  foreach (_hitsa_core_installed_instances() as $field_instance) {
+      $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
+      print_r($field_instance);
+      field_create_instance($field_instance);
+  }
+}
+
+function hitsa_core_delete_custom_fields() {
+    foreach (array_keys(_hitsa_core_installed_fields()) as $field) {
+        field_delete_field($field);
+    }
+    
+    foreach(_hitsa_core_installed_instances() as $installed_instance) {
+      $instances = field_info_instances($installed_instance['entity_type'], $installed_instance['bundle']);
+      foreach ($instances as $instance_name => $field_instance) {
+          field_delete_instance($field_instance);
+      }
+    }
+}
+
+
+/*
+* Hitsa core vocabularies
+*/
+function _hitsa_core_vocabularies() {
+  $vocabularies = array();
+  
+  $vocabularies['academic_years'] =
+    array(
+      'vocabulary' => (object) array(
+        'name' => t('Academic years'),
+        'description' => t('School academic years'),
+        'machine_name' => 'academic_years',
+      ),
+      'terms' => array(),
+    );
+    
+  return $vocabularies;
+}
+
+function hitsa_core_add_custom_vocabularies() {
+  // Create vocabulary
+  foreach (_hitsa_core_vocabularies() as $v) {
+    taxonomy_vocabulary_save($v['vocabulary']);
+    
+    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+    if($vocab) {
+      variable_set('hitsa_core_' . $vocab->machine_name . '_vid' , $vocab->vid);
+    }
+    if(!empty($v['terms']) && $vocab) {
+      // Add generic terms
+      foreach($v['terms'] as $term) {
+        $term->vid = $vocab->vid;
+        taxonomy_term_save($term);
+      }
+    }
+  }
+}
+
+function hitsa_core_delete_custom_vocabularies() {
+  foreach (_hitsa_core_vocabularies() as $v) {
+    if(!empty($v['vocabulary'])) {
+      $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+      variable_del('hitsa_core_' . $vocab->machine_name . '_vid');
+      taxonomy_vocabulary_delete($vocab->vid);
+    }
+  }
+}
+
+/*
+* Hitsa core menus
+*/
+function hitsa_core_add_custom_menus() {
+  foreach (_hitsa_core_custom_menus() as $key => $menu) {
+    menu_save($menu);
+    variable_set($key . '_name', $menu['menu_name']);
+  }
+}
+
+function hitsa_core_delete_custom_menus() {
+  foreach (_hitsa_core_custom_menus() as $key => $menu) {
+    $m = menu_load($menu['menu_name']);
+    menu_delete($m);
+    variable_del($key . '_name');
+  }
+}
+
+function _hitsa_core_custom_menus() {
+  $t = get_t();
+  
+  return array(
+    'hitsa_main_menu' => array(
+      'menu_name' => 'hitsa-main-menu',
+      'title' => $t('Main menu'),
+      'description' => $t('HITSA Main menu for showing the primary links.'),
+    ),
+    'hitsa_header_menu' => array(
+      'menu_name' => 'hitsa-header-menu',
+      'title' => $t('Header menu'),
+      'description' => $t('HITSA Header menu.'),
+    ),
+    'hitsa_quicklinks_menu' => array(
+      'menu_name' => 'hitsa-quicklinks-menu',
+      'title' => $t('Quicklinks'),
+      'description' => $t('HITSA Quicklinks menu.'),
+    ),
+    'hitsa_footer_menu' => array(
+      'menu_name' => 'hitsa-footer-menu',
+      'title' => $t('Footer menu'),
+      'description' => $t('HITSA Footer menu.'),
+    ),
+  );
+}
+
+/*
+* Hitsa core date formats
+*/
+function _hitsa_core_custom_date_formats_types() {
+  return array(
+    "d. F" => array(
+      'format_array' => array(
+        'format' => 'd. F',
+        'type' => 'custom',
+        'locked' => 1,
+      ),
+      'type_array' => array(
+        'type' => 'hitsa_date_month',
+        'title' => 'Date & Month',
+        'locked' => 1,
+      ),
+    ),
+  );
+}
+
+function hitsa_core_add_custom_date_formats() {
+  foreach(_hitsa_core_custom_date_formats_types() as $date_format) {
+    db_insert('date_formats')->fields($date_format['format_array'])->execute();
+    db_insert('date_format_type')->fields($date_format['type_array'])->execute();
+ 
+    variable_set('date_format_' . $date_format['type_array']['type'], $date_format['format_array']['format']);
+  }
+}
+
+function hitsa_core_delete_custom_date_formats() {
+  foreach(_hitsa_core_custom_date_formats_types() as $date_format) {
+    db_delete('date_formats')->condition('format', $date_format['format_array'])->execute();
+    db_delete('date_format_type')->condition('type', $date_format['type_array']['type'])->execute();
+    
+    variable_del('date_format_' . $date_format['type_array']['type']);
+  }
+}
+
+/**
+ * Hitsa core custom image styles
+ */
+function _hitsa_core_image_styles() {
+  $image_styles = array(
+    array(
+      'style' => array(
+		    'name' => 'hitsa_core_thumbnail',
+		    'label' => 'Thumbnail (354 x 198)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale_and_crop',
+		    'data' => array(
+		      'width' => 354,
+		      'height' => 198,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
+  );
+  
+  return $image_styles;
+}
+
+function hitsa_core_add_image_styles() {
+  foreach(_hitsa_core_image_styles() as $style_array) {
+    $style = image_style_save($style_array['style']);
+    $effect = $style_array['effect'];
+    $effect['isid'] = $style['isid'];
+    image_effect_save($effect);
+  }
+}
+
+function hitsa_core_delete_image_styles() {
+  foreach(_hitsa_core_image_styles() as $style_array) {
+    $style = image_style_load($style_array['style']['name']);
+    image_style_delete($style);
+  }
+}

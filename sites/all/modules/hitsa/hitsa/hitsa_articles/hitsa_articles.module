@@ -1,0 +1,134 @@
+<?php
+
+module_load_include('inc', 'hitsa_articles', 'includes/hitsa_articles.views');
+module_load_include('inc', 'hitsa_articles', 'includes/hitsa_articles.theme');
+
+
+function hitsa_articles_menu() {
+  $items['news'] = array(
+    'title' => 'News',
+    'page callback' => 'hitsa_articles_page_view',
+    'page arguments' => array('news'),
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'hitsa-header-menu',
+    'weight' => 0,
+  );
+  
+  $items['our-stories'] = array(
+    'title' => 'Our stories',
+    'page callback' => 'hitsa_articles_page_view',
+    'page arguments' => array('our_stories'),
+    'access arguments' => array('access content'),
+  );
+  
+  return $items;
+}
+
+function hitsa_articles_get_more_articles_block_nodes($variables) {
+  $query = array();
+  if(!empty($variables['article_type'][0]['value'])) {
+    // Show standard news category block for important news.
+    $query['article_type'] = $variables['article_type'][0]['value'] !== 'important' ? 
+      $variables['article_type'][0]['value'] : 'news';
+    
+    // Exclude current node
+    $query['nids_not_in'] = array($variables['nid']);
+    
+    // Query up to 6 nodes
+    $query['range'] = array(0, 6);
+    
+    $articles_nids = hitsa_articles_query_content($query);
+    if(!empty($articles_nids['node'])) {
+      $articles = node_load_multiple(array_keys($articles_nids['node']));
+    }
+  }
+  return !empty($articles) ? $articles : array();
+}
+
+/**
+ * Implements hook_node_info()
+ */
+function hitsa_articles_node_info() {
+  return array(
+    'article' => array(
+      'name' => t('Article'),
+      'base' => 'article',
+      'description' => t('Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.'),
+      'has_title' => TRUE,
+      'title_label' => t('Title'),
+    ),
+  );
+}
+
+/**
+ * Implement hook_form()
+ */
+function article_form($node, $form_state) {
+  return node_content_form($node, $form_state);
+}
+
+function hitsa_articles_form_alter(&$form, &$form_state, $form_id) {
+  if($form_id === 'article_node_form') {
+    // Show summary by default.
+    $script = 'jQuery(document).ready(function(){ jQuery(".link-edit-summary").click(); });';
+    drupal_add_js($script, 'inline');
+  }
+}
+
+function hitsa_articles_query_content($q = array()) {
+  $query = new EntityFieldQuery();
+  
+  $parameters = _hitsa_articles_set_query_parameters($q);
+  
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'article')
+  ->propertyCondition('status', NODE_PUBLISHED)
+  ->propertyOrderBy('created', 'DESC');
+  
+  foreach($parameters as $parameter) {
+    $query->{$parameter['type']}(...$parameter['arguments']);
+  }
+  
+  $result = $query->execute();
+
+  return $result;
+}
+
+function _hitsa_articles_set_query_parameters($query = array()) {
+  global $language;
+
+  $parameters = array();
+  
+  // Language
+  $parameters[] = array(
+    'type' => 'propertyCondition',
+    'arguments' => array('language', $language->language),
+  );
+  
+  // Page / Range
+  if(!empty($query['range'])) {
+    $parameters[] = array(
+      'type' => 'range',
+      'arguments' => array($query['range'][0], $query['range'][1]),
+    );
+  }
+  
+  // Type
+  if(!empty($query['article_type'])) {
+    $parameters[] = array(
+      'type' => 'fieldCondition',
+      'arguments' => array('article_type', 'value', $query['article_type']),
+    );
+  }
+  
+  // Exclude
+  if(!empty($query['nids_not_in'])) {
+    $parameters[] = array(
+      'type' => 'entityCondition',
+      'arguments' => array('entity_id', $query['nids_not_in'], 'NOT IN'),
+    );
+  }
+  
+  return $parameters;
+}

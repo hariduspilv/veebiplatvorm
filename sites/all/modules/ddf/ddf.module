@@ -1,0 +1,445 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function ddf_menu() {
+  $items = array();
+
+  $items['ddf/update/%/%/%/%'] = array(
+    'title' => 'Update dependent widget',
+    'page callback' => 'ddf_update_callback',
+    'page arguments' => array(2, 3, 4, 5),
+    'access callback' => 'ddf_update_access_callback',
+    'access arguments' => array(2, 3, 4, 5),
+    'type' => MENU_CALLBACK,
+    'delivery callback' => 'ajax_deliver',
+  );
+
+  return $items;
+}
+
+/**
+ * Ajax callback returning ajax commands to update dependent widgets.
+ */
+function ddf_update_callback($controlling_field_name, $entity_type, $bundle, $entity_id) {
+  $result = array('#type' => 'ajax', '#commands' => array());
+  $dependent_fields = db_select('ddf', 'd')
+    ->fields('d', array('dependent_field_name', 'data'))
+    ->condition('field_name', $controlling_field_name)
+    ->condition('entity_type', $entity_type)
+    ->condition('bundle', $bundle)
+    ->execute()
+    ->fetchAllKeyed();
+  if (empty($dependent_fields)) {
+    return $result;
+  }
+  if ($entity_id == 'NULL') {
+    $entity_id = NULL;
+  }
+  $parameters = drupal_get_query_parameters($_GET);
+  $entity = NULL;
+  if (!is_null($entity_id)) {
+    $entity = entity_load_single($entity_type, $entity_id);
+  }
+  if (empty($entity)) {
+    $entity = NULL;
+  }
+
+  // Replace '_none' => NULL for select widgets.
+  foreach ($parameters as $field_name => $value) {
+    if ($value === '_none') {
+      $instance = field_info_instance($entity_type, $field_name, $bundle);
+      if (($instance) && ($instance['widget']['type'] == 'options_select')) {
+        $parameters[$field_name] = NULL;
+      }
+    }
+  }
+
+  foreach ($dependent_fields as $dependent_field_name => $settings) {
+    if (!empty($settings)) {
+      $settings = unserialize($settings);
+    }
+    $dependent_field = field_info_field($dependent_field_name);
+    if (is_null($dependent_field)) {
+      continue;
+    }
+    $selector = '';
+    if (isset($parameters['dep:' . $dependent_field_name])) {
+      $selector = $parameters['dep:' . $dependent_field_name];
+    }
+    $commands = module_invoke_all('ddf_update_widget', $dependent_field, $parameters, $selector, $entity, $settings, $controlling_field_name, $entity_type, $bundle);
+    if (empty($commands)) {
+      continue;
+    }
+    $result['#commands'] = array_merge_recursive($result['#commands'], $commands);
+  }
+
+  return $result;
+}
+
+/**
+ * Access callback returning TRUE if the user can edit current entity.
+ */
+function ddf_update_access_callback($controlling_field_name, $entity_type, $bundle, $entity_id) {
+  $entity = NULL;
+
+  if ($entity_id === 'NULL') {
+    $entity_id = NULL;
+  }
+  else {
+    $entity = entity_load_single($entity_type, $entity_id);
+    if (empty($entity)) {
+      return FALSE;
+    }
+  }
+
+  $dependencies = ddf_load_dependencies($entity_type, $bundle);
+  if (empty($dependencies)) {
+    return FALSE;
+  }
+
+  $dependency_exists = FALSE;
+  foreach ($dependencies as $dependency) {
+    if ($dependency[0] == $controlling_field_name) {
+      $dependency_exists = TRUE;
+      break;
+    }
+  }
+  if (!$dependency_exists) {
+    return FALSE;
+  }
+
+  $field = field_info_field($controlling_field_name);
+  $instance = field_info_instance($entity_type, $controlling_field_name, $bundle);
+  if (!$field || !$instance || !field_access('edit', $field, $entity_type)) {
+    return FALSE;
+  }
+
+  switch ($entity_type) {
+    case 'node':
+      return empty($entity_id) ? node_access('create', $bundle) : node_access('update', $entity);
+
+    case 'taxonomy_term':
+      return empty($entity_id) ? user_access('administer taxonomy') : taxonomy_term_edit_access($entity);
+
+    case 'user':
+      return empty($entity_id) ? (user_access('administer users') || user_register_access()) : (user_access('administer users') || ($entity_id == $GLOBALS['user']->uid));
+
+    case 'comment':
+      return empty($entity_id) ? (user_access('administer comments') || user_access('post comments')) : comment_access('edit', $entity);
+  }
+
+  // Enable access for unknown entity types.
+  return TRUE;
+}
+
+/**
+ * Implements hook_field_delete_field().
+ */
+function ddf_field_delete_field($field) {
+  db_delete('ddf')
+    ->condition('field_name', $field['field_name'])
+    ->execute();
+
+  db_delete('ddf')
+    ->condition('dependent_field_name', $field['field_name'])
+    ->execute();
+}
+
+/**
+ * Implements hook_field_delete_instance().
+ */
+function ddf_field_delete_instance($instance) {
+  db_delete('ddf')
+    ->condition('field_name', $instance['field_name'])
+    ->condition('entity_type', $instance['entity_type'])
+    ->condition('bundle', $instance['bundle'])
+    ->execute();
+
+  db_delete('ddf')
+    ->condition('dependent_field_name', $instance['field_name'])
+    ->condition('entity_type', $instance['entity_type'])
+    ->condition('bundle', $instance['bundle'])
+    ->execute();
+}
+
+function ddf_add_dependency($controlling_field_name, $dependent_field_name, $entity_type, $bundle, $settings = NULL) {
+  $fields = array(
+    'field_name' => $controlling_field_name,
+    'entity_type' => $entity_type,
+    'bundle' => $bundle,
+    'dependent_field_name' => $dependent_field_name,
+  );
+  if (!is_null($settings)) {
+    $fields['data'] = serialize($settings);
+  }
+  db_insert('ddf')->fields($fields)->execute();
+}
+
+function ddf_remove_dependency($dependent_field_name, $entity_type, $bundle) {
+  db_delete('ddf')
+    ->condition('dependent_field_name', $dependent_field_name)
+    ->condition('entity_type', $entity_type)
+    ->condition('bundle', $bundle)
+    ->execute();
+}
+
+/**
+ * Loads dependencies from the database.
+ */
+function ddf_load_dependencies($entity_type, $bundle) {
+  // Use the advanced drupal_static() pattern.
+  static $dependencies = NULL;
+  if (!isset($dependencies)) {
+    $dependencies = &drupal_static(__FUNCTION__, array());
+  }
+
+  if (!isset($dependencies[$entity_type][$bundle])) {
+    $dependencies[$entity_type][$bundle] = array();
+
+    $result = db_select('ddf', 'd')
+      ->fields('d', array('field_name', 'dependent_field_name', 'data'))
+      ->condition('entity_type', $entity_type)
+      ->condition('bundle', $bundle)
+      ->execute();
+
+    foreach ($result as $dependency) {
+      if (strlen($dependency->data) > 0) {
+        $dependency->data = unserialize($dependency->data);
+      }
+      $dependencies[$entity_type][$bundle][] = array($dependency->field_name, $dependency->dependent_field_name, $dependency->data);
+    }
+  }
+
+  return $dependencies[$entity_type][$bundle];
+}
+
+/**
+ * Implements hook_element_info_alter().
+ * Adds an #after_build function to all form elements.
+ */
+function ddf_element_info_alter(&$types) {
+  foreach ($types as $type => $info) {
+    $types[$type]['#after_build'][] = 'ddf_element_after_build';
+  }
+}
+
+function ddf_element_after_build($element, &$form_state) {
+  // Ensure that the element is a field.
+  if (isset($element['#field_name'])) {
+    $field = &$element;
+  }
+  elseif (isset($element['#language'], $element[$element['#language']], $element[$element['#language']]['#field_name'])) {
+    // Some fields are wrapped in containers before processing.
+    $field = &$element[$element['#language']];
+  }
+  else {
+    return $element;
+  }
+
+  // Do not process hidden fields.
+  if ((isset($field['#access'])) && ($field['#access'] == FALSE)) {
+    return $element;
+  }
+
+  $form = &$form_state['complete form'];
+
+  // Avoid processing fields in fields_ui administration pages.
+  if (drupal_substr($form['#form_id'], 0, 9) == 'field_ui_') {
+    return $element;
+  }
+
+  $entity_type = NULL;
+  $bundle = NULL;
+  $entity = NULL;
+  $entity_id = NULL;
+  if (isset($field['#entity_type'], $field['#bundle'])) {
+    $entity_type = $field['#entity_type'];
+    $bundle = $field['#bundle'];
+    if (isset($field['#entity'])) {
+      $entity = $field['#entity'];
+    }
+  }
+  elseif (isset($form['#entity_type'], $form['#bundle'])) {
+    $entity_type = $form['#entity_type'];
+    $bundle = $form['#bundle'];
+    if (isset($form['#entity'])) {
+      $entity = $form['#entity'];
+    }
+  }
+  else {
+    return $element;
+  }
+
+  $dependencies = ddf_load_dependencies($entity_type, $bundle);
+  if (empty($dependencies)) {
+    return $element;
+  }
+
+  if (!empty($entity)) {
+    list($entity_id,,) = entity_extract_ids($entity_type, $entity);
+  }
+  if (empty($entity_id)) {
+    $entity_id = 'NULL';
+  }
+
+  foreach ($dependencies as $dependency) {
+    // Process dependent field.
+    if ($dependency[1] == $field['#field_name']) {
+      if (isset($field['#name'])) {
+        $settings = array(
+          'ddf' => array(
+            $form['#build_id'] . ':' . $entity_type . ':' . $bundle => array(
+              'form_id' => $form['#build_id'],
+              'dependent' => array($field['#field_name'] => $field['#name']),
+            ),
+          ),
+        );
+        drupal_add_js($settings, 'setting');
+      }
+    }
+
+    // Process controlling field.
+    if ($dependency[0] == $field['#field_name']) {
+      if (isset($field['#name'])) {
+        $settings = array(
+          'ddf' => array(
+            $form['#build_id'] . ':' . $entity_type . ':' . $bundle => array(
+              'form_id' => $form['#build_id'],
+              'entity_type' => $entity_type,
+              'bundle' => $bundle,
+              'entity_id' => $entity_id,
+              'fields' => array($field['#field_name'] => $field['#name']),
+            ),
+          ),
+        );
+        drupal_add_js($settings, 'setting');
+        drupal_add_library('system', 'drupal.ajax');
+        drupal_add_library('system', 'jquery.form');
+        drupal_add_js(drupal_get_path('module', 'ddf') . '/ddf.js');
+      }
+    }
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function ddf_field_widget_options_select_form_alter(&$element, &$form_state, $context) {
+  // Fix dependent fields with selects which loose multiple property for empty lists, see options_field_widget_form() function in options.module file.
+  $dependencies = ddf_load_dependencies($context['instance']['entity_type'], $context['instance']['bundle']);
+  if (empty($dependencies)) {
+    return;
+  }
+  $field = $context['field'];
+  foreach ($dependencies as $dependency) {
+    if ($dependency[1] == $field['field_name']) {
+      if ((is_array($dependency[2])) && (isset($dependency[2]['type'])) && ($dependency[2]['type'] != 'options')) {
+        // Not options-type dependency, no special processing is required.
+        continue;
+      }
+      $ddf_processor = array('ddf_selector_element_process');
+      if (empty($element['#process'])) {
+        $info = element_info($element['#type']);
+        if (!empty($info['#process'])) {
+          $element['#process'] = array_merge($info['#process'], $ddf_processor);
+        }
+      }
+      else {
+        $element['#process'] = $ddf_processor;
+      }
+      $element['#value_callback'] = 'ddf_selector_element_value';
+      if ((isset($element['#multiple'])) && (!$element['#multiple']) && ($field['cardinality'] != 1)) {
+        $element['#multiple'] = TRUE;
+      }
+    }
+  }
+}
+
+function ddf_selector_element_process($element, &$form_state, $form) {
+  // Do not process hidden fields.
+  if ((isset($field['#access'])) && ($field['#access'] == FALSE)) {
+    return $element;
+  }
+
+  if ($form_state['process_input']) {
+    $entity_type = $element['#entity_type'];
+    $bundle = $element['#bundle'];
+    $entity = $element['#entity'];
+    $properties = $element['#properties'];
+    $field_name = $element['#field_name'];
+    $dependencies = ddf_load_dependencies($entity_type, $bundle);
+    if (empty($dependencies)) {
+      return $element;
+    }
+    $field = field_info_field($field_name);
+    $instance = field_info_instance($entity_type, $field_name, $bundle);
+    $form_state_copy = $form_state;
+    $form_copy = $form;
+
+    foreach ($dependencies as $dependency) {
+      if ($dependency[1] == $field_name) {
+        $controlling_field_name = $dependency[0];
+        $controlling_field = field_info_field($controlling_field_name);
+        $columns = ($controlling_field['type'] === 'entityreference') ? array('target_id') : array_keys($controlling_field['columns']);
+        $available_languages = field_available_languages($entity_type, $controlling_field);
+        $languages = _field_language_suggestion($available_languages, NULL, $controlling_field_name);
+        foreach ($languages as $langcode) {
+          $path = array_merge($form_copy['#parents'], array($controlling_field['field_name'], $langcode));
+          $key_exists = NULL;
+          $items = drupal_array_get_nested_value($form_state_copy['values'], $path, $key_exists);
+          if ($key_exists) {
+            if (!is_array($items)) {
+              foreach ($columns as $column) {
+                $entity->{$controlling_field_name}[$langcode] = array(0 => array($column => $items));
+              }
+            }
+            elseif ($items !== array()) {
+              if (array_key_exists($columns[0], $items)) {
+                $entity->{$controlling_field_name}[$langcode] = array(0 => $items);
+              }
+              else {
+                $entity->{$controlling_field_name}[$langcode] = $items;
+              }
+            }
+          }
+        }
+      }
+    }
+    $options = _options_get_options($field, $instance, $properties, $entity_type, $entity);
+    $element_copy = $element;
+    $element_copy['#options'] = $options;
+    $default_items = field_get_default_value($entity_type, $entity, $field, $instance);
+    $context = array(
+      'form' => $form_copy,
+      'field' => $field,
+      'instance' => $instance,
+      'langcode' => LANGUAGE_NONE,
+      'items' => $default_items,
+      'delta' => 0,
+    );
+    drupal_alter(array('field_widget_form', 'field_widget_' . $instance['widget']['type'] . '_form'), $element_copy, $form_state_copy, $context);
+    $element['#options'] = $element_copy['#options'];
+  }
+
+  return $element;
+}
+
+/**
+ * Replacement for form_type_select_value() functions for selectors.
+ */
+function ddf_selector_element_value(&$element, $input, $form_state) {
+  $element['#after_build'][] = 'ddf_remove_validation';
+  return form_type_select_value($element, $input);
+}
+
+/**
+ * Disables field validation selectors.
+ */
+function ddf_remove_validation(&$element, &$form_state) {
+  unset($element['#needs_validation']);
+  return $element;
+}

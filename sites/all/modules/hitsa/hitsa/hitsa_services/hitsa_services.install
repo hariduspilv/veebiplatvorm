@@ -1,0 +1,245 @@
+<?php
+
+/*
+* Implements hook_install.
+*/
+function hitsa_services_install() {
+  node_types_rebuild();
+  $types = node_type_get_types();
+  
+  // Add custom vocabularies
+  hitsa_services_add_custom_vocabularies();
+  
+  // Adds body field to aricle content type
+  node_add_body_field($types['service']);
+  hitsa_services_add_custom_fields();
+  
+  // Add menu links
+  hitsa_services_add_menu_links();
+}
+
+/*
+* Implements hook_uninstall.
+*/
+function hitsa_services_uninstall() {
+  $service_type = 'service';
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+  $result = db_query($sql, array(':type' => $service_type));
+  $node_ids = array();
+  foreach ($result as $row) {
+    $node_ids[] = $row->nid;
+  }
+  node_delete_multiple($node_ids); // Delete all service nodes
+  hitsa_services_delete_custom_fields();
+  node_type_delete($service_type); // Delete service content type
+  field_purge_batch(500);
+  hitsa_services_delete_custom_vocabularies(); // Delete service vocabularies
+  hitsa_services_delete_menu_links(); // Remove menu links
+}
+
+/*
+* Implements hook_enable.
+*/
+function hitsa_services_enable() {
+  
+}
+
+/*
+* Implements hook_disable.
+*/
+function hitsa_services_disable() {
+  
+}
+
+function _hitsa_services_installed_fields() {
+  $t = get_t();
+  
+  return array(
+    'service_menu_name' => array(
+      'field_name' => 'service_menu_name',
+      'label' => $t('Menu name'),
+      'type' => 'text',
+    ),
+    'service_category' => array(
+      'field_name' => 'service_category',
+      'label' => $t('Category'),
+      'type' => 'entityreference',
+      'settings' => array(
+        'target_type' => 'taxonomy_term',
+        'handler' => 'base',
+        'handler_settings' => array(
+          'target_bundles' => array(
+            'services_categories',
+          ),
+        ),
+      ),
+    ),
+    'service_gallery' => array(
+      'field_name' => 'service_gallery',
+      'label' => $t('Gallery'),
+      'type' => 'image',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+    ),
+  );
+}
+
+function _hitsa_services_installed_instances() {
+  $t = get_t();
+  return array(
+    'service_menu_name' => array(
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'service_menu_name',
+      'bundle' => 'services_categories',
+      'label' => $t('Menu name'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'service_category' => array(
+      'field_name' => 'service_category',
+      'bundle' => 'contact',
+      'label' => $t('Category'),
+      'widget' => array(
+        'type' => 'options_select',
+        'module' => 'options',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'entityreference_label',
+        )
+      )
+    ),
+    'service_gallery' => array(
+      'field_name' => 'service_gallery',
+      'type' => 'image',
+      'label' => $t('Gallery'),
+      'widget' => array(
+        'type' => 'media_generic',
+        'module' => 'media',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => $t('Gallery'),
+          'type' => 'image',
+        )
+      )
+    )
+  );
+}
+
+function hitsa_services_add_custom_fields() {
+  foreach (_hitsa_services_installed_fields() as $field) {
+        field_create_field($field);
+  }
+  foreach (_hitsa_services_installed_instances() as $field_instance) {
+      $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
+      $field_instance['bundle'] = !empty($field_instance['bundle']) ? $field_instance['bundle'] : 'service';
+      print_r($field_instance);
+      field_create_instance($field_instance);
+  }
+}
+
+function hitsa_services_delete_custom_fields() {
+    foreach (array_keys(_hitsa_services_installed_fields()) as $field) {
+        field_delete_field($field);
+    }
+    $instances = field_info_instances('node', 'service');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
+}
+
+/*
+* Hitsa services vocabularies
+*/
+function _hitsa_services_vocabularies() {
+  $vocabularies = array();
+  
+  $vocabularies['services_categories'] =
+    array(
+      'vocabulary' => (object) array(
+        'name' => t('Service categories'),
+        'description' => t('Service categories'),
+        'machine_name' => 'services_categories',
+        'i18n_mode' => I18N_MODE_LOCALIZE,
+      ),
+      'terms' => array(
+        (object) array(
+         'name' => t('Public services'),
+        ),
+        (object) array(
+         'name' => t('School Services'),
+        ),
+        (object) array(
+         'name' => t('Entrepreneurial Services'),
+        ),
+      ),
+    );
+  return $vocabularies;
+}
+
+function hitsa_services_add_custom_vocabularies() {
+  // Create vocabulary
+  foreach (_hitsa_services_vocabularies() as $v) {
+    taxonomy_vocabulary_save($v['vocabulary']);
+    
+    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+    if(!empty($v['terms']) && $vocab) {
+      // Add generic terms
+      foreach($v['terms'] as $term) {
+        $term->vid = $vocab->vid;
+        taxonomy_term_save($term);
+      }
+    }
+  }
+}
+
+function hitsa_services_delete_custom_vocabularies() {
+  foreach (_hitsa_services_vocabularies() as $v) {
+    if(!empty($v['vocabulary'])) {
+      $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+      taxonomy_vocabulary_delete($vocab->vid);
+    }
+  }
+}
+
+/*
+* Hitsa services menu links
+*/
+function _hitsa_services_menu_links() {
+  $t = get_t();
+  
+  $menu_links = array();
+  
+  $hitsa_main_menu_name = variable_get('hitsa_main_menu_name');
+  if(!empty($hitsa_main_menu_name)) {
+    $menu_links[] = array(
+      'link_path' => 'services',
+      'link_title' => $t('Services'),
+      'menu_name' => $hitsa_main_menu_name,
+      'weight' => 5,
+    );
+  }
+  
+  return $menu_links;
+}
+
+function hitsa_services_add_menu_links() {
+  foreach (_hitsa_services_menu_links() as $link) {
+    menu_link_save($link);
+  }
+}
+
+function hitsa_services_delete_menu_links() {
+  foreach (_hitsa_services_menu_links() as $link) {
+    menu_link_delete(NULL, $link['link_path']);
+  }
+}

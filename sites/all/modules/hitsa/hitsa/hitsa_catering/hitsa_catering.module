@@ -1,0 +1,385 @@
+<?php
+/**
+ * Implements hook_menu
+ **/ 
+
+function hitsa_catering_menu(){
+  $items = array();
+  
+  $items['catering/%'] = array(
+    'title' => t(''),
+    'page callback' => 'hitsa_catering_week',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['catering'] = array(
+    'title' => t(''),
+    'page callback' => 'hitsa_catering_week',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+/**
+ * Implements hook_node_info().
+ **/
+function hitsa_catering_node_info() {
+  $site_default_language = language_default();
+  $items = array(
+    'catering' => array(
+      'name' => t('Catering'),
+      'type' => 'catering',
+      'base' => 'node_content',
+      'description' => t('Catering data.'),
+      'has_title' => TRUE,
+      'title_label' => t('Title'),
+      'default_language' => $site_default_language->language,
+      'custom' => 1,
+      'modified' => 1,
+      'locked' => 0,
+    ),
+  );
+  
+  return $items;
+  
+}
+
+/**
+* Implements hook_form_alter().
+**/
+function hitsa_catering_form_alter(&$form, &$form_state, $form_id){
+  switch ($form_id) {
+    case 'catering_node_form':
+      $form['title']['#required']=FALSE;
+      $form['title']['#access']=FALSE;
+      $used_dates = hitsa_catering_get_all_catering_dates();
+      // add js that controls already used dates.
+      $form['#attached']['js'] = array(
+        drupal_get_path('module', 'hitsa_catering') . '/js/popup_calendar.js',
+      );
+      $form['#attached']['js'][] = array(
+        'data' => array('hitsa_catering' => array('dates' => $used_dates)),
+        'type' => 'setting',
+      );
+      
+      break;
+  }
+}
+
+/*function hitsa_catering_paragraphs_info() {
+  $items = array(
+    'catering_food_by_day' => array(
+    'name' => 'Food',
+      'bundle' => 'catering_food_by_day',
+      'locked' => '1',
+    ),
+  );
+  
+  return $items;
+}*/
+
+function hitsa_catering_get_all_catering_dates(){
+  $nids  = array();
+  $dates = array();
+      
+  $query = new EntityFieldQuery();
+	$query->entityCondition('entity_type', 'node');
+			  //->propertyCondition('status', NODE_PUBLISHED);
+  $query->entityCondition('bundle', array('catering'), 'IN');
+	$result = $query->execute();
+	if($result && !empty($result['node'])){
+	  foreach ($result['node'] as $nid => $value) {
+	    $nids[] = $nid;
+	  }
+	}
+	$nodes = node_load_multiple($nids);
+	foreach($nodes as $node){
+	  $dates[] = strtotime($node->field_date['und'][0]['value']);
+	  $dates[] = strtotime($node->field_date['und'][0]['value2']);
+	}
+	
+	return $dates;
+}
+
+/**
+ * Implement hook_node_presave()
+ */
+function hitsa_catering_node_presave($node) {
+  // Set first+last name as node title.
+  $start_date='';
+  if($node->type === 'catering') {
+    if (!empty($node)) {
+      if(is_object($node)){
+        if (!empty($node->field_date)) {
+          if (!empty($node->field_date['und'][0]['value'])) {
+            $start_date = $node->field_date['und'][0]['value'];
+          }
+        }
+      } // code...
+    }
+    
+    if ($start_date) {
+      $catering_provder_name = NULL;
+      if(!empty($node->field_catering_provider)){
+        $catering_provider = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
+        $catering_provder_name = $catering_provider->name;
+      }
+      $monday = date('d/m/Y',strtotime('this week monday',$start_date));
+      $sunday = date('d/m/Y',strtotime('this week sunday',$start_date));
+      $week = $monday.' - '.$sunday;
+      $node->title = truncate_utf8(sprintf(t('Menu week:').' %s', $week), 255).' ' . $catering_provder_name;
+    }
+    
+  }
+}
+function hitsa_catering_week($start_date=NULL){
+  global $language;
+  if($start_date==NULL){
+    $start_date = date('U');
+  }
+  else{
+    $start_date = strtotime($start_date);
+  }
+  $monday = date("U", strtotime('this week monday', $start_date));
+  $sunday = date("U",strtotime('sunday this week',$start_date));
+  $build = array();
+  
+  $query = db_select('field_data_field_date','fdfd');
+  $query -> fields('fdfd');
+  $query -> condition('fdfd.field_date_value',$monday,'>=');
+  $query -> condition('fdfd.field_date_value2',$sunday,'<=');
+  $query -> join('node','n','fdfd.entity_id=n.nid');
+  $query -> fields('n');
+  $query->condition('n.status',1,'=');
+  $results = $query->execute();
+  $menus = array();
+  foreach ($results as $value) {
+    $menus[] = $value;
+  }
+  $providers = array();
+  foreach ($menus as $menu) {
+    $loaded_menu = !empty($menu)?node_load($menu->nid):NULL;
+    if (!empty($loaded_menu)) {
+      if (!empty($loaded_menu->field_catering_provider)) {
+        $providers[] = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
+      }
+    }
+    
+  }
+  
+  $catering_provider = NULL;
+  $catering_html = NULL;
+  if(!empty($loaded_menu->field_catering_provider)){
+    $catering_provider = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
+    if(!empty($catering_provider)){
+      $catering_html = hitsa_catering_provider_html($catering_provider);
+    }
+  }
+  $provider_count=0;
+  $provider_to_htmlize = array();
+  if(!empty($providers) and count($providers>0)){
+    $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers);
+    $build['catering']['catering_provider']['#prefix'] = '<div class="col-1">';
+    $build['catering']['catering_provider']['#suffix'] = '</div>';
+    $build['catering']['catering_provider']['#markup'] = $catering_providers_sidemenu;
+    $build['catering']['catering_table']['#prefix'] = '<div class="col-11">';
+  }
+  else{
+    $build['catering']['catering_table']['#prefix'] = '<div class="col-12">';
+  }
+  
+  $query = db_select('field_data_field_date','fdfd');
+  $query -> fields('fdfd');
+  $query -> condition('fdfd.field_date_value',$monday,'>=');
+  $query -> condition('fdfd.field_date_value2',$sunday,'<=');
+  $query -> join('node','n','fdfd.entity_id=n.nid');
+  $query -> fields('n');
+  if (!empty($_REQUEST)) {
+    if(!empty($_REQUEST['Provider'])){
+      $query -> join('field_data_field_catering_provider','fdfcp','n.nid=fdfcp.entity_id');
+      $query -> condition('fdfcp.field_catering_provider_target_id',$_REQUEST['Provider'],'=');
+    }
+  }
+  $query->condition('n.status',1,'=');
+  $results = $query->execute();
+  foreach ($results as $menu_items) {
+    $menu = $menu_items;
+  }
+  $loaded_menu = !empty($menu)?node_load($menu->nid):NULL;
+  
+  $catering_html = NULL;
+  if(!empty($loaded_menu->field_catering_provider)){
+    $catering_provider = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
+    if(!empty($catering_provider)){
+      $catering_html = hitsa_catering_provider_html($catering_provider);
+    }
+  }
+  $catering_table = hitsa_catering_paragraphs__create_table($loaded_menu);
+  if (!empty($catering_table)) {
+    $build['catering']['#prefix'] = '
+            <div class="row">
+            <div class="col-12">
+            <div class="block">
+            <div class="row">
+            ';
+    $build['catering']['#suffix'] = '</div></div><!--/block--></div></div>';
+    $build['catering']['#type'] = 'container';
+    $build['catering']['#theme_wrappers'] = array();
+    $build['catering']['catering_table']['#prefix'] = '<div class="col-11">';
+    $build['catering']['catering_table']['#suffix'] = '</div>';
+    $build['catering']['catering_table']['#markup'] = $catering_table.$catering_html;
+  }
+  return $build;
+}
+/**
+ * Funktsioon, mis suudab genereerida paragraphidega tehtud asjast tabeli
+ * 
+ */
+function hitsa_catering_paragraphs__create_table($loaded_menu){
+  $monday = (!empty($loaded_menu->field_catering_monday)?$loaded_menu->field_catering_monday['und']:NULL);
+  $tuesday = (!empty($loaded_menu->field_catering_tuesday)?$loaded_menu->field_catering_tuesday['und']:NULL);
+  $wednesday = (!empty($loaded_menu->field_catering_wednesday)?$loaded_menu->field_catering_wednesday['und']:NULL);
+  $thursday = (!empty($loaded_menu->field_catering_thursday)?$loaded_menu->field_catering_thursday['und']:NULL);
+  $friday = (!empty($loaded_menu->field_catering_friday)?$loaded_menu->field_catering_friday['und']:NULL);
+  $days = array(
+   'Monday' => $monday,
+   'Tuesday'=> $tuesday,
+   'Wednesday' => $wednesday,
+   'Thursday' =>  $thursday,
+   'Friday' =>  $friday);
+  // dpm($days);
+  // dpm($loaded_menu);
+  // dpm($monday);
+  // dpm($tuesday);
+  // dpm($wednesday);
+  // dpm($thursday);
+  // dpm($friday);
+  $row_names = array();
+  $day_meals = array();
+  foreach ($days as $day_key => $day) {
+    if ($day!=NULL){
+      foreach ($day as $meal) {
+        $meal = entity_load_single('paragraphs_item',$meal['value']);
+        if(!empty($meal->field_food_type)){
+          $food_type = taxonomy_term_load($meal->field_food_type['und'][0]['target_id']);
+          $row_names[$food_type->name] = $food_type;
+          if(!empty($meal->field_food_name)){
+            $day_meals[$day_key][$food_type->name][] = $meal->field_food_name['und'][0]['value'];
+          }
+        }
+      }
+    }
+    else{
+      $day_meals[$day_key]=NULL;
+    }
+  }
+  if(!empty($row_names) && !empty($day_meals)){
+    $output = '<table>';
+    $output .= '<tbody>';
+    $output .= '<tr>';
+    $output .= '<th>';
+    $output .= '</th>';
+    $output .= '<th>';
+    $output .= t('Monday');
+    $output .= '</th>';
+    $output .= '<th>';
+    $output .= t('Tuesday');
+    $output .= '</th>';
+    $output .= '<th>';
+    $output .= t('Wednesday');
+    $output .= '</th>';
+    $output .= '<th>';
+    $output .= t('Thursday');
+    $output .= '</th>';
+    $output .= '<th>';
+    $output .= t('Friday');
+    $output .= '</th>';
+    $output .= '</tr>';
+    foreach ($row_names as $row_name) {
+      
+      $max_rows = 0;
+      foreach ($day_meals as $day => $meal_types) {
+          if(!empty($meal_types[$row_name->name])){
+            $meals_count = count($meal_types[$row_name->name]);
+            if($max_rows<$meals_count){
+              $max_rows = $meals_count;
+            }
+          }
+      }
+      $meal_days='';
+      for ($i = 0; $i < $max_rows; $i++) {
+        $i>0?$meal_days.='<tr>':'';
+         foreach ($day_meals as $day) {
+           if($day){
+           $meal_days.='<td>';
+           $meal_days.= (!empty($day[$row_name->name][$i]))?$day[$row_name->name][$i]:'';
+           $meal_days.='</td>';
+           }
+           else{
+             $meal_days.='<td></td>';
+           }
+         }
+         $meal_days.='</tr>';
+      }
+      $output.= '<tr>';
+      $output.= '<th rowspan="'.$max_rows.'">';
+      $output.= $row_name->name;
+      $output.= '</th>';
+      $output.= $meal_days;
+      $output.= '</tr>';
+    }
+    $output .= '</tbody>';
+    $output .='</table>';
+    
+    return $output;
+  }
+}
+function hitsa_catering_provider_html($provider){
+  $email=NULL;
+  if(!empty($provider->field_email)){
+    $email = $provider->field_email['und'][0]['email'];
+  }
+  $homepage=NULL;
+  if(!empty($provider->field_homepage)){
+    $homepage = $provider->field_homepage['und'][0]['value'];
+  }
+  $phone=NULL;
+  if(!empty($provider->field_phone_number)){
+    $phone = $provider->field_phone_number['und'][0]['value'];
+  }
+  $location=NULL;
+  
+    $location = field_get_items('taxonomy_term', $provider, 'field_location');
+    $location_value = field_view_value('taxonomy_term', $provider, 'field_location', $location[0]);
+    
+  $output = '<table>';
+  $output .= '<tr>';
+  $output .= '<td>';
+  $output .= $provider->name;
+  $output .= '</td>';
+  $output .= '</tr>';
+  $output .= '</table>';
+  return $output;
+}
+function hitsa_catering_provider_side_menu($providers){
+  $output=NULL;
+  $current_path = current_path();
+  $_SESSION['return_path'] = $current_path;
+  if (count($providers>0)) {
+    $output.= '<ul>';
+    foreach ($providers as $provider) {
+      if (!empty($_SESSION['return_path'])) {
+        $link = url($_SESSION['return_path'],array('query'=>array(
+          t('Provider') => $provider->tid,
+          )));
+      }
+      $output.='<li><a href="'.$link.'">'.$provider->name.'</a>';
+    
+    }
+    $output.= '</ul>';
+    return $output;
+  }
+ 
+}
