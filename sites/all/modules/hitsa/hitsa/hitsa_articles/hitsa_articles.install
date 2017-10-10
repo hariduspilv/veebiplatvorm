@@ -4,12 +4,13 @@
 * Implements hook_install.
 */
 function hitsa_articles_install() {
-  node_types_rebuild();
-  $types = node_type_get_types();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_articles', 'install');
   
   // Adds body field to aricle content type
+  node_types_rebuild();
+  $types = node_type_get_types();
   node_add_body_field($types['article']);
-  hitsa_articles_add_custom_fields();
   
   variable_set('language_content_type_article', TRANSLATION_ENABLED); // Make multilingual
   variable_set('comment_article', '0'); // Disable commenting
@@ -19,35 +20,14 @@ function hitsa_articles_install() {
 * Implements hook_uninstall.
 */
 function hitsa_articles_uninstall() {
-  $article_type = 'article';
-  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-  $result = db_query($sql, array(':type' => $article_type));
-  $node_ids = array();
-  foreach ($result as $row) {
-    $node_ids[] = $row->nid;
-  }
-  node_delete_multiple($node_ids); // Delete all article nodes
-  hitsa_articles_delete_custom_fields();
-  node_type_delete($article_type); // Delete article content type
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_articles', 'uninstall');
+  hitsa_core_delete_nodes('article');
   field_purge_batch(500);
   variable_del('language_content_type_article');
 }
 
-/*
-* Implements hook_enable.
-*/
-function hitsa_articles_enable() {
-  
-}
-
-/*
-* Implements hook_disable.
-*/
-function hitsa_articles_disable() {
-  
-}
-
-function _hitsa_articles_installed_fields() {
+function _hitsa_articles_fields() {
   $t = get_t();
   
   return array(
@@ -66,11 +46,13 @@ function _hitsa_articles_installed_fields() {
   );
 }
 
-function _hitsa_articles_installed_instances() {
+function _hitsa_articles_field_instances() {
   $t = get_t();
   return array(
     'article_type' => array(
       'field_name' => 'article_type',
+      'entity_type' => 'node',
+      'bundle' => 'article',
       'label' => $t('Article type'),
       'widget' => array(
         'weight' => -5,
@@ -82,6 +64,8 @@ function _hitsa_articles_installed_instances() {
     ),
     'cp_gallery' => array(
       'field_name' => 'cp_gallery',
+      'entity_type' => 'node',
+      'bundle' => 'article',
       'type' => 'image',
       'label' => $t('Gallery'),
       'widget' => array(
@@ -97,6 +81,8 @@ function _hitsa_articles_installed_instances() {
     ),
     'academic_year' => array(
       'field_name' => 'academic_year',
+      'entity_type' => 'node',
+      'bundle' => 'article',
       'label' => $t('Academic year'),
       'widget' => array(
         'type' => 'options_select',
@@ -104,26 +90,4 @@ function _hitsa_articles_installed_instances() {
       'required' => 1,
     ),
   );
-}
-
-function hitsa_articles_add_custom_fields() {
-  foreach (_hitsa_articles_installed_fields() as $field) {
-        field_create_field($field);
-  }
-  foreach (_hitsa_articles_installed_instances() as $field_instance) {
-      $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
-      $field_instance['bundle'] = !empty($field_instance['bundle']) ? $field_instance['bundle'] : 'article';
-      print_r($field_instance);
-      field_create_instance($field_instance);
-  }
-}
-
-function hitsa_articles_delete_custom_fields() {
-    foreach (array_keys(_hitsa_articles_installed_fields()) as $field) {
-        field_delete_field($field);
-    }
-    $instances = field_info_instances('node', 'article');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
 }

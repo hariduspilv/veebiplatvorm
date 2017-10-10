@@ -27,8 +27,11 @@
  * @ingroup views_templates
  */
 ?>
-<?php if ($rows): ?>
+<div class="block block-narrow">
+  <h2 class="block-title"><?php print t('Awards'); ?></h2>
+  <?php if ($rows): ?>
   <div class="row pull-up">
     <?php print $rows; ?>
   </div>
-<?php endif; ?>
+  <?php endif; ?>
+</div>

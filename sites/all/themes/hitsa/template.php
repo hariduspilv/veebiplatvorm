@@ -1,9 +1,47 @@
 <?php
 
 function hitsa_preprocess_page(&$variables) {
-  if(module_exists('hitsa_core')) {
+  if(module_exists('hitsa_core')) { // Add header and footer
     $variables['header'] = theme('hitsa_header');
     $variables['footer'] = theme('hitsa_footer');
+  }
+  
+  // Include the front page template
+  if(drupal_is_front_page()) {
+    $variables['front_content'] = theme('hitsa_front_content');
+  }
+}
+
+function hitsa_preprocess_hitsa_front_content(&$variables) {
+  if(module_exists('hitsa_articles')) { // HITSA Articles module
+    // Add the "Important article" block
+    $query = array('article_type' => 'important', 'range' => array(0, 1));
+    $important_nid = hitsa_articles_query_content($query);
+    if(!empty($important_nid['node'])) {
+      $article_nid = reset($important_nid['node']);
+      $important_article = node_load($article_nid->nid);
+      $variables['important_article'] = theme('hitsa_important_article', array('node' => $important_article));
+    }
+    
+    // Add news block
+    $variables['news_block'] = views_embed_view('hitsa_news', 'news_block');
+
+    // Add our stories block
+    $query = array('article_type' => 'our_stories', 'range' => array(0, 2));
+    $our_stories_nids = hitsa_articles_query_content($query);
+    
+    if(!empty($our_stories_nids['node'])) {
+      $our_stories_nodes = node_load_multiple(array_keys($our_stories_nids['node']));
+      $authors = array();
+      foreach($our_stories_nodes as $story_node) {
+        $authors[$story_node->uid] = user_load($story_node->uid);
+      }
+      $variables['our_stories_block'] = theme('hitsa_our_stories_block', array('nodes' => $our_stories_nodes, 'authors' => $authors));
+    }
+  }
+  if(module_exists('hitsa_logos')) { // HITSA Logos module
+    // Add awards block
+    $variables['awards_block'] = views_embed_view('hitsa_logos', 'awards_block');
   }
 }
 
@@ -50,7 +88,7 @@ function hitsa_menu_link__hitsa_main_menu($variables) {
 
 /* Header menu render functions */
 function hitsa_header_menu_tree__hitsa_header_menu($variables) {
-  return '<ul class="header-links">' . $variables['tree']['#children'] . '</ul>';
+  return '<ul class="bullet-links">' . $variables['tree']['#children'] . '</ul>';
 }
 
 /* Quicklinks menu render functions */

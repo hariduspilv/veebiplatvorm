@@ -1,25 +1,19 @@
 <?php
 
 function hitsa_core_install() {
-  hitsa_core_add_custom_menus();
-  hitsa_core_add_custom_vocabularies();
-  hitsa_core_add_custom_date_formats();
-  hitsa_core_add_custom_fields();
-  hitsa_core_add_image_styles();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_core', 'install');
 }
 
 function hitsa_core_uninstall() {
-  hitsa_core_delete_custom_menus();
-  hitsa_core_delete_custom_vocabularies();
-  hitsa_core_delete_custom_date_formats();
-  hitsa_core_delete_custom_fields();
-  hitsa_core_delete_image_styles();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_core', 'uninstall');
 }
 
 /*
 * Hitsa core fields
 */
-function _hitsa_core_installed_fields() {
+function _hitsa_core_fields() {
   $t = get_t();
   
   return array(
@@ -29,6 +23,7 @@ function _hitsa_core_installed_fields() {
       'type' => 'datestamp',
       'module' => 'date',
       'required' => FALSE,
+      'locked' => TRUE,
       'settings' => array(
         'granularity' => array(
           'month' => 'month',
@@ -44,6 +39,7 @@ function _hitsa_core_installed_fields() {
     'academic_year' => array(
       'field_name' => 'academic_year',
       'label' => $t('Academic year'),
+      'locked' => TRUE,
       'type' => 'taxonomy_term_reference',
       'settings' => array(
         'allowed_values' => array(
@@ -57,7 +53,7 @@ function _hitsa_core_installed_fields() {
   );
 }
 
-function _hitsa_core_installed_instances() {
+function _hitsa_core_field_instances() {
   $t = get_t();
 
   return array(
@@ -73,31 +69,6 @@ function _hitsa_core_installed_instances() {
     ),
   );
 }
-
-function hitsa_core_add_custom_fields() {
-  foreach (_hitsa_core_installed_fields() as $field) {
-        field_create_field($field);
-  }
-  foreach (_hitsa_core_installed_instances() as $field_instance) {
-      $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
-      print_r($field_instance);
-      field_create_instance($field_instance);
-  }
-}
-
-function hitsa_core_delete_custom_fields() {
-    foreach (array_keys(_hitsa_core_installed_fields()) as $field) {
-        field_delete_field($field);
-    }
-    
-    foreach(_hitsa_core_installed_instances() as $installed_instance) {
-      $instances = field_info_instances($installed_instance['entity_type'], $installed_instance['bundle']);
-      foreach ($instances as $instance_name => $field_instance) {
-          field_delete_instance($field_instance);
-      }
-    }
-}
-
 
 /*
 * Hitsa core vocabularies
@@ -118,54 +89,11 @@ function _hitsa_core_vocabularies() {
   return $vocabularies;
 }
 
-function hitsa_core_add_custom_vocabularies() {
-  // Create vocabulary
-  foreach (_hitsa_core_vocabularies() as $v) {
-    taxonomy_vocabulary_save($v['vocabulary']);
-    
-    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-    if($vocab) {
-      variable_set('hitsa_core_' . $vocab->machine_name . '_vid' , $vocab->vid);
-    }
-    if(!empty($v['terms']) && $vocab) {
-      // Add generic terms
-      foreach($v['terms'] as $term) {
-        $term->vid = $vocab->vid;
-        taxonomy_term_save($term);
-      }
-    }
-  }
-}
-
-function hitsa_core_delete_custom_vocabularies() {
-  foreach (_hitsa_core_vocabularies() as $v) {
-    if(!empty($v['vocabulary'])) {
-      $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-      variable_del('hitsa_core_' . $vocab->machine_name . '_vid');
-      taxonomy_vocabulary_delete($vocab->vid);
-    }
-  }
-}
-
 /*
 * Hitsa core menus
 */
-function hitsa_core_add_custom_menus() {
-  foreach (_hitsa_core_custom_menus() as $key => $menu) {
-    menu_save($menu);
-    variable_set($key . '_name', $menu['menu_name']);
-  }
-}
 
-function hitsa_core_delete_custom_menus() {
-  foreach (_hitsa_core_custom_menus() as $key => $menu) {
-    $m = menu_load($menu['menu_name']);
-    menu_delete($m);
-    variable_del($key . '_name');
-  }
-}
-
-function _hitsa_core_custom_menus() {
+function _hitsa_core_menus() {
   $t = get_t();
   
   return array(
@@ -195,7 +123,7 @@ function _hitsa_core_custom_menus() {
 /*
 * Hitsa core date formats
 */
-function _hitsa_core_custom_date_formats_types() {
+function _hitsa_core_date_formats() {
   return array(
     "d. F" => array(
       'format_array' => array(
@@ -212,24 +140,6 @@ function _hitsa_core_custom_date_formats_types() {
   );
 }
 
-function hitsa_core_add_custom_date_formats() {
-  foreach(_hitsa_core_custom_date_formats_types() as $date_format) {
-    db_insert('date_formats')->fields($date_format['format_array'])->execute();
-    db_insert('date_format_type')->fields($date_format['type_array'])->execute();
- 
-    variable_set('date_format_' . $date_format['type_array']['type'], $date_format['format_array']['format']);
-  }
-}
-
-function hitsa_core_delete_custom_date_formats() {
-  foreach(_hitsa_core_custom_date_formats_types() as $date_format) {
-    db_delete('date_formats')->condition('format', $date_format['format_array'])->execute();
-    db_delete('date_format_type')->condition('type', $date_format['type_array']['type'])->execute();
-    
-    variable_del('date_format_' . $date_format['type_array']['type']);
-  }
-}
-
 /**
  * Hitsa core custom image styles
  */
@@ -238,7 +148,7 @@ function _hitsa_core_image_styles() {
     array(
       'style' => array(
 		    'name' => 'hitsa_core_thumbnail',
-		    'label' => 'Thumbnail (354 x 198)'
+		    'label' => 'Thumbnail (354x198)'
 		  ),
 		  'effect' => array(
 		    'name' => 'image_scale_and_crop',
@@ -249,23 +159,21 @@ function _hitsa_core_image_styles() {
 		    ),
 		  ),
 		),
+		array(
+      'style' => array(
+		    'name' => 'hitsa_core_logo',
+		    'label' => 'School Logo (x94)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale',
+		    'data' => array(
+		      'width' => NULL,
+		      'height' => 94,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
   );
   
   return $image_styles;
-}
-
-function hitsa_core_add_image_styles() {
-  foreach(_hitsa_core_image_styles() as $style_array) {
-    $style = image_style_save($style_array['style']);
-    $effect = $style_array['effect'];
-    $effect['isid'] = $style['isid'];
-    image_effect_save($effect);
-  }
-}
-
-function hitsa_core_delete_image_styles() {
-  foreach(_hitsa_core_image_styles() as $style_array) {
-    $style = image_style_load($style_array['style']['name']);
-    image_style_delete($style);
-  }
 }

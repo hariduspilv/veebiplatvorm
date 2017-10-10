@@ -139,6 +139,13 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['filters']['article_type_value']['value'] = array(
     'news' => 'news',
   );
+  /* Filter criterion: Content: Language */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
+  );
   
   /* Display: News - Small */
   $handler = $view->new_display('block', 'News - Small', 'news_block');
@@ -166,5 +173,6 @@ function hitsa_articles_views_default_views() {
     t('News - Small'),
     t('News - Latest Attachment'),
   );
-
+  
+  return $view;
 }

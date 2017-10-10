@@ -1,15 +1,22 @@
 <div class="inline">
   <div class="row">
+    <?php if(!empty($partners)): ?>
+      <?php print $partners; ?>
+    <?php endif; ?>
     <div class="col-4 sm-12">
       <?php if(!empty($footer_general_contact)): ?>
       <h3><?php print t('General contact'); ?></h3>
-        <?php print $footer_general_contact; ?>
+        <p><?php print $footer_general_contact; ?></p>
       <?php endif; ?>
     </div><!--/col-4-->
-    <div class="col-8 sm-12">
-      <?php if(!empty($footer_important_contact)): ?>
+    <div class="col-<?php if(!empty($partners) && !empty($footer_general_contact)) {print 4;}else{print 8;}; ?> sm-12">
+      <?php if(!empty($important_contacts)): ?>
       <h3><?php print t('Important contacts'); ?></h3>
-        <?php print $footer_important_contact; ?>
+      <table>
+        <tbody>
+        <?php print $important_contacts; ?>
+        </tbody>
+      </table>
       <?php endif; ?>
     </div><!--/col-4-->
   </div><!--/row-->

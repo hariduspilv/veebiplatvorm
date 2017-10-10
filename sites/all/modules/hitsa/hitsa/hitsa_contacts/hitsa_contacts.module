@@ -87,7 +87,7 @@ function hitsa_contacts_page_view() {
       'nodes' => $nodes_grouped, 
       'contact_form' => $contact_form,
       'contact_departments' => $contact_departments,
-      'job_positions' => $job_positions,
+      'job_positions' => !empty($job_positions) ? $job_positions : array(),
       'locations' => isset($locations) ? $locations : NULL,
       )
   );

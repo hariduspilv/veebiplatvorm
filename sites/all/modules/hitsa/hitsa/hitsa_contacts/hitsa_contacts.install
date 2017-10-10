@@ -4,20 +4,8 @@
 * Implements hook_install.
 */
 function hitsa_contacts_install() {
-  node_types_rebuild();
-  $types = node_type_get_types();
-  
-  // Add custom vocabularies
-  hitsa_contacts_add_custom_vocabularies();
-  
-  // Add custom paragraphs
-  hitsa_contacts_add_custom_paragraphs();
-  
-  // Adds fields to contact content type
-  hitsa_contacts_add_custom_fields();
-  
-  // Add menu links
-  hitsa_contacts_add_menu_links();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_contacts', 'install');
   
   // Add "Contact Us" webform
   hitsa_contacts_add_contact_form();
@@ -27,39 +15,14 @@ function hitsa_contacts_install() {
 * Implements hook_uninstall.
 */
 function hitsa_contacts_uninstall() {
-  $contact_types = array('contact');
-  foreach($contact_types as $c) {
-    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-    $result = db_query($sql, array(':type' => $c));
-    $node_ids = array();
-    foreach ($result as $row) {
-      $node_ids[] = $row->nid;
-    }
-    node_delete_multiple($node_ids); // Delete all contact nodes
-    node_type_delete($c); // Delete contact content type
-  }
-  hitsa_contacts_delete_custom_fields();
-  hitsa_contacts_delete_custom_paragraphs();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_contacts', 'uninstall');
+  hitsa_core_delete_nodes('contact');
   field_purge_batch(500);
-  hitsa_contacts_delete_custom_vocabularies(); // Delete contact vocabularies
   hitsa_contacts_delete_contact_form(); // Delete "Contact Us" webform
 }
 
-/*
-* Implements hook_enable.
-*/
-function hitsa_contacts_enable() {
-  
-}
-
-/*
-* Implements hook_disable.
-*/
-function hitsa_contacts_disable() {
-  
-}
-
-function _hitsa_contacts_installed_fields() {
+function _hitsa_contacts_fields() {
   $t = get_t();
   
   return array(
@@ -152,12 +115,13 @@ function _hitsa_contacts_installed_fields() {
   );
 }
 
-function _hitsa_contacts_installed_instances() {
+function _hitsa_contacts_field_instances() {
   $t = get_t();
   return array(
     'contact_id' => array(
       'field_name' => 'contact_id',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Import ID'),
       'widget' => array(
         'type' => 'text_textfield',
@@ -167,6 +131,7 @@ function _hitsa_contacts_installed_instances() {
     'first_name' => array(
       'field_name' => 'first_name',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('First name'),
       'required' => 1,
       'widget' => array(
@@ -183,6 +148,7 @@ function _hitsa_contacts_installed_instances() {
     'last_name' => array(
       'field_name' => 'last_name',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Last name'),
       'required' => 1,
       'widget' => array(
@@ -199,6 +165,7 @@ function _hitsa_contacts_installed_instances() {
     'contact_image' => array(
       'field_name' => 'contact_image',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Image'),
       'widget' => array(
         'type' => 'media_generic',
@@ -214,6 +181,7 @@ function _hitsa_contacts_installed_instances() {
     'job_position' => array(
       'field_name' => 'job_position',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Job Position'),
       'widget' => array(
         'type' => 'options_select',
@@ -229,6 +197,7 @@ function _hitsa_contacts_installed_instances() {
     'phone_nr' => array(
       'field_name' => 'phone_nr',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Phone Nr.'),
       'widget' => array(
         'type' => 'text_textfield',
@@ -244,6 +213,7 @@ function _hitsa_contacts_installed_instances() {
     'e_mail' => array(
       'field_name' => 'e_mail',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('E-Mail'),
       'widget' => array(
         'type' => 'email_textfield',
@@ -259,6 +229,7 @@ function _hitsa_contacts_installed_instances() {
     'additional_info' => array(
       'field_name' => 'additional_info',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Additional info'),
       'widget' => array(
         'type' => 'text_textarea',
@@ -274,6 +245,7 @@ function _hitsa_contacts_installed_instances() {
     'reception_times' => array(
       'field_name' => 'reception_times',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Reception times'),
       'widget' => array(
         'type' => 'text_textarea',
@@ -289,6 +261,7 @@ function _hitsa_contacts_installed_instances() {
     'contact_cv' => array(
       'field_name' => 'contact_cv',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Contact CV'),
       'widget' => array(
         'type' => 'link_field',
@@ -307,6 +280,7 @@ function _hitsa_contacts_installed_instances() {
     'contact_departments' => array(
       'field_name' => 'contact_departments',
       'bundle' => 'contact',
+      'entity_type' => 'node',
       'label' => $t('Departments'),
       'widget' => array(
         'type' => 'paragraphs_embed',
@@ -364,27 +338,6 @@ function _hitsa_contacts_installed_instances() {
   );
 }
 
-function hitsa_contacts_add_custom_fields() {
-  foreach (_hitsa_contacts_installed_fields() as $field) {
-        field_create_field($field);
-  }
-  foreach (_hitsa_contacts_installed_instances() as $field_instance) {
-      $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
-      print_r($field_instance);
-      field_create_instance($field_instance);
-  }
-}
-
-function hitsa_contacts_delete_custom_fields() {
-    foreach (array_keys(_hitsa_contacts_installed_fields()) as $field) {
-        field_delete_field($field);
-    }
-    $instances = field_info_instances('node', 'contact');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
-}
-
 /*
 * Hitsa contacts paragraphs
 */
@@ -399,18 +352,6 @@ function _hitsa_contacts_paragraphs() {
   );
   
   return $paragraphs;
-}
-
-function hitsa_contacts_add_custom_paragraphs() {
-  foreach (_hitsa_contacts_paragraphs() as $bundle) {
-    paragraphs_bundle_save($bundle);
-  }
-}
-
-function hitsa_contacts_delete_custom_paragraphs() {
-  foreach (_hitsa_contacts_paragraphs() as $bundle) {
-    paragraphs_bundle_delete($bundle);
-  }
 }
 
 /*
@@ -473,35 +414,6 @@ function _hitsa_contacts_vocabularies() {
   return $vocabularies;
 }
 
-function hitsa_contacts_add_custom_vocabularies() {
-  // Create vocabulary
-  foreach (_hitsa_contacts_vocabularies() as $v) {
-    taxonomy_vocabulary_save($v['vocabulary']);
-    
-    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-    if($vocab) {
-      variable_set('hitsa_contacts_' . $vocab->machine_name . '_vid' , $vocab->vid);
-    }
-    if(!empty($v['terms']) && $vocab) {
-      // Add generic terms
-      foreach($v['terms'] as $term) {
-        $term->vid = $vocab->vid;
-        taxonomy_term_save($term);
-      }
-    }
-  }
-}
-
-function hitsa_contacts_delete_custom_vocabularies() {
-  foreach (_hitsa_contacts_vocabularies() as $v) {
-    if(!empty($v['vocabulary'])) {
-      $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-      variable_del('hitsa_contacts_' . $vocab->machine_name . '_vid');
-      taxonomy_vocabulary_delete($vocab->vid);
-    }
-  }
-}
-
 /*
 * Hitsa contacts menu links
 */
@@ -521,18 +433,6 @@ function _hitsa_contacts_menu_links() {
   }
   
   return $menu_links;
-}
-
-function hitsa_contacts_add_menu_links() {
-  foreach (_hitsa_contacts_menu_links() as $link) {
-    menu_link_save($link);
-  }
-}
-
-function hitsa_contacts_delete_menu_links() {
-  foreach (_hitsa_contacts_menu_links() as $link) {
-    menu_link_delete(NULL, $link['link_path']);
-  }
 }
 
 /*
@@ -557,22 +457,6 @@ function _hitsa_contacts_image_styles() {
   );
   
   return $image_styles;
-}
-
-function hitsa_contacts_add_image_styles() {
-  foreach(_hitsa_contacts_image_styles() as $style_array) {
-    $style = image_style_save($style_array['style']);
-    $effect = $style_array['effect'];
-    $effect['isid'] = $style['isid'];
-    image_effect_save($effect);
-  }
-}
-
-function hitsa_contacts_delete_image_styles() {
-  foreach(_hitsa_contacts_image_styles() as $style_array) {
-    $style = image_style_load($style_array['style']['name']);
-    image_style_delete($style);
-  }
 }
 
 /*

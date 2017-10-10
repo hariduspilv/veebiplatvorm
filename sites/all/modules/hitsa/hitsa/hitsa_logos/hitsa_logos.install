@@ -4,33 +4,21 @@
 * Implements hook_install.
 */
 function hitsa_logos_install() {
-  node_types_rebuild();
-  $types = node_type_get_types();
-  
-  // Adds fields to logo content type
-  hitsa_logos_add_custom_fields();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_logos', 'install');
 }
 
 /*
 * Implements hook_uninstall.
 */
 function hitsa_logos_uninstall() {
-  $contact_types = array('logo');
-  foreach($contact_types as $c) {
-    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-    $result = db_query($sql, array(':type' => $c));
-    $node_ids = array();
-    foreach ($result as $row) {
-      $node_ids[] = $row->nid;
-    }
-    node_delete_multiple($node_ids); // Delete all contact nodes
-    node_type_delete($c); // Delete contact content type
-  }
-  hitsa_logos_delete_custom_fields();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_logos', 'uninstall');
+  hitsa_core_delete_nodes('logo');
   field_purge_batch(500);
 }
 
-function _hitsa_logos_installed_fields() {
+function _hitsa_logos_fields() {
   $t = get_t();
   
   return array(
@@ -59,12 +47,13 @@ function _hitsa_logos_installed_fields() {
   );
 }
 
-function _hitsa_logos_installed_instances() {
+function _hitsa_logos_field_instances() {
   $t = get_t();
   return array(
     'logo_type' => array(
       'field_name' => 'logo_type',
       'bundle' => 'logo',
+      'entity_type' => 'node',
       'label' => $t('Type'),
       'widget' => array(
         'type' => 'options_select',
@@ -81,6 +70,7 @@ function _hitsa_logos_installed_instances() {
     'banner_image' => array(
       'field_name' => 'banner_image',
       'bundle' => 'logo',
+      'entity_type' => 'node',
       'label' => $t('Image'),
       'widget' => array(
         'type' => 'media_generic',
@@ -97,6 +87,7 @@ function _hitsa_logos_installed_instances() {
     'logo_link' => array(
       'field_name' => 'logo_link',
       'bundle' => 'logo',
+      'entity_type' => 'node',
       'label' => $t('Link'),
       'widget' => array(
         'type' => 'link_field',
@@ -115,22 +106,23 @@ function _hitsa_logos_installed_instances() {
   );
 }
 
-function hitsa_logos_add_custom_fields() {
-  foreach (_hitsa_logos_installed_fields() as $field) {
-        field_create_field($field);
-  }
-  foreach (_hitsa_logos_installed_instances() as $field_instance) {
-      $field_instance['entity_type'] = 'node';
-      field_create_instance($field_instance);
-  }
-}
-
-function hitsa_logos_delete_custom_fields() {
-    foreach (array_keys(_hitsa_logos_installed_fields()) as $field) {
-        field_delete_field($field);
-    }
-    $instances = field_info_instances('node', 'logo');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
+function _hitsa_logos_image_styles() {
+  $image_styles = array(
+    array(
+      'style' => array(
+		    'name' => 'hitsa_logo_thumbnail',
+		    'label' => 'Logo Thumbnail (70x)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale',
+		    'data' => array(
+		      'width' => NULL,
+		      'height' => 70,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
+  );
+  
+  return $image_styles;
 }

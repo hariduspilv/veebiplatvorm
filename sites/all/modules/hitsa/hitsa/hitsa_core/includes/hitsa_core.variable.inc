@@ -12,18 +12,37 @@ function hitsa_core_variable_info($options) {
     'localize' => TRUE,
     'group' => 'hitsa_core_translation_group',
   );
-  $variable['footer_general_contact'] = array(
-    'title' => t('General Contact'),
-    'localize' => TRUE,
-    'type' => 'text_format',
+  // General Contact
+  $variable['general_contact_name'] = array(
+    'title' => t('Name of institution'),
     'group' => 'header_footer_variables',
   );
-  $variable['footer_important_contact'] = array(
-    'title' => t('Important Contacts'),
-    'localize' => TRUE,
-    'type' => 'text_format',
+  $variable['general_contact_address'] = array(
+    'title' => t('Address'),
     'group' => 'header_footer_variables',
   );
+  $variable['general_contact_phone_nr'] = array(
+    'title' => t('Phone Nr'),
+    'group' => 'header_footer_variables',
+  );
+  $variable['general_contact_email'] = array(
+    'title' => t('E-Mail'),
+    'group' => 'header_footer_variables',
+  );
+  // Important contacts
+  for($i = 1; $i < 5; $i++) {
+    $variable['important_contact_name_' . $i] = array(
+      'title' => t('Name'),
+      'group' => 'header_footer_variables',
+      'localize' => TRUE,
+    );
+    
+    $variable['important_contact_phone_' . $i] = array(
+      'title' => t('Phone Nr.'),
+      'group' => 'header_footer_variables',
+    );
+  }
+  
   $variable['footer_copyright_notice'] = array(
     'title' => t('Copyright Notice'),
     'group' => 'header_footer_variables',
@@ -57,20 +76,117 @@ function hitsa_core_variable_group_info() {
   return $groups;
 }
 
+function hitsa_core_variable_type_info() {
+  $type['contact'] = array(
+    'title' => t('Contact'),
+    'multiple' => 'name',
+    'type' => 'multiple',
+  );
+  
+  return $type;
+}
+
 /* Site Logo Widget */
 function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
   if($form['#variable_group_form'] === 'header_footer_variables') {
-    $form['hitsa_site_logo_widget'] = array(
-      '#title' => t('Logo Image'),
-      '#type' => 'managed_file',
-      '#default_value' => variable_get('image_example_image_fid', ''),
-      '#weight' => -100,
+    _hitsa_core_add_logo_upload_element($form, $form_state);
+    
+    // General contact fieldset
+    $form['general_contact'] = array(
+      '#type' => 'fieldset', 
+      '#title' => t('General contact'), 
+      '#weight' => 0, 
+      '#collapsible' => FALSE, 
+      '#collapsed' => FALSE,
     );
-    //$form['#submit'][] = 'hitsa_core_site_logo_submit';
+    // Move general contact fields under the fieldset.
+    $form['general_contact']['general_contact_name'] = $form['general_contact_name'];
+    $form['general_contact']['general_contact_address'] = $form['general_contact_address'];
+    $form['general_contact']['general_contact_phone_nr'] = $form['general_contact_phone_nr'];
+    $form['general_contact']['general_contact_email'] = $form['general_contact_email'];
+    unset($form['general_contact_name']);
+    unset($form['general_contact_address']);
+    unset($form['general_contact_phone_nr']);
+    unset($form['general_contact_email']);
+    
+    // Important contacts fieldset
+    $form['important_contacts'] = array(
+      '#type' => 'fieldset', 
+      '#title' => t('Important contacts'), 
+      '#weight' => 1,
+      '#collapsible' => FALSE, 
+      '#collapsed' => FALSE,
+    );
+    
+    for($i = 1; $i < 5; $i++) {
+      $form['important_contacts']['important_contact_name_' . $i] = $form['important_contact_name_' . $i];
+      $form['important_contacts']['important_contact_phone_' . $i] = $form['important_contact_phone_' . $i];
+      $form['important_contacts']['important_contact_name_' . $i]['#prefix'] = '<div class="contact-row">';
+      $form['important_contacts']['important_contact_phone_' . $i]['#suffix'] = '</div>';
+      unset($form['important_contact_name_' . $i]);
+      unset($form['important_contact_phone_' . $i]);
+    }
+    drupal_add_css('.contact-row > * {display:inline-block;}', 'inline');
+    
+    // Gmap picker
+    $form['gmap_picker'] = array(
+      '#markup' => theme('gmap_picker'),
+    );
   }
-  
 }
 
-function hitsa_core_site_logo_submit(&$form, &$form_state) {
-  dpm($form_state);
+function _hitsa_core_add_logo_upload_element(&$form, &$form_state) {
+  $site_logo_fid = variable_get_value('hitsa_site_logo_fid');
+  $file = file_load($site_logo_fid);
+  
+  if($file) {
+    // Logo preview
+    $form['hitsa_site_logo_preview'] = array(
+      '#type' => 'item',
+      '#title' => t('Site Logo'),
+      '#markup' => '<img src="' . file_create_url($file->uri) . '"></img>',
+      '#weight' => -100,
+    );
+  }
+  
+  // Logo upload
+  $form['hitsa_site_logo_widget'] = array(
+    '#name' => 'files[hitsa_site_logo]',
+    '#title' => t('Upload Logo Image'),
+    '#type' => 'file',
+    '#weight' => -99,
+  );
+  $form['#validate'][] = 'hitsa_core_site_logo_validate';
+  $form['#submit'][] = 'hitsa_core_site_logo_submit';
+
+  // Hide FID field
+  if(!empty($form['hitsa_site_logo_fid'])) {
+    $form['hitsa_site_logo_fid']['#access'] = FALSE;
+  }
+}
+
+function hitsa_core_site_logo_validate($form, &$form_state) {
+  
+  $validators = array(
+   'file_validate_is_image' => array(),
+   'file_validate_extensions' => array('png jpg jpeg'),
+   'file_validate_size' => array(1024*1024),
+  );
+	
+  // Save file as temporary
+  $file = file_save_upload('hitsa_site_logo', $validators, 'public://', FILE_EXISTS_RENAME);
+  
+  if($file) {
+    $form_state['files']['hitsa_site_logo_fid'] = $file;
+  }
+}
+
+function hitsa_core_site_logo_submit($form, &$form_state) {
+  // Permamently save the file.
+  if(!empty($form_state['files']['hitsa_site_logo_fid'])) {
+    $file = $form_state['files']['hitsa_site_logo_fid'];
+    $file->status = FILE_STATUS_PERMANENT;
+    $file = file_save($file);
+    variable_set_value('hitsa_site_logo_fid', $file->fid);
+  }
 }

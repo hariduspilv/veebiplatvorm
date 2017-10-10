@@ -24,7 +24,6 @@ function hitsa_articles_theme() {
   $items = array();
   
   $items['news_page'] = array(
-    'render element' => 'page',
     'template' => 'hitsa-news-page',
     'path' => drupal_get_path('module', 'hitsa_articles') . '/templates',
     'variables' => array(
@@ -115,6 +114,7 @@ function hitsa_articles_page_view($type) {
         $articles_grouped_sorted[$academic_year->tid] = array_merge($articles_grouped[$academic_year->tid]);
       }
     }
+
   }
 
   return theme(

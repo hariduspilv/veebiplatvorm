@@ -181,10 +181,10 @@ function hitsa_catering_week($start_date=NULL){
   $provider_to_htmlize = array();
   if(!empty($providers) and count($providers>0)){
     $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers);
-    $build['catering']['catering_provider']['#prefix'] = '<div class="col-1">';
+    $build['catering']['catering_provider']['#prefix'] = '<div class="col-3 d-flex">';
     $build['catering']['catering_provider']['#suffix'] = '</div>';
     $build['catering']['catering_provider']['#markup'] = $catering_providers_sidemenu;
-    $build['catering']['catering_table']['#prefix'] = '<div class="col-11">';
+    $build['catering']['catering_table']['#prefix'] = '<div class="col-9">';
   }
   else{
     $build['catering']['catering_table']['#prefix'] = '<div class="col-12">';
@@ -219,16 +219,17 @@ function hitsa_catering_week($start_date=NULL){
   $catering_table = hitsa_catering_paragraphs__create_table($loaded_menu);
   if (!empty($catering_table)) {
     $build['catering']['#prefix'] = '
+            <div class="block no-padding">
             <div class="row">
-            <div class="col-12">
-            <div class="block">
-            <div class="row">
+            
+            
+            
             ';
-    $build['catering']['#suffix'] = '</div></div><!--/block--></div></div>';
+    $build['catering']['#suffix'] = '</div> </div><!--/block-->';
     $build['catering']['#type'] = 'container';
     $build['catering']['#theme_wrappers'] = array();
-    $build['catering']['catering_table']['#prefix'] = '<div class="col-11">';
-    $build['catering']['catering_table']['#suffix'] = '</div>';
+    $build['catering']['catering_table']['#prefix'] = '<div class="col-9"><article>';
+    $build['catering']['catering_table']['#suffix'] = '</article></div>';
     $build['catering']['catering_table']['#markup'] = $catering_table.$catering_html;
   }
   return $build;
@@ -276,8 +277,9 @@ function hitsa_catering_paragraphs__create_table($loaded_menu){
     }
   }
   if(!empty($row_names) && !empty($day_meals)){
-    $output = '<table>';
-    $output .= '<tbody>';
+    $output  = '<div class="table_wrapper" data-plugin="responsiveTable">';
+    $output .= '<table>';
+    $output .= '<thead>';
     $output .= '<tr>';
     $output .= '<th>';
     $output .= '</th>';
@@ -297,8 +299,8 @@ function hitsa_catering_paragraphs__create_table($loaded_menu){
     $output .= t('Friday');
     $output .= '</th>';
     $output .= '</tr>';
+    $output .= '</thead>';
     foreach ($row_names as $row_name) {
-      
       $max_rows = 0;
       foreach ($day_meals as $day => $meal_types) {
           if(!empty($meal_types[$row_name->name])){
@@ -309,8 +311,10 @@ function hitsa_catering_paragraphs__create_table($loaded_menu){
           }
       }
       $meal_days='';
+      
       for ($i = 0; $i < $max_rows; $i++) {
         $i>0?$meal_days.='<tr>':'';
+        
          foreach ($day_meals as $day) {
            if($day){
            $meal_days.='<td>';
@@ -321,23 +325,30 @@ function hitsa_catering_paragraphs__create_table($loaded_menu){
              $meal_days.='<td></td>';
            }
          }
-         $meal_days.='</tr>';
+        $i>0?$meal_days.='</tr>':''; 
+         
       }
+      
+      $output.= '<tbody>';
       $output.= '<tr>';
-      $output.= '<th rowspan="'.$max_rows.'">';
+      $output.= '<td rowspan="'.$max_rows.'">';
       $output.= $row_name->name;
-      $output.= '</th>';
+      $output.= '</td>';
       $output.= $meal_days;
       $output.= '</tr>';
+      $output.= '</tbody>';
     }
-    $output .= '</tbody>';
-    $output .='</table>';
     
+    $output .='</table>';
+    $output .='</div><!--/table-wrapper-->';
     return $output;
   }
 }
 function hitsa_catering_provider_html($provider){
   $email=NULL;
+  $email_out=NULL;
+  $phone_out=NULL;
+  $address_out=NULL;
   if(!empty($provider->field_email)){
     $email = $provider->field_email['und'][0]['email'];
   }
@@ -354,28 +365,73 @@ function hitsa_catering_provider_html($provider){
     $location = field_get_items('taxonomy_term', $provider, 'field_location');
     $location_value = field_view_value('taxonomy_term', $provider, 'field_location', $location[0]);
     
-  $output = '<table>';
-  $output .= '<tr>';
-  $output .= '<td>';
-  $output .= $provider->name;
-  $output .= '</td>';
-  $output .= '</tr>';
-  $output .= '</table>';
+  $output = '<div class="row">';
+  dpm($provider);
+  if (!empty($provider->field_email)) {
+    $email = $provider->field_email['und'][0]['email'];
+    
+    $email_out.= '                         <li>';
+    $email_out.= '                            <div class="before-envelope"></div>';
+    $email_out.= '                            <div class="list-details_text">';
+    $email_out.= '                               <p><a href="mailto:'.$email.'">'.$email.'</a></p>';
+    $email_out.= '                            </div><!--/list-details_text-->';
+    $email_out.= '                         </li>';
+    
+  }
+  if (!empty($provider->field_phone_number)) {
+    $phone=$provider->field_phone_number['und'][0]['value'];
+    $phone_out.= '                         <li>';
+    $phone_out.= '                            <div class="before-phone"></div>';
+    $phone_out.= '                            <div class="list-details_text">';
+    $phone_out.= '                               <p>'.$phone.'</p>';
+    $phone_out.= '                            </div><!--/list-details_text-->';
+    $phone_out.= '                         </li>';
+  }
+  if (!empty($provider->field_provider_address)) {
+    $address=$provider->field_provider_address['und'][0]['value'];
+    $address_out.= '                         <li>';
+    $address_out.= '                            <div class="before-location"></div>';
+    $address_out.= '                            <div class="list-details_text">';
+    $address_out.= '                               <p>'.$address.'</p>';
+    $address_out.= '                            </div><!--/list-details_text-->';
+    $address_out.= '                         </li>';
+  }
+  $output .= '</div>';
+  $output .='<p><b>'.$provider->name.'</b></p>';
+  $output.= '<ul class="list-details">';
+  $output.= (!empty($address_out))?$address_out:'';
+  $output.= (!empty($phone_out))?$phone_out:'';
+  $output.= (!empty($email_out))?$email_out:'';
+  $output.= '                         <li>';
+  $output.= '                            <div class="before-unlock"></div>';
+  $output.= '                            <div class="list-details_text">';
+  $output.= '                               <p>Maja avatud E-R 8-20</p>';
+  $output.= '                            </div><!--/list-details_text-->';
+  $output.= '                         </li>';
+  $output.= '                      </ul><!--/list-details-->';
   return $output;
 }
 function hitsa_catering_provider_side_menu($providers){
   $output=NULL;
+  $class='';
   $current_path = current_path();
   $_SESSION['return_path'] = $current_path;
   if (count($providers>0)) {
-    $output.= '<ul>';
+    $output.= '<ul class="side-menu">';
     foreach ($providers as $provider) {
       if (!empty($_SESSION['return_path'])) {
         $link = url($_SESSION['return_path'],array('query'=>array(
           t('Provider') => $provider->tid,
           )));
       }
-      $output.='<li><a href="'.$link.'">'.$provider->name.'</a>';
+      if (!empty($_REQUEST)) {
+        if (!empty($_REQUEST['Provider'])) {
+          if ($_REQUEST['Provider']==$provider->tid) {
+            $class='active';
+          }
+        }
+      }
+      $output.='<li class="'.$class.'"><a href="'.$link.'">'.$provider->name.'</a>';
     
     }
     $output.= '</ul>';

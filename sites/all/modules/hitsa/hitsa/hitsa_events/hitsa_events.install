@@ -490,14 +490,14 @@ function _hitsa_events_add_field_bases(){
       'cache_enabled' => 0,
       'granularity' => array(
         'day' => 'day',
-        'hour' => 0,
-        'minute' => 0,
+        'hour' => 'hour',
+        'minute' => 'minute',
         'month' => 'month',
         'second' => 0,
         'year' => 'year',
       ),
       'timezone_db' => '',
-      'todate' => 'required',
+      'todate' => 'optional',
       'tz_handling' => 'none',
     ),
     'translatable' => 0,
@@ -628,35 +628,35 @@ function _hitsa_events_add_field_bases(){
   );
 
   // Exported field_base: 'field_time_period_dates'.
-  if(!field_info_field('field_time_period_dates')){
-  $field_bases['field_time_period_dates'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_time_period_dates',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'date',
-    'settings' => array(
-      'cache_count' => 4,
-      'cache_enabled' => 0,
-      'granularity' => array(
-        'day' => 'day',
-        'hour' => 0,
-        'minute' => 0,
-        'month' => 'month',
-        'second' => 0,
-        'year' => 'year',
-      ),
-      'timezone_db' => '',
-      'todate' => 'optional',
-      'tz_handling' => 'none',
-    ),
-    'translatable' => 0,
-    'type' => 'datestamp',
-  );
-  }
+  // if(!field_info_field('field_time_period_dates')){
+  // $field_bases['field_time_period_dates'] = array(
+  //   'active' => 1,
+  //   'cardinality' => 1,
+  //   'deleted' => 0,
+  //   'entity_types' => array(),
+  //   'field_name' => 'field_time_period_dates',
+  //   'indexes' => array(),
+  //   'locked' => 0,
+  //   'module' => 'date',
+  //   'settings' => array(
+  //     'cache_count' => 4,
+  //     'cache_enabled' => 0,
+  //     'granularity' => array(
+  //       'day' => 'day',
+  //       'hour' => 0,
+  //       'minute' => 0,
+  //       'month' => 'month',
+  //       'second' => 0,
+  //       'year' => 'year',
+  //     ),
+  //     'timezone_db' => '',
+  //     'todate' => 'optional',
+  //     'tz_handling' => 'none',
+  //   ),
+  //   'translatable' => 0,
+  //   'type' => 'datestamp',
+  // );
+  // }
   // Exported field_base: 'field_training_cost'.
   $field_bases['field_training_cost'] = array(
     'active' => 1,
@@ -829,7 +829,7 @@ function _hitsa_events_add_field_instances(){
     'required' => 0,
     'settings' => array(
       'default_value' => 'now',
-      'default_value2' => 'same',
+      'default_value2' => 'now',
       'default_value_code' => '',
       'default_value_code2' => '',
       'user_register_form' => FALSE,
@@ -839,7 +839,7 @@ function _hitsa_events_add_field_instances(){
       'module' => 'date',
       'settings' => array(
         'increment' => 15,
-        'input_format' => 'd/m/Y',
+        'input_format' => 'd/m/Y - H:i',
         'input_format_custom' => '',
         'label_position' => 'above',
         'no_fieldset' => 0,
@@ -1190,51 +1190,51 @@ function _hitsa_events_add_field_instances(){
 
   // Exported field_instance:
   // 'taxonomy_term-time_periods-field_time_period_dates'.
-  $field_instances['taxonomy_term-time_periods-field_time_period_dates'] = array(
-    'bundle' => 'time_periods',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-          'show_remaining_days' => FALSE,
-        ),
-        'type' => 'date_default',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_time_period_dates',
-    'label' => 'Time period dates',
-    'required' => FALSE,
-    'settings' => array(
-      'default_value' => 'now',
-      'default_value2' => 'now',
-      'default_value_code' => '',
-      'default_value_code2' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'module' => 'date',
-      'settings' => array(
-        'increment' => 15,
-        'input_format' => 'm/d/Y - H:i:s',
-        'input_format_custom' => '',
-        'label_position' => 'above',
-        'text_parts' => array(),
-        'year_range' => '-3:+3',
-      ),
-      'type' => 'date_popup',
-      'weight' => 1,
-    ),
-  );
+  // $field_instances['taxonomy_term-time_periods-field_time_period_dates'] = array(
+  //   'bundle' => 'time_periods',
+  //   'deleted' => 0,
+  //   'description' => '',
+  //   'display' => array(
+  //     'default' => array(
+  //       'label' => 'above',
+  //       'module' => 'date',
+  //       'settings' => array(
+  //         'format_type' => 'long',
+  //         'fromto' => 'both',
+  //         'multiple_from' => '',
+  //         'multiple_number' => '',
+  //         'multiple_to' => '',
+  //         'show_remaining_days' => FALSE,
+  //       ),
+  //       'type' => 'date_default',
+  //       'weight' => 0,
+  //     ),
+  //   ),
+  //   'entity_type' => 'taxonomy_term',
+  //   'field_name' => 'field_time_period_dates',
+  //   'label' => 'Time period dates',
+  //   'required' => FALSE,
+  //   'settings' => array(
+  //     'default_value' => 'now',
+  //     'default_value2' => 'now',
+  //     'default_value_code' => '',
+  //     'default_value_code2' => '',
+  //     'user_register_form' => FALSE,
+  //   ),
+  //   'widget' => array(
+  //     'module' => 'date',
+  //     'settings' => array(
+  //       'increment' => 15,
+  //       'input_format' => 'm/d/Y - H:i:s',
+  //       'input_format_custom' => '',
+  //       'label_position' => 'above',
+  //       'text_parts' => array(),
+  //       'year_range' => '-3:+3',
+  //     ),
+  //     'type' => 'date_popup',
+  //     'weight' => 1,
+  //   ),
+  // );
 
   // Translatables
   // Included for use with string extractors like potx.
@@ -1275,7 +1275,7 @@ function hitsa_events_make_fields_conditional(){
 }
 function _hitsa_events_conditional_fields(){
   $items = array();
-  dpm(field_info_instance('node','event_tags','event'));
+  
   $items["node:event:0"] = array(
     'entity' => 'node',
     'bundle' => 'event',

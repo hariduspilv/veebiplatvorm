@@ -1,36 +1,23 @@
 <?php
-
 /*
 * Implements hook_install.
 */
 function hitsa_locations_install() {
-  node_types_rebuild();
-  $types = node_type_get_types();
-  
-  // Adds fields to location content type
-  hitsa_locations_add_custom_fields();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_locations', 'install');
 }
 
 /*
 * Implements hook_uninstall.
 */
 function hitsa_locations_uninstall() {
-  $contact_types = array('contact_location');
-  foreach($contact_types as $c) {
-    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-    $result = db_query($sql, array(':type' => $c));
-    $node_ids = array();
-    foreach ($result as $row) {
-      $node_ids[] = $row->nid;
-    }
-    node_delete_multiple($node_ids); // Delete all contact nodes
-    node_type_delete($c); // Delete contact content type
-  }
-  hitsa_locations_delete_custom_fields();
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_locations', 'uninstall');
+  hitsa_core_delete_nodes('contact_location');
   field_purge_batch(500);
 }
 
-function _hitsa_locations_installed_fields() {
+function _hitsa_locations_fields() {
   $t = get_t();
   
   return array(
@@ -62,12 +49,13 @@ function _hitsa_locations_installed_fields() {
   );
 }
 
-function _hitsa_locations_installed_instances() {
+function _hitsa_locations_field_instances() {
   $t = get_t();
   
   return array(
     'phone_nr' => array(
       'field_name' => 'phone_nr',
+      'entity_type' => 'node',
       'bundle' => 'contact_location',
       'label' => $t('Phone Nr.'),
       'widget' => array(
@@ -83,6 +71,7 @@ function _hitsa_locations_installed_instances() {
     ),
     'e_mail' => array(
       'field_name' => 'e_mail',
+      'entity_type' => 'node',
       'bundle' => 'contact_location',
       'label' => $t('E-Mail'),
       'widget' => array(
@@ -98,6 +87,7 @@ function _hitsa_locations_installed_instances() {
     ),
     'location_address' => array(
       'field_name' => 'location_address',
+      'entity_type' => 'node',
       'bundle' => 'contact_location',
       'label' => $t('Address'),
       'widget' => array(
@@ -114,6 +104,7 @@ function _hitsa_locations_installed_instances() {
     'location_visiting_hours' => array(
       'field_name' => 'location_visiting_hours',
       'bundle' => 'contact_location',
+      'entity_type' => 'node',
       'label' => $t('Visiting hours'),
       'widget' => array(
         'type' => 'text_textfield',
@@ -129,6 +120,7 @@ function _hitsa_locations_installed_instances() {
     'location_parking' => array(
       'field_name' => 'location_parking',
       'bundle' => 'contact_location',
+      'entity_type' => 'node',
       'label' => $t('Parking'),
       'widget' => array(
         'type' => 'text_textarea',
@@ -144,6 +136,7 @@ function _hitsa_locations_installed_instances() {
     'location_transport' => array(
       'field_name' => 'location_transport',
       'bundle' => 'contact_location',
+      'entity_type' => 'node',
       'label' => $t('Transportation'),
       'widget' => array(
         'type' => 'text_textarea',
@@ -159,6 +152,7 @@ function _hitsa_locations_installed_instances() {
     'location_coordinates' => array(
       'field_name' => 'location_coordinates',
       'bundle' => 'contact_location',
+      'entity_type' => 'node',
       'label' => $t('Coordinates'),
       'required' => 0,
       'widget' => array(
@@ -173,25 +167,4 @@ function _hitsa_locations_installed_instances() {
       )
     ),
   );
-}
-
-function hitsa_locations_add_custom_fields() {
-  foreach (_hitsa_locations_installed_fields() as $field) {
-        field_create_field($field);
-  }
-  foreach (_hitsa_locations_installed_instances() as $field_instance) {
-      $field_instance['entity_type'] = 'node';
-      print_r($field_instance);
-      field_create_instance($field_instance);
-  }
-}
-
-function hitsa_locations_delete_custom_fields() {
-    foreach (array_keys(_hitsa_locations_installed_fields()) as $field) {
-        field_delete_field($field);
-    }
-    $instances = field_info_instances('node', 'contact_location');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
 }

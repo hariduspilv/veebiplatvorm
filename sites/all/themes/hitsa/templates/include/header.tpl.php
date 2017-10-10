@@ -16,7 +16,9 @@
 <div class="inline">
    <div class="row">
       <div class="col-9">
-         <a href="" class="header-logo"><img alt="" src="assets/tmp/logo.png" /></a>
+        <?php if(!empty($site_logo)): ?>
+        <a href="<?php print url('<front>'); ?>" class="header-logo"><img alt="" src="<?php print $site_logo; ?>" /></a>
+        <?php endif; ?>
       </div><!--/col-9-->
       <div class="col-3">
         <?php print render($header_menu); ?>

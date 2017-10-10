@@ -55,8 +55,10 @@ function hitsa_logos_views_default_views() {
   $handler->display->display_options['fields']['banner_image']['label'] = '';
   $handler->display->display_options['fields']['banner_image']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['banner_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['banner_image']['type'] = 'image_url';
   $handler->display->display_options['fields']['banner_image']['settings'] = array(
-    'image_style' => '',
+    'url_type' => '1',
+    'image_style' => 'hitsa_logo_thumbnail',
     'image_link' => '',
   );
   /* Field: Content: Link */
@@ -324,7 +326,21 @@ function hitsa_logos_views_default_views() {
   $handler->display->display_options['filters']['logo_type_value']['value'] = array(
     'award' => 'award',
   );
-  
+  $translatables['hitsa_logos'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Partners'),
+    t('Awards'),
+    t('Partners - Sort'),
+    t('Logos - Sort'),
+    t('Awards - Sort'),
+  );
+
   $views[$view->name] = $view;
   return $views;
 }
