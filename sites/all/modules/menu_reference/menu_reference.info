@@ -1,0 +1,15 @@
+name = Menu Reference
+description = Field type that create reference to menu item.
+package = Content
+core = 7.x
+dependencies[] = menu
+dependencies[] = field
+files[] = views/plugins/menu_reference_plugin_argument_default_menu_trail.inc
+files[] = views/handlers/menu_references_filter_handler.inc
+
+; Information added by Drupal.org packaging script on 2014-07-01
+version = "7.x-1.2"
+core = "7.x"
+project = "menu_reference"
+datestamp = "1404204528"
+

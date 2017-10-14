@@ -80,6 +80,39 @@ function _hitsa_services_installed_fields() {
       'type' => 'image',
       'cardinality' => FIELD_CARDINALITY_UNLIMITED,
     ),
+    'field_service_category' => array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_service_category',
+      'indexes' => array(
+        'target_id' => array(
+          0 => 'target_id',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'entityreference',
+      'settings' => array(
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'services_categories' => 'services_categories',
+          ),
+        ),
+        'target_type' => 'taxonomy_term',
+      ),
+      'translatable' => 0,
+      'type' => 'entityreference',
+    ),
   );
 }
 
@@ -94,26 +127,12 @@ function _hitsa_services_installed_instances() {
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
+        
       ),
       'display' => array(
         'default' => array(
           'label' => 'above',
           'type' => 'text_default',
-        )
-      )
-    ),
-    'service_category' => array(
-      'field_name' => 'service_category',
-      'bundle' => 'contact',
-      'label' => $t('Category'),
-      'widget' => array(
-        'type' => 'options_select',
-        'module' => 'options',
-      ),
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'type' => 'entityreference_label',
         )
       )
     ),
@@ -131,7 +150,54 @@ function _hitsa_services_installed_instances() {
           'type' => 'image',
         )
       )
-    )
+    ),
+    'node-service-field_service_category' => array(
+      'bundle' => 'service',
+    'default_value' => array(
+      0 => array(
+        'target_id' => 99,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
+        'settings' => array(
+          'bypass_access' => FALSE,
+          'link' => FALSE,
+        ),
+        'type' => 'entityreference_label',
+        'weight' => 2,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_service_category',
+    'label' => 'Service category',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'taxonomy-index' => array(
+          'status' => TRUE,
+        ),
+      ),
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => -2,
+    ),
+      ),
   );
 }
 

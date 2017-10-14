@@ -3,6 +3,7 @@
 function hitsa_core_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_core', 'install');
+  hitsa_core_set_default_language(); // Set ET as default language.
 }
 
 function hitsa_core_uninstall() {
@@ -120,6 +121,64 @@ function _hitsa_core_menus() {
   );
 }
 
+function _hitsa_core_menu_links() {
+  $t = get_t();
+  
+  $menu_links = array();
+  
+  // Footer menu
+  $hitsa_footer_menu = variable_get('hitsa_footer_menu_name');
+  if(!empty($hitsa_footer_menu)) {
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('Homepage'),
+      'menu_name' => $hitsa_footer_menu,
+      'weight' => 1,
+    );
+  }
+  
+  // Main Menu
+  $hitsa_main_menu = variable_get('hitsa_main_menu_name');
+  if(!empty($hitsa_main_menu)) {
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('Admission'),
+      'menu_name' => $hitsa_main_menu,
+      'weight' => -10,
+    );
+    
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('Studies'),
+      'menu_name' => $hitsa_main_menu,
+      'weight' => -9,
+    );
+    
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('Student Life'),
+      'menu_name' => $hitsa_main_menu,
+      'weight' => -8,
+    );
+    
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('Services'),
+      'menu_name' => $hitsa_main_menu,
+      'weight' => -7,
+    );
+    
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('About us'),
+      'menu_name' => $hitsa_main_menu,
+      'weight' => -6,
+    );
+  }
+  
+  return $menu_links;
+}
+
 /*
 * Hitsa core date formats
 */
@@ -176,4 +235,23 @@ function _hitsa_core_image_styles() {
   );
   
   return $image_styles;
+}
+
+function hitsa_core_set_default_language() {
+  $langs = language_list(); // Note: No argument
+  $langcode = 'et';
+  variable_set('language_default', $langs[$langcode]);
+  
+  // Set default language settings
+  db_update('languages')
+    ->fields(array(
+      'prefix' => 'en',
+      'weight' => -9,
+    ))
+    ->condition('language',  'en')
+    ->execute();
+  
+  // Disable "Language None" option
+  module_load_include('inc', 'entity_translation', 'entity_translation.admin');
+  entity_translation_settings_init('node', array('exclude_language_none' => TRUE));
 }

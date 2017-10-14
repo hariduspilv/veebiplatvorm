@@ -57,6 +57,7 @@ function hitsa_events_block_view($delta = '') {
         );
       break;
   }
+  
   return $block;
 }
 
@@ -826,8 +827,8 @@ function hitsa_events_event_html($event=NULL,$type=NULL,$start_date_date=NULL){
   if (!empty($event->event_date)) {
     $start_date = !empty($event->event_date['und'][0]['value'])?$event->event_date['und'][0]['value']:NULL;
     $end_date = !empty($event->event_date['und'][0]['value2'])?$event->event_date['und'][0]['value2']:NULL;
-    dpm(date('G :i',$start_date));
-    $time_hours_minutes = (!empty($start_date))?t('Takes place on: ') . date('G:i',$start_date):NULL;
+    
+    $time_hours_minutes = (!empty($start_date))?t('Time: ') . date('G:i',$start_date):NULL;
     
     if($type=='training'){
      $time_hours_minutes = '<span class="before-calendar">'.date('j.m',$start_date). ' - '.date('j.m',$end_date).'</span>';
@@ -969,7 +970,7 @@ function hitsa_events_get_time_period_block(){
   return $output;
 }
 function hitsa_events_get_time_periods(){
-  $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_periods');
+  $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_period_info');
   $time_periods = taxonomy_get_tree($time_periods_vocabulary->vid,0,NULL,TRUE);
   
   $output = '';
@@ -979,10 +980,10 @@ function hitsa_events_get_time_periods(){
         if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
           $time_period = i18n_taxonomy_localize_terms($time_period); // The important part!
         }
-        $time_period_start = (!empty($time_period->field_time_period_dates))?$time_period->field_time_period_dates['und'][0]['value']:NULL;
+        $time_period_start = (!empty($time_period->field_time_period_dates_info))?$time_period->field_time_period_dates_info['und'][0]['value']:NULL;
         $time_period_end = NULL;
-        if($time_period->field_time_period_dates['und'][0]['value2']!=$time_period->field_time_period_dates['und'][0]['value']){
-          $time_period_end = $time_period->field_time_period_dates['und'][0]['value2'];
+        if($time_period->field_time_period_dates_info['und'][0]['value2']!=$time_period->field_time_period_dates_info['und'][0]['value']){
+          $time_period_end = $time_period->field_time_period_dates_info['und'][0]['value2'];
         }
         $dated_start = (!empty($time_period_start))?strftime('%d. %B',$time_period_start):NULL; 
         $dated_end = (!empty($time_period_end))?strftime('%d. %B',$time_period_end):NULL; 
@@ -1048,7 +1049,7 @@ function hitsa_events_front_page_block(){
   if (!empty($events)) {
     $event_tags = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
     $event_tags = taxonomy_get_tree($event_tags->vid);
-    dpm($event_tags);
+    
     $events_array = array();
     foreach ($events as $key => $event) {
       if (!empty($event->event_tags)) {
@@ -1073,7 +1074,7 @@ function hitsa_events_front_page_block(){
     $output.= '           </div><!--/row-->';
     $events_count = count($events);
     $j=0;
-    dpm($events_array);
+    
     foreach ($events_array as $key => $event_type) {
 
       $i=0;
@@ -1100,19 +1101,28 @@ function hitsa_events_front_page_block(){
         if($i==0 || $i==2){
           $output.= '<div class="row">';
         }
-        
+        if (!empty($event->event_date)) {
+          $time = strtotime('today midnight');
+          $start = $event->event_date['und'][0]['value'];
+          $start_readable_day = date('d',$start);
+          $start_readable_month = strftime('%B',$start);
+          $start_readable_month = format_date($start, 'custom', 'F',NULL,NULL);
+          
+          $start_readable_time = strftime('%H:%M',$start);
+          $end = $event->event_date['und'][0]['value2'];
+        }
         $output.= '<div class="col-6">';
         $output.= '                <div class="object object-event">';
         $output.= '                   <div class="object-inner">';
         $output.= '                      <a href="" class="object-date">';
-        $output.= '                         <span class="object-date_day">23</span>';
-        $output.= '                         <span class="object-date_month">Veebruar</span>';
+        $output.= '                         <span class="object-date_day">'.$start_readable_day.'</span>';
+        $output.= '                         <span class="object-date_month">'.$start_readable_month.'</span>';
         $output.= '                      </a><!--/object-date-->';
         $output.= '                      <span class="object-content">';
         $output.= '                         <a href="" class="object-title">'.$event->title.'</a>';
         $output.= '                         <span class="object-footer">';
         $output.= (!empty($location))?'                     '.t('Location').': '.$location:'';
-        $output.= '                             , Kell 10:00<br />';
+        $output.= '                             , '.t('Time').' '.$start_readable_time.'<br />';
         $output.= '                            <a href="" class="before-tourism">'.t('Add to calendar').'</a>';
         $output.= '                         </span><!--/object-footer-->';
         $output.= '                      </span><!--/object-content-->';
@@ -1123,23 +1133,29 @@ function hitsa_events_front_page_block(){
           $output.= ' </div><!--/row-->';
         }
         
-          if($i==1||$i==3){
+          if($i==1||$i==3||$i==$event_type_count-1){
            $output.=' <hr />';
            $output.=' <div class="row-spacer"></div>';
           }
           if ($i==3||$i==$event_type_count-1) {
-            // code...
-           $output.=' <div class="row">';
-           $output.='          <div class="col-12">';
-           $output.='             <a href="" class="btn btn-filled">'.t($key.' event').'</a>';
-           $output.='          </div><!--/col-12-->';
-           $output.='       </div><!--/row-->';          }
+               }
         $i++;
         
         if($i==4){
           break;
         }
       }
+      if($j==0){
+        $link = url('calendar');
+      }
+      if($j==1){
+        $link = url('training_calendar');
+      }
+      $output.=' <div class="row">';
+      $output.='          <div class="col-12">';
+      $output.='             <a href="'.$link.'" class="btn btn-filled">'.t($key.' calendar').'</a>';
+      $output.='          </div><!--/col-12-->';
+      $output.='       </div><!--/row-->';      
       $output.= '</div><!--/data-tab-'.$j.'-->';
       $j++;
     }
@@ -1380,5 +1396,93 @@ function hitsa_events_training_calendar(){
 }
 
 function hitsa_events_front_page_training_block(){
-  dpm('We are working');
+ return hitsa_events_for_services();
+}
+
+function hitsa_events_for_services(){
+  global $language;
+  
+  $time = strtotime('today midnight');
+  $events = hitsa_core_get_content_by_type('node','event', $language->language,$conditions=array('event_type'=>'training'));
+  if (isset($events['node'])) {
+    $event_nids = array_keys($events['node']);
+    $events = entity_load('node', $event_nids);
+  } 
+  $new_events = array();
+  if (!empty($events)) {
+    foreach ($events as $event) {
+      if (!empty($event -> event_date)){
+        $start = $event ->event_date['und'][0]['value'];
+        $end = $event ->event_date['und'][0]['value2'];
+        if($start>=$time){
+          $new_events[] = $event;
+        }
+        elseif($time<=$end){
+          $new_events[] = $event;
+        }
+      }
+    }
+  }
+  if (!empty($new_events)) {
+    $output = '';
+    $events_count = count($new_events);
+    $i=0;
+    usort($new_events, function($a, $b) {
+      return $a->event_date['und'][0]['value'] - $b->event_date['und'][0]['value'];
+    }); 
+    if(!empty($new_events)){
+     $output.=' <div data-tab="tab-2">';
+     $output.='             <div class="row">';
+    }
+    foreach ($new_events as $event) {
+      
+      $start = $event ->event_date['und'][0]['value'];
+      $end = $event ->event_date['und'][0]['value2'];
+      $start_out = date('d.m',$start);
+      $end_out = date('d.m',$end);
+      $date_out = '';
+      $price = NULL;
+      if($start==$end){
+        $date_out = $start_out;
+      }
+      else{
+        $date_out = $start_out.' - '.$end_out;
+      }
+      
+      if (!empty($event->field_training_cost)) {
+        $price = $event->field_training_cost['und'][0]['value'];
+      }
+      $output.='<div class="col-12">';
+      $output.='   <a href="" class="object object-small object-horizontal">';
+      $output.='      <span class="object-inner">';
+      $output.='         <span class="object-content">';
+      $output.='            <span class="object-title">'.$event->title.'</span>';
+      $output.='            <span class="object-footer">';
+      $output.='               <span class="before-calendar">'.$date_out.'</span>';
+      $output.=(!empty($price))?'               <span class="before-money">'.$price.' €</span>':'';
+      $output.='            </span><!--/object-footer-->';
+      $output.='         </span><!--/object-content-->';
+      $output.='      </span><!--/object-inner-->';
+      $output.='   </a><!--/object-->';
+      $output.='</div><!--/col-12-->';
+      if($i!=0){
+        $output.='<hr>';
+      }
+      if($i==4){
+        break;
+      }
+      $i++;
+      
+    }
+    if (!empty($new_events)) {
+      
+      $output.='<div class="col-12 col-margin">';
+      $output.='                  <a href="'.url('training_calendar').'" class="btn btn-filled btn-stretch">'.t('Training calendar').'</a>';
+      $output.='               </div><!--/col-12-->';
+      $output.='</div><!--/row-->';
+      $output.='         </div><!--/data-tab-->';
+    }
+    return $output;
+  }
+  
 }

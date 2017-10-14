@@ -12,7 +12,7 @@ function hitsa_core_installer($module, $type) {
       } else {
         return;
       }
-      $installer_function($installer_input());
+      if(function_exists($installer_function)) $installer_function($installer_input());
     }
   }
 }
@@ -82,7 +82,7 @@ function hitsa_core_add_vocabularies($installed_vocabularies = array()) {
     
     $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
     if($vocab) {
-      variable_set('hitsa_core_' . $vocab->machine_name . '_vid' , $vocab->vid);
+      variable_set('hitsa_' . $vocab->machine_name . '_vid' , $vocab->vid);
     }
     if(!empty($v['terms']) && $vocab) {
       // Add generic terms
@@ -98,8 +98,57 @@ function hitsa_core_delete_vocabularies($installed_vocabularies = array()) {
   foreach ($installed_vocabularies as $v) {
     if(!empty($v['vocabulary'])) {
       $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-      variable_del('hitsa_core_' . $vocab->machine_name . '_vid');
+      variable_del('hitsa_' . $vocab->machine_name . '_vid');
       taxonomy_vocabulary_delete($vocab->vid);
+    }
+  }
+}
+
+/*
+* Nodes
+*/
+function hitsa_core_add_nodes($installed_nodes = array()) {
+  $lang_list = language_list();
+  foreach ($installed_nodes as $node_data) {
+    if(is_array($node_data['title'])) { // Multilang nodes
+      $tnid = NULL;
+      $translation_set = i18n_translation_set_create('menu_link');
+      foreach($node_data['title'] as $lang => $title) { // Split into separate language nodes.
+        if(!isset($lang_list[$lang])) continue; // Skip disabled languages.
+        
+        $node_t = $node_data;
+        $node_t['title'] = $title;
+        
+        $node = (object) $node_t;
+        node_object_prepare($node);
+        $node->language = $lang;
+        
+        $node->menu['link_title'] = $title;
+        
+        if(empty($tnid)) {
+          node_save($node);
+          $tnid = $node->nid; // Set initial tnid.
+        }
+        
+        $node->tnid = $tnid;
+        
+        $node->status = 0; // Unpublished by default.
+        node_save($node);
+        
+        // Add to menu translation set
+        if(!empty($node->menu['mlid'])) {
+          $item = menu_link_load($node->menu['mlid']);
+          $translation_set->add_item($item, $lang);
+          $item['i18n_tsid'] = $translation_set->tsid;
+          menu_link_save($item);
+        }
+      }
+      $translation_set->save(TRUE);
+    } else {
+      $node = (object) $node_data;
+      node_object_prepare($node);
+      $node->language = !empty($node_data['language']) ? $node_data['language'] : 'et';
+      node_save($node);
     }
   }
 }

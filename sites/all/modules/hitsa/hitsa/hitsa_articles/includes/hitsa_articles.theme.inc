@@ -32,8 +32,8 @@ function hitsa_articles_theme() {
   );
   
   $items['hitsa_article_teaser'] = array(
-    'template' => 'hitsa-article-teaser',
-    'path' => drupal_get_path('module', 'hitsa_articles') . '/templates',
+    'template' => 'hitsa-content-page-teaser',
+    'path' => drupal_get_path('module', 'hitsa_content_page') . '/templates',
     'variables' => array(
       'node' => NULL,
       'author' => NULL,
@@ -83,13 +83,21 @@ function hitsa_articles_preprocess_node(&$variables) {
   }
 }
 
+function hitsa_articles_preprocess_block(&$variables) {
+  if($variables['block_html_id'] === 'block-views-hitsa-logos-awards-block'
+    || $variables['block_html_id'] === 'block-hitsa-articles-hitsa-our-stories'
+  ) {
+    $variables['elements']['#theme_wrappers'] = array();
+  }
+}
+
 function hitsa_articles_page_view($type) {
   $query = drupal_get_query_parameters();
   $query['article_type'] = $type;
   $query['range'] = array(0, 12);
   
   // Load academic years taxonomy
-  $academic_years_vid = variable_get('hitsa_core_academic_years_vid');
+  $academic_years_vid = variable_get('hitsa_academic_years_vid');
   $academic_years = array_reverse(taxonomy_get_tree($academic_years_vid));
   
   // Load nodes

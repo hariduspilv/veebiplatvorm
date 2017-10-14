@@ -27,11 +27,6 @@
  * @ingroup views_templates
  */
 ?>
-<?php if($view->current_display === 'news_block'): ?>
-<div class="block">
-  
-  <h2 class="block-title"><?php print t('News'); ?></h2>
-<?php endif; ?>
   <?php if ($attachment_before): ?>
     <?php print $attachment_before; ?>
   <?php endif; ?>
@@ -50,6 +45,4 @@
        <a href="<?php print url('news'); ?>" class="btn"><?php print t('All news'); ?></a>
     </div><!--/col-12-->
   </div><!--/row-->
-  
-</div>
 <?php endif; ?>

@@ -31,15 +31,15 @@ function hitsa_contacts_page_view() {
   global $language; 
   
   // Contact Departments
-  $department_vocab_vid = variable_get('hitsa_contacts_contacts_department_vid');
+  $department_vocab_vid = variable_get('hitsa_contacts_department_vid');
   $contact_departments = i18n_taxonomy_localize_terms(taxonomy_get_tree($department_vocab_vid));
   // Contact Job positions
-  $job_position_vocab_vid = variable_get('hitsa_contacts_contacts_job_position_vid');
+  $job_position_vocab_vid = variable_get('hitsa_contacts_job_position_vid');
   $job_positions_array = i18n_taxonomy_localize_terms(taxonomy_get_tree($job_position_vocab_vid));
   foreach($job_positions_array as $j) {
     $job_positions[$j->tid] = $j;
   }
-  
+
   // "Contact Us" form
   $hitsa_contacts_contact_us_webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
   if(!empty($hitsa_contacts_contact_us_webform_nid)) {
@@ -81,7 +81,7 @@ function hitsa_contacts_page_view() {
       $locations = node_load_multiple($nids);
     }
   }
-  
+
   $contact_page = theme('contacts_page',
     array(
       'nodes' => $nodes_grouped, 

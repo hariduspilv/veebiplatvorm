@@ -1,0 +1,310 @@
+<?php
+/**
+ * @file
+ * Primarily Drupal hooks and global API functions for module Menu Reference.
+ */
+
+define('MENU_REFERENCE_LANG_ALL', 0);
+define('MENU_REFERENCE_LANG_NODE', 1);
+define('MENU_REFERENCE_LANG_NODE_UND', 2);
+
+/**
+ * Implements hook_field_info().
+ */
+function menu_reference_field_info() {
+  return array(
+    'menu_reference_link' => array(
+      'label' => t('Menu reference'),
+      'description' => t('Reference to menu item.'),
+      'default_widget' => 'menu_reference_select',
+      'default_formatter' => 'menu_reference_links',
+      'settings' => array(
+        'allowed_menus' => array(),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_settings_form().
+ */
+function menu_reference_field_settings_form($field, $instance, $has_data) {
+  $settings = $field['settings'];
+
+  $form = array();
+  $form['allowed_menus'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Allowed menus'),
+    '#default_value' => is_array($settings['allowed_menus']) ? array_filter($settings['allowed_menus']) : array(),
+    '#options' => menu_get_menus(TRUE),
+  );
+
+  $form['language_visibility'] = array(
+    '#type' => 'select',
+    '#title' => t('Language options'),
+    '#default_value' => !empty($settings['language_visibility']) ? $settings['language_visibility'] : MENU_REFERENCE_LANG_ALL,
+    '#options' => array(
+      MENU_REFERENCE_LANG_ALL => t('show items for all languages'),
+      MENU_REFERENCE_LANG_NODE => t('show items for the language of edited content only'),
+      MENU_REFERENCE_LANG_NODE_UND => t('show items for the language of edited content and language neutral'),
+    ),
+  );
+
+  return $form;
+}
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function menu_reference_field_is_empty($item, $field) {
+  return empty($item['mlid']);
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function menu_reference_field_formatter_info() {
+  return array(
+    'menu_reference_links' => array(
+      'label' => t('Rendered links'),
+      'field types' => array('menu_reference_link'),
+      'settings' => array('link' => TRUE),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function menu_reference_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $element = array();
+
+  switch ($display['type']) {
+    case 'menu_reference_links':
+      $element['link'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Display menu item as link'),
+        '#default_value' => $settings['link'],
+      );
+
+      break;
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function menu_reference_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+
+  switch ($display['type']) {
+    case 'menu_reference_links':
+      if ($settings['link']) {
+        $summary = t('Menu items displayed as links.');
+      }
+      else {
+        $summary = t('Menu items displayed as plain text.');
+      }
+      break;
+  }
+
+  if (isset($summary)) {
+    return $summary;
+  }
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function menu_reference_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $settings = $display['settings'];
+
+  switch ($display['type']) {
+    case 'menu_reference_links':
+      foreach ($items as $delta => $item) {
+        $menu_link = menu_link_load($item['mlid']);
+        $element[$delta]['#markup'] = $settings['link'] ? l($menu_link['title'], $menu_link['href'], array()) : check_plain($menu_link['title']);
+      }
+      break;
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function menu_reference_field_widget_info() {
+  return array(
+    'menu_reference_select' => array(
+      'label' => t('Select list'),
+      'field types' => array('menu_reference_link'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function menu_reference_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $value = isset($items[$delta]['mlid']) ? $items[$delta]['mlid'] : '';
+
+  $widget = $element;
+  $widget['#delta'] = $delta;
+
+  switch ($instance['widget']['type']) {
+
+    case 'menu_reference_select':
+      $options = array();
+      $menu_list = menu_get_menus(TRUE);
+      $allowed_menus = array_filter($field['settings']['allowed_menus']);
+      $language_visibility = !empty($field['settings']['language_visibility']) ? $field['settings']['language_visibility'] : MENU_REFERENCE_LANG_ALL;
+      $languages = array();
+      if ($language_visibility == MENU_REFERENCE_LANG_NODE || $language_visibility == MENU_REFERENCE_LANG_NODE_UND && isset($form['#node'])) {
+        $node = $form['#node'];
+        $languages[] = $node->language;
+      }
+      if ($language_visibility == MENU_REFERENCE_LANG_NODE_UND && !in_array(LANGUAGE_NONE, $languages)) {
+        $languages[] = LANGUAGE_NONE;
+      }
+      foreach ($allowed_menus as $menu) {
+        $options[$menu_list[$menu]] = menu_reference_get_menu_hierarchy($menu, $languages);
+      }
+
+      $widget += array(
+        '#type' => 'select',
+        '#default_value' => $value,
+        '#options' => array('' => t('- Select -')) + $options,
+      );
+      break;
+
+  }
+
+  $element['mlid'] = $widget;
+  return $element;
+}
+
+/**
+ * Implements hook_field_widget_error().
+ */
+function menu_reference_field_widget_error($element, $error, $form, &$form_state) {
+  switch ($error['error']) {
+    case 'menu_reference_invalid':
+      form_error($element, $error['message']);
+      break;
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function menu_reference_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'menu_reference') . '/views',
+  );
+}
+
+/**
+ * Return list of all menu links as options list for field widget.
+ *
+ * @param $menu_name
+ *   Machine-readable menu name to load links for.
+ *
+ * @return array
+ *   Array of menu items.
+ */
+function menu_reference_get_menu_hierarchy($menu_name, $languages = array(), $items = array(), $level = 0) {
+  if (empty($items)) {
+    $args = array(':menu' => $menu_name);
+
+    $query = "SELECT m.load_functions, m.to_arg_functions, m.access_callback, m.access_arguments, m.page_callback, m.page_arguments, m.delivery_callback, m.title, m.title_callback, m.title_arguments, m.type, m.description, ml.*
+    FROM {menu_links} ml LEFT JOIN {menu_router} m ON m.path = ml.router_path
+    WHERE ml.menu_name = :menu";
+    if (!empty($languages)) {
+      $query .= " AND ml.language IN (:languages)";
+      $args[':languages'] = $languages;
+    }
+    $query .= " ORDER BY p1 ASC, p2 ASC, p3 ASC, p4 ASC, p5 ASC, p6 ASC, p7 ASC, p8 ASC, p9 ASC";
+
+    $result = db_query($query, $args, array('fetch' => PDO::FETCH_ASSOC));
+    $links = array();
+    foreach ($result as $item) {
+      $links[] = $item;
+    }
+    $items = menu_tree_data($links);
+  }
+  $language_list = language_list();
+  $options = array();
+  foreach ($items as $item) {
+    $level_prefix = $level > 0 ? str_repeat('--', $level) . ' ' : '';
+    $text = $level_prefix . $item['link']['link_title'];
+    if (empty($languages) && isset($item['link']['language']) && $item['link']['language'] != LANGUAGE_NONE) {
+      $text .= ' (' . $language_list[$item['link']['language']]->native . ')';
+    }
+    $options[$item['link']['mlid']] = $text;
+    if (!empty($item['below'])) {
+      $options += menu_reference_get_menu_hierarchy($menu_name, $languages, $item['below'], $level + 1);
+    }
+  }
+
+  return $options;
+}
+
+/**
+ * A function to get all menu children (regardless of depth) of a given mlid
+ * @param type $mlid
+ * @param type $menu
+ * @return $children a multidimensional array of nodes in menu structure
+ */
+function menu_reference_get_all_menu_children($mlid, $menu = 'main-menu') {
+  $tree = menu_tree_all_data($menu);
+
+  $children = array();
+  if ($mlid) {
+    foreach ($tree as $branch) {
+
+      $check = _menu_reference_find_mlid_in_menu($mlid, $branch);
+
+      if ($check) {
+        $branch = $check;
+        foreach ($branch['below'] as $twig) {
+          $children[] = $twig['link']['mlid'];
+          if ($twig['below']) {
+            $children = array_merge($children, menu_reference_get_all_menu_children($twig['link']['mlid']));
+          }
+        }
+      }
+    }
+  }
+
+  return $children;
+}
+
+/**
+ * Helper function for get_all)menu_children() that recursively search an menu,
+ * this should not be called directly.
+ *
+ * @param int $mlid - The menu link id
+ * @param array $link - The menu tree item
+ * @return array | null
+ */
+function _menu_reference_find_mlid_in_menu($mlid, $link) {
+  if ($mlid == $link['link']['mlid']) {
+    return $link;
+  }
+  else {
+    foreach ($link['below'] as $item) {
+      $response = _menu_reference_find_mlid_in_menu($mlid, $item);
+      if ($response) {
+        return $response;
+      }
+    }
+  }
+}

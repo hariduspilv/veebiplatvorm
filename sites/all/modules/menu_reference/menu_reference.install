@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * Contains install and update functions for Menu Reference.
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function menu_reference_field_schema($field) {
+  $columns = array(
+    'mlid' => array('type' => 'int', 'not null' => FALSE),
+  );
+  $indexes = array(
+    'mlid' => array('mlid'),
+  );
+  return array(
+    'columns' => $columns,
+    'indexes' => $indexes,
+  );
+}

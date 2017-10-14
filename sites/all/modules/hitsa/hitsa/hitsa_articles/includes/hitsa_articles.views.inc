@@ -14,6 +14,8 @@ function hitsa_articles_views_api() {
  * Implementation of hook_views_default_views().
  */
 function hitsa_articles_views_default_views() {
+  
+  
   $view = new view();
   $view->name = 'hitsa_news';
   $view->description = '';
@@ -174,5 +176,6 @@ function hitsa_articles_views_default_views() {
     t('News - Latest Attachment'),
   );
   
-  return $view;
+  $views[$view->name] = $view;
+  return $views;
 }

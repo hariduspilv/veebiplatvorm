@@ -58,10 +58,39 @@ function hitsa_core_menu() {
 * Implements hook_form_alter().
 */
 function hitsa_core_form_alter(&$form, &$form_state, $form_id) {
+  //dpm($form);
+  if(!empty($form['language'])) { // Set language as the topmost element
+    $form['language']['#weight'] = -100;
+  }
   // Any node form with an academic year field.
   if(!empty($form['#node_edit_form']) && isset($form['academic_year'])) {
     hitsa_core_set_default_academic_year($form);
   }
+  
+  if($form_id === 'menu_overview_form' && $form['#menu']['menu_name'] === 'hitsa-main-menu') {
+    global $language;
+    
+    foreach($form as $menu_item) {
+      if(!isset($menu_item['#item'])) continue;
+      if($menu_item['#item']['language'] !== $language->language && $menu_item['#item']['language'] !== LANGUAGE_NONE) {
+        $menu_item['#item']['hidden'] = TRUE;
+      }
+      
+    }
+    
+    //$form['#theme'] = 'main_menu_overview_form';
+    dpm($form);
+  }
+  
+}
+
+function hitsa_core_webform_component_info_alter(&$components) {
+  $components['fieldset']['enabled'] = FALSE;
+  $components['grid']['enabled'] = FALSE;
+  $components['hidden']['enabled'] = FALSE;
+  $components['markup']['enabled'] = FALSE;
+  $components['pagebreak']['enabled'] = FALSE;
+  $components['file']['enabled'] = FALSE;
 }
 
 function hitsa_core_set_default_academic_year(&$form) {
@@ -97,7 +126,7 @@ function hitsa_core_set_default_academic_year(&$form) {
     // New taxonomy term
     $term = new stdClass();
     $term->name = $academic_year_string;
-    $term->vid = variable_get('hitsa_core_academic_years_vid');
+    $term->vid = variable_get('hitsa_academic_years_vid');
     taxonomy_term_save($term);
     
     $emw_term = entity_metadata_wrapper('taxonomy_term', $term);
@@ -134,4 +163,12 @@ function hitsa_core_get_content_by_type($e_type='node',$type=NULL,$language=NULL
   }
   $result = $query->execute();
   return $result;
+}
+
+/*
+* Add JS to keep the text with summary field open by default.
+*/
+function hitsa_core_formatted_text_show_summary() {
+  $script = 'jQuery(document).ready(function(){jQuery(".link-edit-summary").click(),$(document).ajaxComplete(function(){jQuery(".link-edit-summary").click()})});';
+  drupal_add_js($script, 'inline');
 }

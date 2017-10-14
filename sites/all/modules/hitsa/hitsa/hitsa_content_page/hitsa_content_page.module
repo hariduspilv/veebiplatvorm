@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.theme');
+
 /**
  * Implements hook_node_info()
  */
@@ -27,7 +29,9 @@ function content_page_form($node, $form_state) {
  */
 function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
   if($form_id === 'content_page_node_form') {
-
+    // Show text summary by default.
+    hitsa_core_formatted_text_show_summary();
+    
     if(isset($form['cp_type'])) {
       $form['cp_type'][LANGUAGE_NONE]['#ajax'] = array(
         'callback' => 'hitsa_content_page_update_page_type',
@@ -35,11 +39,14 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
         'method' => 'replace',
       );
 
-      $content_page_type = !empty($form_state['input']['cp_type'][LANGUAGE_NONE]) ? 
-        $form_state['input']['cp_type'][LANGUAGE_NONE] : NULL;
-
+      if(!empty($form_state['input']['cp_type'][LANGUAGE_NONE])) {
+        $content_page_type = $form_state['input']['cp_type'][LANGUAGE_NONE];
+      } else if(!empty($form['#node']->cp_type[LANGUAGE_NONE][0]['value'])) {
+        $content_page_type = $form['#node']->cp_type[LANGUAGE_NONE][0]['value'];
+      } 
+      
       // Hide certain fields depending on content page type.
-      if($content_page_type !== 'content_page') {
+      if(empty($content_page_type) || $content_page_type !== 'content_page') {
         $form['cp_header_text']['#access'] = FALSE;
         $form['cp_display_style']['#access'] = FALSE;
         $form['cp_subpages']['#access'] = FALSE;

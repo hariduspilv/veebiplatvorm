@@ -16,6 +16,10 @@ function hitsa_logos_uninstall() {
   hitsa_core_installer('hitsa_logos', 'uninstall');
   hitsa_core_delete_nodes('logo');
   field_purge_batch(500);
+  
+  // Delete Logos view
+  $view = views_get_view('hitsa_logos');
+  views_delete_view($view);
 }
 
 function _hitsa_logos_fields() {

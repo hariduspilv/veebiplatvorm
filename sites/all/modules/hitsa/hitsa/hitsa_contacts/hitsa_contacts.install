@@ -9,6 +9,8 @@ function hitsa_contacts_install() {
   
   // Add "Contact Us" webform
   hitsa_contacts_add_contact_form();
+  
+  variable_set("language_content_type_contact", ENTITY_TRANSLATION_ENABLED); // Add field translation
 }
 
 /*
@@ -20,6 +22,8 @@ function hitsa_contacts_uninstall() {
   hitsa_core_delete_nodes('contact');
   field_purge_batch(500);
   hitsa_contacts_delete_contact_form(); // Delete "Contact Us" webform
+  
+  variable_del("language_content_type_contact"); // Delete field translation variable.
 }
 
 function _hitsa_contacts_fields() {
@@ -36,11 +40,13 @@ function _hitsa_contacts_fields() {
       'field_name' => 'first_name',
       'label' => $t('First name'),
       'type' => 'text',
+      'translatable' => '1',
     ),
     'last_name' => array(
       'field_name' => 'last_name',
       'label' => $t('Last name'),
       'type' => 'text',
+      'translatable' => '1',
     ),
     'contact_image' => array(
       'field_name' => 'contact_image',
@@ -75,11 +81,13 @@ function _hitsa_contacts_fields() {
       'field_name' => 'additional_info',
       'label' => $t('Additional info'),
       'type' => 'text_long',
+      'translatable' => '1',
     ),
     'reception_times' => array(
       'field_name' => 'reception_times',
       'label' => $t('Reception times'),
       'type' => 'text_long',
+      'translatable' => '1',
     ),
     'contact_cv' => array(
       'field_name' => 'contact_cv',

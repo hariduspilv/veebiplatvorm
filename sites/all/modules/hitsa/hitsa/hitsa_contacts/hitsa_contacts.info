@@ -10,3 +10,4 @@ dependencies[] = email
 dependencies[] = views
 dependencies[] = webform
 dependencies[] = paragraphs
+dependencies[] = entity_translation

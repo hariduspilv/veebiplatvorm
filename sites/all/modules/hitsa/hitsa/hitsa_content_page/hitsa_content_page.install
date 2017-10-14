@@ -11,6 +11,9 @@ function hitsa_content_page_install() {
   node_types_rebuild();
   $types = node_type_get_types();
   node_add_body_field($types['content_page']);
+  
+  variable_set('language_content_type_content_page', TRANSLATION_ENABLED); // Make multilingual
+  variable_set('i18n_node_options_content_page', array('required')); // Disable language neutral option
 }
 
 /*
@@ -60,7 +63,7 @@ function _hitsa_content_page_fields() {
     'cp_header_text' => array(
       'field_name' => 'cp_header_text',
       'label' => $t('Header text'),
-      'type' => 'text_long',
+      'type' => 'text_with_summary',
     ),
     'cp_display_style' => array(
       'field_name' => 'cp_display_style',
@@ -159,6 +162,7 @@ function _hitsa_content_page_field_instances() {
       ),
       'required' => 1,
     ),
+    /*
     'cp_header_text' => array(
       'field_name' => 'cp_header_text',
       'bundle' => 'content_page',
@@ -174,7 +178,7 @@ function _hitsa_content_page_field_instances() {
           'type' => 'text_default',
         ),
       ),
-    ),
+    ),*/
     'cp_display_style' => array(
       'field_name' => 'cp_display_style',
       'bundle' => 'content_page',
@@ -268,4 +272,56 @@ function _hitsa_content_page_paragraphs() {
   );
   
   return $paragraphs;
+}
+
+/*
+* Hitsa core nodes
+*/
+function _hitsa_content_page_nodes() {
+  $main_menu_name = variable_get('hitsa_main_menu_name');
+  
+  // Get main menu mlids
+  $main_menu_tree = menu_tree_all_data($main_menu_name, NULL, 1);
+  $main_menu_links = array();
+  foreach($main_menu_tree as $link) {
+    $main_menu_links[$link['link']['title']] = $link['link']['mlid'];
+  }
+  
+  $node_defaults = array(
+    'type' => 'content_page',
+    'menu' => array(
+      'mlid' => NULL,
+      'description' => '',
+      'enabled' => TRUE,
+      'menu_name' => $main_menu_name,
+    ),
+  );
+  
+  $nodes = array();
+  
+  // Main menu nodes
+  $nodes = array(
+    array(
+      'title' => array('et' => 'Õppesuunad', 'ru' => 'Õppesuunad RU', 'en' => 'Õppesuunad EN'),
+      'menu' => array(
+        'plid' => $main_menu_links['Admission'],
+        'weight' => 0,
+      ),
+    ),
+    array(
+      'title' => 'Vastuvõtu tingimused ja kord',
+      'menu' => array(
+        'plid' => $main_menu_links['Admission'],
+        'weight' => 1,
+      ),
+    ),
+  );
+  
+  foreach($nodes as &$node) {
+    $node += $node_defaults;
+    $node['menu'] += $node_defaults['menu'];
+    $node['menu']['link_title'] = $node['title'];
+  }
+  
+  return $nodes;
 }

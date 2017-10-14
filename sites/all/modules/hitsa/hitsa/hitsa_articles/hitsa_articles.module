@@ -61,6 +61,68 @@ function hitsa_articles_node_info() {
   );
 }
 
+function hitsa_articles_block_info() {
+  $blocks['hitsa_our_stories'] = array(
+    'info' => t('HITSA Our Stories'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'region' => 'sidebar_right',
+    'status' => "1",
+  );
+  
+  $blocks['hitsa_important_article'] = array(
+    'info' => t('HITSA Important article'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'region' => 'super_news',
+    'status' => "1",
+  );
+  
+  return $blocks;
+}
+
+function hitsa_articles_block_view($delta = '') {
+  $output = array();
+  switch($delta) {
+    case 'hitsa_our_stories':
+      $query = array('article_type' => 'our_stories', 'range' => array(0, 2));
+      $our_stories_nids = hitsa_articles_query_content($query);
+      
+      if(!empty($our_stories_nids['node'])) {
+        $our_stories_nodes = node_load_multiple(array_keys($our_stories_nids['node']));
+        $authors = array();
+        foreach($our_stories_nodes as $story_node) {
+          $authors[$story_node->uid] = user_load($story_node->uid);
+        }
+        $content = theme('hitsa_our_stories_block', array('nodes' => $our_stories_nodes, 'authors' => $authors));
+        $output = array('subject' => NULL, 'content' => $content);
+      }
+      break;
+    case 'hitsa_important_article':
+      // Add the "Important article" block
+      $query = array('article_type' => 'important', 'range' => array(0, 1));
+      $important_nid = hitsa_articles_query_content($query);
+      if(!empty($important_nid['node'])) {
+        $article_nid = reset($important_nid['node']);
+        $important_article = node_load($article_nid->nid);
+        $content = theme('hitsa_important_article', array('node' => $important_article));
+        $output = array('subject' => NULL, 'content' => $content);
+      }
+      break;
+  }
+  
+  return $output;
+}
+
+function hitsa_articles_block_info_alter(&$blocks, $theme, $code_blocks) {
+  if(!empty($blocks['views']['hitsa_news-news_block'])) {
+    $blocks['views']['hitsa_news-news_block']['status'] = 1;
+    $blocks['views']['hitsa_news-news_block']['region'] = 'content';
+    $blocks['views']['hitsa_news-news_block']['visibility'] = BLOCK_VISIBILITY_LISTED;
+    $blocks['views']['hitsa_news-news_block']['pages'] = '<front>';
+  }
+}
+
 /**
  * Implement hook_form()
  */
@@ -71,8 +133,7 @@ function article_form($node, $form_state) {
 function hitsa_articles_form_alter(&$form, &$form_state, $form_id) {
   if($form_id === 'article_node_form') {
     // Show summary by default.
-    $script = 'jQuery(document).ready(function(){ jQuery(".link-edit-summary").click(); });';
-    drupal_add_js($script, 'inline');
+    hitsa_core_formatted_text_show_summary();
   }
 }
 

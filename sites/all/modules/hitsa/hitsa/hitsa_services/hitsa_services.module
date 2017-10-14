@@ -1,5 +1,33 @@
 <?php
+/**
+ * Implements hook_block_info()
+ */
+ function hitsa_services_block_info() {
+  // This example comes from node.module.
+  $blocks['front_page_services'] = array(
+    'info' => t('Front page services'),
+    
+  );
 
+  return $blocks;
+}
+/**
+ * Implements hook_block_view()
+ */
+ function hitsa_services_block_view($delta = '') {
+  // This example is adapted from node.module.
+  $block = array();
+
+  switch ($delta) {
+    case 'front_page_services':
+      $block['subject'] = t('');
+      $block['content'] = array(
+        '#markup' => hitsa_services_front_page_block(),
+      );
+      break;
+  }
+  return $block;
+}
 /**
  * Implements hook_node_info()
  */
@@ -34,5 +62,89 @@ function hitsa_services_menu() {
 }
 
 function hitsa_services_page() {
-  return 'ok';
+  
+}
+
+function hitsa_services_front_page_block(){
+  
+  if(module_exists('hitsa_events')){
+    $training_events = hitsa_events_front_page_training_block();
+  }
+  
+  global $language;
+  $services = hitsa_core_get_content_by_type('node','service', $language->language);
+  
+  if (isset($services['node'])) {
+    $services_nids = array_keys($services['node']);
+    $services = entity_load('node', $services_nids);
+    
+  } 
+  if (!empty($services)) {
+    $categorised_services = hitsa_services_categorise_services($services);
+  }
+  $output='';
+  $output.='<div class="block block-narrow " data-plugin="tabs">';
+  $output.='<h2 class="block-title">'.t('Services').'</h2>';
+  $output.=' <div class="row pull-up">';
+  $output.='    <div class="col-12">';
+  $output.='       <a href="javascript:void(0);" data-target="tab-1" class="link-tab">'.t('Services').'</a>';
+  $output.=(!empty($training_events))?'<a href="javascript:void(0);" data-target="tab-2" class="link-tab">'.t('Trainings').'</a>':'';
+  $output.='    </div><!--/col-12-->';
+  $output.=' </div><!--/row-->';
+  $output.=' <div class="row-spacer-xs"></div>';
+  $output.=' <div data-tab="tab-1">';
+  $j=0;
+  foreach ($categorised_services as $cat_name => $cat_services) {
+    $output.='    <h5 class="size-large">'.$cat_name.'</h5>';
+    $i=0;
+    $service_count = count($cat_services);
+    if (!empty($cat_services)) {
+      $output.='    <ul class="bullet-links">';
+      foreach ($cat_services as $service) {
+        $li_class='';
+        if($i>3){
+          $li_class= 'data-show= "bullet-list-'.$j.'"';
+        }
+        $output.='<li '.$li_class.'><a href="'.url('node/'.$service->nid).'">'.$service->title.'</a></li>';
+        
+        $i++;
+      }
+      if($i>3){
+        $services_left = $service_count-4;
+        $output.='       <li>';
+        $output.='          <div data-toggle="bullet-list-'.$j.'" class="bullet-list-show_more"><span data-hide="bullet-list-'.$j.'" class="after-arrow_down">'.t('Show more').'('.$services_left.')</span><span data-show="bullet-list-'.$j.'" class="after-arrow_up">'.t('Show less').'</span></div>';
+        $output.='       </li>';
+      }
+      $output.='    </ul>';
+    }
+    $j++;
+  }
+  $output.=' </div><!--/data-tab-1-->';
+  if (!empty($training_events)) {
+    $output .= $training_events;
+  }
+  $output.='</div><!--/block-->';
+  return $output;
+}
+
+function hitsa_services_categorise_services($services=NULL){
+  $categorised_services=array();
+  if (!empty($services)) {
+    foreach ($services as $service) {
+      if (is_object($service)) {
+        if (!empty($service->field_service_category)) {
+          $service_category = taxonomy_term_load($service->field_service_category['und'][0]['target_id']);
+          if (!empty($service_category)) {
+            $service_category = i18n_taxonomy_localize_terms($service_category);
+            $service -> category_name = $service_category -> name;
+            $service -> category_tid = $service_category -> tid;
+            $categorised_services[$service_category->name][] = $service;
+          }
+        }
+      }
+    }
+  }
+  if (!empty($categorised_services)) {
+    return $categorised_services;
+  }
 }

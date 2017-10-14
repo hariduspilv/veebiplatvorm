@@ -15,6 +15,18 @@ function hitsa_logos_node_info() {
 }
 
 /**
+ * Implements hook_block_info_alter()
+ */
+function hitsa_logos_block_info_alter(&$blocks, $theme, $code_blocks) {
+  if(!empty($blocks['views']['hitsa_logos-awards_block']) && $theme === 'hitsa') {
+    $blocks['views']['hitsa_logos-awards_block']['status'] = 1;
+    $blocks['views']['hitsa_logos-awards_block']['region'] = 'sidebar_right';
+    $blocks['views']['hitsa_logos-awards_block']['visibility'] = BLOCK_VISIBILITY_LISTED;
+    $blocks['views']['hitsa_logos-awards_block']['pages'] = '<front>';
+  }
+}
+
+/**
  * Implements hook_form()
  */
 function logo_form($node, $form_state) {

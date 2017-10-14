@@ -43,6 +43,10 @@ function hitsa_core_variable_info($options) {
     );
   }
   
+  $variable['hitsa_school_place_id'] = array(
+    'title' => t('Place ID'),
+    'group' => 'header_footer_variables',
+  );
   $variable['footer_copyright_notice'] = array(
     'title' => t('Copyright Notice'),
     'group' => 'header_footer_variables',
@@ -131,7 +135,13 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
     // Gmap picker
     $form['gmap_picker'] = array(
       '#markup' => theme('gmap_picker'),
+      '#weight' => 2,
     );
+    
+    // Hide the school place element
+    $form['hitsa_school_place_id']['#attributes']['style'] = 'display:none;';
+    $form['hitsa_school_place_id']['#title_display'] = 'invisible';
+    $form['hitsa_school_place_id']['#theme_wrappers'] = array();
   }
 }
 

@@ -22,9 +22,11 @@
   </div><!--/row-->
 </div><!--/inline-->
 
+<?php if(!empty($hitsa_school_place_id)): ?>
 <div class="map">
-  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2120.677165355292!2d27.011086316401293!3d57.89163583248798!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46eae4e87664624f%3A0x862356c0f15c8fc!2sV%C3%B5rumaa+Kutsehariduskeskus!5e0!3m2!1set!2see!4v1505983870537" style="border:0" allowfullscreen></iframe>
+  <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBQW5d3aaKFwt_7LaKW683Q8VAcJjv7SbU&q=<?php print urlencode($hitsa_school_place_id); ?>" style="border:0" allowfullscreen></iframe>
 </div><!--/map-->
+<?php endif; ?>
    
 <div class="inline">
   <div class="row">

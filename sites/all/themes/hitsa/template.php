@@ -1,6 +1,10 @@
 <?php
 
 function hitsa_preprocess_page(&$variables) {
+  
+    if ($variables['is_front']) {
+      $variables['page']['content']['system_main']['#access'] = FALSE;
+    }
   if(module_exists('hitsa_core')) { // Add header and footer
     $variables['header'] = theme('hitsa_header');
     $variables['footer'] = theme('hitsa_footer');
@@ -22,7 +26,7 @@ function hitsa_preprocess_hitsa_front_content(&$variables) {
       $important_article = node_load($article_nid->nid);
       $variables['important_article'] = theme('hitsa_important_article', array('node' => $important_article));
     }
-    
+  
     // Add news block
     $variables['news_block'] = views_embed_view('hitsa_news', 'news_block');
 
@@ -39,11 +43,19 @@ function hitsa_preprocess_hitsa_front_content(&$variables) {
       $variables['our_stories_block'] = theme('hitsa_our_stories_block', array('nodes' => $our_stories_nodes, 'authors' => $authors));
     }
   }
+  if(module_exists('hitsa_events')){
+    $block = module_invoke('hitsa_events', 'block_view', 'fornt_page_training');
+    
+    $variables['hitsa_training_events'] = render($block['content']);
+    $block = module_invoke('hitsa_events','block_view','fornt_page_events');
+    $variables['hitsa_front_events'] = render($block['content']);
+  }
   if(module_exists('hitsa_logos')) { // HITSA Logos module
     // Add awards block
     $variables['awards_block'] = views_embed_view('hitsa_logos', 'awards_block');
   }
 }
+
 
 /* Main menu render functions */
 function hitsa_menu_tree__hitsa_main_menu($variables) {
@@ -81,6 +93,9 @@ function hitsa_menu_link__hitsa_main_menu($variables) {
     }
     $children_split = array_chunk($children, 5);
     $sub_menu = theme('submenu_tree__hitsa_main_menu', array('submenu' => $children_split, 'parent' => $element['#title']));
+  } else if($element['#href'] === '<front>' && $element['#original_link']['depth'] === '1') {
+    // Hide first level main menu elements without set link and children.
+    return '';
   }
   $output = l($element['#title'], $element['#href'], $element['#localized_options']);
   return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";

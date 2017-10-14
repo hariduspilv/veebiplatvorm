@@ -14,6 +14,7 @@ function hitsa_articles_install() {
   
   variable_set('language_content_type_article', TRANSLATION_ENABLED); // Make multilingual
   variable_set('comment_article', '0'); // Disable commenting
+  variable_set('i18n_node_options_article', array('required')); // Disable language neutral option
 }
 
 /*
@@ -25,6 +26,12 @@ function hitsa_articles_uninstall() {
   hitsa_core_delete_nodes('article');
   field_purge_batch(500);
   variable_del('language_content_type_article');
+  
+  // Delete News view
+  $view = views_get_view('hitsa_news');
+  if($view) {
+    views_delete_view($view);
+  }
 }
 
 function _hitsa_articles_fields() {

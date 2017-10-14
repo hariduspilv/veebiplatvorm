@@ -88,11 +88,46 @@
 <div class="wrapper">
    
   <header class="main">
-   <?php if(!empty($header)): ?>
-    <?php print $header; ?>
+   <?php if(!empty($page['header'])): ?>
+    <?php print drupal_render($page['header']); ?>
+    <?php elseif(!empty($header)):?>
+    <?php print $header?>
    <?php endif; ?>
   </header><!--/main-->
-
+  <?php if(!empty($page['hero'])):?>
+  <?php print render($page['hero'])?>
+  <?php endif;?>
+  <div class="inline">
+    <?php if(!empty($page['super_news'])):?>
+      <div class="row">
+         <div class="col-12">
+          <?php print render($page['super_news'])?>
+         </div><!--/col-12-->
+      </div><!--/row-->
+    <?php endif;?>
+    
+      <?php if ($tabs): ?>
+        <div class="row">
+         <div class="col-12">
+          <?php print render($tabs); ?>
+        </div><!--/col-12-->
+      </div><!--/row-->
+      <?php endif; ?>
+  <div class="row">
+    <?php if(!empty($page['sidebar_right'])):?>
+      <div class="col-9">
+    <?php else:?>
+      <div class="col-12">
+    <?php endif;?>
+    <?php print render($page['content']); ?>
+      </div><!--/col-x-->
+    <?php if(!empty($page['sidebar_right'])):?>
+      <div class="col-3">
+      <?php print render($page['sidebar_right'])?>
+      </div><!--/col-x-->
+    <?php endif?>
+  </div><!--/row-->
+  </div><!--/inline-->
   <?php if ($messages): ?>
     <div id="messages"><div class="section clearfix">
       <?php print $messages; ?>
@@ -101,27 +136,26 @@
 
   <div class="inline">
   <?php if(drupal_is_front_page()): ?>
-    <?php print $front_content; ?>
+    <?php //print $front_content; ?>
   <?php else: ?>
     <?php if ($breadcrumb): ?>
       <div id="breadcrumb"><?php print $breadcrumb; ?></div>
     <?php endif; ?>
 
-    <?php if ($page['sidebar_first']): ?>
+    <?php if ($page['sidebar_right']): ?>
       <div id="sidebar-first" class="column sidebar"><div class="section">
-        <?php print render($page['sidebar_first']); ?>
+        <?php print render($page['sidebar_right']); ?>
       </div></div> <!-- /.section, /#sidebar-first -->
     <?php endif; ?>
 
     <div id="content" class="column"><div class="section">
-      <?php if ($page['highlighted']): ?><div id="highlighted"><?php print render($page['highlighted']); ?></div><?php endif; ?>
+      <?php //if ($page['highlighted']): ?>
+      <!--<div id="highlighted">-->
+        <?php// print render($page['highlighted']); ?>
+        <!--</div>-->
+        <?php// endif; ?>
       <a id="main-content"></a>
 
-      <?php if ($tabs): ?>
-        <div class="tabs">
-          <?php print render($tabs); ?>
-        </div>
-      <?php endif; ?>
       <?php print render($page['help']); ?>
       <?php if ($action_links): ?>
         <ul class="action-links">
@@ -138,7 +172,6 @@
       </div></div> <!-- /.section, /#sidebar-second -->
     <?php endif; ?>
   
-      <?php print render($page['content']); ?>
   <?php endif; ?>
   </div> <!-- /.inline -->
 
