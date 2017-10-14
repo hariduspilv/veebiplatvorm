@@ -250,7 +250,7 @@ $databases = array (
     'default' => 
     array (
       'database' => 'c9',
-      'username' => 'forzakenus',
+      'username' => 'madis',
       'password' => 'solemio',
       'host' => 'localhost',
       'port' => '',
@@ -313,7 +313,7 @@ $drupal_hash_salt = 'emaAzEAGO8J3Xt4EVV7lzuhlFTWHB4uK2onvgPIhGQk';
  * for you.
  */
 # $base_url = 'http://www.example.com';  // NO trailing slash!
- $base_url = 'http://hitsa-veelkord-forzakenus.c9users.io';  // NO trailing slash!
+  #$base_url = 'http://hitsa-veelkord-forzakenus.c9users.io';  
 
 /**
  * PHP settings:
