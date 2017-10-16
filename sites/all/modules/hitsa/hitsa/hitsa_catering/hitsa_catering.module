@@ -184,10 +184,12 @@ function hitsa_catering_week($start_date=NULL){
     $build['catering']['catering_provider']['#prefix'] = '<div class="col-3 d-flex">';
     $build['catering']['catering_provider']['#suffix'] = '</div>';
     $build['catering']['catering_provider']['#markup'] = $catering_providers_sidemenu;
-    $build['catering']['catering_table']['#prefix'] = '<div class="col-9">';
+    $build['catering']['catering_table']['#prefix'] = '<div class="col-9"><article>';
+    $build['catering']['catering_table']['#suffix'] = '</div></article>';
   }
   else{
-    $build['catering']['catering_table']['#prefix'] = '<div class="col-12">';
+    $build['catering']['catering_table']['#prefix'] = '<div class="col-12"><article>';
+    $build['catering']['catering_table']['#suffix'] = '</div></article>';
   }
   
   $query = db_select('field_data_field_date','fdfd');
@@ -228,10 +230,9 @@ function hitsa_catering_week($start_date=NULL){
     $build['catering']['#suffix'] = '</div> </div><!--/block-->';
     $build['catering']['#type'] = 'container';
     $build['catering']['#theme_wrappers'] = array();
-    $build['catering']['catering_table']['#prefix'] = '<div class="col-9"><article>';
-    $build['catering']['catering_table']['#suffix'] = '</article></div>';
     $build['catering']['catering_table']['#markup'] = $catering_table.$catering_html;
   }
+  dpm($build);
   return $build;
 }
 /**
@@ -366,7 +367,7 @@ function hitsa_catering_provider_html($provider){
     $location_value = field_view_value('taxonomy_term', $provider, 'field_location', $location[0]);
     
   $output = '<div class="row">';
-  dpm($provider);
+  
   if (!empty($provider->field_email)) {
     $email = $provider->field_email['und'][0]['email'];
     
@@ -397,6 +398,34 @@ function hitsa_catering_provider_html($provider){
     $address_out.= '                         </li>';
   }
   $output .= '</div>';
+  if (!empty($provider->field_catering_provider_pictures)) {
+    $images = array();
+    $captions = array();
+    foreach ($provider->field_catering_provider_pictures['und'] as $picture) {
+      
+      $picture_uri =  $picture['uri'];
+      $image_style =  'large';
+      $image_url = image_style_url($image_style, $picture_uri);
+      $images[$picture['fid']] = '<img src="'.$image_url.'" alt="">';
+      if (!empty($picture['field_file_image_title_text'])) {
+        $captions[$picture['fid']] = $picture['field_file_image_title_text']['und'][0]['value'];
+      }
+      
+    }
+  }
+  if (!empty($images)) {
+                      $output.='  <div class="row">';
+                      foreach ($images as $key => $image) {
+                        // code...
+                      $output.='     <div class="col-6">';
+                      $output.='        <figure>';
+                      $output.=           $image;
+                      $output.=(!empty($captions)&&!empty($captions[$key]))?'          <figcaption>'.$captions[$key].'</figcaption>':'';
+                      $output.='        </figure>';
+                      $output.='     </div><!--/col-6-->';
+                      }
+                      $output.='  </div><!--/row-->';
+  }
   $output .='<p><b>'.$provider->name.'</b></p>';
   $output.= '<ul class="list-details">';
   $output.= (!empty($address_out))?$address_out:'';

@@ -112,8 +112,12 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 
     switch ($form_id) {
         case 'event_node_form':
+          
+            $form['language']['#weight']=-2;
+            $form['field_event_type']['#weight']=-3;
             $form['period']['#access']=FALSE;
             hitsa_events_add_types(variable_get('school_type'));
+
             break;
     
         default:
