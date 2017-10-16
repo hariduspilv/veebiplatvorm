@@ -562,8 +562,10 @@ function hitsa_events_calendar_page_html(){
                 $start_date_date = date('U', strtotime("+{$i} day", $start_date));
                 $event_html = hitsa_events_event_html($event,$type='event',$start_date_date);
                 $events_array[]=$event_html;
-                $periods[$event_html['period']->tid] = $event_html['period'];
-                $periods[$event_html['period']->tid]->events[] = array('date' => $event_html['start_date'],'html'=>$event_html['html']);
+                if(is_object($event_html['period'])){
+                    $periods[$event_html['period']->tid] = $event_html['period'];
+                    $periods[$event_html['period']->tid]->events[] = array('date' => $event_html['start_date'],'html'=>$event_html['html']);
+                }
             }
           }
         }
@@ -656,11 +658,16 @@ function hitsa_events_calendar_page_html(){
     $i=0;
     
     $time = strtotime('today midnight');
-    array_unshift($period->events,array(
-      'date' => (string)strtotime('today midnight'),
-      'html' => '<div class="object-dateseparator"><span>'.t('today').', '.strftime('%d. %B',$time).'</span></div>',
-      'today' => TRUE,
-      ));
+    
+    if (!empty($period->field_time_period_dates)) {
+      if ($time>=$period->field_time_period_dates['und'][0]['value'] && $time <=$period->field_time_period_dates['und'][0]['value2']) {
+        array_unshift($period->events,array(
+          'date' => (string)strtotime('today midnight'),
+          'html' => '<div class="object-dateseparator"><span>'.t('today').', '.format_date($time,'custom','d.F').'</span></div>',
+          'today' => TRUE,
+          ));
+        }
+    }
     usort($period->events, function($a, $b) {
         return $a['date'] - $b['date'];
     });
@@ -818,8 +825,9 @@ function hitsa_events_event_html($event=NULL,$type=NULL,$start_date_date=NULL){
   $time = strtotime('today midnight');
   setlocale(LC_CTYPE,'et_EE');
   if(!empty($event->period)){
-    $period = taxonomy_term_load($event->period[$language->language][0]['tid']);
-    
+    if(isset($event->period[$language->language])){
+      $period = taxonomy_term_load($event->period[$language->language][0]['tid']);  
+    } 
   }
   
   $output='';
@@ -1212,6 +1220,7 @@ function hitsa_events_training_calendar(){
     $events = entity_load('node', $event_nids);
     
   } 
+  
   $periods  = array();
   if (!empty($events)) {
     $output = '';
@@ -1325,11 +1334,16 @@ function hitsa_events_training_calendar(){
     $i=0;
     
     $time = strtotime('today midnight');
-    array_unshift($period->events,array(
-      'date' => (string)strtotime('today midnight'),
-      'html' => '<div class="object-dateseparator"><span>'.t('today').', '.strftime('%d. %B',$time).'</span></div>',
-      'today' => TRUE,
-      ));
+    
+    if (!empty($period->field_time_period_dates)) {
+      if ($time>=$period->field_time_period_dates['und'][0]['value'] && $time <=$period->field_time_period_dates['und'][0]['value2']) {
+        array_unshift($period->events,array(
+          'date' => (string)strtotime('today midnight'),
+          'html' => '<div class="object-dateseparator"><span>'.t('today').', '.format_date($time,'custom','d.F').'</span></div>',
+          'today' => TRUE,
+          ));
+        }
+    }
     usort($period->events, function($a, $b) {
         return $a['date'] - $b['date'];
     });
