@@ -1,0 +1,1413 @@
+<?php
+    /**
+     * Implements hook_install().
+     */
+function hitsa_curriculum_install()
+{
+    node_types_rebuild();
+    $types = node_type_get_types();
+        
+    hitsa_curriculum_add_custom_vocabularies();
+    hitsa_curriculum_add_custom_paragraphs_bundle();
+        
+    hitsa_curriculum_add_custom_paragraphs_fields();
+    hitsa_curriculum_add_custom_node_fields();
+        
+    // hitsa_curriculum_add_custom_field_groups();
+}
+/**
+ * Implements hook_uninstall().
+ */
+function hitsa_curriculum_uninstall()
+{
+    $node_type = 'curriculum';
+    $paragraphs_bundles = array(
+        'contacts','description','table'
+    );
+
+    
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+    $result = db_query($sql, array(':type' => $node_type));
+    $node_ids = array();
+    foreach ($result as $row) {
+        $node_ids[] = $row->nid;
+    }
+    
+    
+    // Delete fields and vocabularies
+    hitsa_curriculum_delete_custom_node_fields();
+    hitsa_curriculum_delete_custom_paragraphs_fields();
+    field_purge_batch(500);
+    hitsa_curriculum_delete_custom_vocabularies();
+    // hitsa_curriculum_delete_vocabulary_fields();
+    node_delete_multiple($node_ids); // Delete all catering nodes
+    node_type_delete($node_type); // Delete contact content type
+    foreach ($paragraphs_bundles as $key => $paragraphs_bundle) {
+        paragraphs_bundle_delete($paragraphs_bundle); // Delete paragraphs bundle
+    }
+}
+function hitsa_curriculum_add_custom_vocabularies()
+{
+    // Create vocabulary
+    foreach (_hitsa_curriculum_vocabularies() as $v) {
+        taxonomy_vocabulary_save($v['vocabulary']);
+        
+        $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+        if (!empty($v['terms']) && $vocab) {
+            // Add generic terms
+            foreach ($v['terms'] as $term) {
+                $term->vid = $vocab->vid;
+                taxonomy_term_save($term);
+            }
+        }
+    }
+}
+function _hitsa_curriculum_vocabularies()
+{
+
+    $vocabularies = array();
+  
+    $vocabularies['fields'] = array(
+    'vocabulary' => (object) array(
+      'name' => t('Fields'),
+      'description' => t('Field for speciality'),
+      'machine_name' => 'fields',
+      'hierarchy' => 0,
+      'module' => 'taxonomy',
+      'weight' => 0,
+      'language' => 'und',
+      'i18n_mode' => 1,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
+    ),
+    );
+    return $vocabularies;
+}
+function hitsa_curriculum_delete_custom_vocabularies()
+{
+    foreach (_hitsa_curriculum_vocabularies() as $v) {
+        if (!empty($v['vocabulary'])) {
+            $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+            taxonomy_vocabulary_delete($vocab->vid);
+        }
+    }
+}
+function hitsa_curriculum_add_custom_paragraphs_bundle()
+{
+    $bundle = new stdClass();
+    $bundle->name = 'Contacts'; // user friendly label
+    $bundle->bundle = 'contacts'; // machine name
+    $bundle->locked = 1;
+    $status = paragraphs_bundle_save($bundle);
+    $bundle = new stdClass();
+    $bundle->name = 'Description'; // user friendly label
+    $bundle->bundle = 'description'; // machine name
+    $bundle->locked = 1;
+    $status = paragraphs_bundle_save($bundle);
+    $bundle = new stdClass();
+    $bundle->name = 'Table'; // user friendly label
+    $bundle->bundle = 'table'; // machine name
+    $bundle->locked = 1;
+    $status = paragraphs_bundle_save($bundle);
+}
+function hitsa_curriculum_add_custom_paragraphs_fields()
+{
+
+    foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field) {
+        field_create_field($field);
+    }
+
+    foreach (_hitsa_curriculum_installed_paragraphs_instances() as $field_instance) {
+        field_create_instance($field_instance);
+    }
+}
+function _hitsa_curriculum_installed_paragraphs_fields()
+{
+    $field_bases = array();
+  // Exported field_base: 'field_row'.
+    $field_bases['field_row'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_row',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'number_integer',
+    );
+
+  // Exported field_base: 'field_address'.
+    $field_bases['field_address'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_address',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+    );
+
+  // Exported field_base: 'field_descriptions'.
+    $field_bases['field_descriptions'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_descriptions',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'paragraphs',
+    'settings' => array(
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'paragraphs',
+    );
+
+  // Exported field_base: 'field_column'.
+    $field_bases['field_column'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_column',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'number_integer',
+    );
+  // Exported field_base: 'field_table_content'.
+    $field_bases['field_table_content'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_table_content',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'tablefield',
+    'settings' => array(
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'tablefield',
+    );
+
+  // Exported field_base: 'field_table_field_description'.
+    $field_bases['field_table_field_description'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_table_field_description',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+    );
+
+  // Exported field_base: 'field_table_location'.
+    $field_bases['field_table_location'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_table_location',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'before' => 'Before content',
+        'after' => 'After content',
+      ),
+      'allowed_values_function' => '',
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+    );
+
+  // Exported field_base: 'field_contact_title'.
+    $field_bases['field_contact_title'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_contact_title',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+    );
+  // Exported field_base: 'field_website'.
+    $field_bases['field_website'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_website',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+    );
+
+    return $field_bases;
+}
+function _hitsa_curriculum_installed_paragraphs_instances()
+{
+    $field_instances = array();
+    $field_instances['paragraphs_item-contacts-field_address'] = array(
+        'bundle' => 'contacts',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'text',
+            'settings' => array(),
+            'type' => 'text_default',
+            'weight' => 3,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_address',
+        'label' => 'Address',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'text_processing' => 0,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'text',
+          'settings' => array(
+            'size' => 60,
+          ),
+          'type' => 'text_textfield',
+          'weight' => 5,
+        ),
+      );
+    
+      // Exported field_instance: 'paragraphs_item-contacts-field_contact_title'.
+      $field_instances['paragraphs_item-contacts-field_contact_title'] = array(
+        'bundle' => 'contacts',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'text',
+            'settings' => array(),
+            'type' => 'text_default',
+            'weight' => 0,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_contact_title',
+        'label' => 'Contact title',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'text_processing' => 0,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'text',
+          'settings' => array(
+            'size' => 60,
+          ),
+          'type' => 'text_textfield',
+          'weight' => 1,
+        ),
+      );
+    
+      // Exported field_instance: 'paragraphs_item-contacts-field_phone_number'.
+      $field_instances['paragraphs_item-contacts-field_phone_number'] = array(
+        'bundle' => 'contacts',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'text',
+            'settings' => array(),
+            'type' => 'text_default',
+            'weight' => 2,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_phone_number',
+        'label' => 'Phone number',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'text_processing' => 0,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'text',
+          'settings' => array(
+            'size' => 60,
+          ),
+          'type' => 'text_textfield',
+          'weight' => 4,
+        ),
+      );
+    
+      // Exported field_instance: 'paragraphs_item-contacts-field_website'.
+      $field_instances['paragraphs_item-contacts-field_website'] = array(
+        'bundle' => 'contacts',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'text',
+            'settings' => array(),
+            'type' => 'text_default',
+            'weight' => 1,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_website',
+        'label' => 'Website',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'text_processing' => 0,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'text',
+          'settings' => array(
+            'size' => 60,
+          ),
+          'type' => 'text_textfield',
+          'weight' => 2,
+        ),
+      );
+    
+      // Exported field_instance: 'paragraphs_item-description-field_column'.
+      $field_instances['paragraphs_item-description-field_column'] = array(
+        'bundle' => 'description',
+        'default_value' => array(
+          0 => array(
+            'value' => 1,
+          ),
+        ),
+        'deleted' => 0,
+        'description' => 'In which column should the description appear starting from 1',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'number',
+            'settings' => array(
+              'decimal_separator' => '.',
+              'prefix_suffix' => true,
+              'scale' => 0,
+              'thousand_separator' => '',
+            ),
+            'type' => 'number_integer',
+            'weight' => 0,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_column',
+        'label' => 'Column',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'max' => '',
+          'min' => 1,
+          'prefix' => '',
+          'suffix' => '',
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 0,
+          'module' => 'number',
+          'settings' => array(),
+          'type' => 'number',
+          'weight' => 1,
+        ),
+      );
+    
+      // Exported field_instance: 'paragraphs_item-description-field_row'.
+      $field_instances['paragraphs_item-description-field_row'] = array(
+        'bundle' => 'description',
+        'default_value' => array(
+          0 => array(
+            'value' => 1,
+          ),
+        ),
+        'deleted' => 0,
+        'description' => 'In which row should the description appear',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'number',
+            'settings' => array(
+              'decimal_separator' => '.',
+              'prefix_suffix' => true,
+              'scale' => 0,
+              'thousand_separator' => '',
+            ),
+            'type' => 'number_integer',
+            'weight' => 1,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_row',
+        'label' => 'Row',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'max' => '',
+          'min' => 1,
+          'prefix' => '',
+          'suffix' => '',
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 0,
+          'module' => 'number',
+          'settings' => array(),
+          'type' => 'number',
+          'weight' => 2,
+        ),
+      );
+    
+      // Exported field_instance:
+      // 'paragraphs_item-description-field_table_field_description'.
+      $field_instances['paragraphs_item-description-field_table_field_description'] = array(
+        'bundle' => 'description',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => 'Table field description',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'text',
+            'settings' => array(),
+            'type' => 'text_default',
+            'weight' => 2,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_table_field_description',
+        'label' => 'Table field description',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'text_processing' => 0,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'text',
+          'settings' => array(
+            'size' => 60,
+          ),
+          'type' => 'text_textfield',
+          'weight' => 4,
+        ),
+      );
+    
+      // Exported field_instance: 'paragraphs_item-table-field_descriptions'.
+      $field_instances['paragraphs_item-table-field_descriptions'] = array(
+        'bundle' => 'table',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => 'Descriptions for tablefields',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'paragraphs',
+            'settings' => array(
+              'view_mode' => 'full',
+            ),
+            'type' => 'paragraphs_view',
+            'weight' => 4,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_descriptions',
+        'label' => 'Descriptions',
+        'required' => 0,
+        'settings' => array(
+          'add_mode' => 'select',
+          'allowed_bundles' => array(
+            'catering_food_by_day' => -1,
+            'contacts_department' => -1,
+            'content_and_description' => -1,
+            'description' => 'description',
+            'subpage_ref' => -1,
+            'table' => -1,
+            'table_body' => -1,
+            'table_header' => -1,
+            'table_row' => -1,
+          ),
+          'bundle_weights' => array(
+            'catering_food_by_day' => 2,
+            'contacts_department' => 3,
+            'content_and_description' => 4,
+            'description' => 5,
+            'subpage_ref' => 6,
+            'table' => 7,
+            'table_body' => 8,
+            'table_header' => 9,
+            'table_row' => 10,
+          ),
+          'default_edit_mode' => 'preview',
+          'entity_translation_sync' => false,
+          'title' => 'description',
+          'title_multiple' => 'descriptions',
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 0,
+          'module' => 'paragraphs',
+          'settings' => array(),
+          'type' => 'paragraphs_embed',
+          'weight' => 5,
+        ),
+      );
+    
+      // Exported field_instance: 'paragraphs_item-table-field_table_content'.
+      $field_instances['paragraphs_item-table-field_table_content'] = array(
+        'bundle' => 'table',
+        'default_value' => array(
+          0 => array(
+            'tablefield' => array(
+              'caption' => '',
+              'import' => array(
+                'file' => '',
+                'import' => 'Upload CSV',
+              ),
+              'paste' => array(
+                'data' => '',
+                'paste_delimiter' => '',
+                'paste_import' => 'Import & Rebuild',
+              ),
+              'rebuild' => array(
+                'count_cols' => 5,
+                'count_rows' => 5,
+                'rebuild' => 'Rebuild Table',
+              ),
+              'tabledata' => array(
+                'row_0' => array(
+                  'col_0' => '',
+                  'col_1' => '',
+                  'col_2' => '',
+                  'col_3' => '',
+                  'col_4' => '',
+                  'weight' => 1,
+                ),
+                'row_1' => array(
+                  'col_0' => '',
+                  'col_1' => '',
+                  'col_2' => '',
+                  'col_3' => '',
+                  'col_4' => '',
+                  'weight' => 2,
+                ),
+                'row_2' => array(
+                  'col_0' => '',
+                  'col_1' => '',
+                  'col_2' => '',
+                  'col_3' => '',
+                  'col_4' => '',
+                  'weight' => 3,
+                ),
+                'row_3' => array(
+                  'col_0' => '',
+                  'col_1' => '',
+                  'col_2' => '',
+                  'col_3' => '',
+                  'col_4' => '',
+                  'weight' => 4,
+                ),
+                'row_4' => array(
+                  'col_0' => '',
+                  'col_1' => '',
+                  'col_2' => '',
+                  'col_3' => '',
+                  'col_4' => '',
+                  'weight' => 5,
+                ),
+              ),
+            ),
+          ),
+        ),
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'tablefield',
+            'settings' => array(
+              'export_csv' => false,
+              'header_orientation' => 'Horizontal',
+              'hide_cols_skip_head' => false,
+              'hide_empty_cols' => false,
+              'hide_empty_rows' => false,
+              'hide_header' => false,
+              'sortable' => false,
+              'sticky_header' => true,
+              'striping' => true,
+              'trim_trailing_cols' => false,
+              'trim_trailing_rows' => false,
+            ),
+            'type' => 'tablefield_default',
+            'weight' => 3,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_table_content',
+        'label' => 'Table content',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'tablefield',
+          'settings' => array(
+            'cell_processing' => 0,
+            'data_sources' => array(
+              'paste' => 'paste',
+              'upload' => 'upload',
+            ),
+            'input_type' => 'textfield',
+            'lock_values' => 0,
+            'max_length' => 2048,
+            'restrict_rebuild' => 0,
+          ),
+          'type' => 'tablefield',
+          'weight' => 4,
+        ),
+      );
+    
+      // Exported field_instance: 'paragraphs_item-table-field_table_location'.
+      $field_instances['paragraphs_item-table-field_table_location'] = array(
+        'bundle' => 'table',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'list',
+            'settings' => array(),
+            'type' => 'list_default',
+            'weight' => 2,
+          ),
+          'paragraphs_editor_preview' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_table_location',
+        'label' => 'Table location',
+        'required' => 0,
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'options',
+          'settings' => array(),
+          'type' => 'options_buttons',
+          'weight' => 3,
+        ),
+      );
+    
+      // Translatables
+      // Included for use with string extractors like potx.
+      t('Address');
+      t('Attachments');
+      t('Body');
+      t('Column');
+      t('Contact title');
+      t('Contacts');
+      t('Descriptions');
+      t('Descriptions for tablefields');
+      t('Field');
+      t('In which column should the description appear starting from 1');
+      t('In which row should the description appear');
+      t('Phone number');
+      t('Pictures');
+      t('Row');
+      t('Table');
+      t('Table content');
+      t('Table field description');
+      t('Table location');
+      t('Website');
+    
+      return $field_instances;
+}
+function hitsa_curriculum_delete_custom_paragraphs_fields()
+{
+
+    foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field_key => $field) {
+        field_delete_field($field_key);
+    }
+    $instances = field_info_instances('paragraphs_item', 'contacts');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
+    $instances = field_info_instances('paragraphs_item', 'description');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
+    $instances = field_info_instances('paragraphs_item', 'table');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
+}
+function hitsa_curriculum_add_custom_node_fields()
+{
+    foreach (_hitsa_curriculum_installed_node_fields() as $field) {
+        field_create_field($field);
+    }
+
+    foreach (_hitsa_curriculum_installed_node_instances() as $field_instance) {
+        field_create_instance($field_instance);
+    }
+}
+function _hitsa_curriculum_installed_node_fields()
+{
+    $field_bases = array();
+    
+      // Exported field_base: 'body'.
+      $field_bases['body'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(
+          0 => 'node',
+        ),
+        'field_name' => 'body',
+        'indexes' => array(
+          'format' => array(
+            0 => 'format',
+          ),
+        ),
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+          'entity_translation_sync' => false,
+        ),
+        'translatable' => 0,
+        'type' => 'text_with_summary',
+      );
+      // Exported field_base: 'field_attachments'.
+    $field_bases['field_attachments'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_attachments',
+    'indexes' => array(
+      'fid' => array(
+        0 => 'fid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'file',
+    'settings' => array(
+      'display_default' => 0,
+      'display_field' => 0,
+      'entity_translation_sync' => array(
+        0 => 'fid',
+      ),
+      'uri_scheme' => 'public',
+    ),
+    'translatable' => 0,
+    'type' => 'file',
+    );
+
+  // Exported field_base: 'field_contacts'.
+    $field_bases['field_contacts'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_contacts',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'paragraphs',
+    'settings' => array(
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'paragraphs',
+    );
+    // Exported field_base: 'field_field'.
+    $field_bases['field_field'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_field',
+        'indexes' => array(
+          'target_id' => array(
+            0 => 'target_id',
+          ),
+        ),
+        'locked' => 0,
+        'module' => 'entityreference',
+        'settings' => array(
+          'entity_translation_sync' => false,
+          'handler' => 'base',
+          'handler_settings' => array(
+            'behaviors' => array(
+              'views-select-list' => array(
+                'status' => 0,
+              ),
+            ),
+            'sort' => array(
+              'type' => 'none',
+            ),
+            'target_bundles' => array(
+              'fields' => 'fields',
+            ),
+          ),
+          'target_type' => 'taxonomy_term',
+        ),
+        'translatable' => 0,
+        'type' => 'entityreference',
+      );
+    // Exported field_base: 'field_pictures'.
+    $field_bases['field_pictures'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_pictures',
+    'indexes' => array(
+      'fid' => array(
+        0 => 'fid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'image',
+    'settings' => array(
+      'default_image' => 0,
+      'entity_translation_sync' => array(
+        0 => 'fid',
+      ),
+      'uri_scheme' => 'public',
+    ),
+    'translatable' => 0,
+    'type' => 'image',
+    );
+
+  // Exported field_base: 'field_table'.
+    $field_bases['field_table'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_table',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'paragraphs',
+    'settings' => array(
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'paragraphs',
+    );
+    return $field_bases;
+}
+function _hitsa_curriculum_installed_node_instances()
+{
+    $field_instances = array();
+    $field_instances['node-curriculum-body'] = array(
+        'bundle' => 'curriculum',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'hidden',
+            'module' => 'text',
+            'settings' => array(),
+            'type' => 'text_default',
+            'weight' => 0,
+          ),
+          'teaser' => array(
+            'label' => 'hidden',
+            'module' => 'text',
+            'settings' => array(
+              'trim_length' => 600,
+            ),
+            'type' => 'text_summary_or_trimmed',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'body',
+        'label' => 'Body',
+        'required' => false,
+        'settings' => array(
+          'display_summary' => true,
+          'entity_translation_sync' => false,
+          'text_processing' => 1,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'module' => 'text',
+          'settings' => array(
+            'rows' => 20,
+            'summary_rows' => 5,
+          ),
+          'type' => 'text_textarea_with_summary',
+          'weight' => 3,
+        ),
+      );
+    
+      // Exported field_instance: 'node-curriculum-field_attachments'.
+      $field_instances['node-curriculum-field_attachments'] = array(
+        'bundle' => 'curriculum',
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'file',
+            'settings' => array(),
+            'type' => 'file_default',
+            'weight' => 5,
+          ),
+          'teaser' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_attachments',
+        'label' => 'Attachments',
+        'required' => 0,
+        'settings' => array(
+          'description_field' => 0,
+          'entity_translation_sync' => false,
+          'file_directory' => '',
+          'file_extensions' => 'txt pdf doc',
+          'max_filesize' => '',
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'media',
+          'settings' => array(
+            'allowed_schemes' => array(
+              'public' => 'public',
+            ),
+            'allowed_types' => array(
+              'audio' => 0,
+              'document' => 'document',
+              'image' => 'image',
+              'video' => 0,
+            ),
+            'browser_plugins' => array(
+              'media_default--media_browser_1' => 'media_default--media_browser_1',
+              'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
+              'upload' => 'upload',
+            ),
+          ),
+          'type' => 'media_generic',
+          'weight' => 7,
+        ),
+      );
+    
+      // Exported field_instance: 'node-curriculum-field_contacts'.
+      $field_instances['node-curriculum-field_contacts'] = array(
+        'bundle' => 'curriculum',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'paragraphs',
+            'settings' => array(
+              'view_mode' => 'full',
+            ),
+            'type' => 'paragraphs_view',
+            'weight' => 6,
+          ),
+          'teaser' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_contacts',
+        'label' => 'Contacts',
+        'required' => 0,
+        'settings' => array(
+          'add_mode' => 'button',
+          'allowed_bundles' => array(
+            'catering_food_by_day' => -1,
+            'contacts' => 'contacts',
+            'contacts_department' => -1,
+            'content_and_description' => -1,
+            'description' => -1,
+            'subpage_ref' => -1,
+            'table' => -1,
+            'table_body' => -1,
+            'table_header' => -1,
+            'table_row' => -1,
+          ),
+          'bundle_weights' => array(
+            'catering_food_by_day' => 2,
+            'contacts' => 3,
+            'contacts_department' => 4,
+            'content_and_description' => 5,
+            'description' => 6,
+            'subpage_ref' => 7,
+            'table' => 8,
+            'table_body' => 9,
+            'table_header' => 10,
+            'table_row' => 11,
+          ),
+          'default_edit_mode' => 'preview',
+          'entity_translation_sync' => false,
+          'title' => 'contact',
+          'title_multiple' => 'contacts',
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 0,
+          'module' => 'paragraphs',
+          'settings' => array(),
+          'type' => 'paragraphs_embed',
+          'weight' => 8,
+        ),
+      );
+    
+      // Exported field_instance: 'node-curriculum-field_field'.
+      $field_instances['node-curriculum-field_field'] = array(
+        'bundle' => 'curriculum',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'entityreference',
+            'settings' => array(
+              'bypass_access' => false,
+              'link' => false,
+            ),
+            'type' => 'entityreference_label',
+            'weight' => 1,
+          ),
+          'teaser' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_field',
+        'label' => 'Field',
+        'required' => 0,
+        'settings' => array(
+          'behaviors' => array(
+            'taxonomy-index' => array(
+              'status' => true,
+            ),
+          ),
+          'entity_translation_sync' => false,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'options',
+          'settings' => array(),
+          'type' => 'options_select',
+          'weight' => 1,
+        ),
+      );
+    
+      // Exported field_instance: 'node-curriculum-field_pictures'.
+      $field_instances['node-curriculum-field_pictures'] = array(
+        'bundle' => 'curriculum',
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'image',
+            'settings' => array(
+              'image_link' => '',
+              'image_style' => '',
+            ),
+            'type' => 'image',
+            'weight' => 4,
+          ),
+          'teaser' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_pictures',
+        'label' => 'Pictures',
+        'required' => 0,
+        'settings' => array(
+          'alt_field' => 0,
+          'default_image' => 0,
+          'entity_translation_sync' => false,
+          'file_directory' => 'curriculum_pictures',
+          'file_extensions' => 'png gif jpg jpeg',
+          'max_filesize' => '',
+          'max_resolution' => '',
+          'min_resolution' => '',
+          'title_field' => 0,
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'media',
+          'settings' => array(
+            'allowed_schemes' => array(
+              'public' => 'public',
+            ),
+            'allowed_types' => array(
+              'audio' => 0,
+              'document' => 0,
+              'image' => 'image',
+              'video' => 0,
+            ),
+            'browser_plugins' => array(
+              'media_default--media_browser_1' => 0,
+              'media_default--media_browser_my_files' => 0,
+              'upload' => 0,
+            ),
+          ),
+          'type' => 'media_generic',
+          'weight' => 6,
+        ),
+      );
+    
+      // Exported field_instance: 'node-curriculum-field_table'.
+      $field_instances['node-curriculum-field_table'] = array(
+        'bundle' => 'curriculum',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+          'default' => array(
+            'label' => 'above',
+            'module' => 'paragraphs',
+            'settings' => array(
+              'view_mode' => 'full',
+            ),
+            'type' => 'paragraphs_view',
+            'weight' => 2,
+          ),
+          'teaser' => array(
+            'label' => 'above',
+            'settings' => array(),
+            'type' => 'hidden',
+            'weight' => 0,
+          ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_table',
+        'label' => 'Table',
+        'required' => 0,
+        'settings' => array(
+          'add_mode' => 'select',
+          'allowed_bundles' => array(
+            'catering_food_by_day' => -1,
+            'contacts_department' => -1,
+            'content_and_description' => -1,
+            'description' => -1,
+            'subpage_ref' => -1,
+            'table' => 'table',
+            'table_body' => -1,
+            'table_header' => -1,
+            'table_row' => -1,
+          ),
+          'bundle_weights' => array(
+            'catering_food_by_day' => 2,
+            'contacts_department' => 3,
+            'content_and_description' => 4,
+            'description' => 14,
+            'subpage_ref' => 5,
+            'table' => 6,
+            'table_body' => 7,
+            'table_header' => 8,
+            'table_row' => 9,
+          ),
+          'default_edit_mode' => 'open',
+          'entity_translation_sync' => false,
+          'title' => 'table',
+          'title_multiple' => 'tables',
+          'user_register_form' => false,
+        ),
+        'widget' => array(
+          'active' => 0,
+          'module' => 'paragraphs',
+          'settings' => array(),
+          'type' => 'paragraphs_embed',
+          'weight' => 4,
+        ),
+      );
+    return $field_instances;
+}
+function hitsa_curriculum_delete_custom_node_fields()
+{
+    foreach (array_keys(_hitsa_curriculum_installed_node_fields()) as $field) {
+        field_delete_field($field);
+    }
+    $instances = field_info_instances('node', 'curriculum');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
+}

@@ -1,0 +1,15 @@
+name = HITSA Curriculum
+description = "HITSA Curriculum"
+core = 7.x
+package = HITSA
+version = "7.x-dev"
+
+dependencies[] = date
+dependencies[] = entityreference
+dependencies[] = field_group
+dependencies[] = paragraphs
+dependencies[] = taxonomy
+dependencies[] = tablefield
+dependencies[] = email
+dependencies[] = geolocation
+dependencies[] = date_popup
