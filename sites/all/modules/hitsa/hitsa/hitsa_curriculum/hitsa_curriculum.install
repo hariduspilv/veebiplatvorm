@@ -913,27 +913,27 @@ function _hitsa_curriculum_installed_node_fields()
     $field_bases = array();
     
       // Exported field_base: 'body'.
-      $field_bases['body'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(
-          0 => 'node',
-        ),
-        'field_name' => 'body',
-        'indexes' => array(
-          'format' => array(
-            0 => 'format',
-          ),
-        ),
-        'locked' => 0,
-        'module' => 'text',
-        'settings' => array(
-          'entity_translation_sync' => false,
-        ),
-        'translatable' => 0,
-        'type' => 'text_with_summary',
-      );
+      // $field_bases['body'] = array(
+      //   'active' => 1,
+      //   'cardinality' => 1,
+      //   'deleted' => 0,
+      //   'entity_types' => array(
+      //     0 => 'node',
+      //   ),
+      //   'field_name' => 'body',
+      //   'indexes' => array(
+      //     'format' => array(
+      //       0 => 'format',
+      //     ),
+      //   ),
+      //   'locked' => 0,
+      //   'module' => 'text',
+      //   'settings' => array(
+      //     'entity_translation_sync' => false,
+      //   ),
+      //   'translatable' => 0,
+      //   'type' => 'text_with_summary',
+      // );
       // Exported field_base: 'field_attachments'.
     $field_bases['field_attachments'] = array(
     'active' => 1,
