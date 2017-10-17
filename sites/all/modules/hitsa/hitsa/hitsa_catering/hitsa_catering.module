@@ -23,6 +23,39 @@ function hitsa_catering_menu()
   
     return $items;
 }
+
+ /**
+  * Implements hook_block_info().
+  */
+function hitsa_catering_block_info()
+{
+    $blocks = array();
+
+  // This example comes from node.module.
+    $blocks['catering_block'] = array(
+    'info' => t('Catering block'),
+    'cache' => DRUPAL_NO_CACHE
+    );
+    return $blocks;
+}
+/**
+ * Implements hook_block_view().
+ */
+function hitsa_catering_block_view($delta = '')
+{
+    $block = array();
+    switch ($delta) {
+        case 'catering_block':
+            $catering_table = hitsa_catering_week();
+            $catering_table = drupal_render($catering_table);
+            $block['subject']= t('');
+            $block['content'] = array(
+            '#markup' => $catering_table,
+            );
+            break;
+    }
+    return $block;
+}
 /**
  * Implements hook_node_info().
  **/
