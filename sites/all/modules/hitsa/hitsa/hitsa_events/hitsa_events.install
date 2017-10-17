@@ -316,6 +316,14 @@ function _hitsa_events_vocabularies(){
          ),
        ),
     ),
+    'terms' => array(
+      (object) array(
+        'name' => t('Studies'),
+      ),
+      (object) array(
+        'name' => t('Hobby activity'),
+      ),
+    ),
   );
   $vocabularies['time_periods'] = array(
     'vocabulary' => (object) array(
@@ -424,6 +432,15 @@ function hitsa_events_add_custom_vocabularies(){
   // Create vocabulary
   foreach (_hitsa_events_vocabularies() as $v) {
     taxonomy_vocabulary_save($v['vocabulary']);
+       
+    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+    if(!empty($v['terms']) && $vocab) {
+      // Add generic terms
+      foreach($v['terms'] as $term) {
+        $term->vid = $vocab->vid;
+        taxonomy_term_save($term);
+      }
+    }
   }
   
 }
@@ -488,6 +505,7 @@ function _hitsa_events_add_field_bases(){
     'settings' => array(
       'cache_count' => 4,
       'cache_enabled' => 0,
+      'entity_translation_sync' => FALSE,
       'granularity' => array(
         'day' => 'day',
         'hour' => 'hour',
@@ -829,9 +847,10 @@ function _hitsa_events_add_field_instances(){
     'required' => 0,
     'settings' => array(
       'default_value' => 'now',
-      'default_value2' => 'now',
+      'default_value2' => 'sync',
       'default_value_code' => '',
       'default_value_code2' => '',
+      'entity_translation_sync' => FALSE,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -839,7 +858,7 @@ function _hitsa_events_add_field_instances(){
       'module' => 'date',
       'settings' => array(
         'increment' => 15,
-        'input_format' => 'd/m/Y - H:i',
+        'input_format' => 'site-wide',
         'input_format_custom' => '',
         'label_position' => 'above',
         'no_fieldset' => 0,
@@ -856,7 +875,7 @@ function _hitsa_events_add_field_instances(){
     'bundle' => 'event',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Tag, millega saab sisule viidata. Terminid tuleb komaga Üksteisest eraldada',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',

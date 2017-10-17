@@ -1277,7 +1277,7 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
     ),
     'entity_type' => 'taxonomy_term',
     'field_name' => 'field_open_times',
-    'label' => 'Address',
+    'label' => st('Open times'),
     'required' => 0,
     'settings' => array(
       'text_processing' => 0,
