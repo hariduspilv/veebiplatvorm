@@ -3,7 +3,6 @@
 module_load_include('inc', 'hitsa_articles', 'includes/hitsa_articles.views');
 module_load_include('inc', 'hitsa_articles', 'includes/hitsa_articles.theme');
 
-
 function hitsa_articles_menu() {
   $items['news'] = array(
     'title' => 'News',
@@ -115,7 +114,7 @@ function hitsa_articles_block_view($delta = '') {
 }
 
 function hitsa_articles_block_info_alter(&$blocks, $theme, $code_blocks) {
-  if(!empty($blocks['views']['hitsa_news-news_block'])) {
+  if(!empty($blocks['views']['hitsa_news-news_block']) && $theme === 'hitsa') {
     $blocks['views']['hitsa_news-news_block']['status'] = 1;
     $blocks['views']['hitsa_news-news_block']['region'] = 'content';
     $blocks['views']['hitsa_news-news_block']['visibility'] = BLOCK_VISIBILITY_LISTED;

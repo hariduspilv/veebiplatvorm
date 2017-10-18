@@ -300,22 +300,8 @@ function _hitsa_content_page_nodes() {
   $nodes = array();
   
   // Main menu nodes
-  $nodes = array(
-    array(
-      'title' => array('et' => 'Õppesuunad', 'ru' => 'Õppesuunad RU', 'en' => 'Õppesuunad EN'),
-      'menu' => array(
-        'plid' => $main_menu_links['Admission'],
-        'weight' => 0,
-      ),
-    ),
-    array(
-      'title' => 'Vastuvõtu tingimused ja kord',
-      'menu' => array(
-        'plid' => $main_menu_links['Admission'],
-        'weight' => 1,
-      ),
-    ),
-  );
+  module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.menu-nodes');
+  $nodes = _hitsa_content_page_menu_nodes();
   
   foreach($nodes as &$node) {
     $node += $node_defaults;

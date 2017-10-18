@@ -2,6 +2,9 @@
 module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.theme');
 module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.variable');
 
+define('HITSA_SCHOOL_GYMNASIUM', 1);
+define('HITSA_SCHOOL_VOCATIONAL', 2);
+
 function hitsa_core_menu() {
   $items['admin/hitsa'] = array(
     'title' => 'HITSA Admin',
@@ -52,6 +55,14 @@ function hitsa_core_menu() {
   );
   
   return $items;
+}
+
+function hitsa_core_permission() {
+  return array(
+    'administer hitsa page settings' => array(
+      'title' => t('Administer HITSA page settings'),
+    ),
+  );
 }
 
 /*

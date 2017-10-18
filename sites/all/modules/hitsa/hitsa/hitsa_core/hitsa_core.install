@@ -140,6 +140,29 @@ function _hitsa_core_menu_links() {
   // Main Menu
   $hitsa_main_menu = variable_get('hitsa_main_menu_name');
   if(!empty($hitsa_main_menu)) {
+    
+    $school_type = variable_get('hitsa_school_type', HITSA_SCHOOL_GYMNASIUM);
+    
+    switch($school_type) {
+      case HITSA_SCHOOL_GYMNASIUM:
+        break;
+      case HITSA_SCHOOL_VOCATIONAL:
+        $menu_links[] = array(
+          'link_path' => '<front>',
+          'link_title' => $t('Services'),
+          'menu_name' => $hitsa_main_menu,
+          'weight' => -6,
+        );
+        
+        $menu_links[] = array(
+          'link_path' => '<front>',
+          'link_title' => $t('Continuing education'),
+          'menu_name' => $hitsa_main_menu,
+          'weight' => -7,
+        );
+        break;
+    }
+    
     $menu_links[] = array(
       'link_path' => '<front>',
       'link_title' => $t('Admission'),
@@ -163,16 +186,9 @@ function _hitsa_core_menu_links() {
     
     $menu_links[] = array(
       'link_path' => '<front>',
-      'link_title' => $t('Services'),
-      'menu_name' => $hitsa_main_menu,
-      'weight' => -7,
-    );
-    
-    $menu_links[] = array(
-      'link_path' => '<front>',
       'link_title' => $t('About us'),
       'menu_name' => $hitsa_main_menu,
-      'weight' => -6,
+      'weight' => -5,
     );
   }
   
@@ -254,4 +270,18 @@ function hitsa_core_set_default_language() {
   // Disable "Language None" option
   module_load_include('inc', 'entity_translation', 'entity_translation.admin');
   entity_translation_settings_init('node', array('exclude_language_none' => TRUE));
+}
+
+/**
+ *  
+ */
+function _hitsa_core_roles() {
+  return array(
+    'hitsa_admin' => array(
+      
+    ),
+    'hitsa_editor' => array(
+      
+    ),
+  );
 }

@@ -38,6 +38,7 @@ function _hitsa_core_installer_types() {
     'menu_links',
     'date_formats',
     'image_styles',
+    'roles',
   );
 }
 
@@ -240,5 +241,27 @@ function hitsa_core_delete_image_styles($installed_image_styles = array()) {
   foreach($installed_image_styles as $style_array) {
     $style = image_style_load($style_array['style']['name']);
     image_style_delete($style);
+  }
+}
+
+/**
+ * User roles
+ */
+function hitsa_core_add_roles($installed_roles = array()) {
+  foreach($installed_roles as $name => $permissions) {
+    $role = new stdClass();
+    $role->name = $name;
+    user_role_save($role);
+    
+    if($role = user_role_load_by_name($name)) {
+      $rid = $role->rid;
+      user_role_grant_permissions($rid, $permissions);
+    }
+  }
+}
+
+function hitsa_core_delete_roles($installed_roles = array()) {
+  foreach($installed_roles as $name => $permissions) {
+    user_role_delete($name);
   }
 }
