@@ -23,9 +23,38 @@ function hitsa_curriculum_node_info()
 function hitsa_curriculum_block_info()
 {
     $blocks = array();
+    $blocks['specialities_block'] = array(
+        'info' => t('Hitsa fields block'),
+    );
+    $blocks['areas_of_study_block'] = array(
+        'info' => t('Hitsa areas of study block'),
+    );
     return $blocks;
 }
-
+/**
+ * Implements hook_block_view().
+ */
+function hitsa_curriculum_block_view($delta = '')
+{
+    $block = array();
+    switch ($delta) {
+        case 'specialities_block':
+            $render = hitsa_curriculum_specialities_block();
+            $block['subject'] = t('');
+            $block['content'] = array(
+                '#markup' => $render,
+              );
+            break;
+        case 'areas_of_study_block':
+            $render = hitsa_curriculum_areas_of_studies_block();
+             $block['subject'] = t('');
+             $block['content'] = array(
+             '#markup' => $render,
+             );
+            break;
+    }
+    return $block;
+}
 /**
  * Implements hook_menu().
  */
@@ -44,6 +73,383 @@ function hitsa_curriculum_menu()
 
 function hitsa_curriculum_page()
 {
-  $build = array();
-  return $build;
+    $build = array();
+    $build['hitsa_specialities'] = array(
+    '#type' => 'markup',
+    '#markup' => drupal_render(hitsa_curriculum_specialities_block()),
+    );
+    return $build;
+}
+
+function hitsa_curriculum_specialities_block()
+{
+    $output = 'a';
+    global $language;
+    if (module_exists('hitsa_core')) {
+        $content = hitsa_core_get_content_by_type('node', 'curriculum', $language->language);
+    }
+    if (!empty($content)) {
+        if (isset($content['node'])) {
+            $content_nids = array_keys($content['node']);
+            $specialities = entity_load('node', $content_nids);
+        }
+    }
+    $right_block = '';
+    $active_id = '';
+    if (!empty($specialities)) {
+        if (!empty($_REQUEST)) {
+            if (!empty($_REQUEST['sub_id'])) {
+                $sub_id = $_REQUEST['sub_id'];
+            }
+        }
+        foreach ($specialities as $key => $speciality) {
+            if (isset($sub_id)) {
+                if ($speciality->nid==$sub_id) {
+                    $right_block .= hitsa_curriculum_right_block('specialites', $speciality);
+                }
+            } else {
+                $right_block .= hitsa_curriculum_right_block('specialites', $speciality);
+                $active_id = $speciality->nid;
+                break;
+            }
+        }
+    }
+        $output.='  <div class="block no-padding">';
+        $output.='     <div class="row">';
+        $output.=' <div class="col-3 d-flex">';
+    if (!empty($specialities)) {
+        $output .= hitsa_curriculum_left_block('specialities', $specialities, $active_id);
+    }
+    $output.=' </div><!--/col-3-->';
+    $output.= '<div class="col-9">';
+    if (!empty($specialities)) {
+        $output.=$right_block;
+    }
+    $output.= '</div><!--/col-9-->';
+    $output.='</div><!--/row-->';
+    $output.='</div><!--/block-->';
+
+    return $output;
+}
+function hitsa_curriculum_areas_of_studies_block()
+{
+    $output = 'a';
+    return $output;
+}
+
+function hitsa_curriculum_left_block($type = null, $contents = null, $active_id = null)
+{
+    if ($type) {
+        if ($contents) {
+            $menu_points = array();
+            foreach ($contents as $content_key => $content) {
+                if ($type=='specialities') {
+                    if (!empty($content->field_field)) {
+                        $loaded_field = taxonomy_term_load($content->field_field['und'][0]['target_id']);
+                        $active=false;
+                        $active_sub = false;
+                        if (!empty($_REQUEST)) {
+                            if (!empty($_REQUEST['id'])) {
+                                if ($_REQUEST['id']==$loaded_field->tid) {
+                                    $active=true;
+                                }
+                            }
+                            if (!empty($_REQUEST['sub_id'])) {
+                                if ($_REQUEST['sub_id']==$content->nid) {
+                                    $active_sub = true;
+                                }
+                            } elseif ($active_id == $content->nid) {
+                                    $active_sub = true;
+                                    $active = true;
+                            }
+                        }
+                        if (empty($menu_points[$loaded_field->name])) {
+                            $menu_points[$loaded_field->name] = array(
+                            'title' => $loaded_field->name,
+                            'id' => $loaded_field -> tid,
+                            'active' => $active,
+                            'subpoints' => array(),
+                            'weight' => $loaded_field->weight,
+                            );
+                        }
+                        $menu_points[$loaded_field->name]['subpoints'][] = array(
+                            'title' => $content->title,
+                            'id' => $content->nid,
+                            'active' => $active_sub,
+                        );
+                    }
+                }
+                if ($type=='areas_of_study') {
+                    $active=false;
+                    if (!empty($_REQUEST)) {
+                        if (!empty($_REQUEST['id'])) {
+                            if ($_REQUEST['id']==$content->tid) {
+                                $active=true;
+                            }
+                        }
+                    }
+                    $menu_points[] = array(
+                        'title' => $content->title,
+                        'id' => $content->nid,
+                        'active' => $active,
+                        'weight' => 0,
+                    );
+                }
+            }
+
+            usort($menu_points, function ($a, $b) {
+                return $b['weight'] - $a['weight'];
+            });
+            if (!empty($menu_points)) {
+                $current_path = current_path();
+                $output = '';
+                $output.='<ul class="side-menu">';
+                foreach ($menu_points as $menu_point_key => $menu_point) {
+                    $url = url($current_path, array('query'=>array('id' => $menu_point['id'])));
+                    $class = ($menu_point['active']==true)?'active open':'';
+                    $list_item = '<li class="'.$class.'">';
+                    $list_item .= ($type=='specialities')?'<span class="before-arrow_down"></span>':'';
+                    $list_item.= '<a href="'.$url.'">'.$menu_point['title'].'</a>';
+                    if (!empty($menu_point['subpoints'])) {
+                        $list_item.='<ul>';
+                        foreach ($menu_point['subpoints'] as $sub_key => $subpoint) {
+                            $subpoint_url = url($current_path, array('query'=>array('id'=>$menu_point['id'],'sub_id'=>$subpoint['id'])));
+                            $class = ($subpoint['active']==true)?'active':'';
+                            $list_item.='<li>';
+                            $list_item.='<a href="'.$subpoint_url.'">'.$subpoint['title'].'</a>';
+                            $list_item.='</li>';
+                        }
+                        $list_item.='</ul>';
+                    }
+                    $list_item.= '</li>';
+                    $output .= $list_item;
+                }
+                $output.='</ul>';
+                return $output;
+            }
+        }
+    }
+}
+function hitsa_curriculum_right_block($type = null, $content)
+{
+
+    $output = '';
+    $output.= '<article>';
+    $output.='<h3>'.$content->title;
+    $output.='<span class="btn-bar align-right pull-right">';
+    $output.='   <a href="" class="btn-circle before-share"></a>';
+    $output.='<a href="javascript:window.print();" class="btn-circle before-print"></a>';
+    $output.='</span><!--/button-row-->';
+    $output.='</h3>';
+    if (!empty($content->field_speciality_description)) {
+        $output.='<h5>'.$content->field_speciality_description['und'][0]['value'].'</h5>';
+    }
+    if (!empty($content->field_table)) {
+        $table_id = $content->field_table['und'][0]['value'];
+        $table = entity_load_single('paragraphs_item', $table_id);
+        if (!empty($table)) {
+            $generated_table = hitsa_curriculum_generate_table($table);
+            $output.= $generated_table;
+        }
+    }
+    if (!empty($content->body)) {
+        $output.='<div class="row">';
+        $output.='<div class="col-10">';
+        $output.=$content->body['und'][0]['value'];
+        $output.='</div><!--/col-10-->';
+        $output.='</div><!--/row-->';
+    }
+    if (!empty($content->field_jobs)) {
+        $output.= hitsa_curriculum_jobs_part($content);
+    }
+    $output.='<div class="row-spacer"></div>';
+    if (!empty($content->field_attachments)) {
+        $output.= hitsa_curriculum_attachments($content->field_attachments['und']);
+        $output.='<div class="row-spacer"></div>';
+    }
+    if (!empty($content->field_pictures)) {
+        $output.= hitsa_curriculum_pictures($content->field_pictures['und']);
+    }
+    if (!empty($content->field_contacts)) {
+        $output.= hitsa_curriculum_contacts($content->field_contacts['und']);
+    }
+    $output.='</article>';
+    return $output;
+}
+
+function hitsa_curriculum_generate_table($table)
+{
+    $output='';
+    if (!empty($table->field_table_content)) {
+        $output.= '<div class="table_wrapper" data-plugin="responsiveTable">';
+        $output.= '<table>';
+        $table_data = $table->field_table_content['und'][0]['tabledata'];
+        $rows_count = $table_data['rebuild']['count_rows'];
+        $columns_count = $table_data['rebuild']['count_cols'];
+        $column_width = 100/$columns_count;
+        $table_descriptions = array();
+        if (!empty($table->field_descriptions)) {
+            foreach ($table->field_descriptions['und'] as $table_description) {
+                $description = entity_load_single('paragraphs_item', $table_description['value']);
+                if (!empty($description->field_table_field_description)) {
+                    $col =$description->field_column['und'][0]['value']-1;
+                    $row = $description->field_row['und'][0]['value']-1;
+                    $table_descriptions[$col.'_'.$row] = $description->field_table_field_description['und'][0]['value'];
+                }
+            }
+        }
+
+        if (!empty($table_data['tabledata']['row_0'])) {
+            $output.='  <thead>';
+            $output.='  <tr>';
+            for ($i=0; $i < $columns_count; $i++) {
+                $output.= '<th style="width: '.$column_width.'%;">';
+                $output.= $table_data['tabledata']['row_0']['col_'.$i];
+                if (!empty($table_descriptions[$i.'_0'])) {
+                    $output.='<div class="description">'.$table_descriptions[$i.'_0'].'</div>';
+                }
+                $output.='</th>';
+            }
+            $output.='  </tr>';
+            $output.=' </thead>';
+        }
+        $output.='<tbody>';
+        for ($i=1; $i < $rows_count; $i++) {
+            $output.='<tr>';
+            for ($j=0; $j < $columns_count; $j++) {
+                $output.='<td>';
+                $output.=$table_data['tabledata']['row_'.$i]['col_'.$j];
+                if (!empty($table_descriptions[$j.'_'.$i])) {
+                    $output.= '<div class="description">'.$table_descriptions[$j.'_'.$i];
+                }
+                $output.='</td>';
+            }
+            $output.='</tr>';
+        }
+        $output.= '</tbody>';
+        $output.= '</table>';
+        $output.='</div><!--/table-wrapper-->';
+    }
+    return $output;
+}
+function hitsa_curriculum_jobs_part($content = null)
+{
+    $output ='';
+    $output.='  <div class="row">';
+    $output.=' <div class="col-10">';
+    if (!empty($content)) {
+        if (!empty($content->field_jobs_pretext)) {
+            $output.=$content->field_jobs_pretext['und'][0]['value'];
+        }
+    }
+    if (!empty($content->field_jobs)) {
+        $output.='<ul class="bullet-list_article">';
+        foreach ($content->field_jobs['und'] as $key => $job) {
+            $job = entity_load_single('paragraphs_item', $job['value']);
+            $output.='<li>';
+            if (!empty($job->field_job)) {
+                $output.=$job->field_job['und'][0]['value'];
+                if (!empty($job->field_job_description)) {
+                    $job_description = $job->field_job_description['und'][0]['value'];
+                    $output.='<span class="before-arrow-right-circle"></span>';
+                }
+            }
+            $output.='</li>';
+        }
+        $output.='</ul>';
+    }
+     
+    $output.='</div><!--/col-10-->';
+    $output.=' </div><!--/row-->';
+    return $output;
+}
+function hitsa_curriculum_attachments($attachments)
+{
+    if (!empty($attachments)) {
+        $output='';
+        $output.='<div class="row">';
+        $output.='<div class="col-10">';
+        foreach ($attachments as $key => $attachment) {
+            $attachment_url = file_create_url($attachment['uri']);
+            $output.='<a class="link-circle" href="'.$attachment_url.'">';
+            $output.=  '<span class="before-envelope"></span>';
+            $output.=  $attachment['filename'];
+            $output.= '</a><!--/link-circle-->';
+        }
+        $output.='</div><!--/col-10-->';
+        $output.='</div><!--/row-->';
+        return $output;
+    }
+}
+function hitsa_curriculum_pictures($pictures)
+{
+    if (!empty($pictures)) {
+        $output = '';
+        $output.= '<div class="row">';
+        foreach ($pictures as $key => $picture) {
+            $picture_text = '';
+            $image_style =  'large';
+            $image_url = image_style_url($image_style, $picture['uri']);
+            if (!empty($picture['field_file_image_title_text'])) {
+                $picture_text = $picture['field_file_image_title_text']['und'][0]['value'];
+            }
+            $output.='  <div class="col-5">';
+            $output.='  <figure>';
+            $output.='    <img src="'.$image_url.'" alt="">';
+            $output.='    <figcaption>'.$picture_text.'</figcaption>';
+            $output.='   </figure>';
+            $output.=' </div><!--/col-6-->';
+        }
+        $output.='</div><!--/row-->';
+        return $output;
+    }
+}
+function hitsa_curriculum_contacts($contacts)
+{
+    if (!empty($contacts)) {
+        $output = '';
+        foreach ($contacts as $key => $contact) {
+            $contact = entity_load_single('paragraphs_item', $contact['value']);
+            if (!empty($contact->field_contact_title)) {
+                $output.='<p><b>'.$contact->field_contact_title['und'][0]['value'].'</b></p>';
+            }
+            $output.='<ul class="list-details">';
+            if (!empty($contact->field_website)) {
+                # code...
+            
+                $output.='   <li>';
+                $output.='      <div class="before-home"></div>';
+                $output.='      <div class="list-details_text">';
+                $output.='         <p><a href="'.$contact->field_website['und'][0]['value'].'" target="_blank">'.$contact->field_website['und'][0]['value'].'</a></p>';
+                $output.='      </div><!--/list-details_text-->';
+                $output.='   </li>';
+            }
+            if (!empty($contact->field_contact_email)) {
+                $output.='   <li>';
+                $output.='      <div class="before-envelope"></div>';
+                $output.='      <div class="list-details_text">';
+                $output.='         <p><a href="'.$contact->field_contact_email['und'][0]['email'].'">'.$contact->field_contact_email['und'][0]['email'].'</a></p>';
+                $output.='      </div><!--/list-details_text-->';
+                $output.='   </li>';
+            }
+            if (!empty($contact->field_phone_number)) {
+                $output.='   <li>';
+                $output.='      <div class="before-phone"></div>';
+                $output.='      <div class="list-details_text">';
+                $output.='         <p>'.$contact->field_phone_number['und'][0]['value'].'</p>';
+                $output.='      </div><!--/list-details_text-->';
+                $output.='   </li>';
+            }
+            if (!empty($contact->field_address)) {
+                $output.='   <li>';
+                $output.='      <div class="before-location"></div>';
+                $output.='              <div class="list-details_text">';
+                $output.='        <p>'.$contact->field_address['und'][0]['value'].'</p>';
+                $output.='      </div><!--/list-details_text-->';
+                $output.='   </li>';
+            }
+            $output.=' </ul><!--/list-details-->';
+        }
+        return $output;
+    }
 }

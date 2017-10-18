@@ -364,7 +364,22 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     'translatable' => 0,
     'type' => 'text',
     );
-
+// Exported field_base: 'field_contact_email'.
+    $field_bases['field_contact_email'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_contact_email',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'email',
+    'settings' => array(
+    'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'email',
+    );
     return $field_bases;
 }
 function _hitsa_curriculum_installed_paragraphs_instances()
@@ -983,6 +998,45 @@ function _hitsa_curriculum_installed_paragraphs_instances()
         ),
       );
     
+  // Exported field_instance: 'paragraphs_item-contacts-field_contact_email'.
+  $field_instances['paragraphs_item-contacts-field_contact_email'] = array(
+    'bundle' => 'contacts',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'email',
+        'settings' => array(),
+        'type' => 'email_default',
+        'weight' => 4,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_contact_email',
+    'label' => 'Email',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'email',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'email_textfield',
+      'weight' => 2,
+    ),
+  );
       // Translatables
       // Included for use with string extractors like potx.
       t('Address');
@@ -1039,31 +1093,53 @@ function hitsa_curriculum_add_custom_node_fields()
 function _hitsa_curriculum_installed_node_fields()
 {
     $field_bases = array();
-    
+    $field_info = field_info_field('body');
+    if (!$field_info) {
       // Exported field_base: 'body'.
-      // $field_bases['body'] = array(
-      //   'active' => 1,
-      //   'cardinality' => 1,
-      //   'deleted' => 0,
-      //   'entity_types' => array(
-      //     0 => 'node',
-      //   ),
-      //   'field_name' => 'body',
-      //   'indexes' => array(
-      //     'format' => array(
-      //       0 => 'format',
-      //     ),
-      //   ),
-      //   'locked' => 0,
-      //   'module' => 'text',
-      //   'settings' => array(
-      //     'entity_translation_sync' => false,
-      //   ),
-      //   'translatable' => 0,
-      //   'type' => 'text_with_summary',
-      // );
+        $field_bases['body'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(
+          0 => 'node',
+        ),
+        'field_name' => 'body',
+        'indexes' => array(
+          'format' => array(
+            0 => 'format',
+          ),
+        ),
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+          'entity_translation_sync' => false,
+        ),
+        'translatable' => 0,
+        'type' => 'text_with_summary',
+        );
       // Exported field_base: 'field_attachments'.
-    
+    }
+
+  // Exported field_base: 'field_speciality_description'.
+    $field_bases['field_speciality_description'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_speciality_description',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'text_long',
+    );
   // Exported field_base: 'field_jobs'.
     $field_bases['field_jobs'] = array(
     'active' => 1,
@@ -1197,6 +1273,26 @@ function _hitsa_curriculum_installed_node_fields()
     'translatable' => 0,
     'type' => 'paragraphs',
     );
+    // Exported field_base: 'field_jobs_pretext'.
+  $field_bases['field_jobs_pretext'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_jobs_pretext',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'text_with_summary',
+  );
     return $field_bases;
 }
 function _hitsa_curriculum_installed_node_instances()
@@ -1301,7 +1397,47 @@ function _hitsa_curriculum_installed_node_instances()
           'weight' => 7,
         ),
       );
-    
+        // Exported field_instance: 'node-curriculum-field_speciality_description'.
+    $field_instances['node-curriculum-field_speciality_description'] = array(
+    'bundle' => 'curriculum',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 8,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_speciality_description',
+    'label' => 'Speciality description',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'text_processing' => 0,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 2,
+    ),
+    );
+
       // Exported field_instance: 'node-curriculum-field_contacts'.
       $field_instances['node-curriculum-field_contacts'] = array(
         'bundle' => 'curriculum',
@@ -1545,9 +1681,9 @@ function _hitsa_curriculum_installed_node_instances()
         ),
       );
       // Exported field_instance: 'node-curriculum-field_jobs'.
-  $field_instances['node-curriculum-field_jobs'] = array(
+    $field_instances['node-curriculum-field_jobs'] = array(
     'bundle' => 'curriculum',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1592,16 +1728,58 @@ function _hitsa_curriculum_installed_node_instances()
         'table' => 8,
       ),
       'default_edit_mode' => 'open',
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'title' => 'Paragraph',
       'title_multiple' => 'Paragraphs',
-      'user_register_form' => FALSE,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 0,
       'module' => 'paragraphs',
       'settings' => array(),
       'type' => 'paragraphs_embed',
+      'weight' => 9,
+    ),
+    );
+      // Exported field_instance: 'node-curriculum-field_jobs_pretext'.
+  $field_instances['node-curriculum-field_jobs_pretext'] = array(
+    'bundle' => 'curriculum',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 9,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_jobs_pretext',
+    'label' => 'Jobs pretext',
+    'required' => 0,
+    'settings' => array(
+      'display_summary' => 0,
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+        'summary_rows' => 5,
+      ),
+      'type' => 'text_textarea_with_summary',
       'weight' => 9,
     ),
   );
