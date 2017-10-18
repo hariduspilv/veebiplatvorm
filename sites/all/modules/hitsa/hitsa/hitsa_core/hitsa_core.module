@@ -11,7 +11,7 @@ function hitsa_core_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('variable_group_form', 'general_variables'),
     'access callback' => 'user_access',
-    'access arguments' => array('administer content'),
+    'access arguments' => array('administer nodes'),
     'weight' => -10,
   );
 	$items['admin/hitsa/event_settings'] = array(
@@ -20,7 +20,7 @@ function hitsa_core_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => -19,
     'page callback' => 'hitsa_core_event_settings',
-    'access arguments' => array('administer content'),
+    'access arguments' => array('administer nodes'),
     'file' => 'includes/hitsa_core_events.admin.inc',
     
 	);
@@ -31,7 +31,7 @@ function hitsa_core_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('variable_group_form', 'general_variables'),
     'access callback' => 'user_access',
-    'access arguments' => array('administer content'),
+    'access arguments' => array('administer nodes'),
   );
   
   $items['admin/hitsa/variables/general'] = array(
@@ -40,7 +40,7 @@ function hitsa_core_menu() {
     'page arguments' => array('variable_group_form', 'general_variables'),
     'type' => MENU_LOCAL_TASK,
     'access callback' => 'user_access',
-    'access arguments' => array('administer content'),
+    'access arguments' => array('administer nodes'),
     'weight' => 0,
   );
   
@@ -50,7 +50,7 @@ function hitsa_core_menu() {
     'page arguments' => array('variable_group_form', 'header_footer_variables'),
     'type' => MENU_LOCAL_TASK,
     'access callback' => 'user_access',
-    'access arguments' => array('administer content'),
+    'access arguments' => array('administer nodes'),
     'weight' => 1,
   );
   
