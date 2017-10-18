@@ -17,3 +17,33 @@ function hitsa_curriculum_node_info()
       drupal_alter('node_info', $items);
       return $items;
 }
+/**
+ * Implements hook_block_info().
+ */
+function hitsa_curriculum_block_info()
+{
+    $blocks = array();
+    return $blocks;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function hitsa_curriculum_menu()
+{
+    $items = array();
+  
+    $items['curriculum'] = array(
+    'title' => t(''),
+    'page callback' => 'hitsa_curriculum_page',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function hitsa_curriculum_page()
+{
+  $build = array();
+  return $build;
+}
