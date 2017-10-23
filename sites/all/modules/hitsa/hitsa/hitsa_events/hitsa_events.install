@@ -26,8 +26,8 @@
      //Loome vastava sisutüübi
      $types = array(
         array(
-        'type' => $cont_type,
-        'name' => $cont_name,
+        'type' => 'event',
+        'name' => st('Claendar event'),
         'base' => 'node_content',
         'description' => st("One calendar event"),
         'default_language' => $site_default_language->language,
