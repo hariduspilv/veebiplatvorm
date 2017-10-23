@@ -471,26 +471,28 @@ function _hitsa_events_add_field_bases(){
   $field_bases = array();
 
   // Exported field_base: 'body'.
-  $field_bases['body'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(
-      0 => 'node',
-    ),
-    'field_name' => 'body',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+  $field_test = field_info_field('body');
+  if($field_test){
+    $field_bases['body'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(
+        0 => 'node',
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text_with_summary',
-  );
-
+      'field_name' => 'body',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => 0,
+      'type' => 'text_with_summary',
+    );
+ }
   // Exported field_base: 'event_date'.
   $field_bases['event_date'] = array(
     'active' => 1,
