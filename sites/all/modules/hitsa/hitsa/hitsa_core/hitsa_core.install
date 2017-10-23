@@ -4,6 +4,7 @@ function hitsa_core_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_core', 'install');
   hitsa_core_set_default_language(); // Set ET as default language.
+  hitsa_core_search_server_add_index();
 }
 
 function hitsa_core_uninstall() {
@@ -149,16 +150,16 @@ function _hitsa_core_menu_links() {
       case HITSA_SCHOOL_VOCATIONAL:
         $menu_links[] = array(
           'link_path' => '<front>',
-          'link_title' => $t('Services'),
+          'link_title' => $t('Continuing education'),
           'menu_name' => $hitsa_main_menu,
-          'weight' => -6,
+          'weight' => -7,
         );
         
         $menu_links[] = array(
           'link_path' => '<front>',
-          'link_title' => $t('Continuing education'),
+          'link_title' => $t('Services'),
           'menu_name' => $hitsa_main_menu,
-          'weight' => -7,
+          'weight' => -6,
         );
         break;
     }
@@ -273,15 +274,55 @@ function hitsa_core_set_default_language() {
 }
 
 /**
- *  
+ *  Hitsa core custom roles
  */
 function _hitsa_core_roles() {
   return array(
-    'hitsa_admin' => array(
-      
+    'hitsa admin' => array(
+      'access administration menu',
+      'access administration pages',
+      'access all webform results',
+      'access content overview',
+      'access own webform results',
+      'access own webform submissions',
+      'access site in maintenance mode',
+      'access site reports',
+      'access user profiles',
+      'administer nodes',
+      'administer taxonomy',
+      'administer users',
+      'block IP addresses',
+      'bypass file access',
+      'bypass node access',
+      'delete all webform submissions',
+      'delete own webform submissions',
+      'edit all webform submissions',
+      'edit own webform submissions',
+      'edit webform components',
+      'flush caches',
+      'view the administration theme',
+      'access media browser',
+      'administer hitsa page settings',
     ),
-    'hitsa_editor' => array(
-      
+    'hitsa editor' => array(
+      'access administration menu',
+      'access administration pages',
+      'access all webform results',
+      'access content overview',
+      'access media browser',
+      'access own webform results',
+      'access own webform submissions',
+      'access site in maintenance mode',
+      'create files',
+      'download own document files',
+      'download own image files',
+      'download own video files',
+      'edit own document files',
+      'edit own image files',
+      'edit own video files',
+      'view own files',
+      'view own private files',
+      'view the administration theme',
     ),
   );
 }

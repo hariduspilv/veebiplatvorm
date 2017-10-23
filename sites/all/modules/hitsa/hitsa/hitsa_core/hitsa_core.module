@@ -11,7 +11,7 @@ function hitsa_core_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('variable_group_form', 'general_variables'),
     'access callback' => 'user_access',
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('administer hitsa page settings'),
     'weight' => -10,
   );
 	$items['admin/hitsa/event_settings'] = array(
@@ -20,7 +20,7 @@ function hitsa_core_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => -19,
     'page callback' => 'hitsa_core_event_settings',
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('administer hitsa page settings'),
     'file' => 'includes/hitsa_core_events.admin.inc',
     
 	);
@@ -31,7 +31,7 @@ function hitsa_core_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('variable_group_form', 'general_variables'),
     'access callback' => 'user_access',
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('administer hitsa page settings'),
   );
   
   $items['admin/hitsa/variables/general'] = array(
@@ -40,7 +40,7 @@ function hitsa_core_menu() {
     'page arguments' => array('variable_group_form', 'general_variables'),
     'type' => MENU_LOCAL_TASK,
     'access callback' => 'user_access',
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('administer hitsa page settings'),
     'weight' => 0,
   );
   
@@ -50,11 +50,15 @@ function hitsa_core_menu() {
     'page arguments' => array('variable_group_form', 'header_footer_variables'),
     'type' => MENU_LOCAL_TASK,
     'access callback' => 'user_access',
-    'access arguments' => array('administer nodes'),
+    'access arguments' => array('administer hitsa page settings'),
     'weight' => 1,
   );
   
   return $items;
+}
+
+function hitsa_core_cron() {
+   hitsa_core_search_server_add_index(); // Check the server->index relationship, add index if necessary.
 }
 
 function hitsa_core_permission() {
@@ -64,6 +68,30 @@ function hitsa_core_permission() {
     ),
   );
 }
+
+function hitsa_core_block_info() {
+  $blocks['hitsa_hero_banner'] = array(
+    'info' => t('HITSA Hero Banner'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'region' => 'hero',
+    'status' => "1",
+  );
+  
+  return $blocks;
+}
+
+function hitsa_core_block_view($delta = '') {
+  $output = array();
+  switch($delta) {
+    case 'hitsa_hero_banner':
+      $content = ' ';
+      $output = array('subject' => NULL, 'content' => $content);
+  }
+  
+  return $output;
+}
+
 
 /*
 * Implements hook_form_alter().
@@ -182,4 +210,113 @@ function hitsa_core_get_content_by_type($e_type='node',$type=NULL,$language=NULL
 function hitsa_core_formatted_text_show_summary() {
   $script = 'jQuery(document).ready(function(){jQuery(".link-edit-summary").click(),$(document).ajaxComplete(function(){jQuery(".link-edit-summary").click()})});';
   drupal_add_js($script, 'inline');
+}
+
+/**
+ * HITSA Search
+ */
+function hitsa_core_default_search_api_server() {
+  $defaults['hitsa_search_server'] = entity_create('search_api_server', array(
+    'name' => 'HITSA Search server',
+    'machine_name' => 'hitsa_search_server',
+    'class' => 'search_api_db_service',
+    'options' => array(
+      'partial_matches' => TRUE,
+      'min_chars' => 1,
+      'database' => 'default:default',
+      'indexes' => array(
+        'hitsa_search_index' => array(),
+      ),
+    ),
+  ));
+  
+  return $defaults;
+}
+
+function hitsa_core_default_search_api_index() {
+  $defaults['hitsa_search_index'] = entity_create('search_api_index', array(
+    'name' => 'HITSA Search index',
+    'machine_name' => 'hitsa_search_index',
+    'item_type' => 'node',
+    'server' => 'hitsa_search_server',
+    'enabled' => 1,
+    'options' => array(
+      'data_alter_callbacks' => array(
+        'search_api_alter_node_status' => array(
+          'status' => 1,
+          'weight' => -45,
+        ),
+        'search_api_alter_node_access' => array(
+          'status' => 1,
+          'weight' => -44,
+        ),
+        'search_api_alter_language_control' => array(
+          'status' => 1,
+          'weight' => -43,
+        ),
+      ),
+      'processors' => array(
+        'search_api_case_ignore' => array(
+          'status' => 1,
+          'weight' => 0,
+        ),
+        'search_api_porter_stemmer' => array(
+          'status' => 1,
+          'weight' => 35,
+        ),
+        'search_api_highlighting' => array(
+          'status' => 1,
+          'weight' => 40,
+          'settings' => array(
+            'prefix' => '<u>',
+            'suffix' => '</u>',
+            'excerpt' => 1,
+            'excerpt_length' => '256',
+            'exclude_fields' => array(),
+            'highlight' => 'always',
+            'highlight_partial' => 0,
+          ),
+        ),
+      ),
+      'fields' => array(
+        'title' => array(
+          'type' => 'text',
+          'boost' => '5.0',
+        ),
+        'body:value' => array(
+          'type' => 'text',
+        ),
+        'body:summary' => array(
+          'type' => 'text',
+        ),
+        'first_name' => array(
+          'type' => 'text',
+          'boost' => '3.0'
+        ),
+        'last_name' => array(
+          'type' => 'text',
+          'boost' => '3.0'
+        ),
+        'search_api_language' => array(
+          'type' => 'string',
+        ),
+        'type' => array(
+          'type' => 'string',
+        ),
+        'status' => array(
+          'type' => 'integer',
+        ),
+      ),
+    ),
+  ));
+  return $defaults;
+}
+
+function hitsa_core_search_server_add_index() {
+  $index = search_api_index_load('hitsa_search_index');
+  $server = search_api_server_load('hitsa_search_server');
+  if(!empty($index) && !empty($server) && empty($server->options['indexes']['hitsa_search_index'])) {
+    // Add index
+    $server->addIndex($index);
+  }
 }

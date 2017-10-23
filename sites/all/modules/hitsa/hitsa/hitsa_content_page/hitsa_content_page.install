@@ -301,7 +301,7 @@ function _hitsa_content_page_nodes() {
   
   // Main menu nodes
   module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.menu-nodes');
-  $nodes = _hitsa_content_page_menu_nodes();
+  $nodes = _hitsa_content_page_menu_nodes($main_menu_links);
   
   foreach($nodes as &$node) {
     $node += $node_defaults;

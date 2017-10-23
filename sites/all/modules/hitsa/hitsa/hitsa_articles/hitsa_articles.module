@@ -67,6 +67,7 @@ function hitsa_articles_block_info() {
     'pages' => '<front>',
     'region' => 'sidebar_right',
     'status' => "1",
+    'weight' => -17,
   );
   
   $blocks['hitsa_important_article'] = array(
