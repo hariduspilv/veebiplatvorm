@@ -1,56 +1,46 @@
-<?php
+name = Search API
+description = "Provides a generic API for modules offering search capabilities."
+dependencies[] = entity
+core = 7.x
+package = Search
 
-/**
- * @file
- * Search API Rules integration.
- */
+files[] = search_api.test
+files[] = includes/callback.inc
+files[] = includes/callback_add_aggregation.inc
+files[] = includes/callback_add_hierarchy.inc
+files[] = includes/callback_add_url.inc
+files[] = includes/callback_add_viewed_entity.inc
+files[] = includes/callback_bundle_filter.inc
+files[] = includes/callback_comment_access.inc
+files[] = includes/callback_language_control.inc
+files[] = includes/callback_node_access.inc
+files[] = includes/callback_node_status.inc
+files[] = includes/callback_role_filter.inc
+files[] = includes/callback_user_content.inc
+files[] = includes/callback_user_status.inc
+files[] = includes/datasource.inc
+files[] = includes/datasource_entity.inc
+files[] = includes/datasource_external.inc
+files[] = includes/datasource_multiple.inc
+files[] = includes/exception.inc
+files[] = includes/index_entity.inc
+files[] = includes/processor.inc
+files[] = includes/processor_highlight.inc
+files[] = includes/processor_html_filter.inc
+files[] = includes/processor_ignore_case.inc
+files[] = includes/processor_stemmer.inc
+files[] = includes/processor_stopwords.inc
+files[] = includes/processor_tokenizer.inc
+files[] = includes/processor_transliteration.inc
+files[] = includes/query.inc
+files[] = includes/server_entity.inc
+files[] = includes/service.inc
 
+configure = admin/config/search/search_api
 
-/**
- * Implements hook_rules_action_info().
- */
-function search_api_rules_action_info() {
-  $items['search_api_index'] = array(
-   'parameter' => array(
-      'entity' => array(
-        'type' => 'entity',
-        'label' => t('Entity'),
-        'description' => t('The item to index.'),
-      ),
-      'index' => array(
-        'type' => 'search_api_index',
-        'label' => t('Index'),
-        'description' => t('The index on which the item should be indexed. Leave blank to index on all indexes for this item type.'),
-        'optional' => TRUE,
-        'options list' => 'search_api_index_options_list',
-      ),
-      'index_immediately' => array(
-        'type' => 'boolean',
-        'label' => t('Index immediately'),
-        'description' => t('Activate for indexing the item right away, otherwise it will only be marked as dirty and indexed during the next cron run.'),
-        'optional' => TRUE,
-        'default value' => TRUE,
-        'restriction' => 'input',
-      ),
-    ),
-    'group' => t('Search API'),
-    'access callback' => '_search_api_rules_access',
-    'label' => t('Index an entity'),
-    'base' => '_search_api_rules_action_index',
-  );
-  return $items;
-}
+; Information added by Drupal.org packaging script on 2017-07-18
+version = "7.x-1.22"
+core = "7.x"
+project = "search_api"
+datestamp = "1500368049"
 
-/**
- * Rules access callback for search api actions.
- */
-function _search_api_rules_access() {
-  return user_access('administer search_api');
-}
-
-/**
- * Rules action for indexing an item.
- */
-function _search_api_rules_action_index(EntityDrupalWrapper $wrapper, SearchApiIndex $index = NULL, $index_immediately = TRUE) {
-  // If we do not have an index, we need to guess the item type to use.
-  // @todo Since this can only be used with entities anyways, we can just loop
