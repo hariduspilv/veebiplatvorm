@@ -44,18 +44,17 @@ function hitsa_preprocess_hitsa_front_content(&$variables) {
     }
   }
   if(module_exists('hitsa_events')){
-    $block = module_invoke('hitsa_events', 'block_view', 'fornt_page_training');
+    // $block = module_invoke('hitsa_events', 'block_view', 'fornt_page_training');
     
-    $variables['hitsa_training_events'] = render($block['content']);
-    $block = module_invoke('hitsa_events','block_view','fornt_page_events');
-    $variables['hitsa_front_events'] = render($block['content']);
+    // $variables['hitsa_training_events'] = render($block['content']);
+    // $block = module_invoke('hitsa_events','block_view','fornt_page_events');
+    // $variables['hitsa_front_events'] = render($block['content']);
   }
   if(module_exists('hitsa_logos')) { // HITSA Logos module
     // Add awards block
     $variables['awards_block'] = views_embed_view('hitsa_logos', 'awards_block');
   }
 }
-
 
 /* Main menu render functions */
 function hitsa_menu_tree__hitsa_main_menu($variables) {
