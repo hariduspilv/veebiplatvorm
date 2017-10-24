@@ -313,8 +313,10 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
       }
       $query->fields('revision', $entity_revision_fields);
     }
-
-    $query->fields('base', $entity_fields);
+    if(!isset($entity_fields)){
+	    $entity_fields = array();
+	  }
+     $query->fields('base', $entity_fields);
 
     if ($ids) {
       $query->condition("base.{$this->idKey}", $ids, 'IN');
