@@ -311,3 +311,38 @@ function _hitsa_content_page_nodes() {
   
   return $nodes;
 }
+
+function _hitsa_content_page_image_styles() {
+  $image_styles = array(
+    array(
+      'style' => array(
+		    'name' => 'hitsa_article_thumbnail',
+		    'label' => 'Article thumbnail (380x214)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale_and_crop',
+		    'data' => array(
+		      'width' => 380,
+		      'height' => 214,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
+		array(
+      'style' => array(
+		    'name' => 'hitsa_article_small_thumbnail',
+		    'label' => 'Article small thumbnail (110x110)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale_and_crop',
+		    'data' => array(
+		      'width' => 110,
+		      'height' => 110,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
+  );
+  
+  return $image_styles;
+}

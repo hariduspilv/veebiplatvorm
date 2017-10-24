@@ -12,20 +12,9 @@ function hitsa_core_installer($module, $type) {
       } else {
         return;
       }
-      if(function_exists($installer_function)) $installer_function($installer_input());
+      if(function_exists($installer_function)) $installer_function($installer_input(), $module);
     }
   }
-}
-
-function hitsa_core_delete_nodes($content_type) {
-  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-  $result = db_query($sql, array(':type' => $content_type));
-  $node_ids = array();
-  foreach ($result as $row) {
-    $node_ids[] = $row->nid;
-  }
-  node_delete_multiple($node_ids); // Delete all nodes
-  node_type_delete($content_type); // Delete content type
 }
 
 function _hitsa_core_installer_types() {
@@ -39,32 +28,33 @@ function _hitsa_core_installer_types() {
     'date_formats',
     'image_styles',
     'roles',
+    'nodes',
   );
 }
 
 /*
 * Fields
 */
-function hitsa_core_add_fields($installed_fields = array()) {
+function hitsa_core_add_fields($installed_fields = array(), $module = NULL) {
   foreach ($installed_fields as $field) {
     field_create_field($field);
   }
 }
 
-function hitsa_core_add_field_instances($installed_instances = array()) {
+function hitsa_core_add_field_instances($installed_instances = array(), $module = NULL) {
   foreach ($installed_instances as $field_instance) {
     $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
     field_create_instance($field_instance);
   }
 }
 
-function hitsa_core_delete_fields($installed_fields = array()) {
+function hitsa_core_delete_fields($installed_fields = array(), $module = NULL) {
   foreach (array_keys($installed_fields) as $field) {
       field_delete_field($field);
   }
 }
 
-function hitsa_core_delete_field_instances($installed_instances = array()) {
+function hitsa_core_delete_field_instances($installed_instances = array(), $module = NULL) {
   foreach($installed_instances as $installed_instance) {
     $instances = field_info_instances($installed_instance['entity_type'], $installed_instance['bundle']);
     foreach ($instances as $instance_name => $field_instance) {
@@ -76,7 +66,7 @@ function hitsa_core_delete_field_instances($installed_instances = array()) {
 /*
 * Vocabularies
 */
-function hitsa_core_add_vocabularies($installed_vocabularies = array()) {
+function hitsa_core_add_vocabularies($installed_vocabularies = array(), $module = NULL) {
   // Create vocabulary
   foreach ($installed_vocabularies as $v) {
     taxonomy_vocabulary_save($v['vocabulary']);
@@ -95,7 +85,7 @@ function hitsa_core_add_vocabularies($installed_vocabularies = array()) {
   }
 }
 
-function hitsa_core_delete_vocabularies($installed_vocabularies = array()) {
+function hitsa_core_delete_vocabularies($installed_vocabularies = array(), $module = NULL) {
   foreach ($installed_vocabularies as $v) {
     if(!empty($v['vocabulary'])) {
       $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
@@ -108,8 +98,9 @@ function hitsa_core_delete_vocabularies($installed_vocabularies = array()) {
 /*
 * Nodes
 */
-function hitsa_core_add_nodes($installed_nodes = array()) {
+function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
   $lang_list = language_list();
+  $nid_array = array();
   foreach ($installed_nodes as $node_data) {
     if(is_array($node_data['title'])) { // Multilang nodes
       $tnid = NULL;
@@ -151,19 +142,40 @@ function hitsa_core_add_nodes($installed_nodes = array()) {
       $node->language = !empty($node_data['language']) ? $node_data['language'] : 'et';
       node_save($node);
     }
+    if(!empty($node->nid)) {
+      $nid_array[] = $node->nid;
+    }
+  }
+  variable_set($module . '_installed_nodes', $nid_array);
+}
+
+function hitsa_core_delete_nodes($content_type, $module = NULL) {
+  if($installed_nodes = variable_get($module . '_installed_nodes')) { // Delete module specific nodes.
+    node_delete_multiple($installed_nodes);
+    variable_del($module . '_installed_nodes');
+  }
+  if(is_string($content_type)) { // Delete module defined content type.
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+    $result = db_query($sql, array(':type' => $content_type));
+    $node_ids = array();
+    foreach ($result as $row) {
+      $node_ids[] = $row->nid;
+    }
+    node_delete_multiple($node_ids); // Delete all nodes
+    node_type_delete($content_type); // Delete content type
   }
 }
 
 /*
 * Paragraphs
 */
-function hitsa_core_add_paragraphs($installed_paragraphs = array()) {
+function hitsa_core_add_paragraphs($installed_paragraphs = array(), $module = NULL) {
   foreach ($installed_paragraphs as $bundle) {
     paragraphs_bundle_save($bundle);
   }
 }
 
-function hitsa_core_delete_paragraphs($installed_paragraphs = array()) {
+function hitsa_core_delete_paragraphs($installed_paragraphs = array(), $module = NULL) {
   foreach (array_keys($installed_paragraphs) as $bundle) {
     paragraphs_bundle_delete($bundle);
   }
@@ -173,14 +185,14 @@ function hitsa_core_delete_paragraphs($installed_paragraphs = array()) {
 /*
 * Menus
 */
-function hitsa_core_add_menus($installed_menus = array()) {
+function hitsa_core_add_menus($installed_menus = array(), $module = NULL) {
   foreach ($installed_menus as $key => $menu) {
     menu_save($menu);
     variable_set($key . '_name', $menu['menu_name']);
   }
 }
 
-function hitsa_core_delete_menus($installed_menus = array()) {
+function hitsa_core_delete_menus($installed_menus = array(), $module = NULL) {
   foreach ($installed_menus as $key => $menu) {
     $m = menu_load($menu['menu_name']);
     menu_delete($m);
@@ -191,13 +203,13 @@ function hitsa_core_delete_menus($installed_menus = array()) {
 /*
 * Menu links
 */
-function hitsa_core_add_menu_links($installed_menu_links = array()) {
+function hitsa_core_add_menu_links($installed_menu_links = array(), $module = NULL) {
   foreach ($installed_menu_links as $link) {
     menu_link_save($link);
   }
 }
 
-function hitsa_core_delete_menu_links($installed_menu_links = array()) {
+function hitsa_core_delete_menu_links($installed_menu_links = array(), $module = NULL) {
   foreach ($installed_menu_links as $link) {
     menu_link_delete(NULL, $link['link_path']);
   }
@@ -207,7 +219,7 @@ function hitsa_core_delete_menu_links($installed_menu_links = array()) {
 /*
 * Date formats
 */
-function hitsa_core_add_date_formats($installed_date_formats = array()) {
+function hitsa_core_add_date_formats($installed_date_formats = array(), $module = NULL) {
   foreach($installed_date_formats as $date_format) {
     db_insert('date_formats')->fields($date_format['format_array'])->execute();
     db_insert('date_format_type')->fields($date_format['type_array'])->execute();
@@ -216,7 +228,7 @@ function hitsa_core_add_date_formats($installed_date_formats = array()) {
   }
 }
 
-function hitsa_core_delete_date_formats($installed_date_formats = array()) {
+function hitsa_core_delete_date_formats($installed_date_formats = array(), $module = NULL) {
   foreach($installed_date_formats as $date_format) {
     db_delete('date_formats')->condition('format', $date_format['format_array'])->execute();
     db_delete('date_format_type')->condition('type', $date_format['type_array']['type'])->execute();
@@ -228,7 +240,7 @@ function hitsa_core_delete_date_formats($installed_date_formats = array()) {
 /*
 * Image styles
 */
-function hitsa_core_add_image_styles($installed_image_styles = array()) {
+function hitsa_core_add_image_styles($installed_image_styles = array(), $module = NULL) {
   foreach($installed_image_styles as $style_array) {
     $style = image_style_save($style_array['style']);
     $effect = $style_array['effect'];
@@ -237,7 +249,7 @@ function hitsa_core_add_image_styles($installed_image_styles = array()) {
   }
 }
 
-function hitsa_core_delete_image_styles($installed_image_styles = array()) {
+function hitsa_core_delete_image_styles($installed_image_styles = array(), $module = NULL) {
   foreach($installed_image_styles as $style_array) {
     $style = image_style_load($style_array['style']['name']);
     image_style_delete($style);
@@ -247,7 +259,7 @@ function hitsa_core_delete_image_styles($installed_image_styles = array()) {
 /**
  * User roles
  */
-function hitsa_core_add_roles($installed_roles = array()) {
+function hitsa_core_add_roles($installed_roles = array(), $module = NULL) {
   foreach($installed_roles as $name => $permissions) {
     $role = new stdClass();
     $role->name = $name;
@@ -260,7 +272,7 @@ function hitsa_core_add_roles($installed_roles = array()) {
   }
 }
 
-function hitsa_core_delete_roles($installed_roles = array()) {
+function hitsa_core_delete_roles($installed_roles = array(), $module = NULL) {
   foreach($installed_roles as $name => $permissions) {
     user_role_delete($name);
   }

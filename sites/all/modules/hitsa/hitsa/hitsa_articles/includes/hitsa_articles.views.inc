@@ -14,8 +14,6 @@ function hitsa_articles_views_api() {
  * Implementation of hook_views_default_views().
  */
 function hitsa_articles_views_default_views() {
-  
-  
   $view = new view();
   $view->name = 'hitsa_news';
   $view->description = '';
@@ -102,7 +100,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['cp_gallery']['type'] = 'image_url';
   $handler->display->display_options['fields']['cp_gallery']['settings'] = array(
     'url_type' => '1',
-    'image_style' => '',
+    'image_style' => 'hitsa_article_small_thumbnail',
     'image_link' => '',
   );
   $handler->display->display_options['fields']['cp_gallery']['delta_limit'] = '1';
@@ -158,6 +156,64 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '2';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['footer'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_type'] = '0';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Post date */
+  $handler->display->display_options['fields']['created']['id'] = 'created';
+  $handler->display->display_options['fields']['created']['table'] = 'node';
+  $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = '';
+  $handler->display->display_options['fields']['created']['element_type'] = '0';
+  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['created']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['created']['date_format'] = 'custom';
+  $handler->display->display_options['fields']['created']['custom_date_format'] = 'd. F';
+  $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['element_type'] = '0';
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
+  /* Field: Content: Gallery */
+  $handler->display->display_options['fields']['cp_gallery']['id'] = 'cp_gallery';
+  $handler->display->display_options['fields']['cp_gallery']['table'] = 'field_data_cp_gallery';
+  $handler->display->display_options['fields']['cp_gallery']['field'] = 'cp_gallery';
+  $handler->display->display_options['fields']['cp_gallery']['label'] = '';
+  $handler->display->display_options['fields']['cp_gallery']['element_type'] = '0';
+  $handler->display->display_options['fields']['cp_gallery']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['cp_gallery']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['cp_gallery']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['cp_gallery']['type'] = 'image_url';
+  $handler->display->display_options['fields']['cp_gallery']['settings'] = array(
+    'url_type' => '1',
+    'image_style' => 'hitsa_article_thumbnail',
+    'image_link' => '',
+  );
+  $handler->display->display_options['fields']['cp_gallery']['delta_limit'] = '1';
+  $handler->display->display_options['fields']['cp_gallery']['delta_offset'] = '0';
+  /* Field: Content: Path */
+  $handler->display->display_options['fields']['path']['id'] = 'path';
+  $handler->display->display_options['fields']['path']['table'] = 'node';
+  $handler->display->display_options['fields']['path']['field'] = 'path';
+  $handler->display->display_options['fields']['path']['label'] = '';
+  $handler->display->display_options['fields']['path']['element_type'] = '0';
+  $handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['path']['element_wrapper_type'] = '0';
   $handler->display->display_options['displays'] = array(
     'news_block' => 'news_block',
     'default' => 0,
