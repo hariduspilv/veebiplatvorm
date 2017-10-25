@@ -27,9 +27,12 @@
  * @ingroup views_templates
  */
 ?>
-<?php dpm($view); ?>
 <div class="block <?php print $classes; ?>">
-  <h2 class="block-title"><?php print t('Searching for'); ?> <i>"tamm"</i> (leiti 15 tulemust)</h2>
+  
+  <?php if(!empty($search_query)): ?>
+  <h2 class="block-title"><?php print t('Searching for'); ?> <i>"<?php print check_plain($search_query); ?>"</i> (<?php print $result_count; ?>)</h2>
+  <?php endif; ?>
+  
   <?php print render($title_prefix); ?>
   <?php if ($title): ?>
     <?php print $title; ?>
@@ -41,18 +44,12 @@
     </div>
   <?php endif; ?>
 
-  <?php if ($exposed): ?>
-    <div class="view-filters">
-      <?php print $exposed; ?>
-    </div>
-  <?php endif; ?>
-
   <?php if ($attachment_before): ?>
     <div class="attachment attachment-before">
       <?php print $attachment_before; ?>
     </div>
   <?php endif; ?>
-
+  
   <?php if ($rows): ?>
     <div class="view-content">
       <?php print $rows; ?>

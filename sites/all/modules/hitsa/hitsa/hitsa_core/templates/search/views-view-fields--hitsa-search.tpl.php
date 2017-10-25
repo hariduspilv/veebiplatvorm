@@ -24,13 +24,8 @@
  * @ingroup views_templates
  */
 ?>
-<?php foreach ($fields as $id => $field): ?>
-  <?php if (!empty($field->separator)): ?>
-    <?php print $field->separator; ?>
-  <?php endif; ?>
-
-  <?php print $field->wrapper_prefix; ?>
-    <?php print $field->label_html; ?>
-    <?php print $field->content; ?>
-  <?php print $field->wrapper_suffix; ?>
-<?php endforeach; ?>
+<?php if($row->entity->type === 'contact'): ?>
+  <?php $node_view = node_view($row->entity); print render($node_view); ?>
+<?php else: ?>
+  <?php print theme('hitsa_search_result', array('node' => $row->entity, 'excerpt' => $fields['search_api_excerpt']->content)); ?>
+<?php endif; ?>

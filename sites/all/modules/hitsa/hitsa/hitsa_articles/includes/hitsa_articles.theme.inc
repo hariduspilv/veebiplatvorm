@@ -61,25 +61,27 @@ function hitsa_articles_theme() {
 
 function hitsa_articles_preprocess_node(&$variables) {
   if($variables['node']->type === 'article') {
-    // Get the category title based on article type.
-    $all_fields = field_info_fields();
-    $variables['article_types_list'] = list_allowed_values($all_fields['article_type']);
-    
-    // Get "More articles" block nodes
-    $more_articles = hitsa_articles_get_more_articles_block_nodes($variables);
-    $articles_rendered = array();
-    foreach($more_articles as $article) {
-      $author = user_load($article->uid);
-      $articles_rendered[] = theme('hitsa_article_teaser', array('node' => $article, 'author' => $author));
+    if($variables['view_mode'] === 'full') {
+      // Get the category title based on article type.
+      $all_fields = field_info_fields();
+      $variables['article_types_list'] = list_allowed_values($all_fields['article_type']);
+      
+      // Get "More articles" block nodes
+      $more_articles = hitsa_articles_get_more_articles_block_nodes($variables);
+      $articles_rendered = array();
+      foreach($more_articles as $article) {
+        $author = user_load($article->uid);
+        $articles_rendered[] = theme('hitsa_article_teaser', array('node' => $article, 'author' => $author));
+      }
+      $variables['more_articles'] = $articles_rendered;
+      
+      // Add "More articles" block title and link
+      $article_type = !empty($variables['article_type'][0]['value']) ? $variables['article_type'][0]['value'] : 'news';
+      
+      $variables['more_articles_title'] = $article_type === 'our_stories' ? t('More stories') : t('More news');
+      $link = $article_type === 'our_stories' ? url('our-stories') : url('news');
+      $variables['more_articles_link'] = sprintf('<a href="%s" class="btn">%s</a>', $link, $article_type === 'our_stories' ? t('All stories') : t('All news'));
     }
-    $variables['more_articles'] = $articles_rendered;
-    
-    // Add "More articles" block title and link
-    $article_type = !empty($variables['article_type'][0]['value']) ? $variables['article_type'][0]['value'] : 'news';
-    
-    $variables['more_articles_title'] = $article_type === 'our_stories' ? t('More stories') : t('More news');
-    $link = $article_type === 'our_stories' ? url('our-stories') : url('news');
-    $variables['more_articles_link'] = sprintf('<a href="%s" class="btn">%s</a>', $link, $article_type === 'our_stories' ? t('All stories') : t('All news'));
   }
 }
 

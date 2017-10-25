@@ -44,11 +44,11 @@ function hitsa_preprocess_hitsa_front_content(&$variables) {
     }
   }
   if(module_exists('hitsa_events')){
-    $block = module_invoke('hitsa_events', 'block_view', 'fornt_page_training');
+    // $block = module_invoke('hitsa_events', 'block_view', 'fornt_page_training');
     
-    $variables['hitsa_training_events'] = render($block['content']);
-    $block = module_invoke('hitsa_events','block_view','fornt_page_events');
-    $variables['hitsa_front_events'] = render($block['content']);
+    // $variables['hitsa_training_events'] = render($block['content']);
+    // $block = module_invoke('hitsa_events','block_view','fornt_page_events');
+    // $variables['hitsa_front_events'] = render($block['content']);
   }
   if(module_exists('hitsa_logos')) { // HITSA Logos module
     // Add awards block
@@ -56,6 +56,20 @@ function hitsa_preprocess_hitsa_front_content(&$variables) {
   }
 }
 
+function hitsa_preprocess_views_view(&$vars) {
+  if($vars['view']->name === 'hitsa_search') { // Search page
+    $vars['search_query'] = !empty($vars['view']->exposed_input['query']) ? $vars['view']->exposed_input['query'] : '';
+    $vars['result_count'] = $vars['view']->total_rows > 0 ? 
+      format_plural($vars['view']->total_rows, '1 result found', '@count results found') : t('No results found');
+  }
+  //dpm($vars);
+}
+
+function hitsa_preprocess_views_view_unformatted(&$vars) {
+  if($vars['view']->name === 'hitsa_search') {
+    dpm($vars);
+  }
+}
 
 /* Main menu render functions */
 function hitsa_menu_tree__hitsa_main_menu($variables) {
@@ -192,8 +206,8 @@ function hitsa_links__locale_block($variables) {
     }
     
     // WIP : Add Global Search
-    $output .= '<li><form method="post" action="index.html">
-                <div class="header-search"><input type="text" placeholder="Otsi">
+    $output .= '<li><form method="get" action="' . url('search') . '">
+                <div class="header-search"><input type="text" name="query" placeholder="' . t('Search') .'">
                 <button></button></div></form></li>';
 
     $output .= '</ul>';

@@ -23,6 +23,7 @@ function hitsa_locations_uninstall() {
   }
 }
 
+
 function _hitsa_locations_fields() {
   $t = get_t();
   

@@ -59,7 +59,7 @@ function hitsa_contacts_page_view() {
         $node_departments = $node->contact_departments[LANGUAGE_NONE];
         foreach($node_departments as $d) {
           $department_node_value = $contact_department_node_values[$d['value']];
-          $nodes_grouped[$department_node_value->department_tid][$department_node_value->weight] = $node;
+          $nodes_grouped[$department_node_value->department_tid][$department_node_value->weight] = node_view($node);
         }
       }
     }
@@ -142,6 +142,7 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
       if(isset($form['contact_id'])) {
         $form['contact_id']['#access'] = FALSE;
       }
+      drupal_add_css('.date-year, .date-spacer {display: none;}', 'inline'); // Hide the year select field, we won't use it.
       break;
     case 'views_exposed_form':
       if($form['#id'] === 'views-exposed-form-hitsa-contacts-contacts-page') {
