@@ -901,6 +901,9 @@ function hitsa_events_training_calendar()
     usort($periods, function ($a, $b) {
         return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
     });
+    if(!isset($output)){
+        $output='';
+    }
     $output .= '
       
       <div class="row">

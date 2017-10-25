@@ -24,7 +24,7 @@ function hitsa_curriculum_block_info()
 {
     $blocks = array();
     $blocks['specialities_block'] = array(
-        'info' => t('Hitsa fields block'),
+        'info' => t('Hitsa specialities block'),
     );
     $blocks['areas_of_study_block'] = array(
         'info' => t('Hitsa areas of study block'),
@@ -74,17 +74,20 @@ function hitsa_curriculum_menu()
 function hitsa_curriculum_page()
 {
     $build = array();
+    $page = hitsa_curriculum_specialities_block();
+    
     $build['hitsa_specialities'] = array(
     '#type' => 'markup',
-    '#markup' => drupal_render(hitsa_curriculum_specialities_block()),
+    '#markup' => drupal_render($page),
     );
     return $build;
 }
 
 function hitsa_curriculum_specialities_block()
 {
-    $output = 'a';
+    $output = '';
     global $language;
+    //dpm($language);
     if (module_exists('hitsa_core')) {
         $content = hitsa_core_get_content_by_type('node', 'curriculum', $language->language);
     }
@@ -94,6 +97,7 @@ function hitsa_curriculum_specialities_block()
             $specialities = entity_load('node', $content_nids);
         }
     }
+    //dpm($content);
     $right_block = '';
     $active_id = '';
     if (!empty($specialities)) {
@@ -132,8 +136,45 @@ function hitsa_curriculum_specialities_block()
     return $output;
 }
 function hitsa_curriculum_areas_of_studies_block()
-{
-    $output = 'a';
+{   
+    $output = '';
+    global $language;
+    //dpm($language);
+    if (module_exists('hitsa_core')) {
+        $content = hitsa_core_get_content_by_type('node', 'curriculum', $language->language);
+    }
+    if (!empty($content)) {
+        if (isset($content['node'])) {
+            $content_nids = array_keys($content['node']);
+            $areas_of_study = entity_load('node', $content_nids);
+        }
+    }
+    if (!empty($areas_of_study)) {
+        $left_side = hitsa_curriculum_generate_left_f_titles($areas_of_study);
+        $loaded_area = '';
+        if (!empty($_REQUEST)) {
+            $page_id = $_REQUEST['page_id']; 
+            if(isset($areas_of_study[$page_id])){
+                $loaded_area = $areas_of_study[$page_id];
+            }
+        }
+        else{
+            foreach ($areas_of_study as $area_key => $area) {
+                $loaded_area = $area;
+                break;
+            }
+        }
+        $right_side = hitsa_curriculum_generate_area_right_side($loaded_area);
+        $output .='<div class="block no-padding">
+        <div class="row">';
+        $output .= $left_side;
+        $output .= $right_side;
+        $output.= '</div><!--/row-->
+        </div><!--/block-->';
+        //dpm($content);
+    }
+    
+    
     return $output;
 }
 
@@ -452,4 +493,76 @@ function hitsa_curriculum_contacts($contacts)
         }
         return $output;
     }
+}
+function hitsa_curriculum_generate_left_f_titles($areas){
+    
+    if (is_array($areas)) {
+        $output = '<div class="col-3 d-flex">';
+        $output .= '<ul class="side-menu">';
+        $current_path = current_path();
+        if (!empty($_REQUEST)) {
+            if (isset($_REQUEST['page_id'])) {
+                $page_id = $_REQUEST['page_id'];
+            }
+        }
+        foreach ($areas as $area_key => $area) {
+            $class='';
+            if (isset($page_id)) {
+                if($page_id==$area->nid){
+                    $class='active';
+                }
+            }
+            $link = url($current_path,array('query'=>array('page_id'=>$area->nid)));
+            $output.= '<li class="'.$class.'"><a href="'.$link.'">'.$area->title.'</a></li>';
+            unset($class);
+         
+        }
+        $output.='</ul>';
+        $output.='</div><!--/col-3-->';
+        return $output;
+    }
+}
+
+function hitsa_curriculum_generate_area_right_side($node){
+    $output = '';
+    if (!empty($node)) {
+        if (is_object($node)) {
+            dpm($node);
+            $output.=' <div class="col-9">';
+            $output.=' <article>';
+            $output.='<h3>'.$node->title.'
+            <span class="btn-bar align-right pull-right">
+                <a href="" class="btn-circle before-share"></a>
+                <a href="javascript:window.print();" class="btn-circle before-print"></a>
+            </span><!--/button-row-->
+            </h3>';
+
+            $output.='<div class="intro">';
+            if (!empty($node->field_speciality_description)) {
+                $output.=$node->field_speciality_description['und'][0]['value'];
+            }
+            $output.='</div>';
+            if (!empty($node->body)) {
+                $output.=$node->body['und'][0]['value'];
+            }
+            if (!empty($node->field_attachments)) {
+               $output.= ' <div class="row">
+                <div class="col-12">';
+                   
+                foreach ($node->field_attachments['und'] as $attachment_key => $attachment) {
+                    $attachment_url = file_create_url($attachment['uri']);
+                    $output.='<a class="link-circle" href="'.$attachment_url.'">
+                    <span class="before-document"></span>
+                    '.$attachment['filename'].'
+                 </a><!--/link-circle-->';
+                }
+                $output.='
+                </div><!--/col-12-->
+             </div><!--/row-->';
+            }
+            $output.='</article>';
+            $output.='</div><!--/col-9-->';
+        }
+    }
+    return $output;
 }

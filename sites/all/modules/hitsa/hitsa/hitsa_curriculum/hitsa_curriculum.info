@@ -13,3 +13,4 @@ dependencies[] = tablefield
 dependencies[] = email
 dependencies[] = geolocation
 dependencies[] = date_popup
+dependencies[] = media

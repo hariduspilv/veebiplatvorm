@@ -84,6 +84,7 @@
  * @see bartik_process_page()
  * @see html.tpl.php
  */
+
 ?>
 <div class="wrapper">
    
@@ -108,10 +109,10 @@
     
       <?php if ($tabs): ?>
         <div class="row">
-         <div class="col-12">
-          <?php print render($tabs); ?>
-        </div><!--/col-12-->
-      </div><!--/row-->
+          <div class="col-12">
+            <?php print render($tabs); ?>
+          </div><!--/col-12-->
+        </div><!--/row-->
       <?php endif; ?>
   <div class="row">
     <?php if(!empty($page['sidebar_right'])):?>
