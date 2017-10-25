@@ -77,12 +77,6 @@ function _hitsa_contacts_fields() {
       'label' => $t('E-Mail'),
       'type' => 'email',
     ),
-    'additional_info' => array(
-      'field_name' => 'additional_info',
-      'label' => $t('Additional info'),
-      'type' => 'text_long',
-      'translatable' => '1',
-    ),
     'reception_times' => array(
       'field_name' => 'reception_times',
       'label' => $t('Reception times'),
@@ -99,6 +93,13 @@ function _hitsa_contacts_fields() {
       'label' => $t('Departments'),
       'type' => 'paragraphs',
       'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+    ),
+    'reception_times' => array(
+      'field_name' => 'reception_times',
+      'label' => $t('Reception times'),
+      'type' => 'paragraphs',
+      'cardinality' => 3,
+      'locked' => TRUE,
     ),
     // Paragraph fields
     'job_department' => array(
@@ -119,6 +120,43 @@ function _hitsa_contacts_fields() {
       'field_name' => 'department_weight',
       'label' => $t('Department weight'),
       'type' => 'number_integer',
+    ),
+    // Reception times (Paragraph)
+    'reception_weekdays' => array(
+      'field_name' => 'reception_weekdays',
+      'label' => $t('Weekdays'),
+      'type' => 'list_integer',
+      'settings' => array(
+        'allowed_values' => array(
+          1 => $t('Monday'),
+          2 => $t('Tuesday'),
+          3 => $t('Wednesday'),
+          4 => $t('Thursday'),
+          5 => $t('Friday'),
+          6 => $t('Saturday'),
+          7 => $t('Sunday'),
+        ),
+      ),
+      'locked' => TRUE,
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+    ),
+    'reception_time' => array(
+      'field_name' => 'reception_time',
+      'label' => $t('Time'),
+      'type' => 'datestamp',
+      'module' => 'date',
+      'locked' => TRUE,
+      'settings' => array(
+        'granularity' => array(
+          'month' => 0,
+          'day' => 0,
+          'year' => 'year',
+          'hour' => 'hour',
+          'minute' => 'minute',
+          'second' => 0,
+        ),
+        'todate' => 'required',
+      ),
     ),
   );
 }
@@ -234,22 +272,6 @@ function _hitsa_contacts_field_instances() {
         )
       )
     ),
-    'additional_info' => array(
-      'field_name' => 'additional_info',
-      'bundle' => 'contact',
-      'entity_type' => 'node',
-      'label' => $t('Additional info'),
-      'widget' => array(
-        'type' => 'text_textarea',
-        'module' => 'text',
-      ),
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'type' => 'text_default',
-        )
-      )
-    ),
     'reception_times' => array(
       'field_name' => 'reception_times',
       'bundle' => 'contact',
@@ -356,7 +378,13 @@ function _hitsa_contacts_paragraphs() {
   $paragraphs['contacts_department'] = (object) array(
     'name' => $t('Contact Department'),
     'bundle' => 'contacts_department',
-    'locked' => 0,
+    'locked' => 1,
+  );
+  
+  $paragraphs['reception_time'] = (object) array(
+    'name' => $t('Reception time'),
+    'bundle' => 'reception_time',
+    'locked' => 1,
   );
   
   return $paragraphs;
@@ -509,19 +537,6 @@ function hitsa_contacts_add_contact_form() {
       'pid' => 0,
       'extra' => array(
         'description' => '* marked fields are required'
-      ),
-    ),
-    array(
-      'name' => 'Join mailing list',
-      'form_key' => 'join_mailing_list',
-      'type' => 'select',
-      'required' => 0,
-      'weight' => 3,
-      'pid' => 0,
-      'extra' => array(
-        'items' => 'join_mailing_list|Join the school mailing list',
-        'multiple' => 1,
-        'title_display' => 'none',
       ),
     ),
   );

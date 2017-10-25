@@ -30,7 +30,6 @@ function facetapi_is_overridden(stdClass $settings) {
  * @ingroup forms
  */
 function facetapi_realm_settings_form($form, &$form_state, $searcher, $realm_name) {
-
   // Instantiates adapter, loads realm.
   $adapter = facetapi_adapter_load($searcher);
   $realm = facetapi_realm_load($realm_name);

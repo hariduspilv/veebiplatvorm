@@ -320,3 +320,16 @@ function hitsa_core_search_server_add_index() {
     $server->addIndex($index);
   }
 }
+
+function hitsa_core_search_index_add_facet_filter() {
+  $searcher = 'search_api@hitsa_search_index';
+  $realm_name = 'block';
+  $adapter = facetapi_adapter_load($searcher);
+  $realm = facetapi_realm_load($realm_name);
+  $facet_info = facetapi_get_facet_info($searcher); // $facet array
+  $status = 1;
+  $weight = 0;
+  $batch_process = FALSE;
+
+  facetapi_save_facet_status($adapter, $realm, $facet_info['type'], $status, $weight, $batch_process);
+}

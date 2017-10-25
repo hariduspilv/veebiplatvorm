@@ -4,7 +4,9 @@ function hitsa_core_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_core', 'install');
   hitsa_core_set_default_language(); // Set ET as default language.
+  hitsa_core_set_language_detection_rules();
   hitsa_core_search_server_add_index();
+  
 }
 
 function hitsa_core_uninstall() {
@@ -271,6 +273,23 @@ function hitsa_core_set_default_language() {
   // Disable "Language None" option
   module_load_include('inc', 'entity_translation', 'entity_translation.admin');
   entity_translation_settings_init('node', array('exclude_language_none' => TRUE));
+}
+
+/**
+ * Set URL based interface language detection.
+ */
+function hitsa_core_set_language_detection_rules() {
+  $weighted_provider_list = array(
+    1 => LOCALE_LANGUAGE_NEGOTIATION_URL,
+    10 => LANGUAGE_NEGOTIATION_DEFAULT,
+  );
+  $all_negotiation_providers = language_negotiation_info();
+  $negotiation = array();
+  foreach ($weighted_provider_list as $weight => $id) {
+    $negotation[$id] = $all_negotiation_providers[$id];
+    $negotation[$id]['weight'] = $weight;
+  }
+  language_negotiation_set(LANGUAGE_TYPE_INTERFACE, $negotation);
 }
 
 /**

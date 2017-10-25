@@ -24,10 +24,11 @@
           <?php print nl2br($body[0]['safe_value']); ?>
         <?php endif; ?>
         <?php endif; ?>
+        
+        <?php if(!empty($elements['cp_contact_information'])): ?>
+          <?php print render($elements['cp_contact_information']); ?>
+        <?php endif; ?>
       </article>
-      
-      
-      
     </div><!--/col-8-->
     <div class="col-4">
       <div class="btn-bar align-right">

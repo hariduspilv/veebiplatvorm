@@ -60,6 +60,15 @@ function hitsa_core_theme() {
     'path' => drupal_get_path('module', 'hitsa_core') . '/theme',
   );
   
+  $items['hitsa_search_result'] = array(
+    'template' => 'search-result',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates/search',
+    'variables' => array(
+      'node' => NULL,
+      'excerpt' => NULL,
+    ),
+  );
+  
   return $items;
 }
 

@@ -1,4 +1,3 @@
-<?php dpm($nodes); ?>
 <div class="row">
   <div class="col-<?php if(!empty($locations)) {print 9;} else {print 12;} ?>">
             
@@ -85,40 +84,7 @@
               <div class="accordion-title"><?php print sprintf('%s (%d)', check_plain($contact_department->name), count($current_nodes)); ?></div>
               <div class="accordion-content">
                 <?php foreach($current_nodes as $node): ?>
-                <div class="object object-horizontal">
-                  <span class="object-inner">
-                    <?php if(!empty($node->contact_image)): // Contact Image ?>
-                    <span class="object-image object-image-circle" style="background-image:url(<?php print image_style_url('hitsa_contacts_page_image', $node->contact_image[LANGUAGE_NONE][0]['uri']); ?>);">
-                                <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
-                              </span>
-                    <?php endif; ?>
-                    <span class="object-content">
-                      <div class="object-content_col">
-                        <p>
-                          <b><?php print check_plain($node->title); // Name ?> <?php if(!empty($node->contact_cv)): // Contact CV ?><a target="_blank" href="<?php print $node->contact_cv[LANGUAGE_NONE][0]['url']; ?>">(CV)</a><?php endif; ?></b>
-                        </p>
-                        <p>
-                          <?php if(!empty($node->job_position)): // Job position ?>
-                            <?php print check_plain($job_positions[$node->job_position[LANGUAGE_NONE][0]['target_id']]->name); ?><br />
-                          <?php endif; ?>
-                          <?php if(!empty($node->phone_nr[LANGUAGE_NONE][0]['safe_value'])): // Phone Nr ?>
-                            <?php print check_plain($node->phone_nr[LANGUAGE_NONE][0]['safe_value']); ?><br />
-                          <?php endif; ?>
-                          <?php if(!empty($node->e_mail[LANGUAGE_NONE][0]['email'])): // E-mail ?>
-                          <a href="mailto:<?php print check_plain($node->e_mail[LANGUAGE_NONE][0]['email']); ?>"><?php print check_plain($node->e_mail[LANGUAGE_NONE][0]['email']); ?></a>
-                          <?php endif; ?>
-                        </p>
-                      </div><!--/object-content_col-->
-                      <div class="object-content_col">
-                        <p><b><?php print t('Reception times'); ?>:</b></p>
-                        <?php if($reception_times = field_get_items('node', $node, 'reception_times')): // Reception times ?>
-                        <p><?php print nl2br(check_plain($reception_times[0]['safe_value'])); ?></p>
-                        <?php endif; ?>
-                      </div><!--/object-content_col-->
-                    </span><!--/object-content-->
-                  </span><!--/object-inner-->
-                </div><!--/object-->
-                
+                  <?php print render($node); ?>
                 <?php if(next($current_nodes) !== FALSE): ?>
                 <hr class="spacing-xl" />
                 <?php endif; ?>

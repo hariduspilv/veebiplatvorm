@@ -4,13 +4,13 @@
 * Implements hook_install.
 */
 function hitsa_content_page_install() {
-  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
-  hitsa_core_installer('hitsa_content_page', 'install');
-  
   // Adds body field to content page type
   node_types_rebuild();
   $types = node_type_get_types();
   node_add_body_field($types['content_page']);
+  
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_content_page', 'install');
   
   variable_set('language_content_type_content_page', TRANSLATION_ENABLED); // Make multilingual
   variable_set('i18n_node_options_content_page', array('required')); // Disable language neutral option
@@ -35,6 +35,7 @@ function _hitsa_content_page_fields() {
       'label' => $t('Gallery'),
       'type' => 'image',
       'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+      'locked' => '1',
     ),
     'cp_webform_ref' => array(
       'field_name' => 'cp_webform_ref',
@@ -48,6 +49,7 @@ function _hitsa_content_page_fields() {
           ),
         ),
       ),
+      'locked' => '1',
     ),
     'cp_type' => array(
       'field_name' => 'cp_type',
@@ -59,11 +61,13 @@ function _hitsa_content_page_fields() {
           'subpage' => $t('Subpage'),
         ),
       ),
+      'locked' => '1',
     ),
     'cp_header_text' => array(
       'field_name' => 'cp_header_text',
       'label' => $t('Header text'),
       'type' => 'text_with_summary',
+      'locked' => '1',
     ),
     'cp_display_style' => array(
       'field_name' => 'cp_display_style',
@@ -75,23 +79,36 @@ function _hitsa_content_page_fields() {
           'grid' => $t('Grid'),
         ),
       ),
+      'locked' => '1',
     ),
     'cp_subpages' => array(
       'field_name' => 'cp_subpages',
       'label' => $t('Subpages'),
       'type' => 'paragraphs',
       'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+      'locked' => '1',
+    ),
+    'cp_contact_information' => array(
+      'field_name' => 'cp_contact_information',
+      'label' => $t('Contact Information'),
+      'type' => 'paragraphs',
+      'cardinality' => 1,
+      'locked' => '1',
     ),
     // Subpage Reference Paragraph
     'cp_intermediate_title' => array(
       'field_name' => 'cp_intermediate_title',
       'label' => $t('Intermediate title'),
       'type' => 'text',
+      'settings' => array(
+        'max_length' => 50,
+      ),
       'bundles' => array(
         'paragraphs_item' => array(
           'subpage_ref',
         ),
       ),
+      'locked' => '1',
     ),
     'cp_subpage_ref_nid' => array(
       'field_name' => 'cp_subpage_ref_nid',
@@ -106,6 +123,47 @@ function _hitsa_content_page_fields() {
           ),
         ),
       ),
+      'locked' => '1',
+    ),
+    // Contact information Paragraph
+    'cinfo_homepage_url' => array(
+      'field_name' => 'cinfo_homepage_url',
+      'label' => $t('Homepage address'),
+      'type' => 'link_field',
+      'locked' => '1',
+    ),
+    'cinfo_e_mail' => array(
+      'field_name' => 'cinfo_e_mail',
+      'label' => $t('E-Mail'),
+      'type' => 'email',
+      'locked' => '1',
+    ),
+    'cinfo_phone_nr' => array(
+      'field_name' => 'cinfo_phone_nr',
+      'label' => $t('Phone Nr.'),
+      'type' => 'text',
+      'settings' => array(
+        'max_length' => 50,
+      ),
+      'locked' => '1',
+    ),
+    'cinfo_address' => array(
+      'field_name' => 'cinfo_address',
+      'label' => $t('Address'),
+      'type' => 'text',
+      'settings' => array(
+        'max_length' => 50,
+      ),
+      'locked' => '1',
+    ),
+    'cinfo_contact_person' => array(
+      'field_name' => 'cinfo_contact_person',
+      'label' => $t('Contact Person'),
+      'type' => 'text',
+      'settings' => array(
+        'max_length' => 50,
+      ),
+      'locked' => '1',
     ),
   );
 }
@@ -222,6 +280,33 @@ function _hitsa_content_page_field_instances() {
         ),
       ),
     ),
+    // Contact information
+    'cp_contact_information' => array(
+      'field_name' => 'cp_contact_information',
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
+      'label' => $t('Contact information'),
+      'widget' => array(
+        'type' => 'paragraphs_embed',
+        'module' => 'paragraphs',
+        'weight' => 7,
+      ),
+      'settings' => array(
+        'title' => $t('Contact information'),
+        'title_multiple' => $t('Contact information'),
+        'default_edit_mode' => 'open',
+        'add_mode' => 'select',
+        'allowed_bundles' => array(
+          'contact_information' => 'contact_information',
+        ),
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'paragraphs_view',
+        ),
+      ),
+    ),
     // Subpage Paragraph
     'cp_intermediate_title' => array(
       'field_name' => 'cp_intermediate_title',
@@ -255,6 +340,90 @@ function _hitsa_content_page_field_instances() {
         ),
       ),
     ),
+    // Contact Information Paragraph
+    'cinfo_contact_person' => array(
+      'field_name' => 'cinfo_contact_person',
+      'bundle' => 'contact_information',
+      'entity_type' => 'paragraphs_item',
+      'label' => $t('Contact Person'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'text_plain',
+        )
+      )
+    ),
+    'cinfo_homepage_url' => array(
+      'field_name' => 'cinfo_homepage_url',
+      'bundle' => 'contact_information',
+      'entity_type' => 'paragraphs_item',
+      'label' => $t('Homepage address'),
+      'widget' => array(
+        'type' => 'link_field',
+        'module' => 'link',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'link_absolute',
+        ),
+      ),
+      'settings' => array(
+        'title' => 'none',
+      ),
+    ),
+    'cinfo_e_mail' => array(
+      'field_name' => 'cinfo_e_mail',
+      'bundle' => 'contact_information',
+      'entity_type' => 'paragraphs_item',
+      'label' => $t('E-Mail'),
+      'widget' => array(
+        'type' => 'email_textfield',
+        'module' => 'email',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'email_plain',
+        )
+      )
+    ),
+    'cinfo_phone_nr' => array(
+      'field_name' => 'cinfo_phone_nr',
+      'bundle' => 'contact_information',
+      'entity_type' => 'paragraphs_item',
+      'label' => $t('Phone Nr.'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'text_plain',
+        )
+      )
+    ),
+    'cinfo_address' => array(
+      'field_name' => 'cinfo_address',
+      'bundle' => 'contact_information',
+      'entity_type' => 'paragraphs_item',
+      'label' => $t('Address'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'text_plain',
+        )
+      )
+    ),
   );
 }
 
@@ -268,7 +437,13 @@ function _hitsa_content_page_paragraphs() {
   $paragraphs['subpage_ref'] = (object) array(
     'name' => $t('Subpage reference'),
     'bundle' => 'subpage_ref',
-    'locked' => 0,
+    'locked' => 1,
+  );
+  
+  $paragraphs['contact_information'] = (object) array(
+    'name' => $t('Contact information'),
+    'bundle' => 'contact_information',
+    'locked' => 1,
   );
   
   return $paragraphs;

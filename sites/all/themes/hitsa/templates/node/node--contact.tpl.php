@@ -80,60 +80,36 @@
  * @ingroup themeable
  */
 ?>
-<?php if($view_mode === 'full'): ?>
-<div class="row">
-  <div class="col-12">
-    
-    <?php include('include/article-content.tpl.php'); ?>
-
-    <?php if(!empty($more_articles)): ?>
-    <div class="block">
-      
-      <h1 class="block-title"><?php if(!empty($more_articles_title)) {print $more_articles_title;} ?></h1>
-      
-      <div class="row row-vertical-xl">
-      <?php foreach($more_articles as $article) { print $article; } ?>
-      </div><!--/row-->
-      <div class="row">
-        <div class="col-12">
-          <?php if(!empty($more_articles_link)) {print $more_articles_link;} ?>
-        </div><!--/col-12-->
-      </div><!--/row-->
-               
-    </div><!--/block-->
+<div class="object object-horizontal">
+  <span class="object-inner">
+    <?php if(!empty($node->contact_image)): // Contact Image ?>
+    <span class="object-image object-image-circle" style="background-image:url(<?php print image_style_url('hitsa_contacts_page_image', $node->contact_image[LANGUAGE_NONE][0]['uri']); ?>);">
+      <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
+    </span>
     <?php endif; ?>
-    
-  </div><!--/col-12-->
-</div>
-<?php elseif($view_mode === 'search_result'): ?>
-  <?php include 'include/search-result.tpl.php'; ?>
-<?php else: ?>
-<div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-
-  <?php print render($title_prefix); ?>
-  <?php if (!$page): ?>
-    <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
-  <?php endif; ?>
-  <?php print render($title_suffix); ?>
-
-  <?php if ($display_submitted): ?>
-    <div class="submitted">
-      <?php print $submitted; ?>
-    </div>
-  <?php endif; ?>
-
-  <div class="content"<?php print $content_attributes; ?>>
-    <?php
-      // We hide the comments and links now so that we can render them later.
-      hide($content['comments']);
-      hide($content['links']);
-      print render($content);
-    ?>
-  </div>
-
-  <?php print render($content['links']); ?>
-
-  <?php print render($content['comments']); ?>
-
-</div>
-<?php endif; ?>
+    <span class="object-content">
+      <div class="object-content_col">
+        <p>
+          <b><?php print check_plain($node->title); // Name ?> <?php if(!empty($node->contact_cv)): // Contact CV ?><a target="_blank" href="<?php print $node->contact_cv[LANGUAGE_NONE][0]['url']; ?>">(CV)</a><?php endif; ?></b>
+        </p>
+        <p>
+          <?php if($job_position_field = field_get_items('node', $node, 'job_position')): // Job position ?>
+            <?php $job_position = field_view_value('node', $node, 'job_position', $job_position_field[0]); print render($job_position); ?><br />
+          <?php endif; ?>
+          <?php if($phone_nr = field_get_items('node', $node, 'phone_nr')): // Phone Nr ?>
+            <?php print check_plain($node->phone_nr[LANGUAGE_NONE][0]['safe_value']); ?><br />
+          <?php endif; ?>
+          <?php if(!empty($node->e_mail[LANGUAGE_NONE][0]['email'])): // E-mail ?>
+          <a href="mailto:<?php print check_plain($node->e_mail[LANGUAGE_NONE][0]['email']); ?>"><?php print check_plain($node->e_mail[LANGUAGE_NONE][0]['email']); ?></a>
+          <?php endif; ?>
+        </p>
+      </div><!--/object-content_col-->
+      <div class="object-content_col">
+        <p><b><?php print t('Reception times'); ?>:</b></p>
+        <?php if($reception_times = field_get_items('node', $node, 'reception_times')): // Reception times ?>
+        <p><?php print nl2br(check_plain($reception_times[0]['safe_value'])); ?></p>
+        <?php endif; ?>
+      </div><!--/object-content_col-->
+    </span><!--/object-content-->
+  </span><!--/object-inner-->
+</div><!--/object-->
