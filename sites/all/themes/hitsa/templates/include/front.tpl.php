@@ -81,7 +81,7 @@
                </div><!--/data-tab-1-->
                <div data-tab="tab-2" class="active-tab">
                   <div class="row">
-                     <?php print $hitsa_training_events?>
+                     
                      
                      
                      
