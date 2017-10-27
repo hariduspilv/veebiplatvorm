@@ -2,20 +2,29 @@
 /**
  * Implements hook_node_info().
  */
-function hitsa_curriculum_node_info()
+function hitsa_curriculum_create_node()
 {
-    $items = array(
-        'curriculum' => array(
-          'name' => t('Curriculum'),
-          'base' => 'node_content',
-          'description' => '',
-          'has_title' => '1',
-          'title_label' => t('Title'),
-          'help' => '',
-        ),
+    
+      $types = array(
+          array(
+            'name' => t('Curriculum'),
+            'base' => 'node_content',
+            'description' => '',
+            'type' => 'curriculum',
+            'custom' => 1,
+            'modified' => 1,
+            'locked' => 0,
+            'has_title' => 1,
+            'title_label' => t('Title'),
+            'help' => '',
+          ),
       );
-      drupal_alter('node_info', $items);
-      return $items;
+     
+      foreach ($types as $type) {
+        $type = node_type_set_defaults($type);
+        node_type_save($type);
+   }
+   return TRUE;
 }
 /**
  * Implements hook_block_info().
