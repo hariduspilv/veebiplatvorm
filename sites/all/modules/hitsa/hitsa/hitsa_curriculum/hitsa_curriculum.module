@@ -38,6 +38,13 @@ function hitsa_curriculum_block_info()
     $blocks['areas_of_study_block'] = array(
         'info' => t('Hitsa areas of study block'),
     );
+    $field =  field_info_field('field_school_selections');
+    $allowed = list_allowed_values($field);
+    foreach ($allowed as $allowed_key => $allowed_title) {
+        $blocks[$allowed_key] = array(
+            'info' => t($allowed_title.' block'),
+        );
+    }
     return $blocks;
 }
 /**
@@ -62,6 +69,25 @@ function hitsa_curriculum_block_view($delta = '')
              );
             break;
     }
+
+    $field =  field_info_field('field_school_selections');
+    $allowed = list_allowed_values($field);
+    foreach ($allowed as $allowed_key => $allowed_title) {
+        switch ($allowed_key) {
+            case $delta:
+                $render = hitsa_curriculum_custom_block($allowed_key);
+                $vlock = array(
+                    'subject' => t(''),
+                    'content' => array(
+                        '#markup' => $render,
+                    ),
+
+                );
+                break;
+            
+        }
+    }
+
     return $block;
 }
 /**
@@ -536,7 +562,6 @@ function hitsa_curriculum_generate_area_right_side($node){
     $output = '';
     if (!empty($node)) {
         if (is_object($node)) {
-            dpm($node);
             $output.=' <div class="col-9">';
             $output.=' <article>';
             $output.='<h3>'.$node->title.'
@@ -574,4 +599,17 @@ function hitsa_curriculum_generate_area_right_side($node){
         }
     }
     return $output;
+}
+function hitsa_curriculum_custom_block($curriculum_type){
+    global $language;
+    if (module_exists('hitsa_core')) {
+        $content = hitsa_core_get_content_by_type('node', 'curriculum', $language->language,array('cur_type' => $curriculum_type));
+    }
+    if (!empty($content)) {
+        if (isset($content['node'])) {
+            $content_nids = array_keys($content['node']);
+            $real_content = entity_load('node', $content_nids);
+        }
+    }
+    dpm($real_content);
 }
