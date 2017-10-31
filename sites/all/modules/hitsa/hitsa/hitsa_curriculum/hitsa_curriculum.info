@@ -14,3 +14,4 @@ dependencies[] = email
 dependencies[] = geolocation
 dependencies[] = date_popup
 dependencies[] = media
+dependencies[] = conditional_fields

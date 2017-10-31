@@ -192,7 +192,6 @@ function hitsa_core_set_default_academic_year(&$form)
 
 function hitsa_core_get_content_by_type($e_type = 'node', $type = NULL, $language = NULL, $conditions = NULL)
 { 
-  dpm($contitions);
   //dpm($type);
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', $e_type);
@@ -203,7 +202,7 @@ function hitsa_core_get_content_by_type($e_type = 'node', $type = NULL, $languag
   if ($type == 'event') {
     $query->fieldOrderBy('event_date', 'value', 'ASC');
   }
-  if ($conditions) {
+  if (!empty($conditions)) {
     foreach ($conditions as $condition_key => $condition) {
       switch ($condition_key) {
         case 'event_type' :
