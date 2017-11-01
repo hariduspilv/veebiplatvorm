@@ -1,74 +1,77 @@
 <?php
-    /**
-     * Implements hook_install().
-     */
+
+/**
+ * Implements hook_install().
+ */
 function hitsa_curriculum_install()
 {
-    hitsa_curriculum_create_node();
-    
-    $types = node_type_get_types();
-    hitsa_curriculum_add_custom_vocabularies();
-    hitsa_curriculum_add_custom_paragraphs_bundle();
-        
-    hitsa_curriculum_add_custom_paragraphs_fields();
-    hitsa_curriculum_add_custom_node_fields();
-        
+  hitsa_curriculum_create_node();
+
+  $types = node_type_get_types();
+  hitsa_curriculum_add_custom_vocabularies();
+  hitsa_curriculum_add_custom_paragraphs_bundle();
+
+  hitsa_curriculum_add_custom_paragraphs_fields();
+  hitsa_curriculum_add_custom_node_fields();
+  hitsa_curriculum_make_fields_conditional();
     // hitsa_curriculum_add_custom_field_groups();
+
 }
 /**
  * Implements hook_uninstall().
  */
 function hitsa_curriculum_uninstall()
 {
-    $node_type = 'curriculum';
-    $paragraphs_bundles = array(
-        'contacts','description','table'
-    );
+  $node_type = 'curriculum';
+  $paragraphs_bundles = array(
+    'contacts', 'description', 'table'
+  );
 
-    
-    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-    $result = db_query($sql, array(':type' => $node_type));
-    $node_ids = array();
-    foreach ($result as $row) {
-        $node_ids[] = $row->nid;
-    }
+
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+  $result = db_query($sql, array(':type' => $node_type));
+  $node_ids = array();
+  foreach ($result as $row) {
+    $node_ids[] = $row->nid;
+  }
     
     
     // Delete fields and vocabularies
-    hitsa_curriculum_delete_custom_node_fields();
-    hitsa_curriculum_delete_custom_paragraphs_fields();
-    field_purge_batch(500);
-    hitsa_curriculum_delete_custom_vocabularies();
+  hitsa_curriculum_delete_custom_node_fields();
+  hitsa_curriculum_delete_custom_paragraphs_fields();
+  field_purge_batch(500);
+  hitsa_curriculum_delete_custom_vocabularies();
     // hitsa_curriculum_delete_vocabulary_fields();
-    node_delete_multiple($node_ids); // Delete all catering nodes
-    node_type_delete($node_type); // Delete contact content type
-    foreach ($paragraphs_bundles as $key => $paragraphs_bundle) {
-        paragraphs_bundle_delete($paragraphs_bundle); // Delete paragraphs bundle
-    }
+  node_delete_multiple($node_ids); // Delete all catering nodes
+  node_type_delete($node_type); // Delete contact content type
+  foreach ($paragraphs_bundles as $key => $paragraphs_bundle) {
+    paragraphs_bundle_delete($paragraphs_bundle); // Delete paragraphs bundle
+
+  }
 }
 function hitsa_curriculum_add_custom_vocabularies()
 {
     // Create vocabulary
-    foreach (_hitsa_curriculum_vocabularies() as $v) {
-        taxonomy_vocabulary_save($v['vocabulary']);
-        
-        $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-        if (!empty($v['terms']) && $vocab) {
+  foreach (_hitsa_curriculum_vocabularies() as $v) {
+    taxonomy_vocabulary_save($v['vocabulary']);
+
+    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+    if (!empty($v['terms']) && $vocab) {
             // Add generic terms
-            foreach ($v['terms'] as $term) {
-                $term->vid = $vocab->vid;
-                taxonomy_term_save($term);
-            }
-        }
+      foreach ($v['terms'] as $term) {
+        $term->vid = $vocab->vid;
+        taxonomy_term_save($term);
+      }
     }
+  }
 }
 function _hitsa_curriculum_vocabularies()
 {
 
-    $vocabularies = array();
-  
-    $vocabularies['fields'] = array(
-    'vocabulary' => (object) array(
+  $vocabularies = array();
+
+  $vocabularies['fields'] = array(
+    'vocabulary' => (object)array(
       'name' => t('Fields'),
       'description' => t('Field for speciality'),
       'machine_name' => 'fields',
@@ -93,58 +96,58 @@ function _hitsa_curriculum_vocabularies()
         ),
       ),
     ),
-    );
-    return $vocabularies;
+  );
+  return $vocabularies;
 }
 function hitsa_curriculum_delete_custom_vocabularies()
 {
-    foreach (_hitsa_curriculum_vocabularies() as $v) {
-        if (!empty($v['vocabulary'])) {
-            $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-            taxonomy_vocabulary_delete($vocab->vid);
-        }
+  foreach (_hitsa_curriculum_vocabularies() as $v) {
+    if (!empty($v['vocabulary'])) {
+      $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+      taxonomy_vocabulary_delete($vocab->vid);
     }
+  }
 }
 function hitsa_curriculum_add_custom_paragraphs_bundle()
 {
-    $bundle = new stdClass();
-    $bundle->name = 'Contacts'; // user friendly label
-    $bundle->bundle = 'contacts'; // machine name
-    $bundle->locked = 1;
-    $status = paragraphs_bundle_save($bundle);
-    $bundle = new stdClass();
-    $bundle->name = 'Description'; // user friendly label
-    $bundle->bundle = 'description'; // machine name
-    $bundle->locked = 1;
-    $status = paragraphs_bundle_save($bundle);
-    $bundle = new stdClass();
-    $bundle->name = 'Table'; // user friendly label
-    $bundle->bundle = 'table'; // machine name
-    $bundle->locked = 1;
-    $status = paragraphs_bundle_save($bundle);
-    $status = paragraphs_bundle_save($bundle);
-    $bundle = new stdClass();
-    $bundle->name = 'Jobs'; // user friendly label
-    $bundle->bundle = 'jobs'; // machine name
-    $bundle->locked = 1;
-    $status = paragraphs_bundle_save($bundle);
+  $bundle = new stdClass();
+  $bundle->name = 'Contacts'; // user friendly label
+  $bundle->bundle = 'contacts'; // machine name
+  $bundle->locked = 1;
+  $status = paragraphs_bundle_save($bundle);
+  $bundle = new stdClass();
+  $bundle->name = 'Description'; // user friendly label
+  $bundle->bundle = 'description'; // machine name
+  $bundle->locked = 1;
+  $status = paragraphs_bundle_save($bundle);
+  $bundle = new stdClass();
+  $bundle->name = 'Table'; // user friendly label
+  $bundle->bundle = 'table'; // machine name
+  $bundle->locked = 1;
+  $status = paragraphs_bundle_save($bundle);
+  $status = paragraphs_bundle_save($bundle);
+  $bundle = new stdClass();
+  $bundle->name = 'Jobs'; // user friendly label
+  $bundle->bundle = 'jobs'; // machine name
+  $bundle->locked = 1;
+  $status = paragraphs_bundle_save($bundle);
 }
 function hitsa_curriculum_add_custom_paragraphs_fields()
 {
 
-    foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field) {
-        field_create_field($field);
-    }
+  foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field) {
+    field_create_field($field);
+  }
 
-    foreach (_hitsa_curriculum_installed_paragraphs_instances() as $field_instance) {
-        field_create_instance($field_instance);
-    }
+  foreach (_hitsa_curriculum_installed_paragraphs_instances() as $field_instance) {
+    field_create_instance($field_instance);
+  }
 }
 function _hitsa_curriculum_installed_paragraphs_fields()
 {
-    $field_bases = array();
+  $field_bases = array();
   // Exported field_base: 'field_row'.
-    $field_bases['field_row'] = array(
+  $field_bases['field_row'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -158,10 +161,10 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'number_integer',
-    );
+  );
 
   // Exported field_base: 'field_address'.
-    $field_bases['field_address'] = array(
+  $field_bases['field_address'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -180,52 +183,52 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'text',
-    );
+  );
     // Exported field_base: 'field_job'.
-    $field_bases['field_job'] = array(
-      'active' => 1,
-      'cardinality' => 1,
-      'deleted' => 0,
-      'entity_types' => array(),
-      'field_name' => 'field_job',
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
+  $field_bases['field_job'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_job',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
       ),
-      'locked' => 0,
-      'module' => 'text',
-      'settings' => array(
-        'entity_translation_sync' => false,
-        'max_length' => 255,
-      ),
-      'translatable' => 0,
-      'type' => 'text',
-    );
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
   
     // Exported field_base: 'field_job_description'.
-    $field_bases['field_job_description'] = array(
-      'active' => 1,
-      'cardinality' => 1,
-      'deleted' => 0,
-      'entity_types' => array(),
-      'field_name' => 'field_job_description',
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
+  $field_bases['field_job_description'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_job_description',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
       ),
-      'locked' => 0,
-      'module' => 'text',
-      'settings' => array(
-        'entity_translation_sync' => false,
-      ),
-      'translatable' => 0,
-      'type' => 'text_long',
-    );
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
 
   // Exported field_base: 'field_descriptions'.
-    $field_bases['field_descriptions'] = array(
+  $field_bases['field_descriptions'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
@@ -239,10 +242,10 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'paragraphs',
-    );
+  );
 
   // Exported field_base: 'field_column'.
-    $field_bases['field_column'] = array(
+  $field_bases['field_column'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -256,9 +259,9 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'number_integer',
-    );
+  );
   // Exported field_base: 'field_table_content'.
-    $field_bases['field_table_content'] = array(
+  $field_bases['field_table_content'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -272,10 +275,10 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'tablefield',
-    );
+  );
 
   // Exported field_base: 'field_table_field_description'.
-    $field_bases['field_table_field_description'] = array(
+  $field_bases['field_table_field_description'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -294,10 +297,10 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'text',
-    );
+  );
 
   // Exported field_base: 'field_table_location'.
-    $field_bases['field_table_location'] = array(
+  $field_bases['field_table_location'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -320,10 +323,10 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'list_text',
-    );
+  );
 
   // Exported field_base: 'field_contact_title'.
-    $field_bases['field_contact_title'] = array(
+  $field_bases['field_contact_title'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -342,32 +345,32 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'text',
-    );
+  );
   // Exported field_base: 'field_contact_title'.
-  if(!(field_info_field('field_phone_number'))){
+  if (! (field_info_field('field_phone_number'))) {
     $field_bases['field_phone_number'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_phone_number',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_phone_number',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
     );
   }
   // Exported field_base: 'field_website'.
-    $field_bases['field_website'] = array(
+  $field_bases['field_website'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -386,9 +389,9 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     ),
     'translatable' => 0,
     'type' => 'text',
-    );
+  );
 // Exported field_base: 'field_contact_email'.
-    $field_bases['field_contact_email'] = array(
+  $field_bases['field_contact_email'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -398,628 +401,628 @@ function _hitsa_curriculum_installed_paragraphs_fields()
     'locked' => 0,
     'module' => 'email',
     'settings' => array(
-    'entity_translation_sync' => false,
+      'entity_translation_sync' => false,
     ),
     'translatable' => 0,
     'type' => 'email',
-    );
-    return $field_bases;
+  );
+  return $field_bases;
 }
 function _hitsa_curriculum_installed_paragraphs_instances()
 {
-    $field_instances = array();
+  $field_instances = array();
     // Exported field_instance: 'paragraphs_item-jobs-field_job'.
-    $field_instances['paragraphs_item-jobs-field_job'] = array(
-      'bundle' => 'jobs',
-      'default_value' => null,
-      'deleted' => 0,
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => 0,
-        ),
-        'paragraphs_editor_preview' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'paragraphs_item',
-      'field_name' => 'field_job',
-      'label' => 'Job',
-      'required' => 0,
-      'settings' => array(
-        'entity_translation_sync' => false,
-        'text_processing' => 0,
-        'user_register_form' => false,
-      ),
-      'widget' => array(
-        'active' => 1,
+  $field_instances['paragraphs_item-jobs-field_job'] = array(
+    'bundle' => 'jobs',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
         'module' => 'text',
-        'settings' => array(
-          'size' => 60,
-        ),
-        'type' => 'text_textfield',
-        'weight' => 1,
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
       ),
-    );
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_job',
+    'label' => 'Job',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'text_processing' => 0,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
   
     // Exported field_instance: 'paragraphs_item-jobs-field_job_description'.
-    $field_instances['paragraphs_item-jobs-field_job_description'] = array(
-      'bundle' => 'jobs',
-      'default_value' => null,
-      'deleted' => 0,
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => 1,
-        ),
-        'paragraphs_editor_preview' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'paragraphs_item',
-      'field_name' => 'field_job_description',
-      'label' => 'Description',
-      'required' => false,
-      'settings' => array(
-        'entity_translation_sync' => false,
-        'text_processing' => 0,
-        'user_register_form' => false,
-      ),
-      'widget' => array(
+  $field_instances['paragraphs_item-jobs-field_job_description'] = array(
+    'bundle' => 'jobs',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
         'module' => 'text',
-        'settings' => array(
-          'rows' => 5,
-        ),
-        'type' => 'text_textarea',
-        'weight' => 2,
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
       ),
-    );
-    $field_instances['paragraphs_item-contacts-field_address'] = array(
-        'bundle' => 'contacts',
-        'default_value' => null,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'text',
-            'settings' => array(),
-            'type' => 'text_default',
-            'weight' => 3,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_address',
-        'label' => 'Address',
-        'required' => 0,
-        'settings' => array(
-          'entity_translation_sync' => false,
-          'text_processing' => 0,
-          'user_register_form' => false,
-        ),
-        'widget' => array(
-          'active' => 1,
-          'module' => 'text',
-          'settings' => array(
-            'size' => 60,
-          ),
-          'type' => 'text_textfield',
-          'weight' => 5,
-        ),
-      );
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_job_description',
+    'label' => 'Description',
+    'required' => false,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'text_processing' => 0,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 2,
+    ),
+  );
+  $field_instances['paragraphs_item-contacts-field_address'] = array(
+    'bundle' => 'contacts',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 3,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_address',
+    'label' => 'Address',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'text_processing' => 0,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 5,
+    ),
+  );
     
       // Exported field_instance: 'paragraphs_item-contacts-field_contact_title'.
-      $field_instances['paragraphs_item-contacts-field_contact_title'] = array(
-        'bundle' => 'contacts',
-        'default_value' => null,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'text',
-            'settings' => array(),
-            'type' => 'text_default',
-            'weight' => 0,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_contact_title',
-        'label' => 'Contact title',
-        'required' => 0,
-        'settings' => array(
-          'entity_translation_sync' => false,
-          'text_processing' => 0,
-          'user_register_form' => false,
-        ),
-        'widget' => array(
-          'active' => 1,
-          'module' => 'text',
-          'settings' => array(
-            'size' => 60,
-          ),
-          'type' => 'text_textfield',
-          'weight' => 1,
-        ),
-      );
+  $field_instances['paragraphs_item-contacts-field_contact_title'] = array(
+    'bundle' => 'contacts',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_contact_title',
+    'label' => 'Contact title',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'text_processing' => 0,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
     
       // Exported field_instance: 'paragraphs_item-contacts-field_phone_number'.
-      $field_instances['paragraphs_item-contacts-field_phone_number'] = array(
-        'bundle' => 'contacts',
-        'default_value' => null,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'text',
-            'settings' => array(),
-            'type' => 'text_default',
-            'weight' => 2,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_phone_number',
-        'label' => 'Phone number',
-        'required' => 0,
-        'settings' => array(
-          'entity_translation_sync' => false,
-          'text_processing' => 0,
-          'user_register_form' => false,
-        ),
-        'widget' => array(
-          'active' => 1,
-          'module' => 'text',
-          'settings' => array(
-            'size' => 60,
-          ),
-          'type' => 'text_textfield',
-          'weight' => 4,
-        ),
-      );
+  $field_instances['paragraphs_item-contacts-field_phone_number'] = array(
+    'bundle' => 'contacts',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_phone_number',
+    'label' => 'Phone number',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'text_processing' => 0,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 4,
+    ),
+  );
     
       // Exported field_instance: 'paragraphs_item-contacts-field_website'.
-      $field_instances['paragraphs_item-contacts-field_website'] = array(
-        'bundle' => 'contacts',
-        'default_value' => null,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'text',
-            'settings' => array(),
-            'type' => 'text_default',
-            'weight' => 1,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_website',
-        'label' => 'Website',
-        'required' => 0,
-        'settings' => array(
-          'entity_translation_sync' => false,
-          'text_processing' => 0,
-          'user_register_form' => false,
-        ),
-        'widget' => array(
-          'active' => 1,
-          'module' => 'text',
-          'settings' => array(
-            'size' => 60,
-          ),
-          'type' => 'text_textfield',
-          'weight' => 2,
-        ),
-      );
+  $field_instances['paragraphs_item-contacts-field_website'] = array(
+    'bundle' => 'contacts',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 1,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_website',
+    'label' => 'Website',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'text_processing' => 0,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 2,
+    ),
+  );
     
       // Exported field_instance: 'paragraphs_item-description-field_column'.
-      $field_instances['paragraphs_item-description-field_column'] = array(
-        'bundle' => 'description',
-        'default_value' => array(
-          0 => array(
-            'value' => 1,
-          ),
-        ),
-        'deleted' => 0,
-        'description' => 'In which column should the description appear starting from 1',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'number',
-            'settings' => array(
-              'decimal_separator' => '.',
-              'prefix_suffix' => true,
-              'scale' => 0,
-              'thousand_separator' => '',
-            ),
-            'type' => 'number_integer',
-            'weight' => 0,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_column',
-        'label' => 'Column',
-        'required' => 0,
+  $field_instances['paragraphs_item-description-field_column'] = array(
+    'bundle' => 'description',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'In which column should the description appear starting from 1',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
         'settings' => array(
-          'entity_translation_sync' => false,
-          'max' => '',
-          'min' => 1,
-          'prefix' => '',
-          'suffix' => '',
-          'user_register_form' => false,
+          'decimal_separator' => '.',
+          'prefix_suffix' => true,
+          'scale' => 0,
+          'thousand_separator' => '',
         ),
-        'widget' => array(
-          'active' => 0,
-          'module' => 'number',
-          'settings' => array(),
-          'type' => 'number',
-          'weight' => 1,
-        ),
-      );
+        'type' => 'number_integer',
+        'weight' => 0,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_column',
+    'label' => 'Column',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'max' => '',
+      'min' => 1,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 1,
+    ),
+  );
     
       // Exported field_instance: 'paragraphs_item-description-field_row'.
-      $field_instances['paragraphs_item-description-field_row'] = array(
-        'bundle' => 'description',
-        'default_value' => array(
-          0 => array(
-            'value' => 1,
-          ),
-        ),
-        'deleted' => 0,
-        'description' => 'In which row should the description appear',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'number',
-            'settings' => array(
-              'decimal_separator' => '.',
-              'prefix_suffix' => true,
-              'scale' => 0,
-              'thousand_separator' => '',
-            ),
-            'type' => 'number_integer',
-            'weight' => 1,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_row',
-        'label' => 'Row',
-        'required' => 0,
+  $field_instances['paragraphs_item-description-field_row'] = array(
+    'bundle' => 'description',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'In which row should the description appear',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
         'settings' => array(
-          'entity_translation_sync' => false,
-          'max' => '',
-          'min' => 1,
-          'prefix' => '',
-          'suffix' => '',
-          'user_register_form' => false,
+          'decimal_separator' => '.',
+          'prefix_suffix' => true,
+          'scale' => 0,
+          'thousand_separator' => '',
         ),
-        'widget' => array(
-          'active' => 0,
-          'module' => 'number',
-          'settings' => array(),
-          'type' => 'number',
-          'weight' => 2,
-        ),
-      );
+        'type' => 'number_integer',
+        'weight' => 1,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_row',
+    'label' => 'Row',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'max' => '',
+      'min' => 1,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 2,
+    ),
+  );
     
       // Exported field_instance:
       // 'paragraphs_item-description-field_table_field_description'.
-      $field_instances['paragraphs_item-description-field_table_field_description'] = array(
-        'bundle' => 'description',
-        'default_value' => null,
-        'deleted' => 0,
-        'description' => 'Table field description',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'text',
-            'settings' => array(),
-            'type' => 'text_default',
-            'weight' => 2,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_table_field_description',
-        'label' => 'Table field description',
-        'required' => 0,
-        'settings' => array(
-          'entity_translation_sync' => false,
-          'text_processing' => 0,
-          'user_register_form' => false,
-        ),
-        'widget' => array(
-          'active' => 1,
-          'module' => 'text',
-          'settings' => array(
-            'size' => 60,
-          ),
-          'type' => 'text_textfield',
-          'weight' => 4,
-        ),
-      );
+  $field_instances['paragraphs_item-description-field_table_field_description'] = array(
+    'bundle' => 'description',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => 'Table field description',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_table_field_description',
+    'label' => 'Table field description',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'text_processing' => 0,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 4,
+    ),
+  );
     
       // Exported field_instance: 'paragraphs_item-table-field_descriptions'.
-      $field_instances['paragraphs_item-table-field_descriptions'] = array(
-        'bundle' => 'table',
-        'default_value' => null,
-        'deleted' => 0,
-        'description' => 'Descriptions for tablefields',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'paragraphs',
-            'settings' => array(
-              'view_mode' => 'full',
-            ),
-            'type' => 'paragraphs_view',
-            'weight' => 4,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_descriptions',
-        'label' => 'Descriptions',
-        'required' => 0,
+  $field_instances['paragraphs_item-table-field_descriptions'] = array(
+    'bundle' => 'table',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => 'Descriptions for tablefields',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'paragraphs',
         'settings' => array(
-          'add_mode' => 'select',
-          'allowed_bundles' => array(
-            'catering_food_by_day' => -1,
-            'contacts_department' => -1,
-            'content_and_description' => -1,
-            'description' => 'description',
-            'subpage_ref' => -1,
-            'table' => -1,
-            'table_body' => -1,
-            'table_header' => -1,
-            'table_row' => -1,
-          ),
-          'bundle_weights' => array(
-            'catering_food_by_day' => 2,
-            'contacts_department' => 3,
-            'content_and_description' => 4,
-            'description' => 5,
-            'subpage_ref' => 6,
-            'table' => 7,
-            'table_body' => 8,
-            'table_header' => 9,
-            'table_row' => 10,
-          ),
-          'default_edit_mode' => 'preview',
-          'entity_translation_sync' => false,
-          'title' => 'description',
-          'title_multiple' => 'descriptions',
-          'user_register_form' => false,
+          'view_mode' => 'full',
         ),
-        'widget' => array(
-          'active' => 0,
-          'module' => 'paragraphs',
-          'settings' => array(),
-          'type' => 'paragraphs_embed',
-          'weight' => 5,
-        ),
-      );
+        'type' => 'paragraphs_view',
+        'weight' => 4,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_descriptions',
+    'label' => 'Descriptions',
+    'required' => 0,
+    'settings' => array(
+      'add_mode' => 'select',
+      'allowed_bundles' => array(
+        'catering_food_by_day' => -1,
+        'contacts_department' => -1,
+        'content_and_description' => -1,
+        'description' => 'description',
+        'subpage_ref' => -1,
+        'table' => -1,
+        'table_body' => -1,
+        'table_header' => -1,
+        'table_row' => -1,
+      ),
+      'bundle_weights' => array(
+        'catering_food_by_day' => 2,
+        'contacts_department' => 3,
+        'content_and_description' => 4,
+        'description' => 5,
+        'subpage_ref' => 6,
+        'table' => 7,
+        'table_body' => 8,
+        'table_header' => 9,
+        'table_row' => 10,
+      ),
+      'default_edit_mode' => 'preview',
+      'entity_translation_sync' => false,
+      'title' => 'description',
+      'title_multiple' => 'descriptions',
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(),
+      'type' => 'paragraphs_embed',
+      'weight' => 5,
+    ),
+  );
     
       // Exported field_instance: 'paragraphs_item-table-field_table_content'.
-      $field_instances['paragraphs_item-table-field_table_content'] = array(
-        'bundle' => 'table',
-        'default_value' => array(
-          0 => array(
-            'tablefield' => array(
-              'caption' => '',
-              'import' => array(
-                'file' => '',
-                'import' => 'Upload CSV',
-              ),
-              'paste' => array(
-                'data' => '',
-                'paste_delimiter' => '',
-                'paste_import' => 'Import & Rebuild',
-              ),
-              'rebuild' => array(
-                'count_cols' => 5,
-                'count_rows' => 5,
-                'rebuild' => 'Rebuild Table',
-              ),
-              'tabledata' => array(
-                'row_0' => array(
-                  'col_0' => '',
-                  'col_1' => '',
-                  'col_2' => '',
-                  'col_3' => '',
-                  'col_4' => '',
-                  'weight' => 1,
-                ),
-                'row_1' => array(
-                  'col_0' => '',
-                  'col_1' => '',
-                  'col_2' => '',
-                  'col_3' => '',
-                  'col_4' => '',
-                  'weight' => 2,
-                ),
-                'row_2' => array(
-                  'col_0' => '',
-                  'col_1' => '',
-                  'col_2' => '',
-                  'col_3' => '',
-                  'col_4' => '',
-                  'weight' => 3,
-                ),
-                'row_3' => array(
-                  'col_0' => '',
-                  'col_1' => '',
-                  'col_2' => '',
-                  'col_3' => '',
-                  'col_4' => '',
-                  'weight' => 4,
-                ),
-                'row_4' => array(
-                  'col_0' => '',
-                  'col_1' => '',
-                  'col_2' => '',
-                  'col_3' => '',
-                  'col_4' => '',
-                  'weight' => 5,
-                ),
-              ),
+  $field_instances['paragraphs_item-table-field_table_content'] = array(
+    'bundle' => 'table',
+    'default_value' => array(
+      0 => array(
+        'tablefield' => array(
+          'caption' => '',
+          'import' => array(
+            'file' => '',
+            'import' => 'Upload CSV',
+          ),
+          'paste' => array(
+            'data' => '',
+            'paste_delimiter' => '',
+            'paste_import' => 'Import & Rebuild',
+          ),
+          'rebuild' => array(
+            'count_cols' => 5,
+            'count_rows' => 5,
+            'rebuild' => 'Rebuild Table',
+          ),
+          'tabledata' => array(
+            'row_0' => array(
+              'col_0' => '',
+              'col_1' => '',
+              'col_2' => '',
+              'col_3' => '',
+              'col_4' => '',
+              'weight' => 1,
+            ),
+            'row_1' => array(
+              'col_0' => '',
+              'col_1' => '',
+              'col_2' => '',
+              'col_3' => '',
+              'col_4' => '',
+              'weight' => 2,
+            ),
+            'row_2' => array(
+              'col_0' => '',
+              'col_1' => '',
+              'col_2' => '',
+              'col_3' => '',
+              'col_4' => '',
+              'weight' => 3,
+            ),
+            'row_3' => array(
+              'col_0' => '',
+              'col_1' => '',
+              'col_2' => '',
+              'col_3' => '',
+              'col_4' => '',
+              'weight' => 4,
+            ),
+            'row_4' => array(
+              'col_0' => '',
+              'col_1' => '',
+              'col_2' => '',
+              'col_3' => '',
+              'col_4' => '',
+              'weight' => 5,
             ),
           ),
         ),
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'tablefield',
-            'settings' => array(
-              'export_csv' => false,
-              'header_orientation' => 'Horizontal',
-              'hide_cols_skip_head' => false,
-              'hide_empty_cols' => false,
-              'hide_empty_rows' => false,
-              'hide_header' => false,
-              'sortable' => false,
-              'sticky_header' => true,
-              'striping' => true,
-              'trim_trailing_cols' => false,
-              'trim_trailing_rows' => false,
-            ),
-            'type' => 'tablefield_default',
-            'weight' => 3,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_table_content',
-        'label' => 'Table content',
-        'required' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'tablefield',
         'settings' => array(
-          'entity_translation_sync' => false,
-          'user_register_form' => false,
+          'export_csv' => false,
+          'header_orientation' => 'Horizontal',
+          'hide_cols_skip_head' => false,
+          'hide_empty_cols' => false,
+          'hide_empty_rows' => false,
+          'hide_header' => false,
+          'sortable' => false,
+          'sticky_header' => true,
+          'striping' => true,
+          'trim_trailing_cols' => false,
+          'trim_trailing_rows' => false,
         ),
-        'widget' => array(
-          'active' => 1,
-          'module' => 'tablefield',
-          'settings' => array(
-            'cell_processing' => 0,
-            'data_sources' => array(
-              'paste' => 'paste',
-              'upload' => 'upload',
-            ),
-            'input_type' => 'textfield',
-            'lock_values' => 0,
-            'max_length' => 2048,
-            'restrict_rebuild' => 0,
-          ),
-          'type' => 'tablefield',
-          'weight' => 4,
+        'type' => 'tablefield_default',
+        'weight' => 3,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_table_content',
+    'label' => 'Table content',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'tablefield',
+      'settings' => array(
+        'cell_processing' => 0,
+        'data_sources' => array(
+          'paste' => 'paste',
+          'upload' => 'upload',
         ),
-      );
+        'input_type' => 'textfield',
+        'lock_values' => 0,
+        'max_length' => 2048,
+        'restrict_rebuild' => 0,
+      ),
+      'type' => 'tablefield',
+      'weight' => 4,
+    ),
+  );
     
       // Exported field_instance: 'paragraphs_item-table-field_table_location'.
-      $field_instances['paragraphs_item-table-field_table_location'] = array(
-        'bundle' => 'table',
-        'default_value' => null,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-          'default' => array(
-            'label' => 'above',
-            'module' => 'list',
-            'settings' => array(),
-            'type' => 'list_default',
-            'weight' => 2,
-          ),
-          'paragraphs_editor_preview' => array(
-            'label' => 'above',
-            'settings' => array(),
-            'type' => 'hidden',
-            'weight' => 0,
-          ),
-        ),
-        'entity_type' => 'paragraphs_item',
-        'field_name' => 'field_table_location',
-        'label' => 'Table location',
-        'required' => 0,
-        'settings' => array(
-          'entity_translation_sync' => false,
-          'user_register_form' => false,
-        ),
-        'widget' => array(
-          'active' => 1,
-          'module' => 'options',
-          'settings' => array(),
-          'type' => 'options_buttons',
-          'weight' => 3,
-        ),
-      );
+  $field_instances['paragraphs_item-table-field_table_location'] = array(
+    'bundle' => 'table',
+    'default_value' => null,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 2,
+      ),
+      'paragraphs_editor_preview' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'paragraphs_item',
+    'field_name' => 'field_table_location',
+    'label' => 'Table location',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 3,
+    ),
+  );
     
   // Exported field_instance: 'paragraphs_item-contacts-field_contact_email'.
   $field_instances['paragraphs_item-contacts-field_contact_email'] = array(
@@ -1062,89 +1065,90 @@ function _hitsa_curriculum_installed_paragraphs_instances()
   );
       // Translatables
       // Included for use with string extractors like potx.
-      t('Address');
-      t('Attachments');
-      t('Body');
-      t('Column');
-      t('Contact title');
-      t('Contacts');
-      t('Descriptions');
-      t('Descriptions for tablefields');
-      t('Field');
-      t('In which column should the description appear starting from 1');
-      t('In which row should the description appear');
-      t('Phone number');
-      t('Pictures');
-      t('Row');
-      t('Table');
-      t('Table content');
-      t('Table field description');
-      t('Table location');
-      t('Website');
-    
-      return $field_instances;
+  t('Address');
+  t('Attachments');
+  t('Body');
+  t('Column');
+  t('Contact title');
+  t('Contacts');
+  t('Descriptions');
+  t('Descriptions for tablefields');
+  t('Field');
+  t('In which column should the description appear starting from 1');
+  t('In which row should the description appear');
+  t('Phone number');
+  t('Pictures');
+  t('Row');
+  t('Table');
+  t('Table content');
+  t('Table field description');
+  t('Table location');
+  t('Website');
+
+  return $field_instances;
 }
 function hitsa_curriculum_delete_custom_paragraphs_fields()
 {
 
-    foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field_key => $field) {
-        field_delete_field($field_key);
-    }
-    $instances = field_info_instances('paragraphs_item', 'contacts');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
-    $instances = field_info_instances('paragraphs_item', 'description');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
-    $instances = field_info_instances('paragraphs_item', 'table');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
+  foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field_key => $field) {
+    field_delete_field($field_key);
+  }
+  $instances = field_info_instances('paragraphs_item', 'contacts');
+  foreach ($instances as $instance_name => $field_instance) {
+    field_delete_instance($field_instance);
+  }
+  $instances = field_info_instances('paragraphs_item', 'description');
+  foreach ($instances as $instance_name => $field_instance) {
+    field_delete_instance($field_instance);
+  }
+  $instances = field_info_instances('paragraphs_item', 'table');
+  foreach ($instances as $instance_name => $field_instance) {
+    field_delete_instance($field_instance);
+  }
 }
 function hitsa_curriculum_add_custom_node_fields()
 {
-    foreach (_hitsa_curriculum_installed_node_fields() as $field) {
-        field_create_field($field);
-    }
+  foreach (_hitsa_curriculum_installed_node_fields() as $field) {
+    field_create_field($field);
+  }
 
-    foreach (_hitsa_curriculum_installed_node_instances() as $field_instance) {
-        field_create_instance($field_instance);
-    }
+  foreach (_hitsa_curriculum_installed_node_instances() as $field_instance) {
+    field_create_instance($field_instance);
+  }
 }
 function _hitsa_curriculum_installed_node_fields()
 {
-    $field_bases = array();
-    $field_info = field_info_field('body');
-    if (!$field_info) {
+  $field_bases = array();
+  $field_info = field_info_field('body');
+  if (!$field_info) {
       // Exported field_base: 'body'.
-        $field_bases['body'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(
-          0 => 'node',
+    $field_bases['body'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
         ),
-        'field_name' => 'body',
-        'indexes' => array(
-          'format' => array(
-            0 => 'format',
-          ),
-        ),
-        'locked' => 0,
-        'module' => 'text',
-        'settings' => array(
-          'entity_translation_sync' => false,
-        ),
-        'translatable' => 0,
-        'type' => 'text_with_summary',
-        );
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+      ),
+      'translatable' => 0,
+      'type' => 'text_with_summary',
+    );
       // Exported field_base: 'field_attachments'.
-    }
+
+  }
 
   // Exported field_base: 'field_speciality_description'.
-    $field_bases['field_speciality_description'] = array(
+  $field_bases['field_speciality_description'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
@@ -1162,9 +1166,9 @@ function _hitsa_curriculum_installed_node_fields()
     ),
     'translatable' => 0,
     'type' => 'text_long',
-    );
+  );
   // Exported field_base: 'field_jobs'.
-    $field_bases['field_jobs'] = array(
+  $field_bases['field_jobs'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
@@ -1178,8 +1182,8 @@ function _hitsa_curriculum_installed_node_fields()
     ),
     'translatable' => 0,
     'type' => 'paragraphs',
-    );
-    $field_bases['field_attachments'] = array(
+  );
+  $field_bases['field_attachments'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
@@ -1202,10 +1206,10 @@ function _hitsa_curriculum_installed_node_fields()
     ),
     'translatable' => 0,
     'type' => 'file',
-    );
+  );
 
   // Exported field_base: 'field_contacts'.
-    $field_bases['field_contacts'] = array(
+  $field_bases['field_contacts'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
@@ -1219,44 +1223,44 @@ function _hitsa_curriculum_installed_node_fields()
     ),
     'translatable' => 0,
     'type' => 'paragraphs',
-    );
+  );
     // Exported field_base: 'field_field'.
-    $field_bases['field_field'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_field',
-        'indexes' => array(
-          'target_id' => array(
-            0 => 'target_id',
+  $field_bases['field_field'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_field',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'entity_translation_sync' => false,
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
           ),
         ),
-        'locked' => 0,
-        'module' => 'entityreference',
-        'settings' => array(
-          'entity_translation_sync' => false,
-          'handler' => 'base',
-          'handler_settings' => array(
-            'behaviors' => array(
-              'views-select-list' => array(
-                'status' => 0,
-              ),
-            ),
-            'sort' => array(
-              'type' => 'none',
-            ),
-            'target_bundles' => array(
-              'fields' => 'fields',
-            ),
-          ),
-          'target_type' => 'taxonomy_term',
+        'sort' => array(
+          'type' => 'none',
         ),
-        'translatable' => 0,
-        'type' => 'entityreference',
-      );
+        'target_bundles' => array(
+          'fields' => 'fields',
+        ),
+      ),
+      'target_type' => 'taxonomy_term',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
     // Exported field_base: 'field_pictures'.
-    $field_bases['field_pictures'] = array(
+  $field_bases['field_pictures'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
@@ -1278,10 +1282,10 @@ function _hitsa_curriculum_installed_node_fields()
     ),
     'translatable' => 0,
     'type' => 'image',
-    );
+  );
 
   // Exported field_base: 'field_table'.
-    $field_bases['field_table'] = array(
+  $field_bases['field_table'] = array(
     'active' => 1,
     'cardinality' => -1,
     'deleted' => 0,
@@ -1295,7 +1299,7 @@ function _hitsa_curriculum_installed_node_fields()
     ),
     'translatable' => 0,
     'type' => 'paragraphs',
-    );
+  );
     // Exported field_base: 'field_jobs_pretext'.
   $field_bases['field_jobs_pretext'] = array(
     'active' => 1,
@@ -1524,6 +1528,10 @@ function _hitsa_curriculum_installed_node_fields()
         'preparatory_courses' => 'Preparatory courses',
         'elective_subjects' => 'Elective subjects',
         'hobby_groups' => 'Hobby Groups',
+        'specialities' => 'Speciality',
+        'elective|courses' => 'Elective courses',
+        'hobby_activity' => 'Hobby activity',
+        'e_course' => 'E-Course',
       ),
       'allowed_values_function' => '',
       'entity_translation_sync' => FALSE,
@@ -1573,11 +1581,11 @@ function _hitsa_curriculum_installed_node_fields()
     'translatable' => 0,
     'type' => 'text_with_summary',
   );
-    return $field_bases;
+  return $field_bases;
 }
 function _hitsa_curriculum_installed_node_instances()
 {
-    $field_instances = array();
+  $field_instances = array();
     // Exported field_instance: 'node-curriculum-body'.
   $field_instances['node-curriculum-body'] = array(
     'bundle' => 'curriculum',
@@ -2547,16 +2555,1172 @@ function _hitsa_curriculum_installed_node_instances()
       'weight' => 14,
     ),
   );
-  
+
   return $field_instances;
 }
 function hitsa_curriculum_delete_custom_node_fields()
 {
-    foreach (array_keys(_hitsa_curriculum_installed_node_fields()) as $field) {
-        field_delete_field($field);
-    }
-    $instances = field_info_instances('node', 'curriculum');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
+  foreach (array_keys(_hitsa_curriculum_installed_node_fields()) as $field) {
+    field_delete_field($field);
+  }
+  $instances = field_info_instances('node', 'curriculum');
+  foreach ($instances as $instance_name => $field_instance) {
+    field_delete_instance($field_instance);
+  }
+}
+function hitsa_curriculum_make_fields_conditional()
+{
+  foreach (_hitsa_curriculum_conditional_fields() as $conditional) {
+    dpm($conditional);
+    $ids = _hitsa_curriculum_get_field_ids($conditional['dependee'], $conditional['dependent']);
+    conditional_fields_dependency_insert($ids['dependee'], $ids['dependent'], $conditional['options']);
+  }
+}
+function _hitsa_curriculum_conditional_fields()
+{
+  $items = array();
+
+  $items["node:curriculum:0"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_assessment',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  $items["node:curriculum:1"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_curriculum_length',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  $items["node:curriculum:2"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_curriculum_start',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  $items["node:curriculum:3"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_days_place',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  $items["node:curriculum:4"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_field',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 1,
+      'value_form' => 'specialities',
+      'value' => array(
+        0 => array(
+          'value' => 'specialities',
+        ),
+      ),
+      'values' => array(),
+    ),
+  );
+
+  $items["node:curriculum:5"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_instructor',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  $items["node:curriculum:6"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_jobs',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 1,
+      'value_form' => 'specialities',
+      'value' => array(
+        0 => array(
+          'value' => 'specialities',
+        ),
+      ),
+      'values' => array(),
+    ),
+  );
+
+  $items["node:curriculum:7"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_jobs_pretext',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 1,
+      'value_form' => 'specialities',
+      'value' => array(
+        0 => array(
+          'value' => 'specialities',
+        ),
+      ),
+      'values' => array(),
+    ),
+  );
+
+  $items["node:curriculum:8"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_premise',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  $items["node:curriculum:9"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_rating',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  $items["node:curriculum:10"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_room',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  $items["node:curriculum:11"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_speciality_description',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 1,
+      'value_form' => 'specialities',
+      'value' => array(
+        0 => array(
+          'value' => 'specialities',
+        ),
+      ),
+      'values' => array(),
+    ),
+  );
+
+  $items["node:curriculum:12"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_target_group',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 3,
+      'value_form' => '_none',
+      'values' => array(
+        0 => 'elective_subjects',
+        1 => 'preparatory_courses',
+        2 => 'hobby_groups',
+        3 => 'e_course',
+        4 => 'hobby_activity',
+        5 => 'elective_courses',
+        6 => 'preparatory_courses',
+      ),
+      'value' => array(),
+    ),
+  );
+
+  return $items;
+}
+
+function _hitsa_curriculum_get_field_ids($dependee, $dependent)
+{
+  $ids = array();
+  $field = field_info_instance('node', $dependee, 'curriculum');
+
+  $field2 = field_info_instance('node', $dependent, 'curriculum');
+
+  $ids = array(
+    'dependee' => $field['id'],
+    'dependent' => $field2['id'],
+  );
+  return $ids;
 }
