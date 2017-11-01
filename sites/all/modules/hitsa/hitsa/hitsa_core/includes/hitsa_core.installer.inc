@@ -7,8 +7,10 @@ function hitsa_core_installer($module, $type) {
       $installer_input = '_' . $module . '_' . $installer_type;
       if($type === 'install') {
         $installer_function = 'hitsa_core_add_' . $installer_type;
+        print_r('Adding: ' . $installer_type . "\n");
       } else if($type === 'uninstall') {
         $installer_function = 'hitsa_core_delete_' . $installer_type;
+        print_r('Removing: ' . $installer_type . "\n");
       } else {
         return;
       }
@@ -23,6 +25,7 @@ function _hitsa_core_installer_types() {
     'paragraphs',
     'fields',
     'field_instances',
+    'field_groups',
     'menus',
     'menu_links',
     'date_formats',
@@ -37,6 +40,7 @@ function _hitsa_core_installer_types() {
 */
 function hitsa_core_add_fields($installed_fields = array(), $module = NULL) {
   foreach ($installed_fields as $field) {
+    $field['locked'] = !empty($field['locked']) ? $field['locked'] : TRUE;
     field_create_field($field);
   }
 }
@@ -60,6 +64,21 @@ function hitsa_core_delete_field_instances($installed_instances = array(), $modu
     foreach ($instances as $instance_name => $field_instance) {
       field_delete_instance($field_instance, FALSE);
     }
+  }
+}
+
+/**
+ * Field groups
+ */
+function hitsa_core_add_field_groups($installed_field_groups = array(), $module = NULL) {
+  foreach($installed_field_groups as $installed_field_group) {
+    field_group_group_save($installed_field_group);
+  }
+}
+
+function hitsa_core_delete_field_groups($installed_field_groups = array(), $module = NULL) {
+  foreach($installed_field_groups as $installed_field_group) {
+    field_group_group_export_delete($installed_field_group);
   }
 }
 

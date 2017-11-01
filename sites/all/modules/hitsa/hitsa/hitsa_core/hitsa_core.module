@@ -22,9 +22,7 @@ function hitsa_core_menu() {
     'page callback' => 'hitsa_core_event_settings',
     'access arguments' => array('administer hitsa page settings'),
     'file' => 'includes/hitsa_core_events.admin.inc',
-    
 	);
-  
   $items['admin/hitsa/variables'] = array(
     'title' => 'Variables',
     'type' => MENU_NORMAL_ITEM,
@@ -33,7 +31,6 @@ function hitsa_core_menu() {
     'access callback' => 'user_access',
     'access arguments' => array('administer hitsa page settings'),
   );
-  
   $items['admin/hitsa/variables/general'] = array(
     'title' => 'General',
     'page callback' => 'drupal_get_form',
@@ -43,7 +40,6 @@ function hitsa_core_menu() {
     'access arguments' => array('administer hitsa page settings'),
     'weight' => 0,
   );
-  
   $items['admin/hitsa/variables/header_footer'] = array(
     'title' => 'Header & Footer',
     'page callback' => 'drupal_get_form',
@@ -52,6 +48,11 @@ function hitsa_core_menu() {
     'access callback' => 'user_access',
     'access arguments' => array('administer hitsa page settings'),
     'weight' => 1,
+  );
+  $items['sitemap'] = array(
+    'title' => 'Sitemap',
+    'page callback' => 'hitsa_core_render_sitemap',
+    'access callback' => TRUE,
   );
   
   return $items;
@@ -92,6 +93,11 @@ function hitsa_core_block_view($delta = '') {
   return $output;
 }
 
+function hitsa_core_render_sitemap() {
+  $main_menu = menu_tree_all_data('hitsa-main-menu');
+  $menu_tree_output = menu_tree_output($main_menu);
+  return theme('hitsa_sitemap', array('menu_tree' => $menu_tree_output));
+}
 
 /*
 * Implements hook_form_alter().
@@ -332,4 +338,8 @@ function hitsa_core_search_index_add_facet_filter() {
   $batch_process = FALSE;
 
   facetapi_save_facet_status($adapter, $realm, $facet_info['type'], $status, $weight, $batch_process);
+}
+
+function hitsa_core_get_school_type() {
+  return variable_get('hitsa_school_type', HITSA_SCHOOL_GYMNASIUM);
 }

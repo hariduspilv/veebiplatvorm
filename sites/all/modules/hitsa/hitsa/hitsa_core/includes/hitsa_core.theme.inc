@@ -69,6 +69,14 @@ function hitsa_core_theme() {
     ),
   );
   
+  $items['hitsa_sitemap'] = array(
+    'template' => 'sitemap-page',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates',
+    'variables' => array(
+      'menu_tree' => NULL,
+    ),
+  );
+  
   return $items;
 }
 
