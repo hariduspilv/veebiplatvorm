@@ -17,6 +17,55 @@ function hitsa_content_page_node_info() {
   );
 }
 
+// Field groups
+/*
+function hitsa_content_page_ctools_plugin_api($module, $api) {
+  if ($module == 'field_group' && $api == 'field_group') {
+    return array('version' => 1);
+  }
+}
+
+function hitsa_content_page_field_group_info() {
+  $groups = array();
+  
+  $groups['group_ci|paragraphs_item|subpage|form'] = (object) array(
+    'identifier' => 'group_ci|paragraphs_item|subpage|form',
+    'group_name' => 'group_ci',
+    'entity_type' => 'paragraphs_item',
+    'bundle' => 'subpage',
+    'mode' => 'form',
+    'parent_name' => '',
+    'disabled' => false,
+    'data' => array(
+      'label' => 'Contact information',
+      'weight' => '3',
+      'children' => array(
+        0 => 'cinfo_contact_person',
+        1 => 'cinfo_homepage_url',
+        2 => 'cinfo_e_mail',
+        3 => 'cinfo_phone_nr',
+        4 => 'cinfo_address',
+      ),
+      'format_type' => 'fieldset',
+      'format_settings' => 
+      array(
+        'label' => 'Contact information',
+        'instance_settings' => 
+        array(
+          'required_fields' => 1,
+          'id' => '',
+          'classes' => 'group-ci field-group-fieldset',
+          'description' => '',
+        ),
+        'formatter' => 'collapsed',
+      ),
+    ),
+  );
+  dpm($groups);
+  
+  return $groups;
+}
+*/
 /**
  * Implement hook_form()
  */
@@ -28,28 +77,61 @@ function content_page_form($node, $form_state) {
  * Implement hook_form_alter()
  */
 function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
   if($form_id === 'content_page_node_form') {
     // Show text summary by default.
     hitsa_core_formatted_text_show_summary();
     
-    if(isset($form['cp_type'])) {
-      $form['cp_type'][LANGUAGE_NONE]['#ajax'] = array(
-        'callback' => 'hitsa_content_page_update_page_type',
-        'wrapper' => $form['#id'],
-        'method' => 'replace',
-      );
-
-      if(!empty($form_state['input']['cp_type'][LANGUAGE_NONE])) {
-        $content_page_type = $form_state['input']['cp_type'][LANGUAGE_NONE];
-      } else if(!empty($form['#node']->cp_type[LANGUAGE_NONE][0]['value'])) {
-        $content_page_type = $form['#node']->cp_type[LANGUAGE_NONE][0]['value'];
-      } 
-      
-      // Hide certain fields depending on content page type.
-      if(empty($content_page_type) || $content_page_type !== 'content_page') {
-        $form['cp_header_text']['#access'] = FALSE;
-        $form['cp_display_style']['#access'] = FALSE;
-        $form['cp_subpages']['#access'] = FALSE;
+    if($user->uid !== '1') {
+      $form['cp_display_style']['#access'] = FALSE;
+      $form['cp_type']['#access'] = FALSE;
+    }
+    
+    if(isset($form['cp_type'])) { // Set field conditions
+      if(!empty($form['cp_subpages'])) {
+        $form['cp_subpages']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              array('value' => 'cp_tabbed'),
+              array('value' => 'cp_service'),
+            ),
+          ),
+        );
+      }
+      if(!empty($form['cp_contacts'])) {
+        $form['cp_contacts']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_contacts',
+            ),
+          ),
+        );
+      }
+      if(!empty($form['cp_image'])) {
+        $form['cp_image']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              array('value' => 'cp_tabbed'),
+              array('value' => 'cp_service'),
+            ),
+          ),
+        );
+      }
+      if(!empty($form['body'])) {
+        $form['body']['#states'] = array(
+          'invisible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_contacts',
+            ),
+          ),
+        );
+      }
+    }
+    // Add subpage titles outside
+    foreach($form['cp_subpages'][LANGUAGE_NONE] as &$subpage_fieldset) {
+      if(!empty($subpage_fieldset['#entity']->subpage_title[LANGUAGE_NONE][0]['safe_value'])) {
+        $subpage_title = $subpage_fieldset['#entity']->subpage_title[LANGUAGE_NONE][0]['safe_value'];
+        $subpage_fieldset['#prefix'] = '<b>' . check_plain($subpage_title) . '</b>';
       }
     }
   }

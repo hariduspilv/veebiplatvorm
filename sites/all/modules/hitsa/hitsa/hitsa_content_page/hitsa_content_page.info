@@ -5,3 +5,4 @@ package = HITSA
 version = "7.x-dev"
 
 dependencies[] = hitsa_core
+dependencies[] = field_group
