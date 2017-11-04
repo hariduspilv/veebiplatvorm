@@ -845,7 +845,6 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = NULL, $id 
                             'pid' => $subpoint->nid*512,
                             'language' => $language->language
                         );
-                        dpm($path);
                         path_save($path);
                         $subpoint_url = url($type.'/'.$subpoint->nid);
                         $class = ($subpoint->active == true) ? 'active' : '';
