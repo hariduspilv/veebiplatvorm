@@ -2223,7 +2223,7 @@ class DatabaseStatementBase extends PDOStatement implements DatabaseStatementInt
     if (!empty($logger)) {
       $query_start = microtime(TRUE);
     }
-
+    var_dump($args);
     $return = parent::execute($args);
 
     if (!empty($logger)) {
