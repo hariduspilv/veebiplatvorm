@@ -15,3 +15,6 @@ dependencies[] = geolocation
 dependencies[] = date_popup
 dependencies[] = media
 dependencies[] = conditional_fields
+dependencies[] = link
+dependencies[] = hitsa_core
+dependencies[] = hitsa_content_page
