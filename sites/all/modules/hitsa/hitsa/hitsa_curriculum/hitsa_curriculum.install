@@ -2573,7 +2573,6 @@ function hitsa_curriculum_delete_custom_node_fields()
 function hitsa_curriculum_make_fields_conditional()
 {
     foreach (_hitsa_curriculum_conditional_fields() as $conditional) {
-        dpm($conditional);
         $ids = _hitsa_curriculum_get_field_ids($conditional['dependee'], $conditional['dependent']);
         conditional_fields_dependency_insert($ids['dependee'], $ids['dependent'], $conditional['options']);
     }
