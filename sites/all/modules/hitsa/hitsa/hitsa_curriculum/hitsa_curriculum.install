@@ -15,6 +15,8 @@ function hitsa_curriculum_install()
     hitsa_curriculum_add_custom_node_fields();
     hitsa_curriculum_make_fields_conditional();
     // hitsa_curriculum_add_custom_field_groups();
+
+    hitsa_curriculum_create_translations();
 }
 /**
  * Implements hook_uninstall().
@@ -1529,7 +1531,7 @@ function _hitsa_curriculum_installed_node_fields()
         'elective_subjects' => 'Elective subjects',
         'hobby_groups' => 'Hobby Groups',
         'specialities' => 'Speciality',
-        'elective|courses' => 'Elective courses',
+        'elective_courses' => 'Elective courses',
         'hobby_activity' => 'Hobby activity',
         'e_course' => 'E-Course',
       ),

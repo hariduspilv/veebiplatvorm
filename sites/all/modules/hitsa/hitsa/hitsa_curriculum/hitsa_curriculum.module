@@ -107,11 +107,13 @@ function hitsa_curriculum_menu()
 function hitsa_curriculum_node_insert($node)
 {
     if ($node->type=='curriculum') {
+        
         global $language;
         if (!empty($node->field_school_selections)) {
             $selection = $node->field_school_selections['und'][0]['value'];
             $main_source = t($selection,array(),array('langcode'=>$node->language));
             $main_source = str_replace('õ','o',$main_source);
+            $main_source = strtolower($main_source);
             $lookup_main = drupal_lookup_path('alias', $main_source, $node->language);
             if(empty($lookup_main)){
                 $path_main = array(
@@ -128,6 +130,7 @@ function hitsa_curriculum_node_insert($node)
             $allowed = list_allowed_values($field);
             $translated_selection = t($selection,array(),array('langcode'=>$node->language));
             $translated_selection = str_replace('õ','o',$translated_selection);
+            $translated_selection = strtolower($translated_selection);
             $title = $node->title;
             $title = str_replace(' ', '-', $title);
             $title = str_replace(' ', '-', $title);
@@ -166,6 +169,7 @@ function hitsa_curriculum_node_presave($node)
                 $selection = $node->field_school_selections['und'][0]['value'];
                 $main_source = t($selection,array(),array('langcode'=>$node->language));
                 $main_source = str_replace('õ','o',$main_source);
+                $main_source = strtolower($main_source);
                 $lookup_main = drupal_lookup_path('alias', $main_source, $node->language);
                 if(empty($lookup_main)){
                     $path_main = array(
@@ -182,6 +186,7 @@ function hitsa_curriculum_node_presave($node)
                 $allowed = list_allowed_values($field);
                 $translated_selection = t($selection,array(),array('langcode'=>$node->language));
                 $translated_selection = str_replace('õ','o',$translated_selection);
+                $translated_selection = strtolower($translated_selection);
                 $title = $node->title;
                 $title = str_replace(' ', '-', $title);
                 $alias = $translated_selection.'/'.$title;
@@ -863,4 +868,70 @@ function hitsa_curriculum_generate_header($header)
     
  </div><!--/block-->';
     return $output;
+}
+function hitsa_curriculum_create_translations(){
+    $translations = array(
+        'elective_subjects' => array(
+          'et' => 'valikained',
+          'en-en' => 'elective_subjects',
+          'ru' => 'Предмет-на-выбор',
+        ),
+        'subject_field' =>array(
+            'et' => 'oppesuund',
+            'ru' => 'Направления-обучения',
+        ),
+        'preparatory_courses' =>array(
+            'et' => 'ettevalmistuskursused',
+            'ru' => 'Подготовительные-курсы',
+        ),
+        'hobby_groups' =>array(
+            'et' => 'huviringid',
+            'ru' => 'Кружки-по-интересам',
+        ),
+        'specialities' =>array(
+            'et' => 'erialad',
+            'ru' => 'Специальности',
+        ),
+        'elective_courses' =>array(
+            'et' => 'vabaained',
+            'ru' => 'Факультативные-предметы',
+        ),
+        'hobby_activity' =>array(
+            'et' => 'Huvitegevus',
+            'ru' => 'Деятельность-по-интересам',
+        ),
+        'e_course' =>array(
+            'et' => 'E-kursused',
+            'ru' => 'Электронные-курсы',
+        ),
+       
+      );
+     
+      foreach ($translations as $string => $values) {
+        $source = db_query('SELECT lid, source, context, textgroup, location FROM {locales_source} WHERE source = :string', array(':string' => $string))->fetchObject();
+       if (!$source) {
+         watchdog('update_hook', 'Translation of string "%string" failed.', array('%string%' => $string));
+         continue;
+       }
+     
+       foreach ($values as $langcode => $translated) {
+         $translation = db_query('SELECT translation FROM {locales_target} WHERE lid = :lid AND language = :language', array(':lid' => $source->lid, ':language' => $langcode))->fetchField();
+         if (is_string($translation)) {
+           db_update('locales_target')
+           ->fields(array('translation' => $translated))
+           ->condition('lid', $source->lid)
+           ->condition('language', $langcode)
+           ->execute();
+         }
+         else {
+           db_insert('locales_target')
+           ->fields(array(
+             'lid' => $source->lid,
+             'translation' => $translated,
+             'language' => $langcode,
+           ))
+           ->execute();
+           }
+         }
+       }
 }
