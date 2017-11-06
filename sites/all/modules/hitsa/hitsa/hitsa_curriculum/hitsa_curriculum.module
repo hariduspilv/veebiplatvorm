@@ -155,6 +155,8 @@ function hitsa_curriculum_node_insert($node)
 
 function hitsa_curriculum_node_presave($node)
 {
+
+    
     if (!empty($node->nid)) {
         if ($node->type=='curriculum') {
             global $language;

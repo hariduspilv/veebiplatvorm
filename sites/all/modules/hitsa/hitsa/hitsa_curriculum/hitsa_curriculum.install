@@ -1145,40 +1145,7 @@ function _hitsa_curriculum_installed_node_fields()
           // Exported field_base: 'field_attachments'.
     }
 // Exported field_base: 'field_page_header'.
-$field_bases['field_page_header'] = array(
-  'active' => 1,
-  'cardinality' => 1,
-  'deleted' => 0,
-  'entity_types' => array(),
-  'field_name' => 'field_page_header',
-  'indexes' => array(
-  'target_id' => array(
-  0 => 'target_id',
-  ),
-  ),
-  'locked' => 0,
-  'module' => 'entityreference',
-  'settings' => array(
-  'entity_translation_sync' => false,
-  'handler' => 'base',
-  'handler_settings' => array(
-  'behaviors' => array(
-    'views-select-list' => array(
-      'status' => 0,
-    ),
-  ),
-  'sort' => array(
-    'type' => 'none',
-  ),
-  'target_bundles' => array(
-    'content_page' => 'content_page',
-  ),
-  ),
-  'target_type' => 'node',
-  ),
-  'translatable' => 0,
-  'type' => 'entityreference',
-  );
+
 
   // Exported field_base: 'field_speciality_description'.
     $field_bases['field_speciality_description'] = array(
@@ -1621,46 +1588,7 @@ function _hitsa_curriculum_installed_node_instances()
     $field_instances = array();
     // Exported field_instance: 'node-curriculum-body'.
     // Exported field_instance: 'node-curriculum-field_page_header'.
-  $field_instances['node-curriculum-field_page_header'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 21,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_page_header',
-    'label' => 'Page header selection',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 1,
-    ),
-  );
-
+ 
     $field_instances['node-curriculum-body'] = array(
     'bundle' => 'curriculum',
     'default_value' => null,

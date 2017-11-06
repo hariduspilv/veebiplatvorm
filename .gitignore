@@ -5,3 +5,5 @@ sites/*/settings*.php
 sites/*/files
 sites/*/private
 sites/default/settings.php
+
+\.vscode/settings\.json
