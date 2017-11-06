@@ -134,7 +134,6 @@ function hitsa_quicklinks_menu_tree__hitsa_quicklinks_menu($variables) {
 
 /* Language switcher render functions */
 function hitsa_links__locale_block($variables) {
-  
   $links = $variables['links'];
   $attributes = $variables['attributes'];
   $heading = $variables['heading'];
@@ -213,7 +212,7 @@ function hitsa_links__locale_block($variables) {
 
     $output .= '</ul>';
   }
-  // dpm($output);
+
   return $output;
 }
 
