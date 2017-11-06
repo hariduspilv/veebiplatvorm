@@ -111,6 +111,7 @@ function hitsa_curriculum_node_insert($node)
         if (!empty($node->field_school_selections)) {
             $selection = $node->field_school_selections['und'][0]['value'];
             $main_source = t($selection,array(),array('langcode'=>$node->language));
+            $main_source = str_replace('õ','o',$main_source);
             $lookup_main = drupal_lookup_path('alias', $main_source, $node->language);
             if(empty($lookup_main)){
                 $path_main = array(
@@ -126,6 +127,7 @@ function hitsa_curriculum_node_insert($node)
             $field = field_info_field('field_school_selections');
             $allowed = list_allowed_values($field);
             $translated_selection = t($selection,array(),array('langcode'=>$node->language));
+            $translated_selection = str_replace('õ','o',$translated_selection);
             $title = $node->title;
             $title = str_replace(' ', '-', $title);
             $title = str_replace(' ', '-', $title);
@@ -163,6 +165,7 @@ function hitsa_curriculum_node_presave($node)
             if (!empty($node->field_school_selections)) {
                 $selection = $node->field_school_selections['und'][0]['value'];
                 $main_source = t($selection,array(),array('langcode'=>$node->language));
+                $main_source = str_replace('õ','o',$main_source);
                 $lookup_main = drupal_lookup_path('alias', $main_source, $node->language);
                 if(empty($lookup_main)){
                     $path_main = array(
@@ -178,6 +181,7 @@ function hitsa_curriculum_node_presave($node)
                 $field = field_info_field('field_school_selections');
                 $allowed = list_allowed_values($field);
                 $translated_selection = t($selection,array(),array('langcode'=>$node->language));
+                $translated_selection = str_replace('õ','o',$translated_selection);
                 $title = $node->title;
                 $title = str_replace(' ', '-', $title);
                 $alias = $translated_selection.'/'.$title;
@@ -200,6 +204,7 @@ function hitsa_curriculum_node_presave($node)
                         path_save($path);
                     }
                 }
+                
             }
         }
     }
@@ -498,7 +503,7 @@ function hitsa_curriculum_generate_area_right_side($node)
 }
 function hitsa_curriculum_custom_block($curriculum_type)
 {
-
+ 
     global $language;
     $current_path = current_path();
     $menu_items = menu_get_item($current_path);
@@ -687,6 +692,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
        </span><!--/button-row-->
     </h5>';
     }
+
     if ($curriculum_type == 'preparatory_courses' || $curriculum_type == 'elective_subjects') {
         if (!empty($content->field_curriculum_length)) {
             $start = $content->field_curriculum_length['und'][0]['value'];
