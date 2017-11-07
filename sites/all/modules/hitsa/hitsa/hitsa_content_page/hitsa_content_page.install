@@ -177,7 +177,7 @@ function _hitsa_content_page_fields() {
         'elective_subjects' => 'Elective subjects',
         'hobby_groups' => 'Hobby Groups',
         'specialities' => 'Speciality',
-        'elective|courses' => 'Elective courses',
+        'elective_courses' => 'Elective courses',
         'hobby_activity' => 'Hobby activity',
         'e_course' => 'E-Course',
       ),
