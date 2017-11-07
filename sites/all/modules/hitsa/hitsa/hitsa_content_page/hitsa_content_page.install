@@ -40,6 +40,7 @@ function _hitsa_content_page_fields() {
           'cp_tabbed' => $t('Tabbed'),
           'cp_service' => $t('Service'),
           'cp_contacts' => $t('Contacts'),
+          'cp_specialities' => $t('Specialities'),
         ),
       ),
     ),
@@ -154,6 +155,37 @@ function _hitsa_content_page_fields() {
         'max_length' => 50,
       ),
       'locked' => '1',
+    ),
+    // Curriculum
+    'field_school_selections' => array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_school_selections',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'subject_field' => 'Subject field',
+        'preparatory_courses' => 'Preparatory courses',
+        'elective_subjects' => 'Elective subjects',
+        'hobby_groups' => 'Hobby Groups',
+        'specialities' => 'Speciality',
+        'elective|courses' => 'Elective courses',
+        'hobby_activity' => 'Hobby activity',
+        'e_course' => 'E-Course',
+      ),
+      'allowed_values_function' => '',
+      'entity_translation_sync' => false,
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
     ),
   );
 }
@@ -405,6 +437,43 @@ function _hitsa_content_page_field_instances() {
           'label' => 'hidden',
           'type' => 'text_plain',
         ),
+      ),
+    ),
+    // Curriculum
+    'field_school_selections' => array(
+      'bundle' => 'content_page',
+      'default_value' => null,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 10,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_school_selections',
+      'label' => 'School selections',
+      'required' => FALSE,
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'user_register_form' => false,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 4,
       ),
     ),
   );

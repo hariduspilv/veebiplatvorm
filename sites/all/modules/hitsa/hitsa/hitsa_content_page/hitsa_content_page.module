@@ -88,6 +88,7 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
     }
     
     if(isset($form['cp_type'])) { // Set field conditions
+      //dpm($form);
       if(!empty($form['cp_subpages'])) {
         $form['cp_subpages']['#states'] = array(
           'visible' => array(
@@ -97,6 +98,15 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
             ),
           ),
         );
+        if(!empty($form['cp_subpages'][LANGUAGE_NONE][0])) {
+          $form['cp_subpages'][LANGUAGE_NONE][0]['subpage_title']['#states'] = array(
+            'visible' => array(
+              ':input[name^="cp_type"]' => array(
+                array('value' => 'cp_tabbed'),
+              ),
+            ),
+          );
+        }
       }
       if(!empty($form['cp_contacts'])) {
         $form['cp_contacts']['#states'] = array(
@@ -113,6 +123,7 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
             ':input[name^="cp_type"]' => array(
               array('value' => 'cp_tabbed'),
               array('value' => 'cp_service'),
+              array('value' => 'cp_specialities'),
             ),
           ),
         );
@@ -122,6 +133,29 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
           'invisible' => array(
             ':input[name^="cp_type"]' => array(
               'value' => 'cp_contacts',
+            ),
+          ),
+        );
+      }
+      if(!empty($form['field_school_selections'])) {
+        $form['field_school_selections']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_specialities',
+            ),
+          ),
+          'required' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_specialities',
+            ),
+          ),
+        );
+      }
+      if(!empty($form['cp_display_style'])) {
+        $form['cp_display_style']['#states'] = array(
+          'invisible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_specialities',
             ),
           ),
         );
