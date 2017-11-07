@@ -514,6 +514,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
     $menu_items = menu_get_item($current_path);
     $type = null;
     $active_id = null;
+    dpm($menu_items);
     if (!empty($menu_items)) {
         if (!empty($menu_items['page_arguments'])) {
             if (!empty($menu_items['page_arguments'][0])) {
@@ -570,7 +571,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 break;
             }
         }
-        $right_side = hitsa_curriculum_generate_right_custom_side($content, $curriculum_type);
+        $right_side = hitsa_curriculum_generate_right_custom_side($content, $type);
     }
     if (!empty($left_side)||!empty($right_side)) {
         $output .= '<div class="block no-padding">';
@@ -697,43 +698,55 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
        </span><!--/button-row-->
     </h5>';
     }
-
     if ($curriculum_type == 'preparatory_courses' || $curriculum_type == 'elective_subjects') {
         if (!empty($content->field_curriculum_length)) {
             $start = $content->field_curriculum_length['und'][0]['value'];
             $end = $content->field_curriculum_length['und'][0]['value2'];
             $start = format_date($start, 'custom', 'd.F.Y', null, $language->language);
             $end = format_date($end, 'custom', 'd.F.Y', null, $language->language);
-            $output_elements['date_length'] = '<p>' . $start . ' - ' . $end . '</p>';
+            if ($curriculum_type=='preparatory_courses') {
+                $output_elements['date_length'] = '<p>'.t('Course druation').': ' . $start . ' - ' . $end . '</p>';
+            }
+            elseif ($curriculum_type=='elecitve_subjects') {
+                $output_elements['date_length'] = '<p>'.t('Duration of subject').': ' .  $start . ' - ' . $end . '</p>';
+            }
+           
         }
         if (!empty($content->field_curriculum_start)) {
             $start = $content->field_curriculum_start['und'][0]['value'];
             $start = format_date($start, 'custom', 'd.F.Y - G:i', null, $language->language);
-            $output_elements['date_start'] = '<p>' . $start . '</p>';
+            // $output_elements['date_start'] = '<p>' . $start . '</p>';
+            if ($curriculum_type=='preparatory_courses') {
+                $output_elements['date_start'] = '<p>'.t('Course starts on').': ' . $start . ' - ' . $end . '</p>';
+            }
+            elseif ($curriculum_type=='elecitve_subjects') {
+                $output_elements['date_start'] = '<p>'.t('Subject starts on').': '  . $start . ' - ' . $end . '</p>';
+            }
         }
         if (!empty($content->field_days_place)) {
-            $output_elements['days_it_takes_place'] = '<p>' . $content->field_days_place['und'][0]['value'] . '</p>';
+            $output_elements['days_it_takes_place'] = '<p>'.t('What days it takes place on').': ' . $content->field_days_place['und'][0]['value'] . '</p>';
+
         }
         if (!empty($content->field_instructor)) {
-            $output_elements['instructor'] = '<p>' . $content->field_instructor['und'][0]['value'] . '</p>';
+            $output_elements['instructor'] = '<p>' .t('Instructor').': '. $content->field_instructor['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_room)) {
             $output_elements['room'] = '<p>' . $content->field_room['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_target_group)) {
-            $output_elements['target_group'] = '<p>' . $content->field_target_group['und'][0]['value'] . '</p>';
+            $output_elements['target_group'] = '<p>' .t('Room').': '. $content->field_target_group['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_premise)) {
-            $output_elements['premise'] = '<p>' . $content->field_premise['und'][0]['value'] . '</p>';
+            $output_elements['premise'] = '<p>' .t('Premise').' '. $content->field_premise['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_assessment)) {
-            $output_elements['assessment'] = '<p>' . $content->field_assessment['und'][0]['value'] . '</p>';
+            $output_elements['assessment'] = '<p>' .t('Assessment').': '. $content->field_assessment['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_rating)) {
-            $output_elements['rating'] = '<p>' . $content->field_rating['und'][0]['value'] . '</p>';
+            $output_elements['rating'] = '<p>'.t('Rating').': ' . $content->field_rating['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_textbooks)) {
-            $output_elements['textbooks'] = '<p>' . $content->field_textbooks['und'][0]['value'] . '</p>';
+            $output_elements['textbooks'] = '<p>'.t('Textbooks').': ' . $content->field_textbooks['und'][0]['value'] . '</p>';
         }
     }
 

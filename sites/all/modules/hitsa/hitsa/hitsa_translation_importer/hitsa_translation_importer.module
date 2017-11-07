@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function hitsa_translation_importer_menu()
+{
+  
+    $items['admin/hitsa/translation_importer_settings'] = array(
+        'title' => t('Translation settings'),
+        'position' => 'left',
+        'type' => MENU_LOCAL_TASK,
+        'weight' => -19,
+        'page callback' => 'hitsa_translations_importer_settings',
+        'access arguments' => array('wiseadmin access'),
+        'file' => 'includes/hitsa_translation_importer.admin.inc',
+    
+        );
+    return $items;
+}
+/**
+ * Implements hook_permission().
+ */
+function hitsa_translation_importer_permission()
+{
+    return array(
+        'wiseadmin access' => array(
+          'title' => t('Access translations setting page'),
+        )
+      );
+}
