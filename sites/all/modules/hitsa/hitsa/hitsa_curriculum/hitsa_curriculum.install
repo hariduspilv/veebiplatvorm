@@ -9,6 +9,7 @@ function hitsa_curriculum_install()
 
     $types = node_type_get_types();
     hitsa_curriculum_add_custom_vocabularies();
+    hitsa_curriculum_add_custom_taxonomy_fields();
     hitsa_curriculum_add_custom_paragraphs_bundle();
 
     hitsa_curriculum_add_custom_paragraphs_fields();
@@ -1511,6 +1512,7 @@ function _hitsa_curriculum_installed_node_fields()
     );
 
   // Exported field_base: 'field_school_selections'.
+  if(empty(field_info_field('field_school_selections'))){
     $field_bases['field_school_selections'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1541,6 +1543,7 @@ function _hitsa_curriculum_installed_node_fields()
     'translatable' => 0,
     'type' => 'list_text',
     );
+  }
     // Exported field_base: 'field_target_group'.
     $field_bases['field_target_group'] = array(
     'active' => 1,
@@ -3726,4 +3729,118 @@ function _hitsa_curriculum_get_field_ids($dependee, $dependent)
     'dependent' => $field2['id'],
     );
     return $ids;
+}
+function hitsa_curriculum_add_custom_taxonomy_fields(){
+  foreach (hitsa_curriculum_add_custom_taxonomy_fields_base() as $field) {
+    field_create_field($field);
+  }
+  foreach (hitsa_curriculum_add_custom_taxonomy_fields_instances() as $field_instance) {
+    
+    field_create_instance($field_instance);
+  }
+}
+function hitsa_curriculum_add_custom_taxonomy_fields_base(){
+  $field_bases = array();
+  
+    // Exported field_base: 'field_icon_choice'.
+    $field_bases['field_icon_choice'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_icon_choice',
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'accessibility' => 'Accessibility',
+          'arrow-right-circle' => 'Arrow-right-circle',
+          'arrow_down' => 'Arrow_down',
+          'arrow_left' => 'Arrow_left',
+          'arrow_right' => 'Arrow_right',
+          'arrow_up' => 'Arrow_up',
+          'business' => 'Business',
+          'calendar' => 'Calendar',
+          'catering' => 'Catering',
+          'check' => 'Check',
+          'clock' => 'Clock',
+          'close' => 'Close',
+          'dinner' => 'Dinner',
+          'document' => 'Document',
+          'download' => 'Download',
+          'elektrienergia' => 'Elektrienergia',
+          'envelope' => 'Envelope',
+          'facebook-circle' => 'Facebook-circle',
+          'home' => 'Home',
+          'link' => 'Link',
+          'location' => 'Location',
+          'menu' => 'Menu',
+          'minus' => 'Minus',
+          'money' => 'Money',
+          'phone' => 'Phone',
+          'plus' => 'Plus',
+          'print' => 'Print',
+          'question-circle' => 'Question-circle',
+          'register' => 'Register',
+          'search' => 'Search',
+          'share' => 'Share',
+          'shopping' => 'Shopping',
+          'sweet' => 'Sweet',
+          'tourism' => 'Tourism',
+          'unlock' => 'Unlock',
+          'user' => 'User',
+        ),
+        'allowed_values_function' => '',
+        'entity_translation_sync' => FALSE,
+      ),
+      'translatable' => 0,
+      'type' => 'list_text',
+    );
+  
+    return $field_bases;
+}
+function hitsa_curriculum_add_custom_taxonomy_fields_instances(){
+  $field_instances = array();
+  
+    // Exported field_instance: 'taxonomy_term-fields-field_icon_choice'.
+    $field_instances['taxonomy_term-fields-field_icon_choice'] = array(
+      'bundle' => 'fields',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_icon_choice',
+      'label' => 'Icon choice',
+      'required' => FALSE,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => 1,
+      ),
+    );
+  
+    // Translatables
+    // Included for use with string extractors like potx.
+    t('Icon choice');
+  
+    return $field_instances;
 }

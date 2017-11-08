@@ -79,14 +79,7 @@ function hitsa_core_permission()
 
 function hitsa_core_block_info()
 {
-    $blocks['hitsa_hero_banner'] = array(
-    'info' => t('HITSA Hero Banner'),
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-    'region' => 'hero',
-    'status' => "1",
-    );
-
+    $blocks= array();
     return $blocks;
 }
 
@@ -94,9 +87,7 @@ function hitsa_core_block_view($delta = '')
 {
     $output = array();
     switch ($delta) {
-        case 'hitsa_hero_banner':
-            $content = ' ';
-            $output = array('subject' => null, 'content' => $content);
+        
     }
 
     return $output;

@@ -37,10 +37,23 @@ function hitsa_curriculum_block_info()
     $field = field_info_field('field_school_selections');
     $allowed = list_allowed_values($field);
     foreach ($allowed as $allowed_key => $allowed_title) {
+        $pages = $allowed_key."\n".$allowed_key.'/*';
         $blocks[$allowed_key] = array(
             'info' => t($allowed_title . ' block'),
+            'region' => 'content',
+            'status' => 1,
+            'visibility' => BLOCK_VISIBILITY_LISTED,
+            'pages' => strval($pages),
         );
     }
+    $blocks['hitsa_hero_banner'] = array(
+        'info' => t('HITSA Hero Banner'),
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => '<front>',
+        'region' => 'hero',
+        'status' => "1",
+        );
+    
     return $blocks;
 }
 
@@ -67,6 +80,19 @@ function hitsa_curriculum_block_view($delta = '')
                 );
                 break;
         }
+    }
+    switch ($delta) {
+        case 'hitsa_hero_banner':
+            $block = array(
+                'subject' => t(''),
+                'content' => hitsa_curriculum_fp_subject_fields(),
+
+            );
+            break;
+        
+        default:
+            # code...
+            break;
     }
     return $block;
 }
@@ -107,15 +133,14 @@ function hitsa_curriculum_menu()
 function hitsa_curriculum_node_insert($node)
 {
     if ($node->type=='curriculum') {
-        
         global $language;
         if (!empty($node->field_school_selections)) {
             $selection = $node->field_school_selections['und'][0]['value'];
-            $main_source = t($selection,array(),array('langcode'=>$node->language));
-            $main_source = str_replace('õ','o',$main_source);
+            $main_source = t($selection, array(), array('langcode'=>$node->language));
+            $main_source = str_replace('õ', 'o', $main_source);
             $main_source = strtolower($main_source);
             $lookup_main = drupal_lookup_path('alias', $main_source, $node->language);
-            if(empty($lookup_main)){
+            if (empty($lookup_main)) {
                 $path_main = array(
                     'source' => $selection,
                     'alias' => $main_source,
@@ -128,8 +153,8 @@ function hitsa_curriculum_node_insert($node)
             $source = $node->field_school_selections['und'][0]['value'].'/'.$node->nid;
             $field = field_info_field('field_school_selections');
             $allowed = list_allowed_values($field);
-            $translated_selection = t($selection,array(),array('langcode'=>$node->language));
-            $translated_selection = str_replace('õ','o',$translated_selection);
+            $translated_selection = t($selection, array(), array('langcode'=>$node->language));
+            $translated_selection = str_replace('õ', 'o', $translated_selection);
             $translated_selection = strtolower($translated_selection);
             $title = $node->title;
             $title = str_replace(' ', '-', $title);
@@ -167,11 +192,11 @@ function hitsa_curriculum_node_presave($node)
             global $language;
             if (!empty($node->field_school_selections)) {
                 $selection = $node->field_school_selections['und'][0]['value'];
-                $main_source = t($selection,array(),array('langcode'=>$node->language));
-                $main_source = str_replace('õ','o',$main_source);
+                $main_source = t($selection, array(), array('langcode'=>$node->language));
+                $main_source = str_replace('õ', 'o', $main_source);
                 $main_source = strtolower($main_source);
                 $lookup_main = drupal_lookup_path('alias', $main_source, $node->language);
-                if(empty($lookup_main)){
+                if (empty($lookup_main)) {
                     $path_main = array(
                         'source' => $selection,
                         'alias' => $main_source,
@@ -180,12 +205,12 @@ function hitsa_curriculum_node_presave($node)
                         'pathauto' =>0,
                     );
                     path_save($path_main);
-                }   
+                }
                 $source = $node->field_school_selections['und'][0]['value'].'/'.$node->nid;
                 $field = field_info_field('field_school_selections');
                 $allowed = list_allowed_values($field);
-                $translated_selection = t($selection,array(),array('langcode'=>$node->language));
-                $translated_selection = str_replace('õ','o',$translated_selection);
+                $translated_selection = t($selection, array(), array('langcode'=>$node->language));
+                $translated_selection = str_replace('õ', 'o', $translated_selection);
                 $translated_selection = strtolower($translated_selection);
                 $title = $node->title;
                 $title = str_replace(' ', '-', $title);
@@ -209,7 +234,6 @@ function hitsa_curriculum_node_presave($node)
                         path_save($path);
                     }
                 }
-                
             }
         }
     }
@@ -246,16 +270,16 @@ function hitsa_curriculum_form_alter($form, $form_state, $form_id)
     }
 }
 function hitsa_curriculum_page($type = null, $name = null)
-{
-    $build = array();
-    return $build;
-    $page = hitsa_curriculum_specialities_block($type, $name);
+{   
 
-    $build['hitsa_specialities'] = array(
-        '#type' => 'markup',
-        '#markup' => drupal_render($page),
-    );
+    global $user;
+   
+    $build = array();
+   
+    
+    
     return $build;
+    
 }
 
 function hitsa_curriculum_generate_table($table)
@@ -317,7 +341,7 @@ function hitsa_curriculum_jobs_part($content = null)
 {
     $output = '';
     $output .= '  <div class="row">';
-    $output .= ' <div class="col-10">';
+    $output .= ' <div class="col-12">';
     if (!empty($content)) {
         if (!empty($content->field_jobs_pretext)) {
             $output .= $content->field_jobs_pretext['und'][0]['value'];
@@ -349,7 +373,7 @@ function hitsa_curriculum_attachments($attachments)
     if (!empty($attachments)) {
         $output = '';
         $output .= '<div class="row">';
-        $output .= '<div class="col-10">';
+        $output .= '<div class="col-12">';
         foreach ($attachments as $key => $attachment) {
             $attachment_url = file_create_url($attachment['uri']);
             $output .= '<a class="link-circle" href="' . $attachment_url . '">';
@@ -510,11 +534,11 @@ function hitsa_curriculum_custom_block($curriculum_type)
 {
  
     global $language;
+    
     $current_path = current_path();
     $menu_items = menu_get_item($current_path);
     $type = null;
     $active_id = null;
-    dpm($menu_items);
     if (!empty($menu_items)) {
         if (!empty($menu_items['page_arguments'])) {
             if (!empty($menu_items['page_arguments'][0])) {
@@ -526,10 +550,12 @@ function hitsa_curriculum_custom_block($curriculum_type)
         }
     }
     if (!empty($type)) {
+        dpm($type);
         $header_content = hitsa_core_get_content_by_type('node', 'content_page', $language->language, array('cur_type' => $type));
         if (!empty($header_content)) {
             $header_nids = array_keys($header_content['node']);
             $header = entity_load('node', $header_nids);
+            dpm($header);
             foreach ($header as $header_key => $header_value) {
                 $header_content_html = hitsa_curriculum_generate_header($header_value);
                 break;
@@ -540,6 +566,18 @@ function hitsa_curriculum_custom_block($curriculum_type)
     $output = '';
     if (!empty($header_content_html)) {
         $output.=$header_content_html;
+    }
+    $access = user_access('edit any curriculum content',$user);
+    if ($access) {
+        if (!empty($active_id)) {
+            $output.='<div class="row">
+                <div class="col-12">
+                  <h2 class="element-invisible">Primary tabs</h2><ul class="tabs primary">
+                    <li><a href="/et/node/'.$active_id.'/edit">Edit</a></li>
+      </ul>          </div><!--/col-12-->
+              </div>'; 
+        }
+       
     }
     if (module_exists('hitsa_core')) {
         $content = hitsa_core_get_content_by_type('node', 'curriculum', $language->language, array('cur_type' => $type));
@@ -698,55 +736,55 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
        </span><!--/button-row-->
     </h5>';
     }
-    if ($curriculum_type == 'preparatory_courses' || $curriculum_type == 'elective_subjects') {
+    if ($curriculum_type == 'preparatory_courses' || $curriculum_type == 'elective_subjects' || $curriculum_type == 'elective_courses'||$curriculum_type=='hobby_groups'||$curriculum_type=='hobby_activity'||$curriculum_type=='e_course') {
         if (!empty($content->field_curriculum_length)) {
             $start = $content->field_curriculum_length['und'][0]['value'];
             $end = $content->field_curriculum_length['und'][0]['value2'];
             $start = format_date($start, 'custom', 'd.F.Y', null, $language->language);
             $end = format_date($end, 'custom', 'd.F.Y', null, $language->language);
-            if ($curriculum_type=='preparatory_courses') {
-                $output_elements['date_length'] = '<p>'.t('Course druation').': ' . $start . ' - ' . $end . '</p>';
+            if ($curriculum_type=='preparatory_courses'||$curriculum_type=='e_course') {
+                $output_elements['date_length'] = '<p><b>'.t('Course druation').': </b>' . $start . ' - ' . $end . '</p>';
+            } elseif ($curriculum_type=='elective_subjects'||$curriculum_type=='elective_courses') {
+                $output_elements['date_length'] = '<p><b>'.t('Duration of subject').': </b>' .  $start . ' - ' . $end . '</p>';
+            } elseif ($curriculum_type=='hobby_groups') {
+                $output_elements['date_length'] = '<p><b>'.t('Hobby activity duration').': </b>' .  $start . ' - ' . $end . '</p>';
             }
-            elseif ($curriculum_type=='elecitve_subjects') {
-                $output_elements['date_length'] = '<p>'.t('Duration of subject').': ' .  $start . ' - ' . $end . '</p>';
-            }
-           
         }
         if (!empty($content->field_curriculum_start)) {
             $start = $content->field_curriculum_start['und'][0]['value'];
             $start = format_date($start, 'custom', 'd.F.Y - G:i', null, $language->language);
-            // $output_elements['date_start'] = '<p>' . $start . '</p>';
-            if ($curriculum_type=='preparatory_courses') {
-                $output_elements['date_start'] = '<p>'.t('Course starts on').': ' . $start . ' - ' . $end . '</p>';
-            }
-            elseif ($curriculum_type=='elecitve_subjects') {
-                $output_elements['date_start'] = '<p>'.t('Subject starts on').': '  . $start . ' - ' . $end . '</p>';
+            $output_elements['date_start'] = '<p>' . $start . '</p>';
+            if ($curriculum_type=='preparatory_courses'||$curriculum_type=='e_course') {
+                $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start . ' - ' . $end . '</p>';
+            } elseif ($curriculum_type=='elective_subjects' or $curriculum_type=='elective_courses') {
+                $output_elements['date_start'] = '<p><b>'.t('Subject starts on').': </b>'  . $start . ' - ' . $end . '</p>';
+            } elseif ($curriculum_type=='hobby_groups') {
+                $output_elements['date_start'] = '<p><b>'.t('Hobby activities start on').': </b>'  . $start . ' - ' . $end . '</p>';
             }
         }
         if (!empty($content->field_days_place)) {
-            $output_elements['days_it_takes_place'] = '<p>'.t('What days it takes place on').': ' . $content->field_days_place['und'][0]['value'] . '</p>';
-
+            $output_elements['days_it_takes_place'] = '<p><b>'.t('What days it takes place on').': </b>' . $content->field_days_place['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_instructor)) {
-            $output_elements['instructor'] = '<p>' .t('Instructor').': '. $content->field_instructor['und'][0]['value'] . '</p>';
+            $output_elements['instructor'] = '<p><b>' .t('Instructor').': </b>'. $content->field_instructor['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_room)) {
-            $output_elements['room'] = '<p>' . $content->field_room['und'][0]['value'] . '</p>';
+            $output_elements['room'] = '<p><b>' .t('Room').' </b>'. $content->field_room['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_target_group)) {
-            $output_elements['target_group'] = '<p>' .t('Room').': '. $content->field_target_group['und'][0]['value'] . '</p>';
+            $output_elements['target_group'] = '<p><b>' .t('Target group').': </b>'. $content->field_target_group['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_premise)) {
-            $output_elements['premise'] = '<p>' .t('Premise').' '. $content->field_premise['und'][0]['value'] . '</p>';
+            $output_elements['premise'] = '<p><b>' .t('Premise').': </b>'. $content->field_premise['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_assessment)) {
-            $output_elements['assessment'] = '<p>' .t('Assessment').': '. $content->field_assessment['und'][0]['value'] . '</p>';
+            $output_elements['assessment'] = '<p><b>' .t('Assessment').': </b>'. $content->field_assessment['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_rating)) {
-            $output_elements['rating'] = '<p>'.t('Rating').': ' . $content->field_rating['und'][0]['value'] . '</p>';
+            $output_elements['rating'] = '<p><b>'.t('Rating').': </b>' . $content->field_rating['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_textbooks)) {
-            $output_elements['textbooks'] = '<p>'.t('Textbooks').': ' . $content->field_textbooks['und'][0]['value'] . '</p>';
+            $output_elements['textbooks'] = '<p><b>'.t('Textbooks').': </b>' . $content->field_textbooks['und'][0]['value'] . '</p>';
         }
     }
 
@@ -759,7 +797,13 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         }
     }
     if (!empty($content->body)) {
-        $output .= $content->body['und'][0]['value'];
+        if ($curriculum_type=='preparatory_courses'||$curriculum_type=='e_course') {
+            $output_elements['body_element'] = '<p><b>'.t('Short description').': </b>' .$content->body['und'][0]['value']. '</p>';
+        } elseif ($curriculum_type=='elective_subjects'||$curriculum_type=='elective_courses') {
+            $output_elements['body_element'] = '<p><b>'.t('Short description').': </b>'  . $content->body['und'][0]['value']. '</p>';
+        } else {
+            $output .= $content->body['und'][0]['value'];
+        }
     }
     if (!empty($content->field_jobs_pretext) && !empty($content->field_jobs)) {
         $output_elements['jobs'] = '<h5>' . t('Jobs in the future') . '</h5>';
@@ -779,7 +823,8 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     if (!empty($output_elements)) {
         switch ($school_type) {
             case 'middle':
-                if ($curriculum_type == 'preparatory_courses' || $curriculum_type == 'elective_subjects') {
+            if ($curriculum_type == 'preparatory_courses' || $curriculum_type == 'elective_subjects' || $curriculum_type == 'elective_courses'||$curriculum_type=='hobby_groups'||$curriculum_type=='hobby_activity'||$curriculum_type=='e_course') {
+                
                     if (!empty($output_elements['date_length'])) {
                         $output .= $output_elements['date_length'];
                     }
@@ -800,6 +845,9 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     }
                     if (!empty($output_elements['premise'])) {
                         $output .= $output_elements['premise'];
+                    }
+                    if (!empty($output_elements['body_element'])) {
+                        $output .= $output_elements['body_element'];
                     }
                     if (!empty($output_elements['rating'])) {
                         $output .= $output_elements['rating'];
@@ -839,13 +887,15 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     return $output;
 }
 function hitsa_curriculum_generate_header($header)
-{
+{   
     if (!empty($header->cp_image)) {
         $image = $header->cp_image['und'][0];
+ 
         $image_style = 'large';
-        $image_url = image_style_url($image_style, $picture['uri']);
-        if (!empty($picture['field_file_image_title_text'])) {
-            $picture_text = $picture['field_file_image_title_text']['und'][0]['value'];
+        $image_url = image_style_url($image_style, $image['uri']);
+        $picture_text = '';
+        if (!empty($image['field_file_image_title_text'])) {
+            $picture_text = $image['field_file_image_title_text']['und'][0]['value'];
         }
         $output_image = '';
         $output_image .= '  <figure>';
@@ -882,7 +932,8 @@ function hitsa_curriculum_generate_header($header)
  </div><!--/block-->';
     return $output;
 }
-function hitsa_curriculum_create_translations(){
+function hitsa_curriculum_create_translations()
+{
     $translations = array(
         'elective_subjects' => array(
           'et' => 'valikained',
@@ -920,31 +971,111 @@ function hitsa_curriculum_create_translations(){
        
       );
      
-      foreach ($translations as $string => $values) {
+    foreach ($translations as $string => $values) {
         $source = db_query('SELECT lid, source, context, textgroup, location FROM {locales_source} WHERE source = :string', array(':string' => $string))->fetchObject();
-       if (!$source) {
-         watchdog('update_hook', 'Translation of string "%string" failed.', array('%string%' => $string));
-         continue;
-       }
+        if (!$source) {
+            watchdog('update_hook', 'Translation of string "%string" failed.', array('%string%' => $string));
+            continue;
+        }
      
-       foreach ($values as $langcode => $translated) {
-         $translation = db_query('SELECT translation FROM {locales_target} WHERE lid = :lid AND language = :language', array(':lid' => $source->lid, ':language' => $langcode))->fetchField();
-         if (is_string($translation)) {
-           db_update('locales_target')
-           ->fields(array('translation' => $translated))
-           ->condition('lid', $source->lid)
-           ->condition('language', $langcode)
-           ->execute();
-         }
-         else {
-           db_insert('locales_target')
-           ->fields(array(
-             'lid' => $source->lid,
-             'translation' => $translated,
-             'language' => $langcode,
-           ))
-           ->execute();
-           }
-         }
-       }
+        foreach ($values as $langcode => $translated) {
+            $translation = db_query('SELECT translation FROM {locales_target} WHERE lid = :lid AND language = :language', array(':lid' => $source->lid, ':language' => $langcode))->fetchField();
+            if (is_string($translation)) {
+                db_update('locales_target')
+                ->fields(array('translation' => $translated))
+                ->condition('lid', $source->lid)
+                ->condition('language', $langcode)
+                ->execute();
+            } else {
+                db_insert('locales_target')
+                ->fields(array(
+                'lid' => $source->lid,
+                'translation' => $translated,
+                'language' => $langcode,
+                ))
+                ->execute();
+            }
+        }
+    }
+}
+function hitsa_curriculum_fp_subject_fields(){
+    $taxonomy = 	taxonomy_vocabulary_machine_name_load('fields');
+    global $language;
+    if (!empty($taxonomy)) {
+        $taxonomy_tree = 	taxonomy_get_tree($taxonomy->vid);
+        $i=0;
+        $output_slides=array();
+        foreach ($taxonomy_tree as $taxonomy_key => $taxonomy_value) {
+           
+            $term = taxonomy_term_load($taxonomy_value->tid);
+            if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
+                $term = i18n_taxonomy_localize_terms($term); // The important part!
+                if (!empty($term->field_icon_choice)) {
+                    $icon = $term->field_icon_choice['und'][0]['value'];
+                    $class = 'before-'.$icon;
+                    $output_slides[] = '<div class="col-3">
+                    <a href="" class="block">
+                       <span class="caroussel_profession">
+                          <span class="caroussel_profession-icon '.$class.'"></span>
+                          <span class="caroussel_profession-title">'.$term->name.'</span>
+                          <span class="btn">Vaata erialasid</span>
+                       </span><!--/caroussel_profession-->
+                    </a><!--/block-->
+                 </div><!--/col-3-->';
+                }
+            }
+        }
+        
+        $output_slide_container='';
+        if (!empty($output_slides)) {
+            $i=0;
+            $count = count($output_slides);
+            foreach ($output_slides as $key => $value) {
+                if($i==0){
+                    $output_slide_container.='<div class="swiper-slide">
+                    <div class="row">';
+                }
+                $output_slide_container .= $value;
+            if($i==3){
+                $i=0;
+                $output_slide_container.='</div><!--/row-->
+                
+             </div><!--/swiper-slide-->';
+            }
+            else{
+                $i++;
+            }
+            if($key==$count-1&&$i!=0){
+                $output_slide_container.='</div><!--/row-->
+                
+             </div><!--/swiper-slide-->';
+            }
+            }
+        }
+    }
+    $output='';
+    if (!empty($output_slide_container)) {
+        $output.='<div class="inline">
+        <div class="row">
+           <div class="col-12">
+              <div class="swiper-holder" data-plugin="caroussel" data-slidesPerView="4">
+
+                 <div class="swiper-container">
+                <div class="swiper-wrapper">
+                 '.$output_slide_container.'
+                 
+                 </div><!--/swiper-wrapper-->
+                 </div><!--/swiper-container-->
+                 <div class="swiper-pagination"></div>
+                 <div class="swiper-button-prev"></div>
+                 <div class="swiper-button-next"></div>
+              </div><!--/swiper-holder-->
+              
+           </div><!--/col-12-->
+        </div><!--/row-->
+
+     </div><!--/inline-->';
+    }
+    
+    return $output;
 }

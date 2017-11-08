@@ -8,17 +8,17 @@ function hitsa_catering_menu()
     $items = array();
   
     $items['catering/%'] = array(
-    'title' => t(''),
-    'page callback' => 'hitsa_catering_week',
-    'page arguments' => array(1),
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
+        'title' => t(''),
+        'page callback' => 'hitsa_catering_week',
+        'page arguments' => array(1),
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
     );
     $items['catering'] = array(
-    'title' => t(''),
-    'page callback' => 'hitsa_catering_week',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
+        'title' => t(''),
+        'page callback' => 'hitsa_catering_week',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
     );
   
     return $items;
