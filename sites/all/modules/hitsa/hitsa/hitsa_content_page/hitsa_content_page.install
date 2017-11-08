@@ -12,7 +12,7 @@ function hitsa_content_page_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_content_page', 'install');
   
-  variable_set('language_content_type_content_page', TRANSLATION_ENABLED); // Make multilingual
+  variable_set('language-content_type-content_page', TRANSLATION_ENABLED); // Make multilingual
   variable_set('i18n_node_options_content_page', array('required')); // Disable language neutral option
 }
 
@@ -172,14 +172,14 @@ function _hitsa_content_page_fields() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'subject_field' => 'Subject field',
-        'preparatory_courses' => 'Preparatory courses',
-        'elective_subjects' => 'Elective subjects',
-        'hobby_groups' => 'Hobby Groups',
+        'subject-field' => 'Subject field',
+        'preparatory-courses' => 'Preparatory courses',
+        'elective-subjects' => 'Elective subjects',
+        'hobby-groups' => 'Hobby Groups',
         'specialities' => 'Speciality',
-        'elective_courses' => 'Elective courses',
-        'hobby_activity' => 'Hobby activity',
-        'e_course' => 'E-Course',
+        'elective-courses' => 'Elective courses',
+        'hobby-activity' => 'Hobby activity',
+        'e-course' => 'E-Course',
       ),
       'allowed_values_function' => '',
       'entity_translation_sync' => false,
