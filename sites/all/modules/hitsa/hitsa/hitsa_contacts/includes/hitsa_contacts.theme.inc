@@ -13,6 +13,15 @@ function hitsa_contacts_theme() {
     ),
   );
   
+  $items['contacts_page_accordion'] = array(
+    'template' => 'hitsa-contacts-page-accordion',
+    'path' => drupal_get_path('module', 'hitsa_contacts') . '/theme',
+    'variables' => array(
+      'nodes' => NULL,
+      'contact_departments' => NULL,
+    ),
+  );
+  
   $items['contacts_page_contact_form'] = array(
     'render element' => 'form',
     'template' => 'hitsa-contact-form',

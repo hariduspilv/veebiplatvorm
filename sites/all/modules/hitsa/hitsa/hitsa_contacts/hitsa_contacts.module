@@ -16,6 +16,18 @@ function hitsa_contacts_menu() {
     'weight' => 7,
   );
   
+  $items['api/contact'] = array(
+    'title' => 'Contact API',
+    'page callback' => 'hitsa_contacts_filter',
+    'access arguments' => array('access content'),
+  );
+  
+  $items['api/contact-autocomplete'] = array(
+    'title' => 'Contact API',
+    'page callback' => 'hitsa_contacts_filter_autocomplete',
+    'access arguments' => array('access content'),
+  );
+  
   $items['admin/hitsa/contacts/import'] = array(
     'title' => 'Contact Import',
     'page callback' => 'drupal_get_form',
@@ -48,8 +60,185 @@ function hitsa_contacts_page_view() {
   }
   
   // Nodes grouped by department
-  $nodes_grouped = array();
   $nids_array = hitsa_core_get_content_by_type('node', 'contact');
+  $nodes_grouped = _hitsa_contacts_group_by_department($nids_array);
+
+  // Add location block data
+  if(module_exists('hitsa_locations')) {
+    $locations = array();
+    $nids_array = views_get_view_result('hitsa_locations', 'locations_sort');
+    if(!empty($nids_array)) {
+      $nids = array();
+      foreach($nids_array as $n) {
+        $nids[] = $n->nid;
+      }
+      $locations = node_load_multiple($nids);
+    }
+  }
+  
+  // Render accordion
+  $contact_accordion = theme('contacts_page_accordion',
+    array(
+      'nodes' => $nodes_grouped,
+      'contact_departments' => $contact_departments,
+      )
+  );
+
+  $contact_page = theme('contacts_page',
+    array(
+      'contact_accordion' => $contact_accordion,
+      'nodes' => $nodes_grouped, 
+      'contact_form' => $contact_form,
+      'contact_departments' => $contact_departments,
+      'job_positions' => !empty($job_positions) ? $job_positions : array(),
+      'locations' => isset($locations) ? $locations : NULL,
+      )
+  );
+  return $contact_page;
+}
+
+function hitsa_contacts_filter_autocomplete() {
+  $parameters = drupal_get_query_parameters();
+  
+  if(!empty($parameters['search'])) {
+    $result = db_query('SELECT title FROM {node} n
+      WHERE type = :contact 
+      AND status = 1
+      AND title LIKE :search',
+      array(
+        ':contact' => 'contact',
+        ':search' => '%' . db_like($parameters['search']) . '%'
+      )
+    );
+    
+    $titles = $result->fetchCol();
+    
+    $autocomplete = (object) array(
+      'list' => array(),
+    );
+    
+    foreach($titles as $title) {
+      $autocomplete->list[] = (object) array('title' => $title);
+    }
+    
+    drupal_json_output($autocomplete);
+  }
+}
+
+function hitsa_contacts_filter() {
+  global $language;
+  $parameters = drupal_get_query_parameters();
+
+  $nodes = hitsa_contacts_query_content($parameters);
+  
+  // Contact Departments
+  $department_vocab_vid = variable_get('hitsa_contacts_department_vid');
+  $contact_departments = i18n_taxonomy_localize_terms(taxonomy_get_tree($department_vocab_vid));
+
+  $nodes_grouped = _hitsa_contacts_group_by_department($nodes);
+  
+  $contact_accordion = theme('contacts_page_accordion',
+    array(
+      'nodes' => $nodes_grouped,
+      'contact_departments' => $contact_departments,
+      )
+  );
+
+  print $contact_accordion;
+}
+
+function hitsa_contacts_query_content($q = array()) {
+  $query = new EntityFieldQuery();
+  
+  $parameters = _hitsa_contacts_set_query_parameters($q);
+  
+  $query->entityCondition('entity_type', 'node')
+  ->entityCondition('bundle', 'contact')
+  ->propertyCondition('status', NODE_PUBLISHED)
+  ->propertyOrderBy('created', 'DESC');
+  
+  foreach($parameters as $parameter) {
+    $query->{$parameter['type']}(...$parameter['arguments']);
+  }
+  
+  $result = $query->execute();
+
+  return $result;
+}
+
+function _hitsa_contacts_set_query_parameters($query = array()) {
+  global $language;
+
+  $parameters = array();
+
+  // Language
+  $parameters[] = array(
+    'type' => 'propertyCondition',
+    'arguments' => array('language', $language->language),
+  );
+  
+  if(!empty($query['profession'])) {
+    $professions = explode(',', $query['profession']);
+    
+    $parameters[] = array(
+      'type' => 'fieldCondition',
+      'arguments' => array('job_position', 'target_id', $professions, 'IN'),
+    );
+  }
+  
+  if(!empty($query['person'])) {
+    $parameters[] = array(
+      'type' => 'propertyCondition',
+      'arguments' => array('title', $query['person'], 'CONTAINS'),
+    );
+  }
+  
+  if(!empty($query['category'])) {
+    $departments = explode(',', $query['category']);
+
+    // Subquery
+    $result = db_query('SELECT entity_id 
+    FROM {field_data_job_department}
+    WHERE job_department_target_id IN (:tids)',
+    array(':tids' => $departments)
+    );
+    
+    $department_pids = $result->fetchCol();
+    
+    if(!empty($department_pids)) {
+      $parameters[] = array(
+        'type' => 'fieldCondition',
+        'arguments' => array('contact_departments', 'value', $department_pids, 'IN'),
+      );
+    } else {
+      $parameters[] = array(
+        'type' => 'range',
+        'arguments' => array(0, 0),
+      );
+    }
+    
+  }
+  
+  return $parameters;
+}
+
+function _hitsa_contacts_get_department_node_values() {
+  $query = "SELECT f.contact_departments_value AS pid, 
+            f.entity_id AS nid, d.job_department_target_id AS department_tid, 
+            w.department_weight_value AS weight
+            FROM {field_data_contact_departments} AS f
+            INNER JOIN {field_data_job_department} AS d 
+            	ON  f.contact_departments_value = d.entity_id
+            INNER JOIN {field_data_department_weight} AS w 
+            	ON  f.contact_departments_value = w.entity_id
+            ORDER BY weight;";
+  $result = db_query($query);
+  $departments = $result->fetchAllAssoc('pid');
+  return $departments;
+}
+
+function _hitsa_contacts_group_by_department($nids_array) {
+  $nodes_grouped = array();
   if(!empty($nids_array)) {
     $nids = array_keys($nids_array['node']);
     $nodes = node_load_multiple($nids);
@@ -68,45 +257,8 @@ function hitsa_contacts_page_view() {
       ksort($group);
     }
   }
-
-  // Add location block data
-  if(module_exists('hitsa_locations')) {
-    $locations = array();
-    $nids_array = views_get_view_result('hitsa_locations', 'locations_sort');
-    if(!empty($nids_array)) {
-      $nids = array();
-      foreach($nids_array as $n) {
-        $nids[] = $n->nid;
-      }
-      $locations = node_load_multiple($nids);
-    }
-  }
-
-  $contact_page = theme('contacts_page',
-    array(
-      'nodes' => $nodes_grouped, 
-      'contact_form' => $contact_form,
-      'contact_departments' => $contact_departments,
-      'job_positions' => !empty($job_positions) ? $job_positions : array(),
-      'locations' => isset($locations) ? $locations : NULL,
-      )
-  );
-  return $contact_page;
-}
-
-function _hitsa_contacts_get_department_node_values() {
-  $query = "SELECT f.contact_departments_value AS pid, 
-            f.entity_id AS nid, d.job_department_target_id AS department_tid, 
-            w.department_weight_value AS weight
-            FROM {field_data_contact_departments} AS f
-            INNER JOIN {field_data_job_department} AS d 
-            	ON  f.contact_departments_value = d.entity_id
-            INNER JOIN {field_data_department_weight} AS w 
-            	ON  f.contact_departments_value = w.entity_id
-            ORDER BY weight;";
-  $result = db_query($query);
-  $departments = $result->fetchAllAssoc('pid');
-  return $departments;
+  
+  return $nodes_grouped;
 }
 
 function hitsa_contacts_node_info() {

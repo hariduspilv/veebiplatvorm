@@ -105,9 +105,8 @@
         </p>
       </div><!--/object-content_col-->
       <div class="object-content_col">
-        <p><b><?php print t('Reception times'); ?>:</b></p>
-        <?php if($reception_times = field_get_items('node', $node, 'reception_times')): // Reception times ?>
-        <p><?php print nl2br(check_plain($reception_times[0]['safe_value'])); ?></p>
+        <?php if(!empty($content['reception_times'])): ?>
+          <?php print render($content['reception_times']); ?>
         <?php endif; ?>
       </div><!--/object-content_col-->
     </span><!--/object-content-->

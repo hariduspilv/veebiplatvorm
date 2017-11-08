@@ -69,8 +69,8 @@ function _hitsa_articles_field_instances() {
       'required' => 1,
       'default_value' => array(0 => array('value' => 'news')),
     ),
-    'cp_gallery' => array(
-      'field_name' => 'cp_gallery',
+    'subpage_images' => array(
+      'field_name' => 'subpage_images',
       'entity_type' => 'node',
       'bundle' => 'article',
       'type' => 'image',

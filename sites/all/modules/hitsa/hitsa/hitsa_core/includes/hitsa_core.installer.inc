@@ -120,7 +120,9 @@ function hitsa_core_delete_vocabularies($installed_vocabularies = array(), $modu
 function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
   $lang_list = language_list();
   $nid_array = array();
+
   foreach ($installed_nodes as $node_data) {
+    
     if(is_array($node_data['title'])) { // Multilang nodes
       $tnid = NULL;
       $translation_set = i18n_translation_set_create('menu_link');
@@ -144,6 +146,21 @@ function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
         $node->tnid = $tnid;
         
         $node->status = 0; // Unpublished by default.
+        
+        // Content pages
+        if($node_data['type'] === 'content_page') {
+          if(!empty($node_data['cp_type'])) {
+            $cp_type = $node_data['cp_type'];
+            $node->cp_type = array(
+              LANGUAGE_NONE => array(
+                0 => array(
+                  'value' => $cp_type,
+                ),
+              ),
+            );
+          }
+        }
+        
         node_save($node);
         
         // Add to menu translation set

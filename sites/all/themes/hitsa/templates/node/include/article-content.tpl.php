@@ -4,9 +4,15 @@
   <?php else: ?>
     <h1 class="block-title"><?php print $title; ?></h1>
   <?php endif; ?>
-  
+
   <div class="row-spacer-xs"></div>
   <div class="row">
+    <?php if(!empty($content['cp_type']) && $content['cp_type']['#items'][0]['value'] === 'cp_contacts'): ?>
+      <?php if(!empty($content['cp_contacts'])): ?>
+        <?php dpm($content); ?>
+        <?php print render($content['cp_contacts']); ?>
+      <?php endif; ?>
+    <?php else: ?>
     <div class="col-8">
       <article class="padding-right">
         <?php if($node->type === 'article'): ?>
@@ -31,18 +37,22 @@
       </article>
     </div><!--/col-8-->
     <div class="col-4">
+      <?php if($node->type === 'article' || ($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple')): ?>
       <div class="btn-bar align-right">
         <a href="" class="btn-circle before-share"></a>
         <a href="javascript:window.print();" class="btn-circle before-print"></a>
       </div><!--/button-row-->
+      <?php endif; ?>
       <div class="row-spacer-xl"></div>
       
-      <?php foreach($cp_gallery as $image): // Gallery ?>
+      <?php foreach($cp_image as $image): // Gallery ?>
       <figure>
         <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" alt="<?php print check_plain($image['alt']); ?>">
         <figcaption><?php print check_plain($image['alt']); ?></figcaption>
       </figure>
       <?php endforeach; ?>
     </div><!--/col-4-->
+    <?php endif; ?>
   </div><!--/row-->
+  
 </div><!--/block-->

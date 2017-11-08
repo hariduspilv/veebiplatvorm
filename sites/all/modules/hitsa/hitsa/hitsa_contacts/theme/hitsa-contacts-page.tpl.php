@@ -11,7 +11,7 @@
          </div><!--/col-12-->
       </div><!--/row-->
       
-      <form method="post" action="">
+      <form method="post" action="<?php print url('contact'); ?>" data-plugin="filters">
       <div class="row">
         <div class="col-9">
            
@@ -49,7 +49,7 @@
           <div class="form-item-row">
             <div class="form-item after-search form-item_rounded">
                            <div class="form-item_title"><?php print t('Search for person'); ?></div>
-                           <input type="text" name="person" placeholder="<?php print t('Search for person'); ?>" />
+                           <input type="text" name="person" placeholder="<?php print t('Search for person'); ?>" data-plugin="autocomplete" data-url="<?php print url('api/contact-autocomplete'); ?>" data-onsubmit="true" autocomplete="off"/>
                         </div><!--/form-item-->
 
             <div class="form-item form-item_rounded">
@@ -74,25 +74,8 @@
       </form>
                
       <div class="row">
-        <div class="col-12">
-          <div class="accordion" data-plugin="accordion">
-            <?php foreach($contact_departments as $contact_department): 
-              if(empty($nodes[$contact_department->tid])) continue;
-              $current_nodes = $nodes[$contact_department->tid];
-            ?>
-            <div class="accordion-entry">
-              <div class="accordion-title"><?php print sprintf('%s (%d)', check_plain($contact_department->name), count($current_nodes)); ?></div>
-              <div class="accordion-content">
-                <?php foreach($current_nodes as $node): ?>
-                  <?php print render($node); ?>
-                <?php if(next($current_nodes) !== FALSE): ?>
-                <hr class="spacing-xl" />
-                <?php endif; ?>
-                <?php endforeach; ?>
-              </div><!--/accordion-content-->
-            </div><!--/accordion-entry-->
-            <?php endforeach; ?>
-          </div><!--/accordion-->
+        <div class="col-12" data-posturl="<?php print url('api/contact'); ?>" data-plugin="filterContents">
+          <?php print $contact_accordion; ?>
         </div><!--/col-12-->
       </div><!--/row-->
     </div><!--/block-->

@@ -77,16 +77,16 @@ function _hitsa_contacts_fields() {
       'label' => $t('E-Mail'),
       'type' => 'email',
     ),
-    'reception_times' => array(
-      'field_name' => 'reception_times',
-      'label' => $t('Reception times'),
-      'type' => 'text_long',
-      'translatable' => '1',
-    ),
     'contact_cv' => array(
       'field_name' => 'contact_cv',
       'label' => $t('CV'),
       'type' => 'link_field',
+    ),
+    'reception_times' => array(
+      'field_name' => 'reception_times',
+      'label' => $t('Reception times'),
+      'type' => 'text',
+      'cardinality' => 3,
     ),
     'contact_departments' => array(
       'field_name' => 'contact_departments',
@@ -94,14 +94,7 @@ function _hitsa_contacts_fields() {
       'type' => 'paragraphs',
       'cardinality' => FIELD_CARDINALITY_UNLIMITED,
     ),
-    'reception_times' => array(
-      'field_name' => 'reception_times',
-      'label' => $t('Reception times'),
-      'type' => 'paragraphs',
-      'cardinality' => 3,
-      'locked' => TRUE,
-    ),
-    // Paragraph fields
+    // Job department (Paragraph)
     'job_department' => array(
       'field_name' => 'job_department',
       'label' => $t('Department'),
@@ -122,6 +115,7 @@ function _hitsa_contacts_fields() {
       'type' => 'number_integer',
     ),
     // Reception times (Paragraph)
+    /*
     'reception_weekdays' => array(
       'field_name' => 'reception_weekdays',
       'label' => $t('Weekdays'),
@@ -140,8 +134,8 @@ function _hitsa_contacts_fields() {
       'locked' => TRUE,
       'cardinality' => FIELD_CARDINALITY_UNLIMITED,
     ),
-    'reception_time' => array(
-      'field_name' => 'reception_time',
+    'reception_time_interval' => array(
+      'field_name' => 'reception_time_interval',
       'label' => $t('Time'),
       'type' => 'datestamp',
       'module' => 'date',
@@ -158,6 +152,7 @@ function _hitsa_contacts_fields() {
         'todate' => 'required',
       ),
     ),
+    */
   );
 }
 
@@ -272,22 +267,6 @@ function _hitsa_contacts_field_instances() {
         )
       )
     ),
-    'reception_times' => array(
-      'field_name' => 'reception_times',
-      'bundle' => 'contact',
-      'entity_type' => 'node',
-      'label' => $t('Reception times'),
-      'widget' => array(
-        'type' => 'text_textarea',
-        'module' => 'text',
-      ),
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'type' => 'text_default',
-        )
-      )
-    ),
     'contact_cv' => array(
       'field_name' => 'contact_cv',
       'bundle' => 'contact',
@@ -306,6 +285,22 @@ function _hitsa_contacts_field_instances() {
       'settings' => array(
         'title' => 'none',
       ),
+    ),
+    'reception_times' => array(
+      'field_name' => 'reception_times',
+      'bundle' => 'contact',
+      'entity_type' => 'node',
+      'label' => $t('Reception times'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
     ),
     'contact_departments' => array(
       'field_name' => 'contact_departments',
@@ -332,7 +327,7 @@ function _hitsa_contacts_field_instances() {
         ),
       ),
     ),
-    // Paragraph fields
+    // Job department (Paragraph)
     'job_department' => array(
       'field_name' => 'job_department',
       'entity_type' => 'paragraphs_item',
@@ -362,9 +357,42 @@ function _hitsa_contacts_field_instances() {
         'default' => array(
           'label' => 'above',
           'type' => 'number_integer',
-        )
-      )
+        ),
+      ),
     ),
+    // Reception times (Paragraph)
+    /*
+    'reception_weekdays' => array(
+      'field_name' => 'reception_weekdays',
+      'entity_type' => 'paragraphs_item',
+      'bundle' => 'reception_time',
+      'label' => $t('Weekdays'),
+      'widget' => array(
+        'type' => 'options_buttons',
+        'module' => 'options',
+      ),
+      'required' => TRUE,
+    ),
+    'reception_time_interval' => array(
+      'field_name' => 'reception_time_interval',
+      'entity_type' => 'paragraphs_item',
+      'bundle' => 'reception_time',
+      'label' => $t('Time'),
+      'widget' => array(
+        'type' => 'date_select',
+        'module' => 'date_select',
+        'settings' => array(
+          'increment' => 1,
+          'label_position' => 'none',
+        ),
+      ),
+      'settings' => array(
+        'default_value' => 'now',
+        'default_value2' => 'same',
+      ),
+      'required' => TRUE,
+    ),
+    */
   );
 }
 
