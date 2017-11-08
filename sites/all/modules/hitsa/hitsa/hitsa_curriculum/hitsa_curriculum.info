@@ -18,3 +18,4 @@ dependencies[] = conditional_fields
 dependencies[] = link
 dependencies[] = hitsa_core
 dependencies[] = hitsa_content_page
+dependencies[] = i18n_taxonomy
