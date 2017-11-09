@@ -7,6 +7,7 @@ dependencies[] = i18n_menu
 dependencies[] = i18n_node
 dependencies[] = entity_translation
 dependencies[] = date
+dependencies[] = paragraphs
 dependencies[] = translation
 dependencies[] = ckeditor
 dependencies[] = override_node_options

@@ -220,6 +220,12 @@ function hitsa_core_get_content_by_type($e_type = 'node', $type = null, $languag
                       }
                     }
                     break;
+                case 'subject_field':
+                    $query->fieldCondition('field_field','target_id',$condition,'=');
+                    break;
+                case 'limit':
+                    $query->range(0,$condition);
+                    break;
             }
         }
     }
