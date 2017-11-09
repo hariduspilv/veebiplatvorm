@@ -41,7 +41,7 @@ function hitsa_translations_importer_settings_form_submit($form, &$form_state)
             $data = array_map("str_getcsv", preg_split('/\r*\n+|\r+/', $read_text));
             $translatable_array=array();
             
-
+            dpm($data);
             foreach ($data as $translate_key => $translate_value) { 
                 
                 
