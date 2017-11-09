@@ -172,10 +172,11 @@ function _hitsa_contacts_set_query_parameters($query = array()) {
   $parameters = array();
 
   // Language
+  /*
   $parameters[] = array(
     'type' => 'propertyCondition',
     'arguments' => array('language', $language->language),
-  );
+  );*/
   
   if(!empty($query['profession'])) {
     $professions = explode(',', $query['profession']);
