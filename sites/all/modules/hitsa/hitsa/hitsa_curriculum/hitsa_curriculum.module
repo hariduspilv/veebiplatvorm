@@ -255,8 +255,8 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
 {
     switch ($form_id) {
         case 'curriculum_node_form':
-            $path = drupal_get_path('module','hitsa_curriculum');
-            drupal_add_js($path.'/hitsa_ciurriculum_table_disabler.js');
+            $path = drupal_get_path('module', 'hitsa_curriculum');
+            // drupal_add_js($path.'/hitsa_ciurriculum_table_disabler
             $form['#attached']['js'] = array(
                
               );
@@ -276,28 +276,17 @@ function hitsa_curriculum_page($type = null, $name = null)
     return $build;
 }
 
-function hitsa_curriculum_generate_table($table)
+function hitsa_curriculum_generate_table($table,$descriptions=NULL)
 {
     $output = '';
-    if (!empty($table->field_table_content)) {
+    if (!empty($table)) {
         $output .= '<div class="table_wrapper" data-plugin="responsiveTable">';
         $output .= '<table>';
-        $table_data = $table->field_table_content['und'][0]['tabledata'];
+        $table_data = $table['tabledata'];
         $rows_count = $table_data['rebuild']['count_rows'];
         $columns_count = $table_data['rebuild']['count_cols'];
         $column_width = 100 / $columns_count;
-        $table_descriptions = array();
-        if (!empty($table->field_descriptions)) {
-            foreach ($table->field_descriptions['und'] as $table_description) {
-                $description = entity_load_single('paragraphs_item', $table_description['value']);
-                if (!empty($description->field_table_field_description)) {
-                    $col = $description->field_column['und'][0]['value'] - 1;
-                    $row = $description->field_row['und'][0]['value'] - 1;
-                    $table_descriptions[$col . '_' . $row] = $description->field_table_field_description['und'][0]['value'];
-                }
-            }
-        }
-
+        $table_descriptions = $descriptions;
         if (!empty($table_data['tabledata']['row_0'])) {
             $output .= '  <thead>';
             $output .= '  <tr>';
@@ -711,6 +700,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     global $language;
     $output_elements = array();
     variable_set('school_type', 'middle');
+    dpm($content);
     $school_type = variable_get('school_type');
 
     $output = '<article>';
@@ -788,6 +778,48 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         if (!empty($table)) {
             $generated_table = hitsa_curriculum_generate_table($table);
             $output_elements['table'] = $generated_table;
+        }
+    }
+    if (!empty($content->field_specialitiy_table) || !empty($content->field_subjects_table)) {
+        if (!empty($content->field_specialitiy_table)) {
+            $table = $content->field_specialitiy_table['und'][0];
+            $table_descriptions = array();
+            if (!empty($content->field_table_descriptions)) {
+                if (!empty($content->field_table_descriptions)) {
+                    foreach ($content->field_table_descriptions['und'] as $table_description) {
+                        $description = entity_load_single('paragraphs_item', $table_description['value']);
+                        if (!empty($description->field_table_field_description)) {
+                            $col = $description->field_column['und'][0]['value'] - 1;
+                            $row = $description->field_row['und'][0]['value'] - 1;
+                            $table_descriptions[$col . '_' . $row] = $description->field_table_field_description['und'][0]['value'];
+                        }
+                    }
+                }
+            }
+            if (!empty($table)) {
+                $generated_table = hitsa_curriculum_generate_table($table,$table_descriptions);
+                $output_elements['table'] = $generated_table;
+            }
+        }
+        if (!empty($content->field_subjects_table)) {
+            $table = $content->field_subjects_table['und'][0];
+            $table_descriptions = array();
+            if (!empty($content->field_table_descriptions)) {
+                if (!empty($content->field_table_descriptions)) {
+                    foreach ($content->field_table_descriptions['und'] as $table_description) {
+                        $description = entity_load_single('paragraphs_item', $table_description['value']);
+                        if (!empty($description->field_table_field_description)) {
+                            $col = $description->field_column['und'][0]['value'] - 1;
+                            $row = $description->field_row['und'][0]['value'] - 1;
+                            $table_descriptions[$col . '_' . $row] = $description->field_table_field_description['und'][0]['value'];
+                        }
+                    }
+                }
+            }
+            if (!empty($table)) {
+                $generated_table = hitsa_curriculum_generate_table($table,$table_descriptions);
+                $output_elements['table'] = $generated_table;
+            }
         }
     }
     if (!empty($content->body)) {
