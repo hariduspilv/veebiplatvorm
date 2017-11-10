@@ -1178,6 +1178,7 @@ function hitsa_curriculu_fp_mobile_fields()
             }
         }
     }
+
     $output  = '<div class="block sm-show">
     <h3 class="block-title">'.t('Subject fields').'</h3>
     
@@ -1197,5 +1198,7 @@ function hitsa_curriculu_fp_mobile_fields()
     </div><!--/hero-mini-->
     
  </div><!--/block sm-show-->';
+
+
     return $output;
 }
