@@ -348,7 +348,7 @@ function hitsa_curriculum_jobs_part($content = null)
     }
 
     $output .= '</div><!--/col-10-->';
-    $output .= ' </div><!--/row-->';
+    $output .= ' </div><!--/row-->';sddsd
     return $output;
 }
 function hitsa_curriculum_attachments($attachments)
@@ -782,6 +782,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     }
     if (!empty($content->field_specialitiy_table) || !empty($content->field_subjects_table)) {
         if (!empty($content->field_specialitiy_table)) {
+            if ($curriculum_type=='specialities') {
             $table = $content->field_specialitiy_table['und'][0];
             $table_descriptions = array();
             if (!empty($content->field_table_descriptions)) {
@@ -801,25 +802,29 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                 $output_elements['table'] = $generated_table;
             }
         }
+        }
         if (!empty($content->field_subjects_table)) {
-            $table = $content->field_subjects_table['und'][0];
-            $table_descriptions = array();
-            if (!empty($content->field_table_descriptions)) {
+            if ($curriculum_type=='areas-of-study') {
+                $table = $content->field_subjects_table['und'][0];
+                $table_descriptions = array();
                 if (!empty($content->field_table_descriptions)) {
-                    foreach ($content->field_table_descriptions['und'] as $table_description) {
-                        $description = entity_load_single('paragraphs_item', $table_description['value']);
-                        if (!empty($description->field_table_field_description)) {
-                            $col = $description->field_column['und'][0]['value'] - 1;
-                            $row = $description->field_row['und'][0]['value'] - 1;
-                            $table_descriptions[$col . '_' . $row] = $description->field_table_field_description['und'][0]['value'];
+                    if (!empty($content->field_table_descriptions)) {
+                        foreach ($content->field_table_descriptions['und'] as $table_description) {
+                            $description = entity_load_single('paragraphs_item', $table_description['value']);
+                            if (!empty($description->field_table_field_description)) {
+                                $col = $description->field_column['und'][0]['value'] - 1;
+                                $row = $description->field_row['und'][0]['value'] - 1;
+                                $table_descriptions[$col . '_' . $row] = $description->field_table_field_description['und'][0]['value'];
+                            }
                         }
                     }
                 }
+                if (!empty($table)) {
+                    $generated_table = hitsa_curriculum_generate_table($table,$table_descriptions);
+                    $output_elements['table'] = $generated_table;
+                }
             }
-            if (!empty($table)) {
-                $generated_table = hitsa_curriculum_generate_table($table,$table_descriptions);
-                $output_elements['table'] = $generated_table;
-            }
+            
         }
     }
     if (!empty($content->body)) {
