@@ -26,7 +26,7 @@ function hitsa_curriculum_uninstall()
 {
     $node_type = 'curriculum';
     $paragraphs_bundles = array(
-    'contacts', 'description', 'table'
+    'contacts', 'description', 'table','jobs'
     );
 
 
@@ -52,7 +52,7 @@ function hitsa_curriculum_uninstall()
 }
 function hitsa_curriculum_add_custom_vocabularies()
 {
-    // Create vocabulary
+   
     foreach (_hitsa_curriculum_vocabularies() as $v) {
         taxonomy_vocabulary_save($v['vocabulary']);
 
@@ -1119,1450 +1119,1827 @@ function hitsa_curriculum_add_custom_node_fields()
 }
 function _hitsa_curriculum_installed_node_fields()
 {
+
     $field_bases = array();
-    $field_info = field_info_field('body');
-    if (!$field_info) {
-        // Exported field_base: 'body'.
-        
+  
+    if (!field_info_field('body')) {
+    // Exported field_base: 'body'.
         $field_bases['body'] = array(
-          'active' => 1,
-          'cardinality' => 1,
-          'deleted' => 0,
-          'entity_types' => array(
-          0 => 'node',
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(
+        0 => 'node',
         ),
         'field_name' => 'body',
         'indexes' => array(
-          'format' => array(
+        'format' => array(
           0 => 'format',
-          ),
+        ),
         ),
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-          'entity_translation_sync' => false,
+        'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'text_with_summary',
         );
-          // Exported field_base: 'field_attachments'.
     }
-// Exported field_base: 'field_page_header'.
-
-
-  // Exported field_base: 'field_speciality_description'.
-    $field_bases['field_speciality_description'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_speciality_description',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+  
+    // Exported field_base: 'field_assessment'.
+    $field_bases['field_assessment'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_assessment',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-    ),
-    'translatable' => 0,
-    'type' => 'text_long',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
     );
-  // Exported field_base: 'field_jobs'.
-    $field_bases['field_jobs'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_jobs',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'paragraphs',
-    'settings' => array(
-      'entity_translation_sync' => false,
-    ),
-    'translatable' => 0,
-    'type' => 'paragraphs',
-    );
+  
+    // Exported field_base: 'field_attachments'.
     $field_bases['field_attachments'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_attachments',
-    'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
+      'active' => 1,
+      'cardinality' => -1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_attachments',
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'file',
-    'settings' => array(
-      'display_default' => 0,
-      'display_field' => 0,
-      'entity_translation_sync' => array(
-        0 => 'fid',
+      'locked' => 0,
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'entity_translation_sync' => array(
+          0 => 'fid',
+        ),
+        'uri_scheme' => 'public',
       ),
-      'uri_scheme' => 'public',
-    ),
-    'translatable' => 0,
-    'type' => 'file',
+      'translatable' => 0,
+      'type' => 'file',
     );
-
-  // Exported field_base: 'field_contacts'.
+  
+    // Exported field_base: 'field_contacts'.
     $field_bases['field_contacts'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_contacts',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'paragraphs',
-    'settings' => array(
-      'entity_translation_sync' => false,
-    ),
-    'translatable' => 0,
-    'type' => 'paragraphs',
+      'active' => 1,
+      'cardinality' => -1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_contacts',
+      'indexes' => array(),
+      'locked' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(
+        'entity_translation_sync' => false,
+      ),
+      'translatable' => 0,
+      'type' => 'paragraphs',
     );
+  
+    // Exported field_base: 'field_curriculum_length'.
+    $field_bases['field_curriculum_length'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_curriculum_length',
+      'indexes' => array(),
+      'locked' => 0,
+      'module' => 'date',
+      'settings' => array(
+        'cache_count' => 4,
+        'cache_enabled' => 0,
+        'entity_translation_sync' => false,
+        'granularity' => array(
+          'day' => 'day',
+          'hour' => 0,
+          'minute' => 0,
+          'month' => 'month',
+          'second' => 0,
+          'year' => 'year',
+        ),
+        'timezone_db' => '',
+        'todate' => 'required',
+        'tz_handling' => 'none',
+      ),
+      'translatable' => 0,
+      'type' => 'datestamp',
+    );
+  
+    // Exported field_base: 'field_curriculum_start'.
+    $field_bases['field_curriculum_start'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_curriculum_start',
+      'indexes' => array(),
+      'locked' => 0,
+      'module' => 'date',
+      'settings' => array(
+        'cache_count' => 4,
+        'cache_enabled' => 0,
+        'entity_translation_sync' => false,
+        'granularity' => array(
+          'day' => 'day',
+          'hour' => 'hour',
+          'minute' => 'minute',
+          'month' => 'month',
+          'second' => 0,
+          'year' => 'year',
+        ),
+        'timezone_db' => 'UTC',
+        'todate' => '',
+        'tz_handling' => 'site',
+      ),
+      'translatable' => 0,
+      'type' => 'datestamp',
+    );
+  
+    // Exported field_base: 'field_days_place'.
+    $field_bases['field_days_place'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_days_place',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
+    );
+  
     // Exported field_base: 'field_field'.
     $field_bases['field_field'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_field',
-    'indexes' => array(
-      'target_id' => array(
-        0 => 'target_id',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_field',
+      'indexes' => array(
+        'target_id' => array(
+          0 => 'target_id',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'entityreference',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'handler' => 'base',
-      'handler_settings' => array(
-        'behaviors' => array(
-          'views-select-list' => array(
-            'status' => 0,
+      'locked' => 0,
+      'module' => 'entityreference',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'handler' => 'base',
+        'handler_settings' => array(
+          'behaviors' => array(
+            'views-select-list' => array(
+              'status' => 0,
+            ),
+          ),
+          'sort' => array(
+            'type' => 'none',
+          ),
+          'target_bundles' => array(
+            'fields' => 'fields',
           ),
         ),
-        'sort' => array(
-          'type' => 'none',
+        'target_type' => 'taxonomy_term',
+      ),
+      'translatable' => 0,
+      'type' => 'entityreference',
+    );
+  
+    // Exported field_base: 'field_instructor'.
+    $field_bases['field_instructor'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_instructor',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
         ),
-        'target_bundles' => array(
-          'fields' => 'fields',
-        ),
       ),
-      'target_type' => 'taxonomy_term',
-    ),
-    'translatable' => 0,
-    'type' => 'entityreference',
-    );
-    // Exported field_base: 'field_pictures'.
-    $field_bases['field_pictures'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_pictures',
-    'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'max_length' => 255,
       ),
-    ),
-    'locked' => 0,
-    'module' => 'image',
-    'settings' => array(
-      'default_image' => 0,
-      'entity_translation_sync' => array(
-        0 => 'fid',
+      'translatable' => 0,
+      'type' => 'text',
+    );
+  
+    // Exported field_base: 'field_jobs'.
+    $field_bases['field_jobs'] = array(
+      'active' => 1,
+      'cardinality' => -1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_jobs',
+      'indexes' => array(),
+      'locked' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(
+        'entity_translation_sync' => false,
       ),
-      'uri_scheme' => 'public',
-    ),
-    'translatable' => 0,
-    'type' => 'image',
+      'translatable' => 0,
+      'type' => 'paragraphs',
     );
-
-  // Exported field_base: 'field_table'.
-    $field_bases['field_table'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_table',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'paragraphs',
-    'settings' => array(
-      'entity_translation_sync' => false,
-    ),
-    'translatable' => 0,
-    'type' => 'paragraphs',
-    );
+  
     // Exported field_base: 'field_jobs_pretext'.
     $field_bases['field_jobs_pretext'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_jobs_pretext',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_jobs_pretext',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-    ),
-    'translatable' => 0,
-    'type' => 'text_with_summary',
-    );
-
-    $field_bases['field_assessment'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_assessment',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
+      'translatable' => 0,
+      'type' => 'text_with_summary',
     );
-    $field_bases['field_curriculum_length'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_curriculum_length',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'date',
-    'settings' => array(
-      'cache_count' => 4,
-      'cache_enabled' => 0,
-      'entity_translation_sync' => false,
-      'granularity' => array(
-        'day' => 'day',
-        'hour' => 0,
-        'minute' => 0,
-        'month' => 'month',
-        'second' => 0,
-        'year' => 'year',
+  
+    // Exported field_base: 'field_pictures'.
+    $field_bases['field_pictures'] = array(
+      'active' => 1,
+      'cardinality' => -1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_pictures',
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
       ),
-      'timezone_db' => '',
-      'todate' => 'required',
-      'tz_handling' => 'none',
-    ),
-    'translatable' => 0,
-    'type' => 'datestamp',
-    );
-
-  // Exported field_base: 'field_curriculum_start'.
-    $field_bases['field_curriculum_start'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_curriculum_start',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'date',
-    'settings' => array(
-      'cache_count' => 4,
-      'cache_enabled' => 0,
-      'entity_translation_sync' => false,
-      'granularity' => array(
-        'day' => 'day',
-        'hour' => 'hour',
-        'minute' => 'minute',
-        'month' => 'month',
-        'second' => 0,
-        'year' => 'year',
+      'locked' => 0,
+      'module' => 'image',
+      'settings' => array(
+        'default_image' => 0,
+        'entity_translation_sync' => array(
+          0 => 'fid',
+        ),
+        'uri_scheme' => 'public',
       ),
-      'timezone_db' => 'UTC',
-      'todate' => '',
-      'tz_handling' => 'site',
-    ),
-    'translatable' => 0,
-    'type' => 'datestamp',
+      'translatable' => 0,
+      'type' => 'image',
     );
-
-  // Exported field_base: 'field_days_place'.
-    $field_bases['field_days_place'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_days_place',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
-    );
-  // Exported field_base: 'field_instructor'.
-    $field_bases['field_instructor'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_instructor',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
-    );
-  // Exported field_base: 'field_premise'.
+  
+    // Exported field_base: 'field_premise'.
     $field_bases['field_premise'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_premise',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_premise',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
     );
-
-  // Exported field_base: 'field_rating'.
+  
+    // Exported field_base: 'field_rating'.
     $field_bases['field_rating'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_rating',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_rating',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
     );
-
-  // Exported field_base: 'field_room'.
+  
+    // Exported field_base: 'field_room'.
     $field_bases['field_room'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_room',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_room',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
     );
-
-  // Exported field_base: 'field_school_selections'.
-  if(empty(field_info_field('field_school_selections'))){
+  
+    // Exported field_base: 'field_school_selections'.
     $field_bases['field_school_selections'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_school_selections',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_school_selections',
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        'subject-field' => 'Subject field',
-        'preparatory-courses' => 'Preparatory courses',
-        'elective-subjects' => 'Elective subjects',
-        'hobby-groups' => 'Hobby Groups',
-        'specialities' => 'Speciality',
-        'elective-courses' => 'Elective courses',
-        'hobby-activity' => 'Hobby activity',
-        'e-courses' => 'E-Course',
+      'locked' => 1,
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'areas-of-study' => 'Areas of study',
+          'subject-field' => 'Subject field',
+          'preparatory-courses' => 'Preparatory courses',
+          'elective-subjects' => 'Elective subjects',
+          'hobby-groups' => 'Hobby Groups',
+          'specialities' => 'Speciality',
+          'elective-courses' => 'Elective courses',
+          'hobby-activity' => 'Hobby activity',
+          'e-course' => 'E-Course',
+        ),
+        'allowed_values_function' => '',
+        'entity_translation_sync' => false,
       ),
-      'allowed_values_function' => '',
-      'entity_translation_sync' => false,
-    ),
-    'translatable' => 0,
-    'type' => 'list_text',
+      'translatable' => 0,
+      'type' => 'list_text',
     );
-  }
+  
+    // Exported field_base: 'field_specialitiy_table'.
+    $field_bases['field_specialitiy_table'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_specialitiy_table',
+      'indexes' => array(),
+      'locked' => 0,
+      'module' => 'tablefield',
+      'settings' => array(
+        'entity_translation_sync' => false,
+      ),
+      'translatable' => 0,
+      'type' => 'tablefield',
+    );
+    if (!field_info_field('field_speciality_description')) {
+    // Exported field_base: 'field_speciality_description'.
+        $field_bases['field_speciality_description'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_speciality_description',
+        'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+        ),
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+        'entity_translation_sync' => false,
+        ),
+        'translatable' => 0,
+        'type' => 'text_long',
+        );
+    }
+  
+    // Exported field_base: 'field_subjects_table'.
+    $field_bases['field_subjects_table'] = array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_subjects_table',
+      'indexes' => array(),
+      'locked' => 0,
+      'module' => 'tablefield',
+      'settings' => array(
+        'entity_translation_sync' => false,
+      ),
+      'translatable' => 0,
+      'type' => 'tablefield',
+    );
+  
+    // Exported field_base: 'field_table_descriptions'.
+    $field_bases['field_table_descriptions'] = array(
+      'active' => 1,
+      'cardinality' => -1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_table_descriptions',
+      'indexes' => array(),
+      'locked' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(
+        'entity_translation_sync' => false,
+      ),
+      'translatable' => 0,
+      'type' => 'paragraphs',
+    );
+  
     // Exported field_base: 'field_target_group'.
     $field_bases['field_target_group'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_target_group',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_target_group',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
     );
-
-  // Exported field_base: 'field_textbooks'.
+  
+    // Exported field_base: 'field_textbooks'.
     $field_bases['field_textbooks'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_textbooks',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_textbooks',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
       ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'entity_translation_sync' => false,
-    ),
-    'translatable' => 0,
-    'type' => 'text_with_summary',
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => false,
+      ),
+      'translatable' => 0,
+      'type' => 'text_with_summary',
     );
+  
     return $field_bases;
 }
 function _hitsa_curriculum_installed_node_instances()
 {
-    $field_instances = array();
+
+  $field_instances = array();
+  
     // Exported field_instance: 'node-curriculum-body'.
-    // Exported field_instance: 'node-curriculum-field_page_header'.
- 
     $field_instances['node-curriculum-body'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(
+            'trim_length' => 600,
+          ),
+          'type' => 'text_summary_or_trimmed',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Body',
+      'required' => 1,
+      'settings' => array(
+        'display_summary' => 1,
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 1,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
         'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'hidden',
-        'module' => 'text',
         'settings' => array(
-          'trim_length' => 600,
+          'rows' => 20,
+          'summary_rows' => 5,
         ),
-        'type' => 'text_summary_or_trimmed',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'body',
-    'label' => 'Body',
-    'required' => false,
-    'settings' => array(
-      'display_summary' => true,
-      'entity_translation_sync' => false,
-      'text_processing' => 1,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 20,
-        'summary_rows' => 5,
-      ),
-      'type' => 'text_textarea_with_summary',
-      'weight' => 11,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_assessment'.
-    $field_instances['node-curriculum-field_assessment'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 19,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_assessment',
-    'label' => 'Assessment',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'text_processing' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 13,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_attachments'.
-    $field_instances['node-curriculum-field_attachments'] = array(
-    'bundle' => 'curriculum',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'file',
-        'settings' => array(),
-        'type' => 'file_default',
-        'weight' => 5,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_attachments',
-    'label' => 'Attachments',
-    'required' => 0,
-    'settings' => array(
-      'description_field' => 0,
-      'entity_translation_sync' => false,
-      'file_directory' => '',
-      'file_extensions' => 'txt pdf doc',
-      'max_filesize' => '',
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'public' => 'public',
-        ),
-        'allowed_types' => array(
-          'audio' => 0,
-          'document' => 'document',
-          'image' => 'image',
-          'video' => 0,
-        ),
-        'browser_plugins' => array(
-          'media_default--media_browser_1' => 'media_default--media_browser_1',
-          'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
-          'upload' => 'upload',
-        ),
-      ),
-      'type' => 'media_generic',
-      'weight' => 17,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_contacts'.
-    $field_instances['node-curriculum-field_contacts'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'paragraphs',
-        'settings' => array(
-          'view_mode' => 'full',
-        ),
-        'type' => 'paragraphs_view',
-        'weight' => 6,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_contacts',
-    'label' => 'Contacts',
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'button',
-      'allowed_bundles' => array(
-        'catering_food_by_day' => -1,
-        'contacts' => 'contacts',
-        'contacts_department' => -1,
-        'content_and_description' => -1,
-        'description' => -1,
-        'subpage_ref' => -1,
-        'table' => -1,
-        'table_body' => -1,
-        'table_header' => -1,
-        'table_row' => -1,
-      ),
-      'bundle_weights' => array(
-        'catering_food_by_day' => 2,
-        'contacts' => 3,
-        'contacts_department' => 4,
-        'content_and_description' => 5,
-        'description' => 6,
-        'subpage_ref' => 7,
-        'table' => 8,
-        'table_body' => 9,
-        'table_header' => 10,
-        'table_row' => 11,
-      ),
-      'default_edit_mode' => 'preview',
-      'entity_translation_sync' => false,
-      'title' => 'contact',
-      'title_multiple' => 'contacts',
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 20,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_curriculum_length'.
-    $field_instances['node-curriculum-field_curriculum_length'] = array(
-    'bundle' => 'curriculum',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-          'show_remaining_days' => false,
-        ),
-        'type' => 'date_default',
-        'weight' => 11,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_curriculum_length',
-    'label' => 'Length',
-    'required' => 0,
-    'settings' => array(
-      'default_value' => 'now',
-      'default_value2' => 'same',
-      'default_value_code' => '',
-      'default_value_code2' => '',
-      'entity_translation_sync' => false,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'date',
-      'settings' => array(
-        'increment' => 15,
-        'input_format' => 'm/d/Y - H:i:s',
-        'input_format_custom' => '',
-        'label_position' => 'above',
-        'no_fieldset' => 0,
-        'text_parts' => array(),
-        'year_range' => '-3:+3',
-      ),
-      'type' => 'date_popup',
-      'weight' => 2,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_curriculum_start'.
-    $field_instances['node-curriculum-field_curriculum_start'] = array(
-    'bundle' => 'curriculum',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-          'show_remaining_days' => false,
-        ),
-        'type' => 'date_default',
+        'type' => 'text_textarea_with_summary',
         'weight' => 12,
       ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_curriculum_start',
-    'label' => 'Start ',
-    'required' => 0,
-    'settings' => array(
-      'default_value' => 'now',
-      'default_value2' => 'same',
-      'default_value_code' => '',
-      'default_value_code2' => '',
-      'entity_translation_sync' => false,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'date',
-      'settings' => array(
-        'increment' => 15,
-        'input_format' => 'm/d/Y - H:i:s',
-        'input_format_custom' => '',
-        'label_position' => 'above',
-        'no_fieldset' => 0,
-        'text_parts' => array(),
-        'year_range' => '-3:+3',
-      ),
-      'type' => 'date_popup',
-      'weight' => 3,
-    ),
     );
-
-  // Exported field_instance: 'node-curriculum-field_days_place'.
-    $field_instances['node-curriculum-field_days_place'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
+  
+    // Exported field_instance: 'node-curriculum-field_assessment'.
+    $field_instances['node-curriculum-field_assessment'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 19,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_assessment',
+      'label' => 'Assessment',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
         'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 13,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_days_place',
-    'label' => 'Days it takes place',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'text_processing' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 4,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_field'.
-    $field_instances['node-curriculum-field_field'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
         'settings' => array(
-          'bypass_access' => false,
-          'link' => false,
+          'size' => 60,
         ),
-        'type' => 'entityreference_label',
-        'weight' => 1,
+        'type' => 'text_textfield',
+        'weight' => 19,
       ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_field',
-    'label' => 'Field',
-    'required' => 0,
-    'settings' => array(
-      'behaviors' => array(
-        'taxonomy-index' => array(
-          'status' => true,
-        ),
-      ),
-      'entity_translation_sync' => false,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 9,
-    ),
     );
-
-  // Exported field_instance: 'node-curriculum-field_instructor'.
-    $field_instances['node-curriculum-field_instructor'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 14,
+  
+    // Exported field_instance: 'node-curriculum-field_attachments'.
+    $field_instances['node-curriculum-field_attachments'] = array(
+      'bundle' => 'curriculum',
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 5,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
       ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_instructor',
-    'label' => 'Instructor',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'text_processing' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
+      'entity_type' => 'node',
+      'field_name' => 'field_attachments',
+      'label' => 'Attachments',
+      'required' => 0,
       'settings' => array(
-        'size' => 60,
+        'description_field' => 0,
+        'entity_translation_sync' => FALSE,
+        'file_directory' => '',
+        'file_extensions' => 'txt pdf doc',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
       ),
-      'type' => 'text_textfield',
-      'weight' => 5,
-    ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'media',
+        'settings' => array(
+          'allowed_schemes' => array(
+            'public' => 'public',
+          ),
+          'allowed_types' => array(
+            'audio' => 0,
+            'document' => 'document',
+            'image' => 'image',
+            'video' => 0,
+          ),
+          'browser_plugins' => array(
+            'media_default--media_browser_1' => 'media_default--media_browser_1',
+            'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
+            'upload' => 'upload',
+          ),
+        ),
+        'type' => 'media_generic',
+        'weight' => 22,
+      ),
     );
-
-  // Exported field_instance: 'node-curriculum-field_jobs'.
-    $field_instances['node-curriculum-field_jobs'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
+  
+    // Exported field_instance: 'node-curriculum-field_contacts'.
+    $field_instances['node-curriculum-field_contacts'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'paragraphs',
+          'settings' => array(
+            'view_mode' => 'full',
+          ),
+          'type' => 'paragraphs_view',
+          'weight' => 6,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_contacts',
+      'label' => 'Contacts',
+      'required' => 0,
+      'settings' => array(
+        'add_mode' => 'button',
+        'allowed_bundles' => array(
+          'catering_food_by_day' => -1,
+          'contacts' => 'contacts',
+          'contacts_department' => -1,
+          'content_and_description' => -1,
+          'description' => -1,
+          'subpage_ref' => -1,
+          'table' => -1,
+          'table_body' => -1,
+          'table_header' => -1,
+          'table_row' => -1,
+        ),
+        'bundle_weights' => array(
+          'catering_food_by_day' => 2,
+          'contacts' => 3,
+          'contacts_department' => 4,
+          'content_and_description' => 5,
+          'description' => 6,
+          'subpage_ref' => 7,
+          'table' => 8,
+          'table_body' => 9,
+          'table_header' => 10,
+          'table_row' => 11,
+        ),
+        'default_edit_mode' => 'preview',
+        'entity_translation_sync' => FALSE,
+        'title' => 'contact',
+        'title_multiple' => 'contacts',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
         'module' => 'paragraphs',
-        'settings' => array(
-          'view_mode' => 'full',
-        ),
-        'type' => 'paragraphs_view',
-        'weight' => 7,
-      ),
-      'teaser' => array(
-        'label' => 'above',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
+        'type' => 'paragraphs_embed',
+        'weight' => 23,
       ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_jobs',
-    'label' => 'Jobs',
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'select',
-      'allowed_bundles' => array(
-        'catering_food_by_day' => -1,
-        'contacts' => -1,
-        'contacts_department' => -1,
-        'description' => -1,
-        'jobs' => 'jobs',
-        'subpage_ref' => -1,
-        'table' => -1,
-      ),
-      'bundle_weights' => array(
-        'catering_food_by_day' => 2,
-        'contacts' => 3,
-        'contacts_department' => 4,
-        'description' => 5,
-        'jobs' => 6,
-        'subpage_ref' => 7,
-        'table' => 8,
-      ),
-      'default_edit_mode' => 'open',
-      'entity_translation_sync' => false,
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 18,
-    ),
     );
-
-  // Exported field_instance: 'node-curriculum-field_jobs_pretext'.
-    $field_instances['node-curriculum-field_jobs_pretext'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 9,
+  
+    // Exported field_instance: 'node-curriculum-field_curriculum_length'.
+    $field_instances['node-curriculum-field_curriculum_length'] = array(
+      'bundle' => 'curriculum',
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+            'show_remaining_days' => FALSE,
+          ),
+          'type' => 'date_default',
+          'weight' => 11,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
       ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_jobs_pretext',
-    'label' => 'Jobs pretext',
-    'required' => 0,
-    'settings' => array(
-      'display_summary' => 0,
-      'entity_translation_sync' => false,
-      'text_processing' => 1,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
+      'entity_type' => 'node',
+      'field_name' => 'field_curriculum_length',
+      'label' => 'Length',
+      'required' => 0,
       'settings' => array(
-        'rows' => 20,
-        'summary_rows' => 5,
+        'default_value' => 'now',
+        'default_value2' => 'same',
+        'default_value_code' => '',
+        'default_value_code2' => '',
+        'entity_translation_sync' => FALSE,
+        'user_register_form' => FALSE,
       ),
-      'type' => 'text_textarea_with_summary',
-      'weight' => 19,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_pictures'.
-    $field_instances['node-curriculum-field_pictures'] = array(
-    'bundle' => 'curriculum',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'image',
+      'widget' => array(
+        'active' => 1,
+        'module' => 'date',
         'settings' => array(
-          'image_link' => '',
-          'image_style' => '',
+          'increment' => 15,
+          'input_format' => 'm/d/Y - H:i:s',
+          'input_format_custom' => '',
+          'label_position' => 'above',
+          'no_fieldset' => 0,
+          'text_parts' => array(),
+          'year_range' => '-3:+3',
         ),
-        'type' => 'image',
+        'type' => 'date_popup',
         'weight' => 4,
       ),
-      'teaser' => array(
-        'label' => 'above',
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_curriculum_start'.
+    $field_instances['node-curriculum-field_curriculum_start'] = array(
+      'bundle' => 'curriculum',
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+            'show_remaining_days' => FALSE,
+          ),
+          'type' => 'date_default',
+          'weight' => 12,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_curriculum_start',
+      'label' => 'Start ',
+      'required' => 0,
+      'settings' => array(
+        'default_value' => 'now',
+        'default_value2' => 'same',
+        'default_value_code' => '',
+        'default_value_code2' => '',
+        'entity_translation_sync' => FALSE,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'date',
+        'settings' => array(
+          'increment' => 15,
+          'input_format' => 'm/d/Y - H:i:s',
+          'input_format_custom' => '',
+          'label_position' => 'above',
+          'no_fieldset' => 0,
+          'text_parts' => array(),
+          'year_range' => '-3:+3',
+        ),
+        'type' => 'date_popup',
+        'weight' => 5,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_days_place'.
+    $field_instances['node-curriculum-field_days_place'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 13,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_days_place',
+      'label' => 'Days it takes place',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 6,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_field'.
+    $field_instances['node-curriculum-field_field'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'entityreference',
+          'settings' => array(
+            'bypass_access' => FALSE,
+            'link' => FALSE,
+          ),
+          'type' => 'entityreference_label',
+          'weight' => 1,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_field',
+      'label' => 'Field',
+      'required' => 1,
+      'settings' => array(
+        'behaviors' => array(
+          'taxonomy-index' => array(
+            'status' => TRUE,
+          ),
+        ),
+        'entity_translation_sync' => FALSE,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
         'settings' => array(),
-        'type' => 'hidden',
+        'type' => 'options_select',
         'weight' => 0,
       ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pictures',
-    'label' => 'Pictures',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'default_image' => 0,
-      'entity_translation_sync' => false,
-      'file_directory' => 'curriculum_pictures',
-      'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '',
-      'title_field' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'public' => 'public',
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_instructor'.
+    $field_instances['node-curriculum-field_instructor'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 14,
         ),
-        'allowed_types' => array(
-          'audio' => 0,
-          'document' => 0,
-          'image' => 'image',
-          'video' => 0,
-        ),
-        'browser_plugins' => array(
-          'media_default--media_browser_1' => 0,
-          'media_default--media_browser_my_files' => 0,
-          'upload' => 0,
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
       ),
-      'type' => 'media_generic',
-      'weight' => 16,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_premise'.
-    $field_instances['node-curriculum-field_premise'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
+      'entity_type' => 'node',
+      'field_name' => 'field_instructor',
+      'label' => 'Instructor',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
         'module' => 'text',
+        'settings' => array(
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 7,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_jobs'.
+    $field_instances['node-curriculum-field_jobs'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'paragraphs',
+          'settings' => array(
+            'view_mode' => 'full',
+          ),
+          'type' => 'paragraphs_view',
+          'weight' => 7,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_jobs',
+      'label' => 'Jobs',
+      'required' => 0,
+      'settings' => array(
+        'add_mode' => 'select',
+        'allowed_bundles' => array(
+          'catering_food_by_day' => -1,
+          'contacts' => -1,
+          'contacts_department' => -1,
+          'description' => -1,
+          'jobs' => 'jobs',
+          'subpage_ref' => -1,
+          'table' => -1,
+        ),
+        'bundle_weights' => array(
+          'catering_food_by_day' => 2,
+          'contacts' => 3,
+          'contacts_department' => 4,
+          'description' => 5,
+          'jobs' => 6,
+          'subpage_ref' => 7,
+          'table' => 8,
+        ),
+        'default_edit_mode' => 'open',
+        'entity_translation_sync' => FALSE,
+        'title' => 'Paragraph',
+        'title_multiple' => 'Paragraphs',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'paragraphs',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'paragraphs_embed',
         'weight' => 17,
       ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_premise',
-    'label' => 'Premise',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'text_processing' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 8,
-    ),
     );
-
-  // Exported field_instance: 'node-curriculum-field_rating'.
-    $field_instances['node-curriculum-field_rating'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 18,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_rating',
-    'label' => 'Rating',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'text_processing' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 12,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_room'.
-    $field_instances['node-curriculum-field_room'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 15,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_room',
-    'label' => 'Room',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'text_processing' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 6,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_school_selections'.
-    $field_instances['node-curriculum-field_school_selections'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 10,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_school_selections',
-    'label' => 'School selections',
-    'required' => 1,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 1,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_speciality_description'.
-    $field_instances['node-curriculum-field_speciality_description'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 8,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_speciality_description',
-    'label' => 'Speciality description',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'text_processing' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 10,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_table'.
-    $field_instances['node-curriculum-field_table'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'paragraphs',
-        'settings' => array(
-          'view_mode' => 'full',
+  
+    // Exported field_instance: 'node-curriculum-field_jobs_pretext'.
+    $field_instances['node-curriculum-field_jobs_pretext'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 9,
         ),
-        'type' => 'paragraphs_view',
-        'weight' => 2,
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
       ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
+      'entity_type' => 'node',
+      'field_name' => 'field_jobs_pretext',
+      'label' => 'Jobs pretext',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 0,
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 1,
+        'user_register_form' => FALSE,
       ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_table',
-    'label' => 'Table',
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'select',
-      'allowed_bundles' => array(
-        'catering_food_by_day' => -1,
-        'contacts_department' => -1,
-        'content_and_description' => -1,
-        'description' => -1,
-        'subpage_ref' => -1,
-        'table' => 'table',
-        'table_body' => -1,
-        'table_header' => -1,
-        'table_row' => -1,
-      ),
-      'bundle_weights' => array(
-        'catering_food_by_day' => 2,
-        'contacts_department' => 3,
-        'content_and_description' => 4,
-        'description' => 14,
-        'subpage_ref' => 5,
-        'table' => 6,
-        'table_body' => 7,
-        'table_header' => 8,
-        'table_row' => 9,
-      ),
-      'default_edit_mode' => 'open',
-      'entity_translation_sync' => false,
-      'title' => 'table',
-      'title_multiple' => 'tables',
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 15,
-    ),
-    );
-
-  // Exported field_instance: 'node-curriculum-field_target_group'.
-    $field_instances['node-curriculum-field_target_group'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
+      'widget' => array(
+        'active' => 1,
         'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
+        'settings' => array(
+          'rows' => 20,
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
         'weight' => 16,
       ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_target_group',
-    'label' => 'Target group',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => false,
-      'text_processing' => 0,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 7,
-    ),
     );
-
-  // Exported field_instance: 'node-curriculum-field_textbooks'.
-    $field_instances['node-curriculum-field_textbooks'] = array(
-    'bundle' => 'curriculum',
-    'default_value' => null,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
+  
+    // Exported field_instance: 'node-curriculum-field_pictures'.
+    $field_instances['node-curriculum-field_pictures'] = array(
+      'bundle' => 'curriculum',
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => '',
+          ),
+          'type' => 'image',
+          'weight' => 4,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_pictures',
+      'label' => 'Pictures',
+      'required' => 0,
+      'settings' => array(
+        'alt_field' => 0,
+        'default_image' => 0,
+        'entity_translation_sync' => FALSE,
+        'file_directory' => 'curriculum_pictures',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '',
+        'max_resolution' => '',
+        'min_resolution' => '',
+        'title_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'media',
+        'settings' => array(
+          'allowed_schemes' => array(
+            'public' => 'public',
+          ),
+          'allowed_types' => array(
+            'audio' => 0,
+            'document' => 0,
+            'image' => 'image',
+            'video' => 0,
+          ),
+          'browser_plugins' => array(
+            'media_default--media_browser_1' => 0,
+            'media_default--media_browser_my_files' => 0,
+            'upload' => 0,
+          ),
+        ),
+        'type' => 'media_generic',
+        'weight' => 21,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_premise'.
+    $field_instances['node-curriculum-field_premise'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 17,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_premise',
+      'label' => 'Premise',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
         'module' => 'text',
+        'settings' => array(
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 10,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_rating'.
+    $field_instances['node-curriculum-field_rating'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 18,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_rating',
+      'label' => 'Rating',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 18,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_room'.
+    $field_instances['node-curriculum-field_room'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 15,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_room',
+      'label' => 'Room',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 8,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_school_selections'.
+    $field_instances['node-curriculum-field_school_selections'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 10,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_school_selections',
+      'label' => 'School selections',
+      'required' => 1,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'options_select',
+        'weight' => 3,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_specialitiy_table'.
+    $field_instances['node-curriculum-field_specialitiy_table'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => array(
+        0 => array(
+          'tablefield' => array(
+            'caption' => '',
+            'import' => array(
+              'file' => '',
+              'import' => 'Upload CSV',
+            ),
+            'paste' => array(
+              'data' => '',
+              'paste_delimiter' => '',
+              'paste_import' => 'Import & Rebuild',
+            ),
+            'rebuild' => array(
+              'count_cols' => 4,
+              'count_rows' => 2,
+              'rebuild' => 'Rebuild Table',
+            ),
+            'tabledata' => array(
+              'row_0' => array(
+                'col_0' => 'Õppeliik',
+                'col_1' => 'Õppevorm',
+                'col_2' => 'Eeldus alustamiseks',
+                'col_3' => 'Õppeaeg',
+                'weight' => 1,
+              ),
+              'row_1' => array(
+                'col_0' => '',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 2,
+              ),
+            ),
+          ),
+        ),
+      ),
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'tablefield',
+          'settings' => array(
+            'export_csv' => FALSE,
+            'header_orientation' => 'Horizontal',
+            'hide_cols_skip_head' => FALSE,
+            'hide_empty_cols' => FALSE,
+            'hide_empty_rows' => FALSE,
+            'hide_header' => FALSE,
+            'sortable' => FALSE,
+            'sticky_header' => TRUE,
+            'striping' => TRUE,
+            'trim_trailing_cols' => FALSE,
+            'trim_trailing_rows' => FALSE,
+          ),
+          'type' => 'tablefield_default',
+          'weight' => 23,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_specialitiy_table',
+      'label' => 'Specialitiy table',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'tablefield',
+        'settings' => array(
+          'cell_processing' => 0,
+          'data_sources' => array(
+            'paste' => 'paste',
+            'upload' => 'upload',
+          ),
+          'input_type' => 'textfield',
+          'lock_values' => 1,
+          'max_length' => 2048,
+          'restrict_rebuild' => 0,
+        ),
+        'type' => 'tablefield',
+        'weight' => 14,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_speciality_description'.
+    $field_instances['node-curriculum-field_speciality_description'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 8,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_speciality_description',
+      'label' => 'Speciality description',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => 5,
+        ),
+        'type' => 'text_textarea',
+        'weight' => 11,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_subjects_table'.
+    $field_instances['node-curriculum-field_subjects_table'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => array(
+        0 => array(
+          'tablefield' => array(
+            'caption' => '',
+            'import' => array(
+              'file' => '',
+              'import' => 'Upload CSV',
+            ),
+            'paste' => array(
+              'data' => '',
+              'paste_delimiter' => '',
+              'paste_import' => 'Import & Rebuild',
+            ),
+            'rebuild' => array(
+              'count_cols' => 4,
+              'count_rows' => 19,
+              'rebuild' => 'Rebuild Table',
+            ),
+            'tabledata' => array(
+              'row_0' => array(
+                'col_0' => 'Õppeained (RÕK + LK)',
+                'col_1' => '10.klassi kursused',
+                'col_2' => '11.klassi kursused',
+                'col_3' => '12.klassi kursused',
+                'weight' => 1,
+              ),
+              'row_1' => array(
+                'col_0' => 'Eesti keel',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 2,
+              ),
+              'row_2' => array(
+                'col_0' => 'Kirjandus',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 3,
+              ),
+              'row_3' => array(
+                'col_0' => 'B2 taseme võõrkeel	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 4,
+              ),
+              'row_4' => array(
+                'col_0' => 'B1 taseme võõrkeel	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 5,
+              ),
+              'row_5' => array(
+                'col_0' => 'Matemaatika	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 6,
+              ),
+              'row_6' => array(
+                'col_0' => 'Geograafia	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 7,
+              ),
+              'row_7' => array(
+                'col_0' => 'Bioloogia	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 8,
+              ),
+              'row_8' => array(
+                'col_0' => 'Keemia	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 9,
+              ),
+              'row_9' => array(
+                'col_0' => 'Füüsika	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 10,
+              ),
+              'row_10' => array(
+                'col_0' => 'Ajalugu	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 11,
+              ),
+              'row_11' => array(
+                'col_0' => 'Ühiskonnaõpetus	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 12,
+              ),
+              'row_12' => array(
+                'col_0' => 'Inimeseõpetus	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 13,
+              ),
+              'row_13' => array(
+                'col_0' => 'Muusikaõpetus	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 14,
+              ),
+              'row_14' => array(
+                'col_0' => 'Kunstiõpetus	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 15,
+              ),
+              'row_15' => array(
+                'col_0' => 'Kehaline kasvatus	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 16,
+              ),
+              'row_16' => array(
+                'col_0' => 'Uurimistöö	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 17,
+              ),
+              'row_17' => array(
+                'col_0' => 'Arvutiõpetus	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 18,
+              ),
+              'row_18' => array(
+                'col_0' => 'Valikkursus	',
+                'col_1' => '',
+                'col_2' => '',
+                'col_3' => '',
+                'weight' => 19,
+              ),
+            ),
+          ),
+        ),
+      ),
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'tablefield',
+          'settings' => array(
+            'export_csv' => FALSE,
+            'header_orientation' => 'Horizontal',
+            'hide_cols_skip_head' => FALSE,
+            'hide_empty_cols' => FALSE,
+            'hide_empty_rows' => FALSE,
+            'hide_header' => FALSE,
+            'sortable' => FALSE,
+            'sticky_header' => TRUE,
+            'striping' => TRUE,
+            'trim_trailing_cols' => FALSE,
+            'trim_trailing_rows' => FALSE,
+          ),
+          'type' => 'tablefield_default',
+          'weight' => 22,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_subjects_table',
+      'label' => 'Subjects table',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'tablefield',
+        'settings' => array(
+          'cell_processing' => 0,
+          'data_sources' => array(
+            'paste' => 'paste',
+            'upload' => 'upload',
+          ),
+          'input_type' => 'textfield',
+          'lock_values' => 1,
+          'max_length' => 2048,
+          'restrict_rebuild' => 0,
+        ),
+        'type' => 'tablefield',
+        'weight' => 13,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_table_descriptions'.
+    $field_instances['node-curriculum-field_table_descriptions'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'paragraphs',
+          'settings' => array(
+            'view_mode' => 'full',
+          ),
+          'type' => 'paragraphs_view',
+          'weight' => 25,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_table_descriptions',
+      'label' => 'Table descriptions',
+      'required' => 0,
+      'settings' => array(
+        'add_mode' => 'button',
+        'allowed_bundles' => array(
+          'contacts' => -1,
+          'contacts_department' => -1,
+          'description' => 'description',
+          'jobs' => -1,
+          'reception_time' => -1,
+          'subpage' => -1,
+          'table' => -1,
+        ),
+        'bundle_weights' => array(
+          'contacts' => 2,
+          'contacts_department' => 3,
+          'description' => 4,
+          'jobs' => 5,
+          'reception_time' => 6,
+          'subpage' => 7,
+          'table' => 8,
+        ),
+        'default_edit_mode' => 'preview',
+        'entity_translation_sync' => FALSE,
+        'title' => 'Description',
+        'title_multiple' => 'Descriptions',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'paragraphs',
+        'settings' => array(),
+        'type' => 'paragraphs_embed',
+        'weight' => 15,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_target_group'.
+    $field_instances['node-curriculum-field_target_group'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 16,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_target_group',
+      'label' => 'Target group',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 9,
+      ),
+    );
+  
+    // Exported field_instance: 'node-curriculum-field_textbooks'.
+    $field_instances['node-curriculum-field_textbooks'] = array(
+      'bundle' => 'curriculum',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 20,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_textbooks',
+      'label' => 'Textbooks',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 0,
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 1,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => 20,
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
         'weight' => 20,
       ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_textbooks',
-    'label' => 'Textbooks',
-    'required' => 0,
-    'settings' => array(
-      'display_summary' => 0,
-      'entity_translation_sync' => false,
-      'text_processing' => 1,
-      'user_register_form' => false,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 20,
-        'summary_rows' => 5,
-      ),
-      'type' => 'text_textarea_with_summary',
-      'weight' => 14,
-    ),
     );
-
+  
+    // Translatables
+    // Included for use with string extractors like potx.
+    t('Assessment');
+    t('Attachments');
+    t('Body');
+    t('Contacts');
+    t('Days it takes place');
+    t('Field');
+    t('Instructor');
+    t('Jobs');
+    t('Jobs pretext');
+    t('Length');
+    t('Pictures');
+    t('Premise');
+    t('Rating');
+    t('Room');
+    t('School selections');
+    t('Specialitiy table');
+    t('Speciality description');
+    t('Start ');
+    t('Subjects table');
+    t('Table descriptions');
+    t('Target group');
+    t('Textbooks');
+  
     return $field_instances;
 }
 function hitsa_curriculum_delete_custom_node_fields()
@@ -2584,6 +2961,7 @@ function hitsa_curriculum_make_fields_conditional()
 }
 function _hitsa_curriculum_conditional_fields()
 {
+  
     $items = array();
 
     $items["node:curriculum:0"] = array(
@@ -2592,84 +2970,84 @@ function _hitsa_curriculum_conditional_fields()
     'dependent' => 'field_assessment',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+    ),
+    'value' => array(),
     ),
     );
 
@@ -2679,85 +3057,85 @@ function _hitsa_curriculum_conditional_fields()
     'dependent' => 'field_curriculum_length',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
-        6 => 'preparatory-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+      6 => 'preparatory-courses',
+    ),
+    'value' => array(),
     ),
     );
 
@@ -2767,85 +3145,85 @@ function _hitsa_curriculum_conditional_fields()
     'dependent' => 'field_curriculum_start',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
-        6 => 'preparatory-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+      6 => 'preparatory-courses',
+    ),
+    'value' => array(),
     ),
     );
 
@@ -2855,867 +3233,1200 @@ function _hitsa_curriculum_conditional_fields()
     'dependent' => 'field_days_place',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
-        6 => 'preparatory-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+      6 => 'preparatory-courses',
+    ),
+    'value' => array(),
     ),
     );
 
     $items["node:curriculum:4"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_field',
+    'dependent' => 'field_descriptions',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 1,
-      'value_form' => 'specialities',
-      'value' => array(
-        0 => array(
-          'value' => 'specialities',
-        ),
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'values' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'areas-of-study',
+      1 => 'specialities',
+    ),
+    'value' => array(),
     ),
     );
 
     $items["node:curriculum:5"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_instructor',
+    'dependent' => 'field_field',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
-        6 => 'preparatory-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 1,
+    'value_form' => 'specialities',
+    'value' => array(
+      0 => array(
+        'value' => 'specialities',
+      ),
+    ),
+    'values' => array(),
     ),
     );
 
     $items["node:curriculum:6"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_jobs',
+    'dependent' => 'field_instructor',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 1,
-      'value_form' => 'specialities',
-      'value' => array(
-        0 => array(
-          'value' => 'specialities',
-        ),
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'values' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+      6 => 'preparatory-courses',
+    ),
+    'value' => array(),
     ),
     );
 
     $items["node:curriculum:7"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_jobs_pretext',
+    'dependent' => 'field_jobs',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 1,
-      'value_form' => 'specialities',
-      'value' => array(
-        0 => array(
-          'value' => 'specialities',
-        ),
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'values' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 1,
+    'value_form' => 'specialities',
+    'value' => array(
+      0 => array(
+        'value' => 'specialities',
+      ),
+    ),
+    'values' => array(),
     ),
     );
 
     $items["node:curriculum:8"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_premise',
+    'dependent' => 'field_jobs_pretext',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
-        6 => 'preparatory-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 1,
+    'value_form' => 'specialities',
+    'value' => array(
+      0 => array(
+        'value' => 'specialities',
+      ),
+    ),
+    'values' => array(),
     ),
     );
 
     $items["node:curriculum:9"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_rating',
+    'dependent' => 'field_premise',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
-        6 => 'preparatory-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+      6 => 'preparatory-courses',
+    ),
+    'value' => array(),
     ),
     );
 
     $items["node:curriculum:10"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_room',
+    'dependent' => 'field_rating',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
-        6 => 'preparatory-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+      6 => 'preparatory-courses',
+    ),
+    'value' => array(),
     ),
     );
 
     $items["node:curriculum:11"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_speciality_description',
+    'dependent' => 'field_room',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 1,
-      'value_form' => 'specialities',
-      'value' => array(
-        0 => array(
-          'value' => 'specialities',
-        ),
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'values' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+      6 => 'preparatory-courses',
+    ),
+    'value' => array(),
     ),
     );
 
     $items["node:curriculum:12"] = array(
     'entity' => 'node',
     'bundle' => 'curriculum',
-    'dependent' => 'field_target_group',
+    'dependent' => 'field_specialitiy_table',
     'dependee' => 'field_school_selections',
     'options' => array(
-      'state' => 'visible',
-      'condition' => 'value',
-      'grouping' => 'AND',
-      'effect' => 'show',
-      'effect_options' => array(),
-      'element_view' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
         1 => 1,
         2 => 2,
         5 => 0,
         3 => 0,
         4 => 0,
       ),
-      'element_view_per_role' => 0,
-      'element_view_roles' => array(
-        1 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          2 => 2,
-          5 => 0,
-          3 => 0,
-          4 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
       ),
-      'element_edit' => array(
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
         1 => 1,
         3 => 0,
       ),
-      'element_edit_per_role' => 0,
-      'element_edit_roles' => array(
-        1 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        2 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        3 => array(
-          1 => 1,
-          3 => 0,
-        ),
-        4 => array(
-          1 => 1,
-          3 => 0,
-        ),
+      2 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'selector' => '',
-      'values_set' => 3,
-      'value_form' => '_none',
-      'values' => array(
-        0 => 'elective-subjects',
-        1 => 'preparatory-courses',
-        2 => 'hobby-groups',
-        3 => 'e-courses',
-        4 => 'hobby-activity',
-        5 => 'elective-courses',
-        6 => 'preparatory-courses',
+      3 => array(
+        1 => 1,
+        3 => 0,
       ),
-      'value' => array(),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 1,
+    'value_form' => 'specialities',
+    'value' => array(
+      0 => array(
+        'value' => 'specialities',
+      ),
+    ),
+    'values' => array(),
+    ),
+    );
+
+    $items["node:curriculum:13"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_speciality_description',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      2 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      3 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 1,
+    'value_form' => 'specialities',
+    'value' => array(
+      0 => array(
+        'value' => 'specialities',
+      ),
+    ),
+    'values' => array(),
+    ),
+    );
+
+    $items["node:curriculum:14"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_subjects_table',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      2 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      3 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 1,
+    'value_form' => 'areas-of-study',
+    'value' => array(
+      0 => array(
+        'value' => 'areas-of-study',
+      ),
+    ),
+    'values' => array(),
+    ),
+    );
+
+    $items["node:curriculum:15"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_table_descriptions',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      2 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      3 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'specialities',
+      1 => 'areas-of-study',
+    ),
+    'value' => array(),
+    ),
+    );
+
+    $items["node:curriculum:16"] = array(
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_target_group',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+    'state' => 'visible',
+    'condition' => 'value',
+    'grouping' => 'AND',
+    'effect' => 'show',
+    'effect_options' => array(),
+    'element_view' => array(
+      1 => 1,
+      2 => 2,
+      5 => 0,
+      3 => 0,
+      4 => 0,
+    ),
+    'element_view_per_role' => 0,
+    'element_view_roles' => array(
+      1 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      2 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      3 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+    ),
+    'element_edit' => array(
+      1 => 1,
+      3 => 0,
+    ),
+    'element_edit_per_role' => 0,
+    'element_edit_roles' => array(
+      1 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      2 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      3 => array(
+        1 => 1,
+        3 => 0,
+      ),
+      4 => array(
+        1 => 1,
+        3 => 0,
+      ),
+    ),
+    'selector' => '',
+    'values_set' => 3,
+    'value_form' => '_none',
+    'values' => array(
+      0 => 'elective-subjects',
+      1 => 'preparatory-courses',
+      2 => 'hobby-groups',
+      3 => 'e-courses',
+      4 => 'hobby-activity',
+      5 => 'elective-courses',
+      6 => 'preparatory-courses',
+    ),
+    'value' => array(),
     ),
     );
 
     return $items;
 }
-
 function _hitsa_curriculum_get_field_ids($dependee, $dependent)
 {
     $ids = array();
@@ -3729,17 +4440,20 @@ function _hitsa_curriculum_get_field_ids($dependee, $dependent)
     );
     return $ids;
 }
-function hitsa_curriculum_add_custom_taxonomy_fields(){
-  foreach (hitsa_curriculum_add_custom_taxonomy_fields_base() as $field) {
-    field_create_field($field);
-  }
-  foreach (hitsa_curriculum_add_custom_taxonomy_fields_instances() as $field_instance) {
-    
-    field_create_instance($field_instance);
-  }
+
+
+function hitsa_curriculum_add_custom_taxonomy_fields()
+{
+    foreach (hitsa_curriculum_add_custom_taxonomy_fields_base() as $field) {
+        field_create_field($field);
+    }
+    foreach (hitsa_curriculum_add_custom_taxonomy_fields_instances() as $field_instance) {
+        field_create_instance($field_instance);
+    }
 }
-function hitsa_curriculum_add_custom_taxonomy_fields_base(){
-  $field_bases = array();
+function hitsa_curriculum_add_custom_taxonomy_fields_base()
+{
+    $field_bases = array();
   
     // Exported field_base: 'field_icon_choice'.
     $field_bases['field_icon_choice'] = array(
@@ -3795,44 +4509,22 @@ function hitsa_curriculum_add_custom_taxonomy_fields_base(){
           'user' => 'User',
         ),
         'allowed_values_function' => '',
-        'entity_translation_sync' => FALSE,
+        'entity_translation_sync' => false,
       ),
       'translatable' => 0,
       'type' => 'list_text',
     );
-    // Exported field_base: 'field_field_picture'.
-    $field_bases['field_field_picture'] = array(
-      'active' => 1,
-      'cardinality' => 1,
-      'deleted' => 0,
-      'entity_types' => array(),
-      'field_name' => 'field_field_picture',
-      'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
-        ),
-      ),
-      'locked' => 0,
-      'module' => 'image',
-      'settings' => array(
-        'default_image' => 0,
-        'entity_translation_sync' => array(
-          0 => 'fid',
-        ),
-        'uri_scheme' => 'public',
-      ),
-      'translatable' => 0,
-      'type' => 'image',
-    );
+    
     return $field_bases;
 }
-function hitsa_curriculum_add_custom_taxonomy_fields_instances(){
-  $field_instances = array();
+function hitsa_curriculum_add_custom_taxonomy_fields_instances()
+{
+    $field_instances = array();
   
     // Exported field_instance: 'taxonomy_term-fields-field_icon_choice'.
     $field_instances['taxonomy_term-fields-field_icon_choice'] = array(
       'bundle' => 'fields',
-      'default_value' => NULL,
+      'default_value' => null,
       'deleted' => 0,
       'description' => '',
       'display' => array(
@@ -3847,10 +4539,10 @@ function hitsa_curriculum_add_custom_taxonomy_fields_instances(){
       'entity_type' => 'taxonomy_term',
       'field_name' => 'field_icon_choice',
       'label' => 'Icon choice',
-      'required' => FALSE,
+      'required' => false,
       'settings' => array(
-        'entity_translation_sync' => FALSE,
-        'user_register_form' => FALSE,
+        'entity_translation_sync' => false,
+        'user_register_form' => false,
       ),
       'widget' => array(
         'module' => 'options',
@@ -3859,50 +4551,7 @@ function hitsa_curriculum_add_custom_taxonomy_fields_instances(){
         'weight' => 1,
       ),
     );
-   // Exported field_instance: 'taxonomy_term-fields-field_field_picture'.
-  $field_instances['taxonomy_term-fields-field_field_picture'] = array(
-    'bundle' => 'fields',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'image',
-        'settings' => array(
-          'image_link' => '',
-          'image_style' => '',
-        ),
-        'type' => 'image',
-        'weight' => 1,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_field_picture',
-    'label' => 'Field picture',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'default_image' => 0,
-      'entity_translation_sync' => FALSE,
-      'file_directory' => '',
-      'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '',
-      'title_field' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'image',
-      'settings' => array(
-        'preview_image_style' => 'thumbnail',
-        'progress_indicator' => 'throbber',
-      ),
-      'type' => 'image_image',
-      'weight' => 2,
-    ),
-  );
+   
     // Translatables
     // Included for use with string extractors like potx.
     t('Field picture');
