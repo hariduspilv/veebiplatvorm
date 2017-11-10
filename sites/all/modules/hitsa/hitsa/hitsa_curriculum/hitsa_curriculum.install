@@ -1497,7 +1497,6 @@ function _hitsa_curriculum_installed_node_fields()
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          'areas-of-study' => 'Areas of study',
           'subject-field' => 'Subject field',
           'preparatory-courses' => 'Preparatory courses',
           'elective-subjects' => 'Elective subjects',

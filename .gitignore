@@ -7,3 +7,13 @@ sites/*/private
 sites/default/settings.php
 
 \.vscode/settings\.json
+
+\.idea/hitsa-backend\.iml
+
+\.idea/modules\.xml
+
+\.idea/php\.xml
+
+\.idea/vcs\.xml
+
+\.idea/workspace\.xml
