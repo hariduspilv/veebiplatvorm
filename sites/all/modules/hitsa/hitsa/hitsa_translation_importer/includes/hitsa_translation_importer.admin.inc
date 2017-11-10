@@ -40,16 +40,19 @@ function hitsa_translations_importer_settings_form_submit($form, &$form_state)
             $read_text = file_get_contents($loaded_file->uri);
             $data = array_map("str_getcsv", preg_split('/\r*\n+|\r+/', $read_text));
             $translatable_array=array();
-
-            foreach ($data as $translate_key => $translate_value) {
-                $request = t($translate_value[1]);
+            
+            dpm($data);
+            foreach ($data as $translate_key => $translate_value) { 
+                
+                
                 if (!empty($translate_value[1])) {
+                    dpm(t($translate_value[1]));
                     $translatable_array[$translate_value[1]] = array(
                     'et' => (!empty($translate_value[0]))?$translate_value[0]:'',
                     'ru' => (!empty($translate_value[2]))?$translate_value[2]:'',
                     );
                     $lower_eng = (!empty($translate_value[1]))?mb_strtolower($translate_value[1]):'';
-                    $request = t($lower_eng);
+                    dpm(t($lower_eng));
                     $lower_est = (!empty($translate_value[0]))?mb_strtolower($translate_value[0]):'';
                     $lower_ru = (!empty($translate_value[2]))?mb_strtolower($translate_value[2]):'';
                     
@@ -59,7 +62,7 @@ function hitsa_translations_importer_settings_form_submit($form, &$form_state)
                         );
                     
                     $lower_eng = (!empty($lower_eng))?str_replace(' ','-',$lower_eng):'';
-                    $request = t($lower_eng);
+                    dpm(t($lower_eng));
                     $lower_est = (!empty($lower_est))?str_replace(' ','-',$lower_est):'';
                     $lower_ru = (!empty($lower_ru))?str_replace(' ','-',$lower_ru):'';
                     
@@ -89,7 +92,7 @@ function hitsa_translations_importer_translations($translations)
         foreach ($translations as $string => $values) {
             $source = db_query('SELECT lid, source, context, textgroup, location FROM {locales_source} WHERE source = :string', array(':string' => $string))->fetchObject();
             if (!$source) {
-                watchdog('update_hook', 'Translation of string "%string" failed.', array('%string%' => $string));
+                watchdog('update_hook', 'Translation of string "%string" failed.', array('%string' => $string));
                 continue;
             }
      
