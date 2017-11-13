@@ -1,7 +1,6 @@
 <?php
 
 function hitsa_preprocess_page(&$variables) {
-  
     if ($variables['is_front']) {
       $variables['page']['content']['system_main']['#access'] = FALSE;
     }
