@@ -445,7 +445,6 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['#theme_wrappers'] = array();
         $build['catering']['catering_table']['#markup'] = $catering_table.$catering_html;
     }
-    dpm($build);
     return $build;
 }
 /**
