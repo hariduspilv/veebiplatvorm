@@ -52,22 +52,28 @@ function hitsa_catering_uninstall(){
 */
 function _hitsa_catering_vocabularies(){
   $vocabularies = array();
-  
+
   $vocabularies['catering_food_type'] = array(
     'vocabulary' => (object) array(
       'name' => t('Catering food types'),
       'description' => t('Different catering food types'),
       'machine_name' => 'catering_food_type',
+        'language' => 'und',
+        'i18n_mode' => 1,
     ),
     'terms' => array(
       (object) array(
-        'name' => t('School meals'),
+          'name' => t('School meals'),
+          'language' => 'en',
+
       ),
       (object) array(
         'name' => t('Vegetarian food'),
+          'language' => 'en',
       ),
       (object) array(
         'name' => t('Lactose free'),
+          'language' => 'en',
       ),
     ),
   );
@@ -127,9 +133,11 @@ function _hitsa_catering_vocabularies(){
     'terms' => array(
       (object) array(
         'name' => t('Main dish'),
+          'language' => 'en',
       ),
       (object) array(
         'name' => t('Dessert'),
+          'language' => 'en',
       ),
     ),
   );
@@ -1031,6 +1039,64 @@ function hitsa_catering_add_custom_taxonomy_fields(){
 function hitsa_catering_add_custom_taxonomy_field_base(){
   $field_bases = array();
 
+    $field_bases['field_food_icon'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_food_icon',
+        'indexes' => array(
+            'value' => array(
+                0 => 'value',
+            ),
+        ),
+        'locked' => 0,
+        'module' => 'list',
+        'settings' => array(
+            'allowed_values' => array(
+                'accessibility' => 'Accessibility',
+                'arrow-right-circle' => 'Arrow-right-circle',
+                'arrow_down' => 'Arrow_down',
+                'arrow_left' => 'Arrow_left',
+                'arrow_right' => 'Arrow_right',
+                'arrow_up' => 'Arrow_up',
+                'business' => 'Business',
+                'calendar' => 'Calendar',
+                'catering' => 'Catering',
+                'check' => 'Check',
+                'clock' => 'Clock',
+                'close' => 'Close',
+                'dinner' => 'Dinner',
+                'document' => 'Document',
+                'download' => 'Download',
+                'elektrienergia' => 'Elektrienergia',
+                'envelope' => 'Envelope',
+                'facebook-circle' => 'Facebook-circle',
+                'home' => 'Home',
+                'link' => 'Link',
+                'location' => 'Location',
+                'menu' => 'Menu',
+                'minus' => 'Minus',
+                'money' => 'Money',
+                'phone' => 'Phone',
+                'plus' => 'Plus',
+                'print' => 'Print',
+                'question-circle' => 'Question-circle',
+                'register' => 'Register',
+                'search' => 'Search',
+                'share' => 'Share',
+                'shopping' => 'Shopping',
+                'sweet' => 'Sweet',
+                'tourism' => 'Tourism',
+                'unlock' => 'Unlock',
+                'user' => 'User',
+            ),
+            'allowed_values_function' => '',
+            'entity_translation_sync' => FALSE,
+        ),
+        'translatable' => 0,
+        'type' => 'list_text',
+    );
   // Exported field_base: 'field_catering_provider_pictures'.
   $field_bases['field_catering_provider_pictures'] = array(
     'active' => 1,
@@ -1169,6 +1235,36 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
   
   $field_instances = array();
 
+    $field_instances['taxonomy_term-catering_food_subcategory-field_food_icon'] = array(
+        'bundle' => 'catering_food_subcategory',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'list',
+                'settings' => array(),
+                'type' => 'list_default',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_food_icon',
+        'label' => 'Food icon',
+        'required' => 0,
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'options',
+            'settings' => array(),
+            'type' => 'options_select',
+            'weight' => 32,
+        ),
+    );
   // Exported field_instance:
   // 'taxonomy_term-catering_provider-field_catering_provider_pictures'.
   $field_instances['taxonomy_term-catering_provider-field_catering_provider_pictures'] = array(

@@ -41,7 +41,42 @@ function hitsa_catering_block_info()
         'pages' => strval($pages),
         'weight' => 100,
     );
+    $blocks['catering_block_front_page'] =  array(
+        'info' => t('Catering front page'),
+        'region' => 'content',
+        'status' => 1,
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => '<front>',
+
+
+    );
     return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function hitsa_catering_block_view($delta = '')
+{
+    $block = array();
+    switch ($delta) {
+        case 'catering_block':
+            $catering_table = hitsa_catering_week();
+            $catering_table = drupal_render($catering_table);
+            $block['subject']= t('');
+            $block['content'] = array(
+            '#markup' => $catering_table,
+            );
+            break;
+        case 'catering_block_front_page':
+            $block['subject']= t('');
+            $block['content'] = array(
+                '#markup' => hitsa_catering_front_page_block(),
+            );
+
+            break;
+    }
+    return $block;
 }
 
 /**
@@ -84,24 +119,6 @@ function hitsa_catering_week_page(){
     $build = array();
 
     return $build;
-}
-/**
- * Implements hook_block_view().
- */
-function hitsa_catering_block_view($delta = '')
-{
-    $block = array();
-    switch ($delta) {
-        case 'catering_block':
-            $catering_table = hitsa_catering_week();
-            $catering_table = drupal_render($catering_table);
-            $block['subject']= t('');
-            $block['content'] = array(
-            '#markup' => $catering_table,
-            );
-            break;
-    }
-    return $block;
 }
 /**
  * Implements hook_node_info().
@@ -319,7 +336,6 @@ function hitsa_catering_node_presave($node)
 function hitsa_catering_week($start_date = null)
 {
     global $language;
-
     $build = array();
     $catering_provider_tid=null;
     $catering_provider = null;
@@ -410,6 +426,7 @@ function hitsa_catering_week($start_date = null)
     $query -> condition('fdfd.field_date_value2', $sunday, '<=');
     $query -> join('node', 'n', 'fdfd.entity_id=n.nid');
     $query -> fields('n');
+    $query -> condition('n.language',$language->language,'=');
     if (!empty($catering_provider_tid)) {
         if (!empty($catering_provider_tid)) {
             $query -> join('field_data_field_catering_provider', 'fdfcp', 'n.nid=fdfcp.entity_id');
@@ -422,7 +439,6 @@ function hitsa_catering_week($start_date = null)
         $menu = $menu_items;
     }
     $loaded_menu = !empty($menu)?node_load($menu->nid):null;
-    
     $catering_html = null;
     if (!empty($loaded_menu->field_catering_provider)) {
         $catering_provider = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
@@ -775,6 +791,291 @@ function hitsa_catering_generate_header($node){
         $output.='</div><!--/row-->';
         $output.=' </div>';
     }
+    return $output;
+
+}
+
+function hitsa_catering_front_page_block(){
+    global $language;
+
+    $catering_link_tomorrow='';
+    $output = '';
+    $icon='';
+    $sub_category_name='';
+    $food_name='';
+    $foods = array();
+    $foods_tomorrow = array();
+    $today  = time();
+    $today_day = date('l',$today);
+    $today_iso = strtotime('midnight',$today);
+    $tomorrow_iso = strtotime('midnight tomorrow');
+    $tomorrow_day = date('l',$tomorrow_iso);
+    $next_week = FALSE;
+    if ($today_day=='Friday'){
+        $next_week=TRUE;
+        $tomorrow_iso = strtotime('monday next week');
+        $tomorrow_day = date('l',$tomorrow_iso);
+    }
+
+    if (!empty($today_iso)){
+        $query = db_select('node','n');
+        $query -> condition('n.type','catering','=');
+        $query -> fields('n');
+        $query -> condition('n.language',$language->language,'=');
+        if(!empty($today_iso)){
+            $query -> join('field_data_field_date','fdfd','n.nid=fdfd.entity_id');
+            $query -> condition('fdfd.bundle','catering','=');
+            $query -> condition('fdfd.field_date_value',$today_iso,'<=');
+            $query -> condition('fdfd.field_date_value2', $today_iso,'>=');
+        }
+        $results = $query->execute();
+        foreach($results as $catering_result){
+//            dpm($catering_result);
+            $node = node_load($catering_result->nid);
+            $lower_today = strtolower($today_day);
+            $to_check = 'field_catering_'.$lower_today;
+            if(!empty($node->$to_check)){
+                foreach ($node->$to_check['und'] as $food){
+                    $id = $food['value'];
+
+                    $food = entity_load_single('paragraphs_item', $id);
+                    if (!empty($food->field_food_name)) {
+                        $food_name = $food->field_food_name['und'][0]['value'];
+//                        $foods[$food_name]['name'] = $food_name;
+                        if (!empty($food->field_food_subcategory)) {
+
+                            $food_subcategory = $food->field_food_subcategory['und'][0]['target_id'];
+                            $food_subcategory = taxonomy_term_load($food_subcategory);
+
+                            if (!empty($food_subcategory->field_food_icon)) {
+                                $icon = 'before-' . $food_subcategory->field_food_icon['und'][0]['value'];
+                                $sub_category_name = $food_subcategory->name;
+//                                $foods[$food_name]['subcategory'] = $sub_category_name;
+//                                $foods[$food_name]['icon'] = $icon;
+                                $foods[$sub_category_name][$food_name]['name']=$food_name;
+                                $foods[$sub_category_name][$food_name]['subcategory']=$sub_category_name;
+                                $foods[$sub_category_name][$food_name]['icon']=$icon;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    if(!$next_week){
+        if (!empty($tomorrow_iso)) {
+            $query = db_select('node', 'n');
+            $query->condition('n.type', 'catering', '=');
+            $query->fields('n');
+            $query->condition('n.language', $language->language, '=');
+            if (!empty($today_iso)) {
+                $query->join('field_data_field_date', 'fdfd', 'n.nid=fdfd.entity_id');
+                $query->condition('fdfd.bundle', 'catering', '=');
+                $query->condition('fdfd.field_date_value', $tomorrow_iso, '<=');
+                $query->condition('fdfd.field_date_value2', $tomorrow_iso, '>=');
+            }
+            $results = $query->execute();
+            foreach ($results as $catering_result) {
+//            dpm($catering_result);
+                $node = node_load($catering_result->nid);
+                $lower_tomorrow = strtolower($tomorrow_day);
+                $to_check = 'field_catering_' . $lower_tomorrow;
+                if (!empty($node->$to_check)) {
+//                dpm($node);
+                    foreach ($node->$to_check['und'] as $food) {
+                        $id = $food['value'];
+
+                        $food = entity_load_single('paragraphs_item', $id);
+                        if (!empty($food->field_food_name)) {
+                            $food_name = $food->field_food_name['und'][0]['value'];
+//                        $foods[$food_name]['name'] = $food_name;
+                            if (!empty($food->field_food_subcategory)) {
+
+                                $food_subcategory = $food->field_food_subcategory['und'][0]['target_id'];
+                                $food_subcategory = taxonomy_term_load($food_subcategory);
+
+                                if (!empty($food_subcategory->field_food_icon)) {
+                                    $icon = 'before-' . $food_subcategory->field_food_icon['und'][0]['value'];
+                                    $sub_category_name = $food_subcategory->name;
+//                                $foods[$food_name]['subcategory'] = $sub_category_name;
+//                                $foods[$food_name]['icon'] = $icon;
+                                    $foods_tomorrow[$sub_category_name][$food_name]['name'] = $food_name;
+                                    $foods_tomorrow[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
+                                    $foods_tomorrow[$sub_category_name][$food_name]['icon'] = $icon;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+    if ($next_week){
+        if (!empty($tomorrow_iso)) {
+            $query = db_select('node', 'n');
+            $query->condition('n.type', 'catering', '=');
+            $query->fields('n');
+            $query->condition('n.language', $language->language, '=');
+            if (!empty($today_iso)) {
+                $query->join('field_data_field_date', 'fdfd', 'n.nid=fdfd.entity_id');
+                $query->condition('fdfd.bundle', 'catering', '=');
+                $query->condition('fdfd.field_date_value', $tomorrow_iso, '<=');
+                $query->condition('fdfd.field_date_value2', $tomorrow_iso, '>=');
+            }
+            $results = $query->execute();
+            foreach ($results as $catering_result) {
+                $node = node_load($catering_result->nid);
+                $catering_link_tomorrow = url('node'.'/'.$node->nid);
+                $lower_tomorrow = strtolower($tomorrow_day);
+                $to_check = 'field_catering_' . $lower_tomorrow;
+                if (!empty($node->$to_check)) {
+                    foreach ($node->$to_check['und'] as $food) {
+                        $id = $food['value'];
+
+                        $food = entity_load_single('paragraphs_item', $id);
+                        if (!empty($food->field_food_name)) {
+                            $food_name = $food->field_food_name['und'][0]['value'];
+                            if (!empty($food->field_food_subcategory)) {
+
+                                $food_subcategory = $food->field_food_subcategory['und'][0]['target_id'];
+                                $food_subcategory = taxonomy_term_load($food_subcategory);
+
+                                if (!empty($food_subcategory->field_food_icon)) {
+                                    $icon = 'before-' . $food_subcategory->field_food_icon['und'][0]['value'];
+                                    $sub_category_name = $food_subcategory->name;
+                                    $foods_tomorrow[$sub_category_name][$food_name]['name'] = $food_name;
+                                    $foods_tomorrow[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
+                                    $foods_tomorrow[$sub_category_name][$food_name]['icon'] = $icon;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+    $foods_selected = array();
+    if (!empty($foods)){
+        foreach($foods as $food_key => $food){
+            $random_food = array_rand($food,1);
+            $foods_selected[] = '<div class="col-12">
+                              <div class="object object-event">
+                                 <div class="object-inner">
+                                    <a href="" class="object-date">
+													<span class="object-date_day '.$food[$random_food]['icon'].' sm-hide"></span>
+                                       <span class="object-date_month">'.$food[$random_food]['subcategory'].'</span>
+                                    </a><!--/object-date-->
+                                    <span class="object-content object-content_center">
+                                       <a href="" class="object-title">'.$food[$random_food]['name'].'</a>
+                                    </span><!--/object-content-->
+                                 </div><!--/object-inner-->
+                              </div><!--/object-->
+                           </div><!--/col-12-->';
+        }
+    }
+    $foods_selected_tomorrow = array();
+    if (!empty($foods_tomorrow)){
+        foreach($foods_tomorrow as $food_key => $food){
+            $random_food = array_rand($food,1);
+            $foods_selected_tomorrow[] = '<div class="col-12">
+                              <div class="object object-event">
+                                 <div class="object-inner">
+                                    <a href="" class="object-date">
+													<span class="object-date_day '.$food[$random_food]['icon'].' sm-hide"></span>
+                                       <span class="object-date_month">'.$food[$random_food]['subcategory'].'</span>
+                                    </a><!--/object-date-->
+                                    <span class="object-content object-content_center">
+                                       <a href="" class="object-title">'.$food[$random_food]['name'].'</a>
+                                    </span><!--/object-content-->
+                                 </div><!--/object-inner-->
+                              </div><!--/object-->
+                           </div><!--/col-12-->';
+        }
+    }
+    $monday = date('d/m/Y', strtotime('this week monday', $today));
+    $sunday = date('d/m/Y', strtotime('this week sunday', $today));
+    $output.='<div class="col-6 sm-12">
+                  
+                  <div class="block block-stretch" data-plugin="tabs">
+                     <h2 class="block-title">'.t('Catering').'</h2>
+
+                     <div class="row pull-up">
+                        <div class="col-12">
+                           <a href="javascript:void(0);" data-target="tab-1" class="link-tab active">'.t('Today').'</a>';
+    if($next_week && !empty($foods_selected_tomorrow)){
+      $output.= '  <a href="javascript:void(0);" data-target="tab-2" class="link-tab">'.t('Next Monday').'</a>';
+    }
+    else{
+        $output.='
+                           <a href="javascript:void(0);" data-target="tab-2" class="link-tab">'.t('Tomorrow').'</a>';
+    }
+    $output.='
+                           
+                        </div><!--/col-12-->
+                     </div><!--/row-->
+
+                     <div data-tab="tab-1" class="active-tab">
+                        <div class="row">';
+    $i=0;
+    foreach ($foods_selected as $food){
+
+        $output.=$food;
+        if ($i==0 && count($foods_selected)>1){
+            $output.='<hr>';
+        }
+        $i++;
+    }
+    $catering_link='';
+    $catering_link = url(t('catering'));
+    $output.='        </div>
+                        <hr>
+
+                        <div class="row">
+                           <div class="col-12">
+                              <div class="align-center">
+                                 <a href="'.$catering_link.'" class="btn btn-filled">'.t('Weekly menu').'</a>
+										</div><!--/align-center-->
+                           </div><!--/col-12-->
+                        </div><!--/row-->
+                     </div><!--/data-tab-1-->
+
+                     <div data-tab="tab-2" class="">
+
+                        <div class="row">
+                         ';
+    $i=0;
+    foreach ($foods_selected_tomorrow as $food){
+
+        $output.=$food;
+        if ($i==0 && count($foods_selected_tomorrow)>1){
+            $output.='<hr>';
+        }
+        $i++;
+    }
+    if(!$next_week) {
+        $catering_link_tomorrow = url(t('catering'));
+    }
+    else{
+    }
+    $output.='        
+        </div>
+                        <hr>
+
+                        <div class="row">
+                           <div class="col-12">
+                              <div class="align-center">
+                                  <a href="'.$catering_link_tomorrow.'" class="btn btn-filled">'.t('Weekly menu').'</a>
+										</div><!--/align-center-->
+                           </div><!--/col-12-->
+                        </div><!--/row-->
+                     </div><!--/tab-2-->
+
+                  </div><!--/block-->
+            
+               </div>';
     return $output;
 
 }
