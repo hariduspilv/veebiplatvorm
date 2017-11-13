@@ -44,6 +44,42 @@ function hitsa_catering_block_info()
     return $blocks;
 }
 
+/**
+ * Implements hook_node_validate().
+ */
+function hitsa_catering_node_validate($node, $form, &$form_state) {
+    $catering_provder_name = NULL;
+    if (!empty($node->field_catering_provider)) {
+        if (!empty($node->field_catering_provider['und'][0])) {
+            $catering_provider = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
+            $catering_provder_name = $catering_provider->name;
+        }
+    }
+    if (!empty($node)) {
+        if (is_object($node)) {
+            if (!empty($node->field_date)) {
+                if (!empty($node->field_date['und'][0]['value'])) {
+                    $start_date = $node->field_date['und'][0]['value'];
+                }
+            }
+        } // code...
+    }
+    $monday = date('d/m/Y', strtotime('this week monday', $start_date));
+    $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
+    $alias = t('catering').'/'.$monday.'-'.$sunday;
+    if (!empty($catering_provder_name)){
+        $alias.='/'.$catering_provder_name;
+    }
+        $lookup = drupal_lookup_path('source', $alias, $node->language);
+    dpm($lookup);
+    if ($lookup){
+        if($node->path['alias']!=$alias){
+            form_set_error('field_catering_provider',t('This catering provider has got menu already for this week'));
+        }
+    }
+      krumo($form);
+//  exit();
+}
 function hitsa_catering_week_page(){
     $build = array();
 
@@ -90,6 +126,8 @@ function hitsa_catering_node_info()
     variable_set('i18n_node_options_catering', array('required'));
     return $items;
 }
+
+
 
 /**
 * Implements hook_form_alter().
@@ -157,7 +195,7 @@ function hitsa_catering_get_all_catering_dates()
         $dates[] = strtotime($node->field_date['und'][0]['value']);
         $dates[] = strtotime($node->field_date['und'][0]['value2']);
     }
-    
+
     return $dates;
 }
 
@@ -175,7 +213,7 @@ function hitsa_catering_node_insert($node)
         }
         $language_list = language_list();
         $language = $node->language;
-        $lookup_main = drupal_lookup_path('alias', t('catering'), $node->language);
+        $lookup_main = drupal_lookup_path('source', t('catering'), $node->language);
         $catering_provder_name = NULL;
         if (!empty($node->field_catering_provider)) {
             if (!empty($node->field_catering_provider['und'][0])) {
@@ -196,8 +234,12 @@ function hitsa_catering_node_insert($node)
         $monday = date('d/m/Y', strtotime('this week monday', $start_date));
         $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
         hitsa_catering_check_block_visibility(t('catering'),'catering');
+        $alias = t('catering').'/'.$monday.'-'.$sunday;
+        if (!empty($catering_provder_name)){
+            $alias.='/'.$catering_provder_name;
+        }
         $node->path = array(
-            'alias' => t('catering') . '/' . $monday . '-' . $sunday.'/'.$catering_provder_name,
+            'alias' => $alias,
             'pid' => (!empty($node->path['pid'])) ? $node->path['pid'] : NULL,
             'source' => 'node/' . $node->nid,
             'language' => $node->language,
@@ -241,8 +283,7 @@ function hitsa_catering_node_presave($node)
             $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
             if (!empty($node->nid)) {
                 if (!empty($monday) && !empty($sunday)) {
-                    $lookup_main = drupal_lookup_path('alias', t('catering'), $node->language);
-
+                    $lookup_main = drupal_lookup_path('source', t('catering'), $node->language);
                     if (!($lookup_main)) {
                         $path_main = array(
                             'source' => 'catering',
@@ -255,8 +296,12 @@ function hitsa_catering_node_presave($node)
                     }
 
                     hitsa_catering_check_block_visibility(t('catering'),'catering');
+                    $alias = t('catering').'/'.$monday.'-'.$sunday;
+                    if (!empty($catering_provder_name)){
+                        $alias.='/'.$catering_provder_name;
+                    }
                     $node->path = array(
-                        'alias' => t('catering') . '/' . $monday . '-' . $sunday.'/'.$catering_provder_name,
+                        'alias' => $alias,
                         'pid' => (!empty($node->path['pid'])) ? $node->path['pid'] : NULL,
                         'source' => 'node/' . $node->nid,
                         'language' => $node->language,
@@ -266,21 +311,33 @@ function hitsa_catering_node_presave($node)
             }
             $week = $monday.' - '.$sunday;
             $node->title = truncate_utf8(sprintf(t('Menu week:').' %s', $week), 255).' ' . $catering_provder_name;
+            krumo($node);
         }
     }
 //    exit();
 }
 function hitsa_catering_week($start_date = null)
 {
+    global $language;
 
+    $build = array();
     $catering_provider_tid=null;
     $catering_provider = null;
     $current_path = current_path();
     $menu_items = menu_get_item($current_path);
+    $node_header_part = NULL;
     if (!empty($menu_items)) {
         if (!empty($menu_items['page_arguments'][0])) {
             if (is_object($menu_items['page_arguments'][0])){
                 $node = $menu_items['page_arguments'][0];
+                if($node->type=='catering'){
+
+                    $lookup = drupal_lookup_path('source',t('catering'),$node->language);
+                    $node_header = menu_get_object("node", 1, $lookup);
+                    $node_header_part = hitsa_catering_generate_header($node_header);
+                    $build['catering_header']['#markup'] = $node_header_part;
+                    dpm($node_header);
+                }
                 if (!empty($node->field_catering_provider)){
                     $catering_provider_tid=$node->field_catering_provider['und'][0]['target_id'];
                 }
@@ -301,7 +358,6 @@ function hitsa_catering_week($start_date = null)
     $sunday = date("U", strtotime('sunday this week', $start_date));
 //    krumo($monday);
 //    krumo($sunday);
-    $build = array();
   
     $query = db_select('field_data_field_date', 'fdfd');
     $query -> fields('fdfd');
@@ -310,6 +366,7 @@ function hitsa_catering_week($start_date = null)
     $query -> join('node', 'n', 'fdfd.entity_id=n.nid');
     $query -> fields('n');
     $query->condition('n.status', 1, '=');
+    $query -> condition('n.language',$language->language,'=');
     $results = $query->execute();
     $menus = array();
     foreach ($results as $value) {
@@ -388,6 +445,7 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['#theme_wrappers'] = array();
         $build['catering']['catering_table']['#markup'] = $catering_table.$catering_html;
     }
+    dpm($build);
     return $build;
 }
 /**
@@ -643,7 +701,6 @@ function hitsa_catering_check_block_visibility($translated,$not_translated){
     $query -> fields('block');
     $result = $query->execute();
     $source = $translated.'/*';
-    dpm($source);
     while($block = $result->fetchAssoc()){
 
         if (strpos($block['pages'],$source)==FALSE){
@@ -655,6 +712,56 @@ function hitsa_catering_check_block_visibility($translated,$not_translated){
             );
             $update->execute();
         }
+
     }
     return ;
+}
+
+function hitsa_catering_generate_header($node){
+    $output = '';
+    dpm($node);
+    if (!empty($node)) {
+        $output .= '<div class="block">';
+        $output.='<h2 class="block-title">'.$node->title.'</h2>';
+        $output.='<div class="row-spacer-xs"></div>';
+        $output.='<div class="row">';
+        $output.='   <div class="col-8 sm-12">';
+        $output.='      <article>';
+        if (!empty($node->body)){
+            if (!empty($node->body['und'][0]['summary'])){
+                $intro = $node->body['und'][0]['summary'];
+            }
+        }
+        if (!empty($node->body)){
+            if (!empty($node->body['und'][0]['value'])){
+                $body = $node->body['und'][0]['value'];
+            }
+        }
+        if (!empty($intro)) {
+            $output .= '         <div class="intro">';
+            $output .= '            <p>'.$intro.'</p>';
+            $output .= '         </div><!--/intro-->';
+        }
+        if(!empty($body)) {
+            $output .= '         <p>' . $body . '</p>';
+        }
+        $output.='      </article>';
+        $output.='   </div><!--/col-8-->';
+        $output.='   <div class="col-4 sm-12">';
+        if (!empty($node->cp_image)) {
+            $image = $node->cp_image['und'][0];
+            $style = 'large';
+            $image_url = image_style_url($style,$image['uri']);
+
+            $output .= '      <figure>';
+            $output .= '        <img src="'.$image_url.'"alt="">';
+            $output .= '        <figcaption>'.(!empty($image['title']))?$image['title']:''.'</figcaption>';
+            $output .= '      </figure>';
+        }
+        $output.='   </div><!--/col-4-->';
+        $output.='</div><!--/row-->';
+        $output.=' </div>';
+    }
+    return $output;
+
 }
