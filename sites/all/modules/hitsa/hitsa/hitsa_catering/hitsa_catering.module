@@ -9,14 +9,14 @@ function hitsa_catering_menu()
   
     $items['catering/%'] = array(
         'title' => t(''),
-        'page callback' => 'hitsa_catering_week',
+        'page callback' => 'hitsa_catering_week_page',
         'page arguments' => array(1),
         'access arguments' => array('access content'),
         'type' => MENU_CALLBACK,
     );
     $items['catering'] = array(
         'title' => t(''),
-        'page callback' => 'hitsa_catering_week',
+        'page callback' => 'hitsa_catering_week_page',
         'access arguments' => array('access content'),
         'type' => MENU_CALLBACK,
     );
@@ -32,11 +32,22 @@ function hitsa_catering_block_info()
     $blocks = array();
 
   // This example comes from node.module.
+    $pages = "catering\ncatering/*";
     $blocks['catering_block'] = array(
-    'info' => t('Catering block'),
-    'cache' => DRUPAL_NO_CACHE
+        'info' => t('Catering ' . ' block'),
+        'region' => 'content',
+        'status' => 1,
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => strval($pages),
+        'weight' => 100,
     );
     return $blocks;
+}
+
+function hitsa_catering_week_page(){
+    $build = array();
+
+    return $build;
 }
 /**
  * Implements hook_block_view().
@@ -70,13 +81,13 @@ function hitsa_catering_node_info()
       'description' => t('Catering data.'),
       'has_title' => true,
       'title_label' => t('Title'),
-      'default_language' => $site_default_language->language,
       'custom' => 1,
       'modified' => 1,
       'locked' => 0,
     ),
     );
-  
+    variable_set('language_content_type_catering', TRANSLATION_ENABLED);
+    variable_set('i18n_node_options_catering', array('required'));
     return $items;
 }
 
@@ -87,6 +98,17 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
 {
     switch ($form_id) {
         case 'catering_node_form':
+            if (!empty($form['field_catering_provider'])){
+                $catering_options = $form['field_catering_provider']['und']['#options'];
+                if (count($catering_options)==0){
+                    if(isset($form['field_catering_provider']['und']['#options']['_none'])) {
+                        $form['field_catering_provider']['#access'] = FALSE;
+                    }
+                }
+                else{
+                   unset($form['field_catering_provider']['und']['#options']['_none']);
+                }
+            }
             $form['title']['#required']=false;
             $form['title']['#access']=false;
             $used_dates = hitsa_catering_get_all_catering_dates();
@@ -139,6 +161,53 @@ function hitsa_catering_get_all_catering_dates()
     return $dates;
 }
 
+function hitsa_catering_node_insert($node)
+{
+    if ($node->type=='catering') {
+        if (!empty($node)) {
+            if (is_object($node)) {
+                if (!empty($node->field_date)) {
+                    if (!empty($node->field_date['und'][0]['value'])) {
+                        $start_date = $node->field_date['und'][0]['value'];
+                    }
+                }
+            } // code...
+        }
+        $language_list = language_list();
+        $language = $node->language;
+        $lookup_main = drupal_lookup_path('alias', t('catering'), $node->language);
+        $catering_provder_name = NULL;
+        if (!empty($node->field_catering_provider)) {
+            if (!empty($node->field_catering_provider['und'][0])) {
+                $catering_provider = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
+                $catering_provder_name = $catering_provider->name;
+            }
+        }
+        if (!($lookup_main)) {
+            $path_main = array(
+                'source' => 'catering',
+                'alias' => t('catering'),
+                'pid' => null,
+                'language' => $node->language,
+                'pathauto' => 0,
+            );
+            path_save($path_main);
+        }
+        $monday = date('d/m/Y', strtotime('this week monday', $start_date));
+        $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
+        hitsa_catering_check_block_visibility(t('catering'),'catering');
+        $node->path = array(
+            'alias' => t('catering') . '/' . $monday . '-' . $sunday.'/'.$catering_provder_name,
+            'pid' => (!empty($node->path['pid'])) ? $node->path['pid'] : NULL,
+            'source' => 'node/' . $node->nid,
+            'language' => $node->language,
+            'pathauto' => 0,
+        );
+
+
+        return $node;
+    }
+}
 /**
  * Implement hook_node_presave()
  */
@@ -147,6 +216,9 @@ function hitsa_catering_node_presave($node)
   // Set first+last name as node title.
     $start_date='';
     if ($node->type === 'catering') {
+
+
+
         if (!empty($node)) {
             if (is_object($node)) {
                 if (!empty($node->field_date)) {
@@ -167,21 +239,68 @@ function hitsa_catering_node_presave($node)
             }
             $monday = date('d/m/Y', strtotime('this week monday', $start_date));
             $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
+            if (!empty($node->nid)) {
+                if (!empty($monday) && !empty($sunday)) {
+                    $lookup_main = drupal_lookup_path('alias', t('catering'), $node->language);
+
+                    if (!($lookup_main)) {
+                        $path_main = array(
+                            'source' => 'catering',
+                            'alias' => t('catering'),
+                            'pid' => null,
+                            'language' => $node->language,
+                            'pathauto' => 0,
+                        );
+                        path_save($path_main);
+                    }
+
+                    hitsa_catering_check_block_visibility(t('catering'),'catering');
+                    $node->path = array(
+                        'alias' => t('catering') . '/' . $monday . '-' . $sunday.'/'.$catering_provder_name,
+                        'pid' => (!empty($node->path['pid'])) ? $node->path['pid'] : NULL,
+                        'source' => 'node/' . $node->nid,
+                        'language' => $node->language,
+                        'pathauto' => 0,
+                    );
+                }
+            }
             $week = $monday.' - '.$sunday;
             $node->title = truncate_utf8(sprintf(t('Menu week:').' %s', $week), 255).' ' . $catering_provder_name;
         }
     }
+//    exit();
 }
 function hitsa_catering_week($start_date = null)
 {
+
+    $catering_provider_tid=null;
+    $catering_provider = null;
+    $current_path = current_path();
+    $menu_items = menu_get_item($current_path);
+    if (!empty($menu_items)) {
+        if (!empty($menu_items['page_arguments'][0])) {
+            if (is_object($menu_items['page_arguments'][0])){
+                $node = $menu_items['page_arguments'][0];
+                if (!empty($node->field_catering_provider)){
+                    $catering_provider_tid=$node->field_catering_provider['und'][0]['target_id'];
+                }
+                if (!empty($node->field_date)){
+                    $start_date=strval($node->field_date['und'][0]['value']);
+                }
+            }
+        }
+    }
     global $language;
     if ($start_date==null) {
         $start_date = date('U');
     } else {
-        $start_date = strtotime($start_date);
+     //   $start_date = strtotime($start_date);
     }
+    //krumo($start_date);
     $monday = date("U", strtotime('this week monday', $start_date));
     $sunday = date("U", strtotime('sunday this week', $start_date));
+//    krumo($monday);
+//    krumo($sunday);
     $build = array();
   
     $query = db_select('field_data_field_date', 'fdfd');
@@ -201,12 +320,12 @@ function hitsa_catering_week($start_date = null)
         $loaded_menu = !empty($menu)?node_load($menu->nid):null;
         if (!empty($loaded_menu)) {
             if (!empty($loaded_menu->field_catering_provider)) {
-                $providers[] = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
+                $providers[] = array(
+                    'provider'=>   taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']),
+                    'menu' => $menu);
             }
         }
     }
-  
-    $catering_provider = null;
     $catering_html = null;
     if (!empty($loaded_menu->field_catering_provider)) {
         $catering_provider = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
@@ -216,7 +335,8 @@ function hitsa_catering_week($start_date = null)
     }
     $provider_count=0;
     $provider_to_htmlize = array();
-    if (!empty($providers) and count($providers>0)) {
+    if (!empty($providers) and count($providers)>1) {
+
         $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers);
         $build['catering']['catering_provider']['#prefix'] = '<div class="col-3 d-flex">';
         $build['catering']['catering_provider']['#suffix'] = '</div>';
@@ -234,10 +354,10 @@ function hitsa_catering_week($start_date = null)
     $query -> condition('fdfd.field_date_value2', $sunday, '<=');
     $query -> join('node', 'n', 'fdfd.entity_id=n.nid');
     $query -> fields('n');
-    if (!empty($_REQUEST)) {
-        if (!empty($_REQUEST['Provider'])) {
+    if (!empty($catering_provider_tid)) {
+        if (!empty($catering_provider_tid)) {
             $query -> join('field_data_field_catering_provider', 'fdfcp', 'n.nid=fdfcp.entity_id');
-            $query -> condition('fdfcp.field_catering_provider_target_id', $_REQUEST['Provider'], '=');
+            $query -> condition('fdfcp.field_catering_provider_target_id', $catering_provider_tid, '=');
         }
     }
     $query->condition('n.status', 1, '=');
@@ -498,25 +618,43 @@ function hitsa_catering_provider_side_menu($providers)
     $output=null;
     $class='';
     $current_path = current_path();
-    $_SESSION['return_path'] = $current_path;
     if (count($providers>0)) {
         $output.= '<ul class="side-menu">';
         foreach ($providers as $provider) {
-            if (!empty($_SESSION['return_path'])) {
-                $link = url($_SESSION['return_path'], array('query'=>array(
-                t('Provider') => $provider->tid,
-                )));
-            }
-            if (!empty($_REQUEST)) {
-                if (!empty($_REQUEST['Provider'])) {
-                    if ($_REQUEST['Provider']==$provider->tid) {
-                        $class='active';
-                    }
+            if(!empty($provider['menu'])){
+                $link = url('node/'.$provider['menu']->nid);
+                if ('node/'.$provider['menu']->nid==$current_path){
+                    $class='active';
+                }
+                else{
+                    $class = '';
                 }
             }
-            $output.='<li class="'.$class.'"><a href="'.$link.'">'.$provider->name.'</a>';
+            $output.='<li class="'.$class.'"><a href="'.$link.'">'.$provider['provider']->name.'</a>';
         }
         $output.= '</ul>';
         return $output;
     }
+}
+function hitsa_catering_check_block_visibility($translated,$not_translated){
+    $query = db_select('block','block');
+    $query -> condition('block.delta','catering_block','=');
+    $query -> condition('block.theme','hitsa','=');
+    $query -> fields('block');
+    $result = $query->execute();
+    $source = $translated.'/*';
+    dpm($source);
+    while($block = $result->fetchAssoc()){
+
+        if (strpos($block['pages'],$source)==FALSE){
+            $block['pages'].= "\n".$source;
+            $update = db_update('block');
+            $update -> condition('bid',$block['bid'],'=');
+            $update -> fields(array(
+                    'pages' => $block['pages'],)
+            );
+            $update->execute();
+        }
+    }
+    return ;
 }
