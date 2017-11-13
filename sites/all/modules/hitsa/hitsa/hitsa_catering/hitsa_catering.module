@@ -88,7 +88,9 @@ function hitsa_catering_node_validate($node, $form, &$form_state) {
         if (!empty($node->field_catering_provider)) {
             if (!empty($node->field_catering_provider['und'][0])) {
                 $catering_provider = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
-                $catering_provder_name = $catering_provider->name;
+                if(!empty($catering_provider)) {
+                    $catering_provder_name = $catering_provider->name;
+                }
             }
         }
         if (!empty($node)) {
@@ -997,7 +999,6 @@ function hitsa_catering_front_page_block(){
     }
     $monday = date('d/m/Y', strtotime('this week monday', $today));
     $sunday = date('d/m/Y', strtotime('this week sunday', $today));
-    if (!empty($foods_selected)) {
         $output .= '<div class="col-6 sm-12">
                   
                   <div class="block block-stretch" data-plugin="tabs">
@@ -1076,6 +1077,6 @@ function hitsa_catering_front_page_block(){
             
                </div>';
         return $output;
-    }
+
 
 }
