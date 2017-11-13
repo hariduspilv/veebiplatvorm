@@ -997,46 +997,46 @@ function hitsa_catering_front_page_block(){
     }
     $monday = date('d/m/Y', strtotime('this week monday', $today));
     $sunday = date('d/m/Y', strtotime('this week sunday', $today));
-    $output.='<div class="col-6 sm-12">
+    if (!empty($foods_selected)) {
+        $output .= '<div class="col-6 sm-12">
                   
                   <div class="block block-stretch" data-plugin="tabs">
-                     <h2 class="block-title">'.t('Catering').'</h2>
+                     <h2 class="block-title">' . t('Catering') . '</h2>
 
                      <div class="row pull-up">
                         <div class="col-12">
-                           <a href="javascript:void(0);" data-target="tab-1" class="link-tab active">'.t('Today').'</a>';
-    if($next_week && !empty($foods_selected_tomorrow)){
-      $output.= '  <a href="javascript:void(0);" data-target="tab-2" class="link-tab">'.t('Next Monday').'</a>';
-    }
-    else{
-        $output.='
-                           <a href="javascript:void(0);" data-target="tab-2" class="link-tab">'.t('Tomorrow').'</a>';
-    }
-    $output.='
+                           <a href="javascript:void(0);" data-target="tab-1" class="link-tab active">' . t('Today') . '</a>';
+        if ($next_week && !empty($foods_selected_tomorrow)) {
+            $output .= '  <a href="javascript:void(0);" data-target="tab-2" class="link-tab">' . t('Next Monday') . '</a>';
+        } else {
+            $output .= '
+                           <a href="javascript:void(0);" data-target="tab-2" class="link-tab">' . t('Tomorrow') . '</a>';
+        }
+        $output .= '
                            
                         </div><!--/col-12-->
                      </div><!--/row-->
 
                      <div data-tab="tab-1" class="active-tab">
                         <div class="row">';
-    $i=0;
-    foreach ($foods_selected as $food){
+        $i = 0;
+        foreach ($foods_selected as $food) {
 
-        $output.=$food;
-        if ($i==0 && count($foods_selected)>1){
-            $output.='<hr>';
+            $output .= $food;
+            if ($i == 0 && count($foods_selected) > 1) {
+                $output .= '<hr>';
+            }
+            $i++;
         }
-        $i++;
-    }
-    $catering_link='';
-    $catering_link = url(t('catering'));
-    $output.='        </div>
+        $catering_link = '';
+        $catering_link = url(t('catering'));
+        $output .= '        </div>
                         <hr>
 
                         <div class="row">
                            <div class="col-12">
                               <div class="align-center">
-                                 <a href="'.$catering_link.'" class="btn btn-filled">'.t('Weekly menu').'</a>
+                                 <a href="' . $catering_link . '" class="btn btn-filled">' . t('Weekly menu') . '</a>
 										</div><!--/align-center-->
                            </div><!--/col-12-->
                         </div><!--/row-->
@@ -1046,28 +1046,27 @@ function hitsa_catering_front_page_block(){
 
                         <div class="row">
                          ';
-    $i=0;
-    foreach ($foods_selected_tomorrow as $food){
+        $i = 0;
+        foreach ($foods_selected_tomorrow as $food) {
 
-        $output.=$food;
-        if ($i==0 && count($foods_selected_tomorrow)>1){
-            $output.='<hr>';
+            $output .= $food;
+            if ($i == 0 && count($foods_selected_tomorrow) > 1) {
+                $output .= '<hr>';
+            }
+            $i++;
         }
-        $i++;
-    }
-    if(!$next_week) {
-        $catering_link_tomorrow = url(t('catering'));
-    }
-    else{
-    }
-    $output.='        
+        if (!$next_week) {
+            $catering_link_tomorrow = url(t('catering'));
+        } else {
+        }
+        $output .= '        
         </div>
                         <hr>
 
                         <div class="row">
                            <div class="col-12">
                               <div class="align-center">
-                                  <a href="'.$catering_link_tomorrow.'" class="btn btn-filled">'.t('Weekly menu').'</a>
+                                  <a href="' . $catering_link_tomorrow . '" class="btn btn-filled">' . t('Weekly menu') . '</a>
 										</div><!--/align-center-->
                            </div><!--/col-12-->
                         </div><!--/row-->
@@ -1076,6 +1075,7 @@ function hitsa_catering_front_page_block(){
                   </div><!--/block-->
             
                </div>';
-    return $output;
+        return $output;
+    }
 
 }
