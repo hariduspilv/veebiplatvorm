@@ -700,9 +700,25 @@ function hitsa_catering_check_block_visibility($translated,$not_translated){
     $result = $query->execute();
     $source = $translated.'/*';
     while($block = $result->fetchAssoc()){
-
+        krumo($translated);
         if (strpos($block['pages'],$source)==FALSE){
             $block['pages'].= "\n".$source;
+            $update = db_update('block');
+            $update -> condition('bid',$block['bid'],'=');
+            $update -> fields(array(
+                    'pages' => $block['pages'],)
+            );
+            $update->execute();
+        }
+        $pages = explode("\n",$block["pages"]);
+        $translated_page = FALSE;
+        foreach ($pages as $page){
+            if ($page==$translated){
+                $translated_page=TRUE;
+            }
+        }
+        if($translated_page==FALSE){
+            $block['pages'] .= "\n".$translated;
             $update = db_update('block');
             $update -> condition('bid',$block['bid'],'=');
             $update -> fields(array(
