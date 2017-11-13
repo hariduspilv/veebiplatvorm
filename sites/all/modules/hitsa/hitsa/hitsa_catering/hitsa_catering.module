@@ -999,6 +999,7 @@ function hitsa_catering_front_page_block(){
     }
     $monday = date('d/m/Y', strtotime('this week monday', $today));
     $sunday = date('d/m/Y', strtotime('this week sunday', $today));
+    if (!empty($foods_selected)||!empty($foods_selected_tomorrow)) {
         $output .= '<div class="col-6 sm-12">
                   
                   <div class="block block-stretch" data-plugin="tabs">
@@ -1076,6 +1077,7 @@ function hitsa_catering_front_page_block(){
                   </div><!--/block-->
             
                </div>';
+    }
         return $output;
 
 
