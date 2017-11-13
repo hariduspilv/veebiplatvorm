@@ -48,36 +48,36 @@ function hitsa_catering_block_info()
  * Implements hook_node_validate().
  */
 function hitsa_catering_node_validate($node, $form, &$form_state) {
-    $catering_provder_name = NULL;
-    if (!empty($node->field_catering_provider)) {
-        if (!empty($node->field_catering_provider['und'][0])) {
-            $catering_provider = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
-            $catering_provder_name = $catering_provider->name;
-        }
-    }
-    if (!empty($node)) {
-        if (is_object($node)) {
-            if (!empty($node->field_date)) {
-                if (!empty($node->field_date['und'][0]['value'])) {
-                    $start_date = $node->field_date['und'][0]['value'];
-                }
+    if($node->type=='catering') {
+        $catering_provder_name = NULL;
+        if (!empty($node->field_catering_provider)) {
+            if (!empty($node->field_catering_provider['und'][0])) {
+                $catering_provider = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
+                $catering_provder_name = $catering_provider->name;
             }
-        } // code...
-    }
-    $monday = date('d/m/Y', strtotime('this week monday', $start_date));
-    $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
-    $alias = t('catering').'/'.$monday.'-'.$sunday;
-    if (!empty($catering_provder_name)){
-        $alias.='/'.$catering_provder_name;
-    }
+        }
+        if (!empty($node)) {
+            if (is_object($node)) {
+                if (!empty($node->field_date)) {
+                    if (!empty($node->field_date['und'][0]['value'])) {
+                        $start_date = $node->field_date['und'][0]['value'];
+                    }
+                }
+            } // code...
+        }
+        $monday = date('d/m/Y', strtotime('this week monday', $start_date));
+        $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
+        $alias = t('catering') . '/' . $monday . '-' . $sunday;
+        if (!empty($catering_provder_name)) {
+            $alias .= '/' . $catering_provder_name;
+        }
         $lookup = drupal_lookup_path('source', $alias, $node->language);
-    dpm($lookup);
-    if ($lookup){
-        if($node->path['alias']!=$alias){
-            form_set_error('field_catering_provider',t('This catering provider has got menu already for this week'));
+        if ($lookup) {
+            if ($node->path['alias'] != $alias) {
+                form_set_error('field_catering_provider', t('This catering provider has got menu already for this week'));
+            }
         }
     }
-      krumo($form);
 //  exit();
 }
 function hitsa_catering_week_page(){

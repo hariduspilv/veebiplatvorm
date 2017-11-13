@@ -272,6 +272,7 @@ function hitsa_curriculum_node_presave($node)
             }
 //            krumo($node);
 //        exit();
+        dpm($node);
         return $node;
     }
 }
