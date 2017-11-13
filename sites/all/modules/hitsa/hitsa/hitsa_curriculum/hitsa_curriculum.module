@@ -306,7 +306,6 @@ function hitsa_curriculum_page($type = null, $name = null)
 
 function hitsa_curriculum_generate_table($table,$descriptions=NULL,$type=NULL)
 {
-    dpm($table);
     $output = '';
     if (!empty($table) && !empty($table['tabledata'])) {
         $output .= '<div class="table_wrapper" data-plugin="responsiveTable">';
@@ -631,8 +630,6 @@ function hitsa_curriculum_custom_block($curriculum_type)
             }
         }
         $left_side = hitsa_curriculum_generate_left_custom_titles($real_content, $type, $active_id);
-        dpm($real_content);
-        dpm($active_id);
         $content = null;
         if (!empty($active_id)) {
             if (!empty($real_content)) {
@@ -875,7 +872,6 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         }
         }
         if (!empty($content->field_subjects_table)) {
-            dpm($content);
             if ($curriculum_type=='subject-field') {
                 $table = $content->field_subjects_table['und'][0];
                 $table_descriptions = array();
