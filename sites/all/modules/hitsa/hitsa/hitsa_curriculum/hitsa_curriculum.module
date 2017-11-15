@@ -581,10 +581,10 @@ function hitsa_curriculum_generate_area_right_side($node)
             $output .= ' <div class="col-9">';
             $output .= ' <article>';
             $output .= '<h3>' . $node->title . '
-            <span class="btn-bar align-right pull-right">
-                <a href="" class="btn-circle before-share"></a>
-                <a href="javascript:window.print();" class="btn-circle before-print"></a>
-            </span><!--/button-row-->
+            <span class="btn-bar align-right pull-right sm-hide">
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="btn-circle before-print"></a>
+                           </span><!--/button-row-->
             </h3>';
 
             $output .= '<div class="intro">';
