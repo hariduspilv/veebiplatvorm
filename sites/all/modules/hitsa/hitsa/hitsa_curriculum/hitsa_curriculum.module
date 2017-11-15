@@ -198,6 +198,49 @@ function hitsa_curriculum_node_insert($node)
     }
 }
 
+function hitsa_curriculum_node_validate($node,$form,&$form_state){
+    krumo($form_state);
+    krumo($form);
+    if (!empty($form_state['values'])){
+        if (!empty($form_state['values']['field_contacts'])){
+            $contacts_values = $form_state['values']['field_contacts']['und'];
+            krumo($contacts_values);
+            unset($contacts_values['add_more']);
+            foreach($contacts_values as $contact_key => $contacts){
+                krumo($contacts);
+                if (!empty($contacts['field_phone_number'])){
+                    $phone_number = $contacts['field_phone_number']['und'][0]['value'];
+                    krumo($phone_number);
+                    if (!empty($phone_number)) {
+//                    $phone_number = '5s33 23117';
+                        if (!preg_match('/^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{1})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/', ($phone_number))) {
+                            form_set_error('field_contacts[und][0][field_phone_number]', t('Entered phone number: ') . $phone_number . t(' is not valid'));
+                        }
+                    }
+                }
+            }
+        }
+        if (!empty($form_state['values']['field_contacts'])){
+            $contacts_values = $form_state['values']['field_contacts']['und'];
+            krumo($contacts_values);
+            unset($contacts_values['add_more']);
+            foreach($contacts_values as $contact_key => $contacts){
+                krumo($contacts);
+                if (!empty($contacts['field_website'])){
+                    $website = $contacts['field_website']['und'][0]['value'];
+                    if (!empty($website)) {
+                        if (filter_var($website, FILTER_VALIDATE_URL)) {
+                        } else {
+                            form_set_error('field_contacts[und][0][field_website]', $website . t(' is not a valid website'));
+                        }
+                    }
+                }
+            }
+        }
+    }
+//    exit();
+}
+
 /**
  * @param $node
  * @return mixed
