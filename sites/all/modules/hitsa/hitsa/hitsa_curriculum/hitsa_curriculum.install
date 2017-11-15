@@ -1110,7 +1110,11 @@ function hitsa_curriculum_delete_custom_paragraphs_fields()
 function hitsa_curriculum_add_custom_node_fields()
 {
     foreach (_hitsa_curriculum_installed_node_fields() as $field) {
-        field_create_field($field);
+
+        $field_test = field_info_field($field['field_name']);
+        if(empty($field_test)) {
+            field_create_field($field);
+        }
     }
 
     foreach (_hitsa_curriculum_installed_node_instances() as $field_instance) {
