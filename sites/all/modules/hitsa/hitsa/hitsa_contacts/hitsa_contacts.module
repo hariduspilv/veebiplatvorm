@@ -96,7 +96,7 @@ function hitsa_contacts_page_view() {
   );
   
   // Add Gmap library
-  drupal_add_js('http://maps.google.com/maps/api/js?sensor=false', 'external');
+  drupal_add_js('https://maps.google.com/maps/api/js?sensor=false', 'external');
   
   return $contact_page;
 }
