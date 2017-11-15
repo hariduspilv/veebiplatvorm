@@ -9,5 +9,7 @@ dependencies[] = media
 dependencies[] = email
 dependencies[] = views
 dependencies[] = webform
+dependencies[] = webform_localization
 dependencies[] = paragraphs
 dependencies[] = entity_translation
+dependencies[] = entityreference_autocreate

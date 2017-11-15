@@ -13,18 +13,18 @@
       
       <form method="post" action="<?php print url('contact'); ?>" data-plugin="filters">
       <div class="row">
-        <div class="col-9">
+        <div class="col-12">
            
           <div class="btn-bar">
             
              <span class="btn-input">
-                <input type="radio" name="category" value="0" checked />
+                <input type="checkbox" name="category" value="all" checked />
                 <span class="btn btn-xs btn-alternate"><?php print t('All'); ?></span>
              </span><!--/btn-input-->
              
              <?php foreach($contact_departments as $delta => $department): ?>
-             <span class="btn-input"<?php if($delta > 2) print ' data-show="hiddenFilter | inlineBlock"'; ?>>
-                <input type="radio" name="category" value="<?php print $department->tid; ?>" />
+             <span class="btn-input"<?php /*if($delta > 2) print ' data-show="hiddenFilter | inlineBlock"';*/ ?>>
+                <input type="checkbox" name="category" value="<?php print $department->tid; ?>" />
                 <span class="btn btn-xs btn-alternate"><?php print check_plain($department->name); ?></span>
              </span><!--/btn-input-->
              <?php endforeach; ?>
@@ -33,9 +33,7 @@
         </div><!--/col-9-->
         
         <div class="col-3">
-        <?php if(count($contact_departments) > 3): ?>
-          <a href="javascript:void(0);" class="cta-link pull-right before-plus" data-toggle="hiddenFilter" data-class="'active' : hiddenFilter"><?php print t('More choices'); ?></a>
-        <?php endif; ?>
+
         </div><!--/col-3-->
         
       </div><!--/row-->

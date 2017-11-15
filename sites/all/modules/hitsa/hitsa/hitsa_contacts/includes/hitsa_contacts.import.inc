@@ -90,14 +90,14 @@ function hitsa_contacts_parse_csv_file($csv_content) {
   $contacts = explode("\n", $csv_content);
   
   foreach($contacts as $c) {
-    $contact = explode('|', $c);
+    $contact = explode("\t", $c);
 
     if(count($contact) !== 10) continue; // Faulty schema, skip contact
     
-    $groups_string = explode(';', $contact[9]);
+    $groups_string = explode('|', $contact[9]);
     $groups = array();
     foreach($groups_string as $g) {
-      $g_parsed = explode(',', $g);
+      $g_parsed = explode(';', $g);
       
       if(count($g_parsed) !== 2) continue; // Faulty schema, skip group
       
@@ -124,7 +124,6 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
     $node->title = "Contact"; // We'll set the actual title using a presave function.
     $node->type = "contact";
     node_object_prepare($node);
-    $node->language = LANGUAGE_NONE;
     $node->uid = $user->uid;
     $node->status = 1;
     // TODO: Should manually added nodes account for missing contact id?*/
@@ -138,8 +137,8 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
   $emw_node->last_name = $contact_array[2]; // Last name
   $emw_node->phone_nr = $contact_array[4]; // Phone Nr.
   $emw_node->e_mail = $contact_array[5]; // E-Mail
-  $emw_node->additional_info = $contact_array[6]; // Additional info
-  $emw_node->reception_times = $contact_array[7]; // Reception times
+  //$emw_node->additional_info = $contact_array[6]; // Additional info
+  $emw_node->reception_times = explode('|', $contact_array[7]); // Reception times
   $emw_node->contact_cv = array('url' => $contact_array[8]); // CV Link
   
   /* Taxonomy input */

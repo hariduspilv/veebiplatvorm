@@ -225,9 +225,15 @@ function _hitsa_contacts_field_instances() {
       'entity_type' => 'node',
       'label' => $t('Job Position'),
       'widget' => array(
-        'type' => 'options_select',
-        'module' => 'options',
+        'type' => 'entityreference_autocomplete',
+        'module' => 'entityreference',
+        'settings' => array(
+          'entityreference_autocreate' => array(
+            'active' => 1,
+          ),
+        ),
       ),
+      'required' => 1,
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -571,9 +577,9 @@ function hitsa_contacts_add_contact_form() {
   
   // Attach the webform to the node.
   $node->webform = array(
-    'confirmation' => '',
+    'confirmation' => "Thank you! We've received your message.",
     'confirmation_format' => NULL,
-    'redirect_url' => '',
+    'redirect_url' => 'contact',
     'status' => '1',
     'block' => '0',
     'teaser' => '0',
@@ -588,6 +594,7 @@ function hitsa_contacts_add_contact_form() {
     'record_exists' => TRUE,
     'roles' => array(
       0 => '1', // Anonymous user can submit this webform.
+      1 => '2',
     ),
     'components' => $components,
   );
@@ -595,6 +602,21 @@ function hitsa_contacts_add_contact_form() {
   // Save the node.
   node_save($node);
   variable_set('hitsa_contacts_contact_us_webform_nid', $node->nid);
+  
+  // Set localization options
+  if(module_exists('webform_localization')) {
+    $webform_localization_options = array(
+      'nid' => $node->nid,
+      'expose_strings' => 1,
+      'sync_components' => 0,
+      'sync_roles' => 0,
+      'sync_emails' => 0,
+      'single_webform' => 0,
+      'webform_properties' => "",
+    );
+  
+    drupal_write_record('webform_localization', $webform_localization_options);
+  }
 }
 
 function hitsa_contacts_delete_contact_form() {
