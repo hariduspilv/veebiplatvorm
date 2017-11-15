@@ -1,6 +1,10 @@
 name = Adminimal
 description = Minimalist administration theme.
 core = 7.x
+
+
+stylesheets[all][] = css/custom.css
+
 scripts[] = js/jRespond.js
 scripts[] = js/adminimal_theme.js
 settings[shortcut_module_link] = 1

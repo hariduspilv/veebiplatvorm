@@ -199,18 +199,27 @@ function hitsa_curriculum_node_insert($node)
 }
 
 function hitsa_curriculum_node_validate($node,$form,&$form_state){
-    krumo($form_state);
-    krumo($form);
     if (!empty($form_state['values'])){
+        if (!empty($form_state['values']['field_school_selections'])){
+            if ($form_state['values']['field_school_selections']['und'][0]['value']=='specialities'){
+                if(!empty($form_state['values']['field_specialitiy_table'])){
+                  $row_to_check = $form_state['values']['field_specialitiy_table']['und'][0]['tablefield']['tabledata']['row_1'];
+                  foreach ($row_to_check as $key => $value){
+                      if ($key!='weight'){
+                          if(empty($value)){
+                              form_set_error('field_specialitiy_table[und][0][tablefield][tabledata][row_1]['.$value.']',t('All table fields need to be filled'));
+                          }
+                      }
+                  }
+                }
+            }
+        }
         if (!empty($form_state['values']['field_contacts'])){
             $contacts_values = $form_state['values']['field_contacts']['und'];
-            krumo($contacts_values);
             unset($contacts_values['add_more']);
             foreach($contacts_values as $contact_key => $contacts){
-                krumo($contacts);
                 if (!empty($contacts['field_phone_number'])){
                     $phone_number = $contacts['field_phone_number']['und'][0]['value'];
-                    krumo($phone_number);
                     if (!empty($phone_number)) {
 //                    $phone_number = '5s33 23117';
                         if (!preg_match('/^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{1})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/', ($phone_number))) {
@@ -222,10 +231,8 @@ function hitsa_curriculum_node_validate($node,$form,&$form_state){
         }
         if (!empty($form_state['values']['field_contacts'])){
             $contacts_values = $form_state['values']['field_contacts']['und'];
-            krumo($contacts_values);
             unset($contacts_values['add_more']);
             foreach($contacts_values as $contact_key => $contacts){
-                krumo($contacts);
                 if (!empty($contacts['field_website'])){
                     $website = $contacts['field_website']['und'][0]['value'];
                     if (!empty($website)) {
@@ -330,7 +337,9 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
                     $form['field_school_selections']['und']['#options'][$options_key] = t($options_value);
                 }
             }
-//            dpm($form)
+
+
+
             return $form;
             break;
     }
@@ -454,7 +463,7 @@ function hitsa_curriculum_attachments($attachments)
         foreach ($attachments as $key => $attachment) {
             $attachment_url = file_create_url($attachment['uri']);
             $output .= '<a class="link-circle" href="' . $attachment_url . '">';
-            $output .= '<span class="before-envelope"></span>';
+            $output .= '<span class="before-document"></span>';
             $output .= $attachment['filename'];
             $output .= '</a><!--/link-circle-->';
         }
