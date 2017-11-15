@@ -3095,7 +3095,22 @@ function _hitsa_curriculum_installed_node_instances(){
 function hitsa_curriculum_delete_custom_node_fields()
 {
     foreach (array_keys(_hitsa_curriculum_installed_node_fields()) as $field) {
-        field_delete_field($field);
+        $fieldd = field_info_field($field);
+        if (!empty($fieldd)){
+            if (!empty($fieldd['bundles'])){
+                if (!empty($fieldd['bundles']['node'])){
+                    if (count($fieldd['bundles']['node'])>1){
+
+                    }
+                    elseif (count($fieldd['bundles']['node'])==1){
+                        field_delete_field($fieldd['field_name']);
+                    }
+                }
+            }
+        }
+        else {
+            field_delete_field($field);
+        }
     }
     $instances = field_info_instances('node', 'curriculum');
     foreach ($instances as $instance_name => $field_instance) {
