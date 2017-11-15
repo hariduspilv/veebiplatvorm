@@ -83,7 +83,7 @@ function hitsa_contacts_page_view() {
       'contact_departments' => $contact_departments,
       )
   );
-
+  
   $contact_page = theme('contacts_page',
     array(
       'contact_accordion' => $contact_accordion,
@@ -94,6 +94,10 @@ function hitsa_contacts_page_view() {
       'locations' => isset($locations) ? $locations : NULL,
       )
   );
+  
+  // Add Gmap library
+  drupal_add_js('http://maps.google.com/maps/api/js?sensor=false', 'external');
+  
   return $contact_page;
 }
 
@@ -137,6 +141,16 @@ function hitsa_contacts_filter() {
 
   $nodes_grouped = _hitsa_contacts_group_by_department($nodes);
   
+  if(!empty($parameters['category']) && $parameters['category'] !== 'all') {
+    // Filter out extra departments
+    $filter_departments = array_flip(explode(',', $parameters['category']));
+    
+    foreach($nodes_grouped as $d_tid => $nodes) {
+      if(!isset($filter_departments[$d_tid])) {
+        unset($nodes_grouped[$d_tid]);
+      }
+    }
+  }
   $contact_accordion = theme('contacts_page_accordion',
     array(
       'nodes' => $nodes_grouped,
@@ -194,7 +208,7 @@ function _hitsa_contacts_set_query_parameters($query = array()) {
     );
   }
   
-  if(!empty($query['category'])) {
+  if(!empty($query['category']) && $query['category'] !== 'all') {
     $departments = explode(',', $query['category']);
 
     // Subquery
@@ -219,7 +233,7 @@ function _hitsa_contacts_set_query_parameters($query = array()) {
     }
     
   }
-  
+
   return $parameters;
 }
 
@@ -249,7 +263,11 @@ function _hitsa_contacts_group_by_department($nids_array) {
         $node_departments = $node->contact_departments[LANGUAGE_NONE];
         foreach($node_departments as $d) {
           $department_node_value = $contact_department_node_values[$d['value']];
-          $nodes_grouped[$department_node_value->department_tid][$department_node_value->weight] = node_view($node);
+          $weight = $department_node_value->weight;
+          while(isset($nodes_grouped[$department_node_value->department_tid][$weight])) {
+            $weight++; // Avoid duplicate weights
+          }
+          $nodes_grouped[$department_node_value->department_tid][$weight] = node_view($node);
         }
       }
     }
@@ -258,7 +276,6 @@ function _hitsa_contacts_group_by_department($nids_array) {
       ksort($group);
     }
   }
-  
   return $nodes_grouped;
 }
 
@@ -286,13 +303,14 @@ function contact_form($node, $form_state) {
  */
 function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
   global $language;
+  global $user;
   
   switch($form_id) {
     case 'contact_node_form':
       // We'll set the title using first+last name.
       $form['title']['#access'] = FALSE;
       // Import ID is for internal use only.
-      if(isset($form['contact_id'])) {
+      if(isset($form['contact_id']) && $user->uid !== '1') {
         $form['contact_id']['#access'] = FALSE;
       }
       drupal_add_css('.date-year, .date-spacer {display: none;}', 'inline'); // Hide the year select field, we won't use it.
