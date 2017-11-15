@@ -140,12 +140,21 @@
                         
           </div><!--/accordion-content-->
         </div><!--/accordion-entry-->
-                  
+        
+        <?php if(!empty($location->location_coordinates)): ?>
         <div class="accordion-entry">
           <div class="accordion-title"><?php print t('Map'); ?></div>
           <div class="accordion-content">
+            <div class="map-wrapper">
+							<div class="map" data-plugin="googleMaps" data-coords="<?php 
+							sprintf('%s,%s', $location->location_coordinates[LANGUAGE_NONE][0]['lat'], 
+							$location->location_coordinates[LANGUAGE_NONE][0]['lng']); ?>" 
+							data-icon="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/mapIcon.png'; ?>" data-zoom="15"></div>
+							<img src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>">
+						</div>
           </div><!--/accordion-content-->
         </div><!--/accordion-entry-->
+        <?php endif; ?>
         
         <?php if(!empty($location->location_parking)): ?>
         <div class="accordion-entry">
