@@ -42,7 +42,7 @@ function hitsa_curriculum_create_node()
 
     $types = array(
         array(
-            'name' => t('Curriculum'),
+            'name' => t('Tabbed content page'),
             'base' => 'node_content',
             'description' => '',
             'type' => 'curriculum',
