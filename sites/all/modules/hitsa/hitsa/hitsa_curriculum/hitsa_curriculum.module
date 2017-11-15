@@ -825,16 +825,16 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     $output .= '
     <h3 class="sm-block-title">' . $content->title . '
        <span class="btn-bar align-right pull-right sm-hide">
-          <a href="" class="btn-circle before-share"></a>
-          <a href="javascript:window.print();" class="btn-circle before-print"></a>
-       </span><!--/button-row-->
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="btn-circle before-print"></a>
+                           </span><!--/button-row-->
     </h3>';
     if (!empty($content->field_speciality_description)) {
         $output_elements['speciality_description'] = '<h5 class="sm-alignment">' . $content->field_speciality_description['und'][0]['value'] . '
        <span class="btn-bar align-right pull-right sm-show">
-          <a href="" class="btn-circle before-share"></a>
-          <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-       </span><!--/button-row-->
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                           </span><!--/button-row-->
     </h5>';
     }
     if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses'||$curriculum_type=='hobby-groups'||$curriculum_type=='hobby-activity'||$curriculum_type=='e-course') {
