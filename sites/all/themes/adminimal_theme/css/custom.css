@@ -22,3 +22,12 @@
 .field-name-field-subjects-table .form-item-field-subjects-table-und-0-tablefield-caption{
     display: none;
 }
+.page-admin-structure-taxonomy-catering-provider  .text-format-wrapper{
+    display: none ;
+}
+.page-admin-structure-taxonomy-catering-provider #edit-relations{
+    display: none ;
+}
+.page-admin-structure-taxonomy-catering-provider #edit-path{
+    display: none ;
+}
