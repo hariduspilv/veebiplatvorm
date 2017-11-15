@@ -147,7 +147,7 @@
           <div class="accordion-content">
             <div class="map-wrapper">
 							<div class="map" data-plugin="googleMaps" data-coords="<?php 
-							sprintf('%s,%s', $location->location_coordinates[LANGUAGE_NONE][0]['lat'], 
+							print sprintf('%s,%s', $location->location_coordinates[LANGUAGE_NONE][0]['lat'], 
 							$location->location_coordinates[LANGUAGE_NONE][0]['lng']); ?>" 
 							data-icon="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/mapIcon.png'; ?>" data-zoom="15"></div>
 							<img src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>">
