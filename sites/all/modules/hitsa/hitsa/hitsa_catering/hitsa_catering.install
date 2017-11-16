@@ -1513,7 +1513,7 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
 
 function hitsa_catering_delete_vocabulary_fields(){
   foreach (array_keys(hitsa_catering_add_custom_taxonomy_field_base()) as $field) {
-      field_delete_field($field);
+//      field_delete_field($field);
     }
     $instances = field_info_instances('taxonomy_term', 'catering_provider');
     foreach ($instances as $instance_name => $field_instance) {

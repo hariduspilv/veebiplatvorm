@@ -1092,7 +1092,9 @@ function hitsa_curriculum_delete_custom_paragraphs_fields()
 {
 
     foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field_key => $field) {
-        field_delete_field($field_key);
+
+        $field_info = field_info_field($field_key);
+//        field_delete_field($field_key);
     }
     $instances = field_info_instances('paragraphs_item', 'contacts');
     foreach ($instances as $instance_name => $field_instance) {
