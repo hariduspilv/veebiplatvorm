@@ -829,8 +829,8 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                               <a href="javascript:window.print();" class="btn-circle before-print"></a>
                            </span><!--/button-row-->
     </h3>';
-    if (!empty($content->field_speciality_description)) {
-        $output_elements['speciality_description'] = '<h5 class="sm-alignment">' . $content->field_speciality_description['und'][0]['value'] . '
+    if (!empty($content->field_table_description)) {
+        $output_elements['table_description'] = '<h5 class="sm-alignment">' . $content->field_table_description['und'][0]['value'] . '
        <span class="btn-bar align-right pull-right sm-show">
                               <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
                               <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
@@ -1013,8 +1013,8 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     }
                 }
                 if ($curriculum_type=='specialities'){
-                    if (!empty($output_elements['speciality_description'])){
-                        $output.=$output_elements['speciality_description'];
+                    if (!empty($output_elements['table_description'])){
+                        $output.=$output_elements['table_description'];
                     }
                     if(!empty($output_elements['table'])){
                         $output.=$output_elements['table'];
@@ -1040,6 +1040,9 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                         $output.=$output_elements['body_element'];
                     }
 
+                    if (!empty($output_elements['table_description'])){
+                        $output.=$output_elements['table_description'];
+                    }
                     if(!empty($output_elements['table'])){
                         $output.=$output_elements['table'];
                     }

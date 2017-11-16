@@ -1533,26 +1533,7 @@ function _hitsa_curriculum_installed_node_fields(){
         'type' => 'tablefield',
     );
 
-    // Exported field_base: 'field_speciality_description'.
-    $field_bases['field_speciality_description'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_speciality_description',
-        'indexes' => array(
-            'format' => array(
-                0 => 'format',
-            ),
-        ),
-        'locked' => 0,
-        'module' => 'text',
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-        ),
-        'translatable' => 0,
-        'type' => 'text_long',
-    );
+    
 
     // Exported field_base: 'field_subjects_table'.
     $field_bases['field_subjects_table'] = array(
@@ -2564,46 +2545,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
     );
 
-    // Exported field_instance: 'node-curriculum-field_speciality_description'.
-    $field_instances['node-curriculum-field_speciality_description'] = array(
-        'bundle' => 'curriculum',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'text',
-                'settings' => array(),
-                'type' => 'text_default',
-                'weight' => 8,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'field_speciality_description',
-        'label' => 'Speciality description',
-        'required' => 0,
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'text_processing' => 0,
-            'user_register_form' => FALSE,
-        ),
-        'widget' => array(
-            'active' => 1,
-            'module' => 'text',
-            'settings' => array(
-                'rows' => 5,
-            ),
-            'type' => 'text_textarea',
-            'weight' => 12,
-        ),
-    );
+
 
     // Exported field_instance: 'node-curriculum-field_subjects_table'.
     $field_instances['node-curriculum-field_subjects_table'] = array(
