@@ -456,6 +456,7 @@ function hitsa_catering_week($start_date = null)
             $catering_html = hitsa_catering_provider_html($catering_provider);
         }
     }
+    $catering_header = hitsa_curriculum_catering_header($loaded_menu);
     $catering_table = hitsa_catering_paragraphs__create_table($loaded_menu);
     if (!empty($catering_table)) {
         $build['catering']['#prefix'] = '
@@ -468,7 +469,7 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['#suffix'] = '</div> </div><!--/block-->';
         $build['catering']['#type'] = 'container';
         $build['catering']['#theme_wrappers'] = array();
-        $build['catering']['catering_table']['#markup'] = $catering_table.$catering_html;
+        $build['catering']['catering_table']['#markup'] = $catering_header.$catering_table.$catering_html;
     }
     return $build;
 }
@@ -1122,5 +1123,41 @@ function hitsa_catering_pictures_generator($pictures){
         $output.='
                         </div><!--/row-->';
     }
+    return $output;
+}
+function hitsa_curriculum_catering_header($content){
+    $catering_provider_name='';
+    if (!empty($content)){
+        if (!empty($content->field_catering_provider)){
+            if (!empty($content->field_catering_provider['und'][0]['entity']->field_catering_provider_big_name)) {
+                $catering_provider_name = $content->field_catering_provider['und'][0]['entity']->field_catering_provider_big_name['und'][0]['value'];
+            }
+
+        }
+    }
+    if (!empty($content->field_date)){
+        $date_start = $content->field_date['und'][0]['value'];
+        $monday = format_date(strtotime('monday midnight',$date_start),'custom','d.F');
+        $sunday = format_date(strtotime('sunday midnight',$date_start),'custom','d.F');
+        $week_text = t('Menu week').' '.$monday.'-'.$sunday;
+    }
+    $output = '';
+    $output.='<h3 class="sm-block-title">'.$catering_provider_name;
+    $output.='<span class="btn-bar align-right pull-right sm-hide">';
+    $output.='                         <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
+    $output.='                          <a href="javascript:window.print();" class="btn-circle before-print"></a>';
+    $output.='                       </span><!--/button-row-->';
+    $output.='                    </h3>';
+    $output.='';
+    $output.='                    ';
+    $output.='                    <h5 class="sm-alignment">';
+    if (!empty($week_text)){
+        $output.=$week_text;
+    }
+    $output.='<span class="btn-bar align-right pull-right sm-show">';
+    $output.='                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
+    $output.='                          <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>';
+    $output.='                       </span><!--/button-row-->';
+    $output.='                    </h5>';
     return $output;
 }
