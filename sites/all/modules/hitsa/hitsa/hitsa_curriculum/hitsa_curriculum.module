@@ -479,12 +479,12 @@ function hitsa_curriculum_pictures($pictures)
         $output .= '<div class="row">';
         foreach ($pictures as $key => $picture) {
             $picture_text = '';
-            $image_style = 'large';
+            $image_style = 'hc_pictures';
             $image_url = image_style_url($image_style, $picture['uri']);
             if (!empty($picture['field_file_image_title_text'])) {
                 $picture_text = $picture['field_file_image_title_text']['und'][0]['value'];
             }
-            $output .= '  <div class="col-5">';
+            $output .= '  <div class="col-6 sm-12">';
             $output .= '  <figure>';
             $output .= '    <img src="' . $image_url . '" alt="">';
             $output .= '    <figcaption>' . $picture_text . '</figcaption>';
@@ -1086,7 +1086,7 @@ function hitsa_curriculum_generate_header($header)
 {
     if (!empty($header->cp_image)) {
         $image = $header->cp_image['und'][0];
-        $image_style = 'large';
+        $image_style = 'hc_pictures';
         $image_url = image_style_url($image_style, $image['uri']);
         $picture_text = '';
         if (!empty($image['field_file_image_title_text'])) {
@@ -1212,7 +1212,7 @@ function hitsa_curriculum_fp_subject_fields()
             $image_url = '';
             if (!empty($loaded_speciality->field_pictures)) {
                 $picture = $loaded_speciality->field_pictures['und'][0];
-                $image_style = 'large';
+                $image_style = 'hc_pictures';
                 $image_url = image_style_url($image_style, $picture['uri']);
             
                 $term = taxonomy_term_load($taxonomy_value->tid);
@@ -1321,7 +1321,7 @@ function hitsa_curriculu_fp_mobile_fields()
             $image_url = '';
             if (!empty($loaded_speciality->field_pictures)) {
                 $picture = $loaded_speciality->field_pictures['und'][0];
-                $image_style = 'large';
+                $image_style = 'hc_pictures';
                 $image_url = image_style_url($image_style, $picture['uri']);
             }
             if (!empty($loaded_speciality)) {
@@ -1404,4 +1404,29 @@ function hitsa_curriculum_check_block_visibility($source,$selection){
         }
     }
     return ;
+}
+function hitsa_curriculum_image_default_styles(){
+    $styles = array();
+    $styles['hc_pictures'] = array(
+        'effects' => array(
+            array(
+                'name' => 'image_scale',
+                'data' => array(
+                    'height' => 440,
+                    'upscale' => 1,
+                ),
+                'weight' => 0,
+            ),
+            array(
+                'name' => 'image_crop',
+                'data' => array(
+                    'width' => 780,
+                    'height' => 440,
+                ),
+                'weight' => 1,
+            ),
+        ),
+    );
+
+    return $styles;
 }
