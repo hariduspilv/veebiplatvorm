@@ -1,0 +1,25 @@
+Localize Fields 7.x-1.2
+
+
+Main issues
+-----------
+Multiple value (cardinality != 1) field instances' labels weren't translated
+(unless the parent entity was a field collection).
+
+
+New features
+------------
+None.
+
+Bug fixes
+---------
+- Fixed that translation didn't work for multiple value'd field instances
+  attached directly to a node; not nested in field collection (issue #2423065).
+
+Security
+--------
+None.
+
+Update notes
+------------
+- Clear cache.

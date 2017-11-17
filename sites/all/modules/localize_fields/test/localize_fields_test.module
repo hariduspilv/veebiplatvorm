@@ -1,0 +1,35 @@
+<?php
+/**
+ * @file
+ * Code for the Localize Fields test feature.
+ */
+
+include_once 'localize_fields_test.features.inc';
+
+/**
+ * Implements hook_help().
+ */
+function localize_fields_test_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#localize_fields_test':
+      return '<h3>' . t('About') . '</h3>'
+      . '<p>'
+      . t(
+        'Localize Fields Test is a Features module which provides a content type for testing field label etc. translation for various field types and widgets, via \'!add_content\' -> \'Localize Fields test\'.!nlIt also adds a taxonomy \'lclzflds\', and a role \'localize_fields_test_editor\'.!_para!paraThe module tests translation from English (en) to Danish (da), thus:!ul!lilanguages English (en) and Danish (da) must be installed and enabled !em(and will be when enabling the module, if missing/disabled)!_em!_li!lithe content type\'s fields have been created - and may be edited - by a user whose language is English (en)!_li!litest user language must be Danish (da)!_li!_ul',
+        array('!para' => '<p>', '!_para' => '</p>', '!nl' => '<br>', '!em' => '<em>', '!_em' => '</em>', '!ul' => '<ul>', '!_ul' => '</ul>', '!li' => '<li>', '!_li' => '</li>', '!add_content' => t('Add content')), array('context' => 'module:localize_fields')
+      )
+      . '</p>';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @param array $form
+ * @param array $form_state
+ */
+function localize_fields_test_form_localize_fields_test_node_form_alter(&$form, &$form_state) {
+  // Attach styles and behaviours.
+  $form['#attached']['css'][] = drupal_get_path('module', 'localize_fields_test') . '/css/localize_fields_test.nodeform.css';
+  $form['#attached']['js'][] = drupal_get_path('module', 'localize_fields_test') . '/js/localize_fields_test.nodeform.js';
+}

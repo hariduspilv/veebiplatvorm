@@ -1,0 +1,277 @@
+localize_fields 7.x-1.x, 2016-05-05
+-----------------------------------
+- Doesn’t translate the Body field label in display mode (issue #2543718 fixed
+  by PascalAnimateur).
+- Fixed critical issue introduced by adding support for the Features Translation
+  module (issue #254397).
+- Release 7.x-1.6.
+
+localize_fields 7.x-1.x, 2016-05-01
+-----------------------------------
+- Don't attempt to translate in field view if bundle cannot be determined;
+  seen in a Views instance (issue #2633546).
+- Translate 'Add another item' button label (issue #2626664).
+- Support import/export via the Features Translation module (issue #2543974
+  fixed by rafa3l).
+- Release 7.x-1.5.
+
+localize_fields 7.x-1.x, 2015-12-01
+-----------------------------------
+- Fixed that a field whose name doesn't start with 'field_' weren't translatable
+  in display mode (issue #2543718).
+
+localize_fields 7.x-1.x, 2015-08-27
+-----------------------------------
+- Added 'Body' field - 'Long text and summary' type - to the test features
+  module.
+- Fixed that drush localize-fields saw in-site paths as outside on Windows.
+
+localize_fields 7.x-1.x, 2015-06-28
+-----------------------------------
+- Release 7.x-1.4.
+
+localize_fields 7.x-1.x, 2015-06-27
+-----------------------------------
+- The test Features module no longer depends on, nor configures, languages,
+  because that spells conflicts. Instead the languages en and da get installed
+  or enabled (if missing|disabled) programmatically when the test module gets
+  enabled (issue #2511174).
+- Removed non-contextual translations from the test module's .po file.
+- Improved help sections.
+
+localize_fields 7.x-1.x, 2015-06-20
+-----------------------------------
+- The drush localize-fields script now also supports relative path argument when
+  the command is executed in a dir _below_ document root.
+- The test module now installs and uses taxonomy vocabulary 'lclzflds' instead
+  of 'tags', to prevent collision with any pre-existing vocabulary.
+
+localize_fields 7.x-1.x, 2015-04-02
+-----------------------------------
+- Field view now translates multi-value'd field collection's description.
+- Field view now attempts to get entity type and bundle from context before
+  output; fixes issue #2377555.
+- Test module now doesn't use tokens in descriptions of multi-value'd fields,
+  because that will hardly work in combination with future token module version.
+- Release 7.x-1.3.
+
+localize_fields 7.x-1.x, 2015-04-01
+-----------------------------------
+- form_alter finally gone; the preprocess_field_multiple_value_form now gets
+  entity type and bundle (for troublesome field collections) from a couple of
+  static vars set by the widget alter.
+- The drush script now allows for removing empty translations from database even
+  in contextual mode.
+
+localize_fields 7.x-1.x, 2015-03-31
+-----------------------------------
+- The form_alter finally reduced to only handle field_collection and unknown
+  field type, having cardinality != 1.
+- The field_widget_form_alter now receives $context by reference, and updates
+  label and description to secure that they are translated when other module's
+  ditto hook implementations start their work (also fixes Token issue #2454381).
+- Fixed translation of validation errors of fields attached directly to a node
+  (rather: not a field_collection). The hook_field_attach_validate()
+  implementation failed to establish bundle name correctly.
+- Check/escape translated strings when setting them directy on $element props.
+- Moved the UI module out of module folder.
+
+localize_fields 7.x-1.x, 2015-03-30
+-----------------------------------
+- Test node type; a Features module.
+- Added dedicated support for image type; simply a subset of file.
+- Fixed that single row file/image description translation wasn't contextual.
+- Added support for taxonomy_term_reference; like text field.
+- Fixed translation of label of boolean list on-value as label.
+
+localize_fields 7.x-1.x, 2015-03-29
+-----------------------------------
+- Fixed issue #2423065 some more.
+- Moved hook_preprocess_field_multiple_value_form() implementation to make the
+  sequence of invocations visually apparant.
+- Don't make type-safe (!== '') evaluations of labels and descriptions;
+  core doesn't do that, and '0' should probably not be translated anyway.
+
+localize_fields 7.x-1.x, 2015-03-10
+-----------------------------------
+- Fixed that translation didn't work for multiple value'd field instances
+  attached directly to a node; not nested in field collection (issue #2423065).
+- Release 7.x-1.2.
+
+localize_fields 7.x-1.x, 2015-01-22
+-----------------------------------
+* Release 7.x-1.1.
+
+localize_fields 7.x-1.x, 2014-12-14
+-----------------------------------
+* UI shan't support 'allowed_values' translation for any other list types than the simple core list types (list_boolean, list_text, list_integer, list_decimal, list_float) (issue #2378337).
+* Use global language, not user language (issue #2384655).
+
+localize_fields 7.x-1.x, 2014-11-19
+-----------------------------------
+* Abort field view translation if non-standard field type which misses the #bundle bucket (issue #2377555).
+
+localize_fields 7.x-1.x, 2014-06-09
+-----------------------------------
+* Prepared for release.
+
+localize_fields 7.x-1.x, 2014-05-29
+-----------------------------------
+* Fixed that exception thrown in batch callback wasn't being traced (inspect).
+* Fixed field args for insert in batch callback was utterly wrong.
+* Added batch results 'failed' flag, to be able to tell the batch finished function if there was an error (other than the PHP errors that batch API listens to).
+* Log batch translation copying to watchdog.
+
+localize_fields 7.x-1.x, 2014-05-26
+-----------------------------------
+* t() options cannot be a variable ;-).
+* Translation of _NOT_TRANSLATED_ must have dedicated context.
+* Removed drush script's alias; wasn't renamed, and we don't want collisions anyway.
+
+localize_fields 7.x-1.x, 2014-05-25
+-----------------------------------
+* Renamed the module, to localize_fields from features_localize_fields.
+
+features_localize_fields 7.x-1.x, 2014-05-25
+--------------------------------------------
+* Copy translations from/to i18n_field.
+* Removed copyright notice.
+* Clear translation cache of all languages upon copying.
+
+features_localize_fields 7.x-1.x, 2014-05-24
+--------------------------------------------
+* Make i18n_field's module weight less than ours, because things break if i18n_field translates after we do.
+
+features_localize_fields 7.x-1.x, 2014-05-23
+--------------------------------------------
+* Sometimes single row instances have the same structure as any/multiple row instance. Thus the instance wrapper MUST be translated (disregarding cardinality).
+* Added context() method, and removed ..._translate function.
+
+features_localize_fields 7.x-1.x, 2014-05-14
+--------------------------------------------
+* Enable this modules' UI sub module if this module and the field_ui module are enabled (unless variable 'features_localize_fields_noautoenableui' set).
+
+features_localize_fields 7.x-1.x, 2014-05-13
+--------------------------------------------
+* Locale cache clearing, to prevent outdate 'ghost' translations.
+* Logging/message display now configurable (defaults to log, no display).
+* Fixed naming (..._ui) in the _ui module.
+
+features_localize_fields 7.x-1.x, 2014-05-12
+--------------------------------------------
+* Module weight -100.
+
+features_localize_fields 7.x-1.x, 2014-05-11
+--------------------------------------------
+* UI done.
+* UI sub module'd.
+* Context setting now defaults to 'context + non-context fallback', because that makes the transition within an existing site painless; and otherwise few people will ever stumble upon and experience the benefits of using context.
+* Module weight -1: get the field_widget_form_alter and form_alter invoked before other form_alters.
+* Warn about i18n_field incompatibility.
+* Added (commented out) skeleton implementations of hook_field_attach_rename_bundle(), hook_field_attach_delete_bundle(), hook_field_delete().
+
+features_localize_fields 7.x-1.x, 2014-05-04
+--------------------------------------------
+* Now uses internationalization context for the module's own translatable labels and messages.
+* Implemented UI field instance translation.
+* Fixed allowed_values_no_localization UI.
+
+features_localize_fields 7.x-1.x, 2014-05-02
+--------------------------------------------
+* Fixed double slash path bug in the drush script.
+
+features_localize_fields 7.x-1.x, 2014-04-30
+--------------------------------------------
+* Clear fields' data memorized for the form_alter upon (first) use.
+* Updated develop by feature/translation-gui to get coding standards changes applied.
+* Fixed that UI translation fields shan't get saved to database field_config/field_config_instance.
+
+features_localize_fields 7.x-1.x, 2014-04-28
+--------------------------------------------
+* Context/non-context values reversed and now defined as class constants.
+* Renamed methods to camelCased to conform with coding standards; despite underscored names for proxied hooked implementations are more easily identified as such.
+* Removed underscore prefix from protected class attributes.
+* Created UI class.
+
+features_localize_fields 7.x-1.x, 2014-04-26
+--------------------------------------------
+* Translate list type fields' options settings too.
+* Added public translate method+function.
+
+features_localize_fields 7.x-1.x, 2014-04-20
+--------------------------------------------
+* Don't translate list options in view, if field setting 'allowed_values_no_localization'.
+
+features_localize_fields 7.x-1.x, 2014-04-18
+--------------------------------------------
+* Doesn't depend on Features; there are two config menu items (effectively leading to the same page), one requiring a Locale permission and another requiring a Features permission.
+
+features_localize_fields 7.x-1.x, 2014-04-17
+--------------------------------------------
+* Changed context delimiter pattern to field_instance:[bundle]-[field namd]:[label name], from field_instance-[bundle]-[field namd]-[label name].
+* Fixed context pattern error in the view method.
+* Much better conversion to-from context. No context: optional --removeempty option which removes possible overshadowing empty translations.
+  Use context: don't clone empty translations, and _prefer_ cloning from a non-context translation (don't require it).
+
+features_localize_fields 7.x-1.x, 2014-04-16
+--------------------------------------------
+* Less options for drush script.
+
+features_localize_fields 7.x-1.x, 2014-04-15
+--------------------------------------------
+* The drush script now works in database too; fixing context when not in 'use context' mode, and a adding sources and targets when in 'use context' mode.
+* Implemented 'allowed_values_no_localization' setting for list fields, usable when in it isn't desirable to get long select option lists translated.
+* Don't use textgroup (Oops), and don't update location when no context mode and clearing context in db sources.
+
+features_localize_fields 7.x-1.x, 2014-04-14
+--------------------------------------------
+* Fixed typo in scripts that establishes quote encoding.
+
+features_localize_fields 7.x-1.x, 2014-04-13
+--------------------------------------------
+* All fields having #element_validate must be pre validated, not only date.
+* Translation context/no-context/fallback done.
+* Now reuses translations as much as possible.
+
+features_localize_fields 7.x-1.x, 2014-04-09
+--------------------------------------------
+* Release 7.x-1.1.
+
+features_localize_fields 7.x-1.x, 2014-04-08
+--------------------------------------------
+* Allow 1000 options in lists.
+* Doesn't depend on the Features module.
+
+features_localize_fields 7.x-1.x, 2014-04-07
+--------------------------------------------
+* Translate #title in element root too, when element has value.#title.
+* Removed UTF-8 arg for get_html_translation_table() because that third parameter triggers warning in PHP<5.3.4 (and character set doesn't matter for our use).
+* Fixed encoding error; get_html_translation_table() cannot be trusted for old PHP versions and using check_plain() is less error prone anyway.
+* Markup cannot be encoded.
+* Removed fix for dysfunctional translation of date_select errors (via Javascript), because not needed with Date 7.x-2.7+.
+* Fixed translation of error messages created by hook_field_validate() implmentations (like the Number field module).
+
+features_localize_fields 7.x-1.x, 2014-04-06
+--------------------------------------------
+* Fixed that labels may be encoded (single and double quotes only) and thus don't correspond to translation sources.
+* Released 7.x-1.1-date-7.x-2.6.
+
+features_localize_fields 7.x-1.x, 2014-04-05
+--------------------------------------------
+* Fixed Date translation. NB: not tested with Date 7.x-2.7.
+
+features_localize_fields 7.x-1.x, 2014-04-04
+--------------------------------------------
+* Fixed translation of multiple/any cardinality file instances (because the labels on instances are used by core field validation).
+
+features_localize_fields 7.x-1.x, 2014-04-01
+--------------------------------------------
+* Release 7.x-1.0.
+
+features_localize_fields 7.x-1.x, 2014-03-30
+--------------------------------------------
+* Translate field view.
+
+features_localize_fields 7.x-1.x, 2014-03-29
+--------------------------------------------
+* Project started.

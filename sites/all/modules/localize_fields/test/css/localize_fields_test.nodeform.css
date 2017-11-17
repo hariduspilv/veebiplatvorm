@@ -1,0 +1,11 @@
+/**
+ * @file
+ * Localize Fields test styles.
+ */
+
+span.localize-fields-test {
+  display: inline;
+  font-size: inherit;
+  font-weight: bold;
+  color: red;
+}

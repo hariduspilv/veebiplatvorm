@@ -1,0 +1,39 @@
+Localize Fields 7.x-1.3
+
+
+Main issues
+-----------
+Lots of bug fixes, and far simpler and more future-proof algo.
+Better compatibility with the Token module, and with custom entity and field
+types.
+Security - previously didn't check/escape translations.
+
+
+New features
+------------
+- Better performance; form_alter eradicated completely.
+- The field_widget_form_alter now receives $context by reference, and updates
+  label and description to secure that they are translated when other module's
+  ditto hook implementations start their work (also fixes Token issue #2454381).
+  This new behaviour may be turned off on settings page (or set conf. var
+  localize_fields_tentative) - but then Token compatibility will suffer.
+- The drush script now allows for removing empty translations from database even
+  in contextual mode.
+- Test node type; a Features module.
+
+Bug fixes
+---------
+- Fixed translation of validation errors of fields attached directly to a node
+  (rather: not a field_collection).
+- Field view now translates multi-value'd field collection's description.
+- Fixed that single row file/image description translation wasn't contextual.
+- Field view now attempts to get entity type and bundle from context before
+  output; fixes issue #2377555.
+
+Security
+--------
+- Check/escape translated strings when setting them directy on $element props.
+
+Update notes
+------------
+- Clear cache.

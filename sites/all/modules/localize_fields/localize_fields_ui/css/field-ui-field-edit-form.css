@@ -1,0 +1,16 @@
+
+fieldset.localize-fields-ui div.fieldset-legend a.fieldset-title {
+  text-transform: none;
+}
+
+div.form-item-field-settings-allowed-values-no-localization label {
+  font-weight: bold;
+}
+
+fieldset.localize-fields-ui div.fieldset-wrapper:after {
+  /*clearfix*/clear:both;content:".";display:block;height:0;visibility:hidden;font-size:0;
+}
+fieldset.localize-fields-ui div.fieldset-wrapper > div.form-item {
+  float: left;
+  margin-right: 2em;
+}

@@ -1,0 +1,31 @@
+Localize Fields 7.x-1.5
+
+
+Main issues
+-----------
+Bug fixes and two new features.
+
+
+New features
+------------
+- Translate 'Add another item' button label.
+- Support import/export via the Features Translation module (issue #2543974
+  fixed by rafa3l).
+
+Bug fixes
+---------
+- Don't attempt to translate in field view if bundle cannot be determined;
+  seen in a Views instance (issue #2633546).
+- Fixed that a field whose name doesn't start with 'field_' weren't translatable
+  in display mode (issue #2543718).
+- Fixed that drush localize-fields saw in-site paths as outside on Windows.
+
+Security
+--------
+None.
+
+Update notes
+------------
+- Clear cache.
+- If the localize_fields_test is enabled: disable and re-enable it, and then
+  features revert it.

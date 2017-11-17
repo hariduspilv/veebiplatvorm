@@ -1,0 +1,80 @@
+<?php
+/**
+ * @file
+ *  Drupal Localize Fields Test module.
+ */
+
+
+/**
+ * Adds/enables languages English and Danish, and imports this module's .po.
+ *
+ * Implements hook_enable().
+ */
+function localize_fields_test_enable() {
+  $t = get_t();
+  $drush = drupal_is_cli();
+
+  // Install|enable languages en and da, if not installed|enabled.
+  $languages = language_list();
+  $required = array('en', 'da');
+  foreach ($required as $langcode) {
+    if (!isset($languages[$langcode])) {
+      locale_add_language($langcode, NULL, NULL, LANGUAGE_LTR, '', '', TRUE, FALSE);
+      $msg = $t('Installed and enabled language !title (!langcode).', array('!langcode' => 'en', '!title' => 'English'));
+      if ($drush) {
+        drush_log($msg, 'status');
+      }
+      else {
+        drupal_set_message($msg, 'status');
+      }
+    }
+    elseif (!$languages[$langcode]->enabled) {
+      // No API for enabling a language without installing it :-(
+      // So this mimics locale_add_language().
+      db_update('languages')
+        ->fields(array(
+          'enabled' => 1,
+        ))
+        ->condition('language', $langcode)
+        ->execute();
+      variable_set('language_count', variable_get('language_count', 1) + 1);
+      drupal_static_reset('language_list');
+      _locale_invalidate_js($langcode);
+      module_invoke_all('multilingual_settings_changed');
+      $msg = $t('Enabled language !title (!langcode).', array('!langcode' => 'en', '!title' => 'English'));
+      if ($drush) {
+        drush_log($msg, 'status');
+      }
+      else {
+        drupal_set_message($msg, 'status');
+      }
+    }
+  }
+
+  // Import da translation.
+  $langcode = 'da';
+  $lang_title = 'Danish';
+  $file = new stdClass;
+  $file->filename = $langcode . '.po';
+  $file->uri = str_replace('\\', '/', dirname(__FILE__)) . '/translations/' . $langcode . '.po';
+  // Overwrite translations, Drupal localization project may contain phoney
+  // translation.
+  if (_locale_import_po($file, $langcode, LOCALE_IMPORT_OVERWRITE, 'default')) {
+    $msg = $t('Imported the localize_fields_test module\'s !title (!langcode) translations.', array('!langcode' => $langcode, '!title' => $lang_title));
+    if ($drush) {
+      drush_log($msg, 'success');
+    }
+    else {
+      drupal_set_message($msg, 'success');
+    }
+  }
+  else {
+    $msg = $t('Failed to import the localize_fields_test module\'s !title translations !langcode.po file.', array('!langcode' => $langcode, '!title' => $lang_title));
+    if ($drush) {
+      drush_log($msg, 'error');
+    }
+    else {
+      drupal_set_message($msg, 'error');
+    }
+  }
+}

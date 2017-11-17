@@ -1,0 +1,189 @@
+<?php
+/**
+ * @file
+ *  Drupal Localize Fields module
+ */
+
+/**
+ * Implements hook_install().
+ */
+function localize_fields_install() {
+  //  Get the field_widget_form_alter, date_combo_process_alter and form_alter invoked before other hook implementations.
+  db_update('system')
+    ->fields(array('weight' => -100))
+    ->condition('type', 'module')
+    ->condition('name', 'localize_fields')
+    ->execute();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function localize_fields_uninstall() {
+  variable_del('localize_fields_usecontext');
+  variable_del('localize_fields_entsencoded');
+  variable_del('localize_fields_noautoenableui');
+  variable_del('localize_fields_tentative');
+  variable_del('localize_fields_source_add_row');
+}
+
+/**
+ * Sets a variable and warns user if i18n_field is enabled.
+ *
+ * Implements hook_enable().
+ *
+ * @see localize_fields_field_flush_caches()
+ */
+function localize_fields_enable() {
+  // In old versions of PHP (5.3.3) get_html_translation_table()
+  // doesn't reflect the actually used table by htmlspecialchars() et al.
+  // Observed: &#039; versus &#39;
+  $entities_raw = array('"', "'");
+  $entities_encoded = array();
+  foreach ($entities_raw as $entity) {
+    $entities_encoded[] = check_plain($entity);
+  }
+  variable_set('localize_fields_entsencoded', $entities_encoded);
+}
+
+/**
+ * Implements hook_modules_enabled().
+ *
+ * @param array $modules
+ */
+function localize_fields_modules_enabled($modules) {
+  $drush = drupal_is_cli();
+
+  $enabled_this = in_array('localize_fields', $modules);
+
+  // Enable this modules' UI sub module if this module and the field_ui module are enabled
+  // (unless variable 'localize_fields_noautoenableui' set).
+  if (!variable_get('localize_fields_noautoenableui', 0)
+    && ( ($enabled_this && module_exists('field_ui'))
+      || in_array('field_ui', $modules) ) // && this module exists.
+  ) {
+    module_enable(array('localize_fields_ui'));
+    // Only if enabling succeeded.
+    if (module_exists('localize_fields_ui')) {
+      if ($drush) {
+        drush_log(dt(
+          'Enabled !module_3 too, because !module_1 and !module_2 are enabled.',
+          array('!module_3' => 'localize_fields_ui', '!module_1' => 'localize_fields', '!module_2' => 'field_ui')
+        ),
+        'ok');
+      }
+      else {
+        drupal_set_message(t(
+          'Enabled !module_3 (!human_3) too, because !module_1 (!human_1) and !module_2 (!human_2) are enabled.',
+          array(
+            '!module_3' => 'localize_fields_ui',
+            '!human_3' => t('Localize Fields UI', array(), array('context' => 'module:localize_fields:module:localize_fields_ui')),
+            '!module_1' => 'localize_fields_ui',
+            '!human_1' => t('Localize Fields', array(), array('context' => 'module:localize_fields:module:localize_fields')),
+            '!module_2' => 'field_ui',
+            '!human_2' => t('Field UI'),
+          ),
+          array('context' => 'module:localize_fields')
+        ));
+      }
+    }
+  }
+
+  // Make i18n_field's module weight less than ours, because things break if i18n_field translates after we do.
+  $this_on_top_of_other = FALSE;
+  if ( ($this_on_top_of_other = ($enabled_this && module_exists('i18n_field')))
+    || in_array('i18n_field', $modules) // && this module exists.
+  ) {
+    $module_weights = db_select('system', 's')
+      ->fields('s', array('name', 'weight'))
+      ->condition(db_or()->condition('s.name', 'localize_fields')->condition('s.name', 'i18n_field'))
+      ->execute()
+      ->fetchAllKeyed();
+    if ($module_weights['i18n_field'] >= $module_weights['localize_fields']) {
+      db_update('system')
+        ->fields(array('weight' => $module_weights['localize_fields'] - 1))
+        ->condition('type', 'module')
+        ->condition('name', 'i18n_field')
+        ->execute();
+      if ($drush) {
+        drush_log(dt(
+          'Module weight of i18n_field set to !weight because label translations break if that module translates _after_ localize_fields.',
+          array('!weight' => $module_weights['localize_fields'] - 1)
+        ), 'ok');
+      }
+      else {
+        drupal_set_message(t(
+          'Module weight of i18n_field (!human_2) set to !weight because label translations break if that module translates !emafter!_em localize_fields (!human_1).',
+          array(
+            '!human_1' => t('Localize Fields', array(), array('context' => 'module:localize_fields:module:localize_fields')),
+            '!human_2' => t('Field translation', array(), array('context' => 'module:localize_fields:module:i18n_field')),
+            '!weight' => $module_weights['localize_fields'] - 1,
+            '!em' => '<em>', '!_em' => '</em>',
+          ),
+          array('context' => 'module:localize_fields')
+        ));
+      }
+    };
+
+    // Check if any i18n_field translations available for copying.
+    if ($enabled_this) {
+      try {
+        $query = db_select('locales_source', 'src');
+        $query->leftJoin('locales_target', 'trg', 'trg.lid = src.lid');
+        $query->fields('src', array('lid'))
+          ->condition('src.textgroup', 'field')
+          ->condition('trg.translation', '', '!=')
+          ->range(0, 1);
+        if ($query->execute()->fetchField()) {
+          if ($drush) {
+            // Use the batch of the copying admin form page.
+            module_load_include('inc', 'localize_fields', 'localize_fields.admin');
+            batch_set(localize_fields_copy_i18n_field_batch());
+            drush_backend_batch_process();
+          }
+          else {
+            // Cannot use the batch API in the module admin form (admin/modules).
+            drupal_set_message(t(
+              'The system contains translations created by the i18n_field (!human_2) module:!break- !link.',
+              array(
+                '!human_2' => t('Field translation', array(), array('context' => 'module:localize_fields:module:i18n_field')),
+                '!break' => '<br/>',
+                '!link' => l(
+                  t(
+                    'Import translations from i18n_field (!human_2) to localize_fields (!human_1)',
+                    array(
+                      '!human_1' => t('Localize Fields', array(), array('context' => 'module:localize_fields:module:localize_fields')),
+                      '!human_2' => t('Field translation', array(), array('context' => 'module:localize_fields:module:i18n_field')),
+                    ),
+                    array('context' => 'module:localize_fields')
+                  ),
+                  'admin/config/regional/localize_fields/copy_i18n_field'
+                ),
+              ),
+              array('context' => 'module:localize_fields')
+            ));
+          }
+        }
+        elseif ($this_on_top_of_other) {
+          if ($drush) {
+            drush_log(dt(
+              'The system contains no non-empty translations to import from the i18n_field module.'
+            ), 'ok');
+          }
+          else {
+            drupal_set_message(t(
+              'The system contains no non-empty translations to import from the i18n_field (!human_2) module.',
+              array(
+                '!human_2' => t('Field translation', array(), array('context' => 'module:localize_fields:module:i18n_field')),
+              ),
+              array('context' => 'module:localize_fields')
+            ));
+          }
+        }
+      }
+      catch (PDOException $xc) {
+        // Do nothing. If that query fails then the system is probably generally unstable/misconfigured.
+      }
+    }
+  }
+}

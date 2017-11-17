@@ -1,0 +1,34 @@
+Localize Fields 7.x-1.4
+
+
+Main issues
+-----------
+Maintenance update. No change what-so-ever to this module's main utility
+(translating field labels etc.).
+Only: more convenience in the drush department, improved help pages, and
+bugfixes for the test module.
+
+New features
+------------
+- The drush localize-fields script now also supports relative path argument when
+  the command is executed in a dir _below_ document root.
+- Improved help sections.
+
+Bug fixes
+---------
+- The test Features module now installs and uses taxonomy vocabulary 'lclzflds'
+  instead of 'tags', to prevent collision with any pre-existing vocabulary.
+- The test Features module no longer depends on, nor configures, languages,
+  because that spells conflicts. Instead the languages en and da get installed
+  or enabled (if missing|disabled) programmatically when the test module gets
+  enabled (issue #2511174).
+
+Security
+--------
+None.
+
+Update notes
+------------
+- Clear cache.
+- If the localize_fields_test is enabled: disable and re-enable it, and then
+  features revert it.

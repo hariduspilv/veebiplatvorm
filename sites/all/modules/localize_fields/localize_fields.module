@@ -1,0 +1,295 @@
+<?php
+/**
+ * @file
+ *  Drupal Localize Fields module
+ */
+
+/**
+ * Implements hook_menu().
+ *
+ * @return array
+ */
+function localize_fields_menu() {
+  return array(
+    'admin/config/regional/localize_fields' => array(
+      'title' => 'Localize Fields',
+      'description' => 'Localize Fields settings',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('_localize_fields_admin_form'),
+      // Locale module permission.
+      'access arguments' => array('administer languages'),
+      'file' => 'localize_fields.admin.inc',
+      'type' => MENU_NORMAL_ITEM,
+      'weight' => 1,
+    ),
+    'admin/config/regional/localize_fields/settings' => array(
+      'title' => 'Settings',
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+      'weight' => 0,
+    ),
+    'admin/config/regional/localize_fields/copy_i18n_field' => array(
+      'title' => 'Copy i18n_field translations',
+      'description' => 'Copy translations from/to the i18n_field module',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('_localize_fields_admin_copy_i18n_field_form'),
+      'access arguments' => array('administer languages'),
+      'file' => 'localize_fields.admin.inc',
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 1,
+    ),
+  );
+}
+
+/**
+ * Implements hook_help().
+ */
+function localize_fields_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#localize_fields':
+      module_load_include('inc', 'localize_fields', 'localize_fields.drush');
+      $drush = localize_fields_drush_command();
+      $drush = $drush['localize-fields'];
+      $drush_description = $drush['description']
+        . '<ul><b>' . t('Arguments', array(), array('context' => 'module:localize_fields')) . '</b>';
+      foreach ($drush['arguments'] as $name => $desc) {
+        $drush_description .= '<li>' . $name . ': ' . t($desc, array(), array('context' => 'module:localize_fields')) . '</li>';
+      }
+      $drush_description .= '</ul>';
+      $drush_description .= '<ul><b>' . t('Options', array(), array('context' => 'module:localize_fields')) . '</b>';
+      foreach ($drush['options'] as $name => $desc) {
+        $drush_description .= '<li>' . $name . ': ' . t($desc, array(), array('context' => 'module:localize_fields')) . '</li>';
+      }
+      $drush_description .= '</ul>';
+      $drush_description .= '<ul><b>' . t('Examples', array(), array('context' => 'module:localize_fields')) . '</b>';
+      foreach (array_keys($drush['examples']) as $desc) {
+        $drush_description .= '<li>' . $desc . '</li>';
+      }
+      $drush_description .= '</ul>';
+
+      return '<h3>' . t('About') . '</h3>'
+      . '<p>'
+      . t(
+        'Localize Fields provides translation of field labels, descriptions and list options for most field types and widgets.',
+        array(), array('context' => 'module:localize_fields')
+      )
+      . '</p>'
+      . '<h5>' . t('Optional Localize Fields UI module', array(), array('context' => 'module:localize_fields')) . '</h5>'
+      . '<p>'
+      . t(
+        'Localize Fields UI adds translation to field settings GUIs.<br>Gets installed automatically if the Field UI module is enabled.',
+        array(''), array('context' => 'module:localize_fields')
+      )
+      . '</p>'
+      . '<h5>' . t('drush localize-fields', array(), array('context' => 'module:localize_fields')) . '</h5>'
+      . '<p>'
+      . $drush_description
+      . '</p>'
+      . '<h5>' . t('Optional Localize Fields Test module', array(), array('context' => 'module:localize_fields')) . '</h5>'
+      . '<p>'
+      . t(
+        'Localize Fields Test is a Features module which provides a content type for testing field label etc. translation for various field types and widgets, via \'!add_content\' -> \'Localize Fields test\'.!nlIt also adds a taxonomy \'lclzflds\', and a role \'localize_fields_test_editor\'.!_para!paraThe module tests translation from English (en) to Danish (da), thus:!ul!lilanguages English (en) and Danish (da) must be installed and enabled !em(and will be when enabling the module, if missing/disabled)!_em!_li!lithe content type\'s fields have been created - and may be edited - by a user whose language is English (en)!_li!litest user language must be Danish (da)!_li!_ul',
+        array('!para' => '<p>', '!_para' => '</p>', '!nl' => '<br>', '!em' => '<em>', '!_em' => '</em>', '!ul' => '<ul>', '!_ul' => '</ul>', '!li' => '<li>', '!_li' => '</li>', '!add_content' => t('Add content')), array('context' => 'module:localize_fields')
+      )
+      . '</p>'
+        ;
+    case 'admin/config/regional/localize_fields/copy_i18n_field':
+      return '<h3>' . t('Copy translations from/to the 118n_field module', array(), array('context' => 'module:localize_fields')) . '</h3>'
+      . '<p>' . t(
+        'If this site previously used the i18n_field (\'!i18n_field\') module, there may exist usable translations created via that module.!breakThose translations are not a accessible by Localize Fields because they use \'!textgroup\' and a different translation context.',
+        array(
+          '!break' => '<br/>',
+          '!i18n_field' => t('Field translation', array(), array('context' => 'module:localize_fields:module:i18n_field')),
+          '!textgroup' => l('textgroup', 'https://drupal.org/node/1188430', array('attributes' => array('target' => '_blank'))),
+        ),
+        array('context' => 'module:localize_fields')
+      ) . '</p>';
+  }
+}
+
+/**
+ * Translates fields' labels, descriptions etc.
+ *
+ * Implements hook_field_widget_form_alter().
+ *
+ * @see LocalizeFields::fieldWidgetFormAlter()
+ *
+ * @param array $element
+ * @param array $form_state
+ * @param array &$context
+ *   By reference, though hook_field_widget_form_alter() doesn't have to be
+ *   implemented that way.
+ */
+function localize_fields_field_widget_form_alter(&$element, &$form_state, &$context) {
+  LocalizeFields::fieldWidgetFormAlter($element, $form_state, $context);
+}
+
+/**
+ * Translates instance wrapper label and description when any/more values
+ * (cardinality not 1).
+ *
+ * Implements hook_preprocess_HOOK().
+ * Implements hook_preprocess_field_multiple_value_form().
+ *
+ * @see LocalizeFields::preprocessFieldMultipleValueForm()
+ *
+ * @param array &$variables
+ */
+function localize_fields_preprocess_field_multiple_value_form(&$variables) {
+  LocalizeFields::preprocessFieldMultipleValueForm($variables);
+}
+
+/**
+ * Translates 'Field Start date' and 'Field End date' labels.
+ *
+ * Implements hook_date_combo_process_alter().
+ *
+ * @see LocalizeFields::dateComboProcessAlter()
+ *
+ * @param array &$element
+ * @param array &$form_state
+ * @param array $context
+ */
+function localize_fields_date_combo_process_alter(&$element, &$form_state, $context) {
+  LocalizeFields::dateComboProcessAlter($element);
+}
+
+/**
+ * Custom element validator which performs no validation but translates the
+ * labels used in element validation by field types having an #element_validate
+ * function.
+ *
+ *  Examples of #element_validate implementations:
+ *  - number: number_field_widget_validate()
+ *  - date: date_combo_validate()
+ *
+ * @see LocalizeFields::preElementValidate()
+ *
+ * @param array $element
+ * @param array &$form_state
+ */
+function localize_fields_pre_element_validate($element, &$form_state) {
+  LocalizeFields::preElementValidate($element, $form_state);
+}
+
+/**
+ * Translates error messages created by implementations of hook_field_validate().
+ *
+ * Implements hook_field_attach_validate().
+ *
+ * See https://drupal.org/node/1283718.
+ *
+ * @param string $entity_type
+ * @param array $entity
+ * @param array $errors
+ */
+function localize_fields_field_attach_validate($entity_type, $entity, &$errors) {
+  if ($errors) {
+    // We don't need the $entity_type, because $entity gives a clue about the
+    // bundle. ($entity_type doesn't really).
+    LocalizeFields::fieldAttachValidate($entity, $errors);
+  }
+}
+
+/**
+ * Translates field view labels, and corrects decimal separator of
+ * decimals/floats.
+ *
+ * Implements hook_field_attach_view_alter().
+ *
+ * @see LocalizeFields::fieldAttachViewAlter()
+ *
+ * @param array &$output
+ * @param array $context
+ */
+function localize_fields_field_attach_view_alter(&$output, $context) {
+  LocalizeFields::fieldAttachViewAlter($output, $context);
+}
+
+// @todo: Implement hook_field_attach_rename_bundle().
+/**
+ * Alters field instance label translations' context.
+ *
+ * Implements hook_field_attach_rename_bundle().
+ *
+ * @param string $entity_type
+ * @param string $bundle_old
+ * @param string $bundle_new
+ *
+function localize_fields_field_attach_rename_bundle($entity_type, $bundle_old, $bundle_new) {
+  if ($bundle_old !== $bundle_new
+    && variable_get('localize_fields_usecontext', LocalizeFields::USE_CONTEXT_NONCONTEXT)
+  ) {
+    inspect(func_get_args(), __FUNCTION__);
+  }
+}*/
+
+// @todo: Implement hook_field_attach_delete_bundle().
+/**
+ * Removes field instance label translations.
+ *
+ * Implements hook_field_attach_delete_bundle().
+ *
+ * @param $entity_type
+ *   The type of entity; for example, 'node' or 'user'.
+ * @param $bundle
+ *   The bundle that was just deleted.
+ * @param $instances
+ *   An array of all instances that existed for the bundle before it was
+ *   deleted.
+ *
+function localize_fields_field_attach_delete_bundle($entity_type, $bundle, $instances) {
+  if (variable_get('localize_fields_usecontext', LocalizeFields::USE_CONTEXT_NONCONTEXT)) {
+    inspect(func_get_args(), __FUNCTION__);
+  }
+}*/
+
+// @todo: Implement hook_field_delete().
+/**
+ * Removes field label translations.
+ *
+ * Implement hook_field_delete().
+ *
+ * @param $entity_type
+ *   The type of $entity.
+ * @param $entity
+ *   The entity for the operation.
+ * @param $field
+ *   The field structure for the operation.
+ * @param $instance
+ *   The instance structure for $field on $entity's bundle.
+ * @param $langcode
+ *   The language associated with $items.
+ * @param $items
+ *   $entity->{$field['field_name']}[$langcode], or an empty array if unset.
+ *
+function localize_fields_field_delete($entity_type, $entity, $field, $instance, $langcode, &$items) {
+  if (variable_get('localize_fields_usecontext', LocalizeFields::USE_CONTEXT_NONCONTEXT)) {
+    inspect(func_get_args(), __FUNCTION__);
+  }
+}*/
+
+/**
+ * Doesn't provide any cache table names, only implements hook_flush_caches to
+ * detect cache flushing.
+ *
+ * Implements hook_flush_caches().
+ * D8: consider hook_rebuild().
+ *
+ * @see localize_fields_enable()
+ *
+ * @return array
+ */
+function localize_fields_flush_caches() {
+  // In old versions of PHP (5.3.3) get_html_translation_table()
+  // doesn't reflect the actually used table by htmlspecialchars() et al.
+  // Observed: &#039; versus &#39;
+  $entities_raw = array('"', "'");
+  $entities_encoded = array();
+  foreach ($entities_raw as $entity) {
+    $entities_encoded[] = check_plain($entity);
+  }
+  variable_set('localize_fields_entsencoded', $entities_encoded);
+
+  // Satisfy return value contract with hook_flush_caches().
+  return array();
+}

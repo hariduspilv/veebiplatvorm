@@ -1,0 +1,30 @@
+Localize Fields 7.x-1.1
+
+
+Main issues
+-----------
+Use global language, not user language; otherwise language detection via browser would be (was) ignored.
+
+
+New features
+------------
+None.
+
+Bug fixes
+---------
+* UI shan't support 'allowed_values' translation for any other list types than the simple core list types (list_boolean, list_text, list_integer, list_decimal, list_float) (issue #2378337).
+* Use global language, not user language (issue #2384655).
+* Abort field view translation if non-standard field type which misses the #bundle bucket (issue #2377555).
+
+Security
+--------
+None.
+
+Update notes
+------------
+* No further action required.
+
+
+Special thanks
+--------------
+All three bug fixes of this release were instigated by @pascalanimateur - thx a mill for the interest and great work :-)

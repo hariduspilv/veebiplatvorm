@@ -1,0 +1,13 @@
+-----------------------------------------------------------------------------------------------------------------
+PATCH FILE: /sites/all/modules/paragraphs/paragraphs-check_CF_errors-2609248-8.patch
+LINK: https://www.drupal.org/node/2609248#comment-11935415
+PATCH LINK: https://www.drupal.org/files/issues/paragraphs-check_CF_errors-2609248-8.patch
+WHO: ML
+WHEN: 10.11.2017 .
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PATCH FILE: sites/all/modules/entity/op_update_should_be_create-2807275-2.patch
+LINK: https://www.drupal.org/project/entity/issues/2807275#comment-11664385
+PATCH LINK: https://www.drupal.org/files/issues/op_update_should_be_create-2807275-2.patch
+WHO: ML
+WHEN: 17.11.2017 .
+-------------------------------------------------------------------------------------------------------------------

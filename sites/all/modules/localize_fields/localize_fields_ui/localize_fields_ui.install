@@ -1,0 +1,14 @@
+<?php
+/**
+ * @file
+ *  Drupal Localize Fields UI module
+ */
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function localize_fields_ui_uninstall() {
+  variable_del('localize_fields_ui_clear_cache');
+  variable_del('localize_fields_ui_log_changes');
+}
