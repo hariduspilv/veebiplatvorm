@@ -153,6 +153,7 @@ function hitsa_catering_node_info()
 **/
 function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
 {
+
     switch ($form_id) {
         case 'catering_node_form':
             if (!empty($form['field_catering_provider'])){
@@ -178,6 +179,13 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
               'type' => 'setting',
             );
       
+            break;
+        case 'taxonomy_form_term':
+            if (!empty($form['vocabulary_machine_name'])) {
+                if ($form['vocabulary_machine_name']['#value'] == 'catering_provider') {
+                    $form['#validate'][] = 'hitsa_catering_taxonomy_term_validate';
+                }
+            }
             break;
     }
 }
@@ -448,6 +456,7 @@ function hitsa_catering_week($start_date = null)
             $catering_html = hitsa_catering_provider_html($catering_provider);
         }
     }
+    $catering_header = hitsa_curriculum_catering_header($loaded_menu);
     $catering_table = hitsa_catering_paragraphs__create_table($loaded_menu);
     if (!empty($catering_table)) {
         $build['catering']['#prefix'] = '
@@ -460,7 +469,7 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['#suffix'] = '</div> </div><!--/block-->';
         $build['catering']['#type'] = 'container';
         $build['catering']['#theme_wrappers'] = array();
-        $build['catering']['catering_table']['#markup'] = $catering_table.$catering_html;
+        $build['catering']['catering_table']['#markup'] = $catering_header.$catering_table.$catering_html;
     }
     return $build;
 }
@@ -475,6 +484,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
     $wednesday = (!empty($loaded_menu->field_catering_wednesday)?$loaded_menu->field_catering_wednesday['und']:null);
     $thursday = (!empty($loaded_menu->field_catering_thursday)?$loaded_menu->field_catering_thursday['und']:null);
     $friday = (!empty($loaded_menu->field_catering_friday)?$loaded_menu->field_catering_friday['und']:null);
+    $pictures = (!empty($loaded_menu->field_catering_pictures)?$loaded_menu->field_catering_pictures['und']:null);
     $days = array(
     'Monday' => $monday,
     'Tuesday'=> $tuesday,
@@ -591,6 +601,9 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
     
         $output .='</table>';
         $output .='</div><!--/table-wrapper-->';
+        if (!empty($pictures)){
+            $output .= hitsa_catering_pictures_generator($pictures);
+        }
         return $output;
     }
 }
@@ -600,22 +613,26 @@ function hitsa_catering_provider_html($provider)
     $email_out=null;
     $phone_out=null;
     $address_out=null;
+    $homepage_out=null;
     if (!empty($provider->field_email)) {
         $email = $provider->field_email['und'][0]['email'];
     }
     $homepage=null;
     if (!empty($provider->field_homepage)) {
         $homepage = $provider->field_homepage['und'][0]['value'];
+        $homepage_out.='<li>';
+        $homepage_out.='                      <div class="before-home"></div>';
+        $homepage_out.='                      <div class="list-details_text">';
+        $homepage_out.='                         <p><a href="'.$homepage.'" target="_blank">'.$homepage.'</a></p>';
+        $homepage_out.='                      </div><!--/list-details_text-->';
+        $homepage_out.='                   </li>';
+
     }
     $phone=null;
     if (!empty($provider->field_phone_number)) {
         $phone = $provider->field_phone_number['und'][0]['value'];
+
     }
-    $location=null;
-  
-    $location = field_get_items('taxonomy_term', $provider, 'field_location');
-    $location_value = field_view_value('taxonomy_term', $provider, 'field_location', $location[0]);
-    
     $output = '<div class="row">';
   
     if (!empty($provider->field_email)) {
@@ -647,19 +664,7 @@ function hitsa_catering_provider_html($provider)
         $address_out.= '                         </li>';
     }
     $output .= '</div>';
-    if (!empty($provider->field_catering_provider_pictures)) {
-        $images = array();
-        $captions = array();
-        foreach ($provider->field_catering_provider_pictures['und'] as $picture) {
-            $picture_uri =  $picture['uri'];
-            $image_style =  'large';
-            $image_url = image_style_url($image_style, $picture_uri);
-            $images[$picture['fid']] = '<img src="'.$image_url.'" alt="">';
-            if (!empty($picture['field_file_image_title_text'])) {
-                $captions[$picture['fid']] = $picture['field_file_image_title_text']['und'][0]['value'];
-            }
-        }
-    }
+
     if (!empty($images)) {
                       $output.='  <div class="row">';
         foreach ($images as $key => $image) {
@@ -675,15 +680,10 @@ function hitsa_catering_provider_html($provider)
     }
     $output .='<p><b>'.$provider->name.'</b></p>';
     $output.= '<ul class="list-details">';
-    $output.= (!empty($address_out))?$address_out:'';
-    $output.= (!empty($phone_out))?$phone_out:'';
+    $output.= (!empty($homepage_out))?$homepage_out:'';
     $output.= (!empty($email_out))?$email_out:'';
-    $output.= '                         <li>';
-    $output.= '                            <div class="before-unlock"></div>';
-    $output.= '                            <div class="list-details_text">';
-    $output.= '                               <p>Maja avatud E-R 8-20</p>';
-    $output.= '                            </div><!--/list-details_text-->';
-    $output.= '                         </li>';
+    $output.= (!empty($phone_out))?$phone_out:'';
+    $output.= (!empty($address_out))?$address_out:'';
     $output.= '                      </ul><!--/list-details-->';
     return $output;
 }
@@ -781,7 +781,7 @@ function hitsa_catering_generate_header($node){
         $output.='   <div class="col-4 sm-12">';
         if (!empty($node->cp_image)) {
             $image = $node->cp_image['und'][0];
-            $style = 'large';
+            $style = 'hc_pictures';
             $image_url = image_style_url($style,$image['uri']);
 
             $output .= '      <figure>';
@@ -1081,4 +1081,83 @@ function hitsa_catering_front_page_block(){
         return $output;
 
 
+}
+function hitsa_catering_taxonomy_term_validate($form,&$form_state){
+    if (!empty($form_state['values'])) {
+        if (!empty($form_state['values']['field_homepage'])) {
+            if (!empty($form_state['values']['field_homepage']['und'][0]['value'])) {
+                if (filter_var($form_state['values']['field_homepage']['und'][0]['value'], FILTER_VALIDATE_URL)) {
+                } else {
+                    form_set_error('field_homepage', $form_state['values']['field_homepage']['und'][0]['value'] . t(' is not a valid website'));
+                }
+            }
+        }
+        if (!empty($form_state['values']['field_phone_number'])) {
+            if (!empty($form_state['values']['field_phone_number']['und'][0]['value'])) {
+               $phone_number = $form_state['values']['field_phone_number']['und'][0]['value'];
+                   if (!preg_match('/^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{1})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/', ($phone_number))) {
+                       form_set_error('field_phone_number', t('Entered phone number: ') . $phone_number . t(' is not valid'));
+                   }
+            }
+        }
+    }
+//    exit();
+}
+
+function hitsa_catering_pictures_generator($pictures){
+    $output='';
+    if (!empty($pictures)){
+      $output.='  <div class="row">';
+
+
+        foreach ($pictures as $picture){
+            $style = 'hc_pictures';
+            $image_url = image_style_url($style,$picture['uri']);
+            $output.='<div class="col-6 sm-12">';
+            $output.='                  <figure>';
+            $output.='                    <img src="'.$image_url.'" alt="">';
+            $output.='                    <figcaption>'.(!empty($picture['title']))?$picture['title']:''.'</figcaption>';
+            $output.='                  </figure>';
+            $output.='               </div><!--/col-6-->';
+        }
+        $output.='
+                        </div><!--/row-->';
+    }
+    return $output;
+}
+function hitsa_curriculum_catering_header($content){
+    $catering_provider_name='';
+    if (!empty($content)){
+        if (!empty($content->field_catering_provider)){
+            if (!empty($content->field_catering_provider['und'][0]['entity']->field_catering_provider_big_name)) {
+                $catering_provider_name = $content->field_catering_provider['und'][0]['entity']->field_catering_provider_big_name['und'][0]['value'];
+            }
+
+        }
+    }
+    if (!empty($content->field_date)){
+        $date_start = $content->field_date['und'][0]['value'];
+        $monday = format_date(strtotime('monday midnight',$date_start),'custom','d.F');
+        $sunday = format_date(strtotime('sunday midnight',$date_start),'custom','d.F');
+        $week_text = t('Menu week').' '.$monday.'-'.$sunday;
+    }
+    $output = '';
+    $output.='<h3 class="sm-block-title">'.$catering_provider_name;
+    $output.='<span class="btn-bar align-right pull-right sm-hide">';
+    $output.='                         <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
+    $output.='                          <a href="javascript:window.print();" class="btn-circle before-print"></a>';
+    $output.='                       </span><!--/button-row-->';
+    $output.='                    </h3>';
+    $output.='';
+    $output.='                    ';
+    $output.='                    <h5 class="sm-alignment">';
+    if (!empty($week_text)){
+        $output.=$week_text;
+    }
+    $output.='<span class="btn-bar align-right pull-right sm-show">';
+    $output.='                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
+    $output.='                          <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>';
+    $output.='                       </span><!--/button-row-->';
+    $output.='                    </h5>';
+    return $output;
 }

@@ -86,7 +86,7 @@ function _hitsa_catering_vocabularies(){
       'module' => 'taxonomy',
       'weight' => 0,
       'language' => 'und',
-      'i18n_mode' => 4,
+      'i18n_mode' => 0,
       'rdf_mapping' => array(
         'rdftype' => array(
           0 => 'skos:ConceptScheme',
@@ -532,7 +532,30 @@ function _hitsa_catering_installed_node_fields(){
     'translatable' => 0,
     'type' => 'datestamp',
   );
-  
+    // Exported field_base: 'field_catering_pictures'.
+    $field_bases['field_catering_pictures'] = array(
+        'active' => 1,
+        'cardinality' => -1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_catering_pictures',
+        'indexes' => array(
+            'fid' => array(
+                0 => 'fid',
+            ),
+        ),
+        'locked' => 0,
+        'module' => 'image',
+        'settings' => array(
+            'default_image' => 0,
+            'entity_translation_sync' => array(
+                0 => 'fid',
+            ),
+            'uri_scheme' => 'public',
+        ),
+        'translatable' => 0,
+        'type' => 'image',
+    );
   return $field_bases;
 }
 
@@ -627,7 +650,7 @@ function _hitsa_catering_installed_node_instances(){
       'bundle_weights' => array(
         'catering_food_by_day' => -2,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Paragraph',
       'title_multiple' => 'Paragraphs',
       'user_register_form' => FALSE,
@@ -675,7 +698,7 @@ function _hitsa_catering_installed_node_instances(){
       'bundle_weights' => array(
         'catering_food_by_day' => -2,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Paragraph',
       'title_multiple' => 'Paragraphs',
       'user_register_form' => FALSE,
@@ -723,7 +746,7 @@ function _hitsa_catering_installed_node_instances(){
       'bundle_weights' => array(
         'catering_food_by_day' => -2,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Paragraph',
       'title_multiple' => 'Paragraphs',
       'user_register_form' => FALSE,
@@ -771,7 +794,7 @@ function _hitsa_catering_installed_node_instances(){
       'bundle_weights' => array(
         'catering_food_by_day' => -2,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Paragraph',
       'title_multiple' => 'Paragraphs',
       'user_register_form' => FALSE,
@@ -819,7 +842,7 @@ function _hitsa_catering_installed_node_instances(){
       'bundle_weights' => array(
         'catering_food_by_day' => -2,
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => 'open',
       'title' => 'Paragraph',
       'title_multiple' => 'Paragraphs',
       'user_register_form' => FALSE,
@@ -856,12 +879,81 @@ function _hitsa_catering_installed_node_instances(){
             'weight' => -3,
           ),
     );
+    // Exported field_instance: 'node-catering-field_catering_pictures'.
+    $field_instances['node-catering-field_catering_pictures'] = array(
+        'bundle' => 'catering',
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'image',
+                'settings' => array(
+                    'image_link' => '',
+                    'image_style' => '',
+                ),
+                'type' => 'image',
+                'weight' => 8,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_catering_pictures',
+        'label' => 'catering pictures',
+        'required' => 0,
+        'settings' => array(
+            'alt_field' => 0,
+            'default_image' => 0,
+            'entity_translation_sync' => FALSE,
+            'file_directory' => '',
+            'file_extensions' => 'png gif jpg jpeg',
+            'max_filesize' => '',
+            'max_resolution' => '',
+            'min_resolution' => '',
+            'title_field' => 0,
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'media',
+            'settings' => array(
+                'allowed_schemes' => array(
+                    'public' => 'public',
+                ),
+                'allowed_types' => array(
+                    'audio' => 0,
+                    'document' => 0,
+                    'image' => 'image',
+                    'video' => 0,
+                ),
+                'browser_plugins' => array(
+                    'media_default--media_browser_1' => 0,
+                    'media_default--media_browser_my_files' => 0,
+                    'upload' => 0,
+                ),
+            ),
+            'type' => 'media_generic',
+            'weight' => 11,
+        ),
+    );
+
+    // Translatables
+    // Included for use with string extractors like potx.
+    t('catering pictures');
   return $field_instances;
 }
 
 function hitsa_catering_add_custom_node_fields(){
   foreach (_hitsa_catering_installed_node_fields() as $field) {
-    field_create_field($field);
+      $field_check = field_info_field($field['field_name']);
+      if (empty($field_check)) {
+          field_create_field($field);
+      }
   }
   foreach (_hitsa_catering_installed_node_instances() as $field_instance) {
     $field_instance['entity_type'] = 'node';
@@ -872,7 +964,22 @@ function hitsa_catering_add_custom_node_fields(){
 
 function hitsa_catering_delete_custom_node_fields() {
   foreach (array_keys(_hitsa_catering_installed_node_fields()) as $field) {
-    field_delete_field($field);
+      $field_check = field_info_field($field);
+      if (!empty($field_check)){
+          if (!empty($field_check['bundles'])){
+              if (!empty($field_check['bundles']['node'])){
+                  if (count($field_check['bundles']['node'])>1){
+
+                  }
+                  elseif (count($field_check['bundles']['node'])==1){
+                      field_delete_field($field_check['field_name']);
+                  }
+              }
+          }
+      }
+      else {
+          field_delete_field($field);
+      }
   }
   $instances = field_info_instances('node', 'catering');
   foreach ($instances as $instance_name => $field_instance) {
@@ -1017,7 +1124,30 @@ function _hitsa_catering_custom_field_groups(){
     ),
   );
   $field_groups[] = $field_group;
-  
+
+  $field_group = (object)array(
+      'identifier' => 'group_pictures|node|catering|form',
+      'group_name' => 'group_pictures',
+      'entity_type' => 'node',
+      'bundle' => 'catering',
+      'mode' => 'form',
+      'parent_name' => '',
+      'label' => 'Pictures',
+      'weight' => '10',
+      'children' => array(
+          0 => 'field_catering_pictures',
+          ),
+      'format_type' => 'tab',
+      'format_settings' => array(
+          'formatter' => 'closed',
+          'instance_settings' => array(
+              'description' => '',
+              'classes' => 'group-pictures field-group-tab',
+              'required_fields' => 1,
+              ),
+          ),
+  );
+  $field_groups[] = $field_group;
   return $field_groups;
 }
 
@@ -1028,7 +1158,10 @@ function hitsa_catering_add_custom_field_groups(){
 }
 function hitsa_catering_add_custom_taxonomy_fields(){
   foreach (hitsa_catering_add_custom_taxonomy_field_base() as $field) {
-    field_create_field($field);
+      $field_check = field_info_field($field['field_name']);
+      if (empty($field_check)) {
+          field_create_field($field);
+      }
   }
   foreach (hitsa_catering_add_custom_taxonomy_field_instance() as $field_instance) {
     
@@ -1038,7 +1171,27 @@ function hitsa_catering_add_custom_taxonomy_fields(){
 
 function hitsa_catering_add_custom_taxonomy_field_base(){
   $field_bases = array();
-
+    // Exported field_base: 'field_catering_provider_big_name'.
+    $field_bases['field_catering_provider_big_name'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_catering_provider_big_name',
+        'indexes' => array(
+            'format' => array(
+                0 => 'format',
+            ),
+        ),
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'max_length' => 255,
+        ),
+        'translatable' => 0,
+        'type' => 'text',
+    );
     $field_bases['field_food_icon'] = array(
         'active' => 1,
         'cardinality' => 1,
@@ -1097,138 +1250,90 @@ function hitsa_catering_add_custom_taxonomy_field_base(){
         'translatable' => 0,
         'type' => 'list_text',
     );
-  // Exported field_base: 'field_catering_provider_pictures'.
-  $field_bases['field_catering_provider_pictures'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_catering_provider_pictures',
-    'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'image',
-    'settings' => array(
-      'default_image' => 0,
-      'uri_scheme' => 'public',
-    ),
-    'translatable' => 0,
-    'type' => 'image',
-  );
+    // Exported field_base: 'field_email'.
+    $field_bases['field_email'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_email',
+        'indexes' => array(),
+        'locked' => 0,
+        'module' => 'email',
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+        ),
+        'translatable' => 0,
+        'type' => 'email',
+    );
 
-  // Exported field_base: 'field_email'.
-  $field_bases['field_provider_address'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_provider_address',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text',
-  );
-
-  // Exported field_base: 'field_email'.
-  $field_bases['field_open_times'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_open_times',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text',
-  );
-
-  // Exported field_base: 'field_email'.
-  $field_bases['field_email'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_email',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'email',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'email',
-  );
-
-  // Exported field_base: 'field_homepage'.
-  $field_bases['field_homepage'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_homepage',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
-  );
-
-  // Exported field_base: 'field_location'.
-  $field_bases['field_location'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_location',
-    'indexes' => array(
-      'lat' => array(
-        0 => 'lat',
-      ),
-      'lng' => array(
-        0 => 'lng',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'geolocation',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'geolocation_latlng',
-  );
-
-  // Exported field_base: 'field_phone_number'.
-    if (!field_info_field('field_phone_number')) {
-        $field_bases['field_phone_number'] = array(
-            'active' => 1,
-            'cardinality' => 1,
-            'deleted' => 0,
-            'entity_types' => array(),
-            'field_name' => 'field_phone_number',
-            'indexes' => array(
-                'format' => array(
-                    0 => 'format',
-                ),
+    // Exported field_base: 'field_homepage'.
+    $field_bases['field_homepage'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_homepage',
+        'indexes' => array(
+            'format' => array(
+                0 => 'format',
             ),
-            'locked' => 0,
-            'module' => 'text',
-            'settings' => array(
-                'max_length' => 255,
+        ),
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'max_length' => 255,
+        ),
+        'translatable' => 0,
+        'type' => 'text',
+    );
+
+    // Exported field_base: 'field_phone_number'.
+    $field_bases['field_phone_number'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_phone_number',
+        'indexes' => array(
+            'format' => array(
+                0 => 'format',
             ),
-            'translatable' => 0,
-            'type' => 'text',
-        );
-    }
+        ),
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'max_length' => 255,
+        ),
+        'translatable' => 0,
+        'type' => 'text',
+    );
+
+    // Exported field_base: 'field_provider_address'.
+    $field_bases['field_provider_address'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_provider_address',
+        'indexes' => array(
+            'format' => array(
+                0 => 'format',
+            ),
+        ),
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'max_length' => 255,
+        ),
+        'translatable' => 0,
+        'type' => 'text',
+    );
+
+
   return $field_bases;
 }
 function hitsa_catering_add_custom_taxonomy_field_instance(){
@@ -1265,263 +1370,188 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
             'weight' => 32,
         ),
     );
-  // Exported field_instance:
-  // 'taxonomy_term-catering_provider-field_catering_provider_pictures'.
-  $field_instances['taxonomy_term-catering_provider-field_catering_provider_pictures'] = array(
-    'bundle' => 'catering_provider',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'image',
+
+
+    // Exported field_instance: 'taxonomy_term-catering_provider-field_email'.
+    $field_instances['taxonomy_term-catering_provider-field_email'] = array(
+        'bundle' => 'catering_provider',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'email',
+                'settings' => array(),
+                'type' => 'email_default',
+                'weight' => 2,
+            ),
+        ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_email',
+        'label' => 'Email',
+        'required' => 0,
         'settings' => array(
-          'image_link' => '',
-          'image_style' => '',
+            'entity_translation_sync' => FALSE,
+            'user_register_form' => FALSE,
         ),
-        'type' => 'image',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_catering_provider_pictures',
-    'label' => 'Catering provider pictures',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'default_image' => 0,
-      'file_directory' => '',
-      'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '',
-      'title_field' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'public' => 'public',
+        'widget' => array(
+            'active' => 1,
+            'module' => 'email',
+            'settings' => array(
+                'size' => 60,
+            ),
+            'type' => 'email_textfield',
+            'weight' => 2,
         ),
-        'allowed_types' => array(
-          'audio' => 0,
-          'document' => 0,
-          'image' => 'image',
-          'video' => 0,
+    );
+
+    // Exported field_instance: 'taxonomy_term-catering_provider-field_homepage'.
+    $field_instances['taxonomy_term-catering_provider-field_homepage'] = array(
+        'bundle' => 'catering_provider',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'text',
+                'settings' => array(),
+                'type' => 'text_default',
+                'weight' => 1,
+            ),
         ),
-        'browser_plugins' => array(
-          'media_browser_plus--media_browser_my_files' => 0,
-          'media_browser_plus--media_browser_thumbnails' => 0,
-          'media_default--media_browser_1' => 0,
-          'media_default--media_browser_my_files' => 0,
-          'upload' => 0,
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_homepage',
+        'label' => 'Homepage',
+        'required' => 0,
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'text_processing' => 0,
+            'user_register_form' => FALSE,
         ),
-      ),
-      'type' => 'media_generic',
-      'weight' => 5,
-    ),
-  );
+        'widget' => array(
+            'active' => 1,
+            'module' => 'text',
+            'settings' => array(
+                'size' => 60,
+            ),
+            'type' => 'text_textfield',
+            'weight' => 1,
+        ),
+    );
 
-  // Exported field_instance: 'taxonomy_term-catering_provider-field_email'.
-  $field_instances['taxonomy_term-catering_provider-field_email'] = array(
-    'bundle' => 'catering_provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'email',
-        'settings' => array(),
-        'type' => 'email_default',
-        'weight' => 2,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_email',
-    'label' => 'Email',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'email',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'email_textfield',
-      'weight' => 2,
-    ),
-  );
+    // Exported field_instance:
+    // 'taxonomy_term-catering_provider-field_phone_number'.
+    $field_instances['taxonomy_term-catering_provider-field_phone_number'] = array(
+        'bundle' => 'catering_provider',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'text',
+                'settings' => array(),
+                'type' => 'text_default',
+                'weight' => 3,
+            ),
+        ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_phone_number',
+        'label' => 'Phone number',
+        'required' => 0,
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'text_processing' => 0,
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'text',
+            'settings' => array(
+                'size' => 60,
+            ),
+            'type' => 'text_textfield',
+            'weight' => 3,
+        ),
+    );
 
-  // Exported field_instance: 'taxonomy_term-catering_provider-field_homepage'.
-  $field_instances['taxonomy_term-catering_provider-field_open_times'] = array(
-    'bundle' => 'catering_provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_open_times',
-    'label' => st('Open times'),
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 1,
-    ),
-  );
-  // Exported field_instance: 'taxonomy_term-catering_provider-field_homepage'.
-  $field_instances['taxonomy_term-catering_provider-field_provider_address'] = array(
-    'bundle' => 'catering_provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_provider_address',
-    'label' => 'Address',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 1,
-    ),
-  );
-  // Exported field_instance: 'taxonomy_term-catering_provider-field_homepage'.
-  $field_instances['taxonomy_term-catering_provider-field_homepage'] = array(
-    'bundle' => 'catering_provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 1,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_homepage',
-    'label' => 'Homepage',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 1,
-    ),
-  );
-
-  // Exported field_instance: 'taxonomy_term-catering_provider-field_location'.
-  $field_instances['taxonomy_term-catering_provider-field_location'] = array(
-    'bundle' => 'catering_provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'geolocation',
-        'settings' => array(),
-        'type' => 'geolocation_text',
-        'weight' => 4,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_location',
-    'label' => 'Location',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'geolocation_googlemaps',
-      'settings' => array(),
-      'type' => 'geolocation_googlemap',
-      'weight' => 4,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'taxonomy_term-catering_provider-field_phone_number'.
-  $field_instances['taxonomy_term-catering_provider-field_phone_number'] = array(
-    'bundle' => 'catering_provider',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 3,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_phone_number',
-    'label' => 'Phone number',
-    'required' => 0,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 3,
-    ),
-  );
+    // Exported field_instance:
+    // 'taxonomy_term-catering_provider-field_provider_address'.
+    $field_instances['taxonomy_term-catering_provider-field_provider_address'] = array(
+        'bundle' => 'catering_provider',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'text',
+                'settings' => array(),
+                'type' => 'text_default',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_provider_address',
+        'label' => 'Address',
+        'required' => 0,
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'text_processing' => 0,
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'text',
+            'settings' => array(
+                'size' => 60,
+            ),
+            'type' => 'text_textfield',
+            'weight' => 4,
+        ),
+    );
+    // 'taxonomy_term-catering_provider-field_catering_provider_big_name'.
+    $field_instances['taxonomy_term-catering_provider-field_catering_provider_big_name'] = array(
+        'bundle' => 'catering_provider',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'text',
+                'settings' => array(),
+                'type' => 'text_default',
+                'weight' => 4,
+            ),
+        ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_catering_provider_big_name',
+        'label' => 'Catering provider big name',
+        'required' => 0,
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'text_processing' => 0,
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'text',
+            'settings' => array(
+                'size' => 60,
+            ),
+            'type' => 'text_textfield',
+            'weight' => 1,
+        ),
+    );
+    // Translatables
+    // Included for use with string extractors like potx.
+    t('Address');
+    t('Email');
+    t('Homepage');
+    t('Phone number');
 
   // Translatables
   // Included for use with string extractors like potx.
@@ -1536,7 +1566,7 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
 
 function hitsa_catering_delete_vocabulary_fields(){
   foreach (array_keys(hitsa_catering_add_custom_taxonomy_field_base()) as $field) {
-      field_delete_field($field);
+//      field_delete_field($field);
     }
     $instances = field_info_instances('taxonomy_term', 'catering_provider');
     foreach ($instances as $instance_name => $field_instance) {

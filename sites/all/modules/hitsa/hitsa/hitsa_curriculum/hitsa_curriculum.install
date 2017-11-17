@@ -1092,7 +1092,9 @@ function hitsa_curriculum_delete_custom_paragraphs_fields()
 {
 
     foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field_key => $field) {
-        field_delete_field($field_key);
+
+        $field_info = field_info_field($field_key);
+//        field_delete_field($field_key);
     }
     $instances = field_info_instances('paragraphs_item', 'contacts');
     foreach ($instances as $instance_name => $field_instance) {
@@ -1531,26 +1533,7 @@ function _hitsa_curriculum_installed_node_fields(){
         'type' => 'tablefield',
     );
 
-    // Exported field_base: 'field_speciality_description'.
-    $field_bases['field_speciality_description'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_speciality_description',
-        'indexes' => array(
-            'format' => array(
-                0 => 'format',
-            ),
-        ),
-        'locked' => 0,
-        'module' => 'text',
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-        ),
-        'translatable' => 0,
-        'type' => 'text_long',
-    );
+    
 
     // Exported field_base: 'field_subjects_table'.
     $field_bases['field_subjects_table'] = array(
@@ -1801,7 +1784,7 @@ function _hitsa_curriculum_installed_node_instances(){
             'description_field' => 0,
             'entity_translation_sync' => FALSE,
             'file_directory' => '',
-            'file_extensions' => 'txt pdf doc',
+            'file_extensions' => 'txt pdf doc docx odt rtf wpd tex wps',
             'max_filesize' => '',
             'user_register_form' => FALSE,
         ),
@@ -2562,46 +2545,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
     );
 
-    // Exported field_instance: 'node-curriculum-field_speciality_description'.
-    $field_instances['node-curriculum-field_speciality_description'] = array(
-        'bundle' => 'curriculum',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'text',
-                'settings' => array(),
-                'type' => 'text_default',
-                'weight' => 8,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'field_speciality_description',
-        'label' => 'Speciality description',
-        'required' => 0,
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'text_processing' => 0,
-            'user_register_form' => FALSE,
-        ),
-        'widget' => array(
-            'active' => 1,
-            'module' => 'text',
-            'settings' => array(
-                'rows' => 5,
-            ),
-            'type' => 'text_textarea',
-            'weight' => 12,
-        ),
-    );
+
 
     // Exported field_instance: 'node-curriculum-field_subjects_table'.
     $field_instances['node-curriculum-field_subjects_table'] = array(
@@ -3095,7 +3039,22 @@ function _hitsa_curriculum_installed_node_instances(){
 function hitsa_curriculum_delete_custom_node_fields()
 {
     foreach (array_keys(_hitsa_curriculum_installed_node_fields()) as $field) {
-        field_delete_field($field);
+        $fieldd = field_info_field($field);
+        if (!empty($fieldd)){
+            if (!empty($fieldd['bundles'])){
+                if (!empty($fieldd['bundles']['node'])){
+                    if (count($fieldd['bundles']['node'])>1){
+
+                    }
+                    elseif (count($fieldd['bundles']['node'])==1){
+                        field_delete_field($fieldd['field_name']);
+                    }
+                }
+            }
+        }
+        else {
+            field_delete_field($field);
+        }
     }
     $instances = field_info_instances('node', 'curriculum');
     foreach ($instances as $instance_name => $field_instance) {

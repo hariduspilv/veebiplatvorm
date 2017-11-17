@@ -42,7 +42,7 @@ function hitsa_curriculum_create_node()
 
     $types = array(
         array(
-            'name' => t('Curriculum'),
+            'name' => t('Tabbed content page'),
             'base' => 'node_content',
             'description' => '',
             'type' => 'curriculum',
@@ -198,6 +198,56 @@ function hitsa_curriculum_node_insert($node)
     }
 }
 
+function hitsa_curriculum_node_validate($node,$form,&$form_state){
+    if (!empty($form_state['values'])){
+        if (!empty($form_state['values']['field_school_selections'])){
+            if ($form_state['values']['field_school_selections']['und'][0]['value']=='specialities'){
+                if(!empty($form_state['values']['field_specialitiy_table'])){
+                  $row_to_check = $form_state['values']['field_specialitiy_table']['und'][0]['tablefield']['tabledata']['row_1'];
+                  foreach ($row_to_check as $key => $value){
+                      if ($key!='weight'){
+                          if(empty($value)){
+                              form_set_error('field_specialitiy_table[und][0][tablefield][tabledata][row_1]['.$value.']',t('All table fields need to be filled'));
+                          }
+                      }
+                  }
+                }
+            }
+        }
+        if (!empty($form_state['values']['field_contacts'])){
+            $contacts_values = $form_state['values']['field_contacts']['und'];
+            unset($contacts_values['add_more']);
+            foreach($contacts_values as $contact_key => $contacts){
+                if (!empty($contacts['field_phone_number'])){
+                    $phone_number = $contacts['field_phone_number']['und'][0]['value'];
+                    if (!empty($phone_number)) {
+//                    $phone_number = '5s33 23117';
+                        if (!preg_match('/^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{1})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/', ($phone_number))) {
+                            form_set_error('field_contacts[und][0][field_phone_number]', t('Entered phone number: ') . $phone_number . t(' is not valid'));
+                        }
+                    }
+                }
+            }
+        }
+        if (!empty($form_state['values']['field_contacts'])){
+            $contacts_values = $form_state['values']['field_contacts']['und'];
+            unset($contacts_values['add_more']);
+            foreach($contacts_values as $contact_key => $contacts){
+                if (!empty($contacts['field_website'])){
+                    $website = $contacts['field_website']['und'][0]['value'];
+                    if (!empty($website)) {
+                        if (filter_var($website, FILTER_VALIDATE_URL)) {
+                        } else {
+                            form_set_error('field_contacts[und][0][field_website]', $website . t(' is not a valid website'));
+                        }
+                    }
+                }
+            }
+        }
+    }
+//    exit();
+}
+
 /**
  * @param $node
  * @return mixed
@@ -287,7 +337,9 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
                     $form['field_school_selections']['und']['#options'][$options_key] = t($options_value);
                 }
             }
-//            dpm($form)
+
+
+
             return $form;
             break;
     }
@@ -411,7 +463,7 @@ function hitsa_curriculum_attachments($attachments)
         foreach ($attachments as $key => $attachment) {
             $attachment_url = file_create_url($attachment['uri']);
             $output .= '<a class="link-circle" href="' . $attachment_url . '">';
-            $output .= '<span class="before-envelope"></span>';
+            $output .= '<span class="before-document"></span>';
             $output .= $attachment['filename'];
             $output .= '</a><!--/link-circle-->';
         }
@@ -427,12 +479,12 @@ function hitsa_curriculum_pictures($pictures)
         $output .= '<div class="row">';
         foreach ($pictures as $key => $picture) {
             $picture_text = '';
-            $image_style = 'large';
+            $image_style = 'hc_pictures';
             $image_url = image_style_url($image_style, $picture['uri']);
             if (!empty($picture['field_file_image_title_text'])) {
                 $picture_text = $picture['field_file_image_title_text']['und'][0]['value'];
             }
-            $output .= '  <div class="col-5">';
+            $output .= '  <div class="col-6 sm-12">';
             $output .= '  <figure>';
             $output .= '    <img src="' . $image_url . '" alt="">';
             $output .= '    <figcaption>' . $picture_text . '</figcaption>';
@@ -529,10 +581,10 @@ function hitsa_curriculum_generate_area_right_side($node)
             $output .= ' <div class="col-9">';
             $output .= ' <article>';
             $output .= '<h3>' . $node->title . '
-            <span class="btn-bar align-right pull-right">
-                <a href="" class="btn-circle before-share"></a>
-                <a href="javascript:window.print();" class="btn-circle before-print"></a>
-            </span><!--/button-row-->
+            <span class="btn-bar align-right pull-right sm-hide">
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="btn-circle before-print"></a>
+                           </span><!--/button-row-->
             </h3>';
 
             $output .= '<div class="intro">';
@@ -773,16 +825,16 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     $output .= '
     <h3 class="sm-block-title">' . $content->title . '
        <span class="btn-bar align-right pull-right sm-hide">
-          <a href="" class="btn-circle before-share"></a>
-          <a href="javascript:window.print();" class="btn-circle before-print"></a>
-       </span><!--/button-row-->
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="btn-circle before-print"></a>
+                           </span><!--/button-row-->
     </h3>';
-    if (!empty($content->field_speciality_description)) {
-        $output_elements['speciality_description'] = '<h5 class="sm-alignment">' . $content->field_speciality_description['und'][0]['value'] . '
+    if (!empty($content->field_table_description)) {
+        $output_elements['table_description'] = '<h5 class="sm-alignment">' . $content->field_table_description['und'][0]['value'] . '
        <span class="btn-bar align-right pull-right sm-show">
-          <a href="" class="btn-circle before-share"></a>
-          <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-       </span><!--/button-row-->
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                           </span><!--/button-row-->
     </h5>';
     }
     if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses'||$curriculum_type=='hobby-groups'||$curriculum_type=='hobby-activity'||$curriculum_type=='e-course') {
@@ -961,8 +1013,8 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     }
                 }
                 if ($curriculum_type=='specialities'){
-                    if (!empty($output_elements['speciality_description'])){
-                        $output.=$output_elements['speciality_description'];
+                    if (!empty($output_elements['table_description'])){
+                        $output.=$output_elements['table_description'];
                     }
                     if(!empty($output_elements['table'])){
                         $output.=$output_elements['table'];
@@ -988,6 +1040,9 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                         $output.=$output_elements['body_element'];
                     }
 
+                    if (!empty($output_elements['table_description'])){
+                        $output.=$output_elements['table_description'];
+                    }
                     if(!empty($output_elements['table'])){
                         $output.=$output_elements['table'];
                     }
@@ -1034,7 +1089,7 @@ function hitsa_curriculum_generate_header($header)
 {
     if (!empty($header->cp_image)) {
         $image = $header->cp_image['und'][0];
-        $image_style = 'large';
+        $image_style = 'hc_pictures';
         $image_url = image_style_url($image_style, $image['uri']);
         $picture_text = '';
         if (!empty($image['field_file_image_title_text'])) {
@@ -1160,7 +1215,7 @@ function hitsa_curriculum_fp_subject_fields()
             $image_url = '';
             if (!empty($loaded_speciality->field_pictures)) {
                 $picture = $loaded_speciality->field_pictures['und'][0];
-                $image_style = 'large';
+                $image_style = 'hc_pictures';
                 $image_url = image_style_url($image_style, $picture['uri']);
             
                 $term = taxonomy_term_load($taxonomy_value->tid);
@@ -1269,7 +1324,7 @@ function hitsa_curriculu_fp_mobile_fields()
             $image_url = '';
             if (!empty($loaded_speciality->field_pictures)) {
                 $picture = $loaded_speciality->field_pictures['und'][0];
-                $image_style = 'large';
+                $image_style = 'hc_pictures';
                 $image_url = image_style_url($image_style, $picture['uri']);
             }
             if (!empty($loaded_speciality)) {
@@ -1352,4 +1407,29 @@ function hitsa_curriculum_check_block_visibility($source,$selection){
         }
     }
     return ;
+}
+function hitsa_curriculum_image_default_styles(){
+    $styles = array();
+    $styles['hc_pictures'] = array(
+        'effects' => array(
+            array(
+                'name' => 'image_scale',
+                'data' => array(
+                    'height' => 440,
+                    'upscale' => 1,
+                ),
+                'weight' => 0,
+            ),
+            array(
+                'name' => 'image_crop',
+                'data' => array(
+                    'width' => 780,
+                    'height' => 440,
+                ),
+                'weight' => 1,
+            ),
+        ),
+    );
+
+    return $styles;
 }
