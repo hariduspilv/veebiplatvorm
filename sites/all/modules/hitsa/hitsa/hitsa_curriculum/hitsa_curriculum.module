@@ -507,11 +507,11 @@ function hitsa_curriculum_contacts($contacts)
             $output .= '<ul class="list-details">';
             if (!empty($contact->field_website)) {
                 # code...
-
+                dpm($contact);
                 $output .= '   <li>';
                 $output .= '      <div class="before-home"></div>';
                 $output .= '      <div class="list-details_text">';
-                $output .= '         <p><a href="' . $contact->field_website['und'][0]['value'] . '" target="_blank">' . $contact->field_website['und'][0]['value'] . '</a></p>';
+                $output .= '         <p><a href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $contact->field_website['und'][0]['title'] . '</a></p>';
                 $output .= '      </div><!--/list-details_text-->';
                 $output .= '   </li>';
             }
