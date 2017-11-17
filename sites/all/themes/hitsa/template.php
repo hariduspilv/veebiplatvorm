@@ -464,19 +464,25 @@ function hitsa_form_element($variables) {
 }
 
 function hitsa_button($variables) {
-  $element = $variables['element'];
-  $element['#attributes']['type'] = 'submit';
-  element_set_attributes($element, array('id', 'name', 'value'));
+    $element = $variables['element'];
+    $element['#attributes']['type'] = 'submit';
 
-  $element['#attributes']['class'][] = 'form-' . $element['#button_type'];
-  $element['#attributes']['class'][] = 'btn btn-filled'; // HITSA Form element
-  if (!empty($element['#attributes']['disabled'])) {
-    $element['#attributes']['class'][] = 'form-button-disabled';
-  }
-  
-  return '<input' . drupal_attributes($element['#attributes']) . ' />';
+    element_set_attributes($element, array('id', 'name', 'value'));
+
+    $element['#attributes']['class'][] = 'form-' . $element['#button_type'];
+    if (!empty($element['#attributes']['disabled'])) {
+        $element['#attributes']['class'][] = 'form-button-disabled';
+    }
+
+    if (isset($element['#buttontype']) && $element['#buttontype'] == 'button') {
+        $value = $element['#value'];
+        unset($element['#attributes']['value']);
+        return '<button' . drupal_attributes($element['#attributes']) . '>' . $value . '</button>';
+    }
+    else {
+        return '<input' . drupal_attributes($element['#attributes']) . ' />';
+    }
 }
-
 function hitsa_container($variables) {
   $element = $variables['element'];
   // Ensure #attributes is set.

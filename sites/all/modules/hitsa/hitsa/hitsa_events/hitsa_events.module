@@ -25,6 +25,11 @@ function hitsa_events_menu()
       'page callback' => 'hitsa_events_endpoint',
       'access arguments' => array('access content'),
     );
+    $items['events/calendar/api/add'] = array(
+      'title' => check_plain(t('Calendar')),
+      'page callback' => 'hitsa_events_calendar_add',
+      'access arguments' => array('access content'),
+    );
     $items['api/events_autocomplete'] = array(
       'title' => check_plain(t('Calendar')),
       'page callback' => 'hitsa_events_autocomplete',
@@ -653,6 +658,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output.= ($type=='training'&&!empty($training_cost))?' '.$training_cost.' ':'';
         $output.= '<br />';
         $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
+        $output.= ($type!='training')?'<a href="/events/calendar/api/add" data-plugin="modal" class="before-calendar">'.t('Add to calendar').'</a>':'';
         $output.= ($type=='training')?'<a class="before-register">'.t('Register to training').'</a>':'';
         $output.= (!empty($tags_ready)&&$type!='training')?'<ul class="tags">':'';
         $output.= (!empty($tags_ready)&&$type!='training')?$tags_ready:'';
@@ -1287,4 +1293,137 @@ function hitsa_events_autocomplete(){
     $json = json_encode($data);
     print ($json);
 
+}
+function hitsa_events_calendar_add(){
+    $build = array();
+    $build['calender_add_block'] = array(
+        '#type' => 'markup',
+        '#markup' => hitsa_events_calendar_add_block(),
+    );
+//    $page = array(
+//        '#type' => 'page',
+//    );
+//    $page = drupal_render_page($page);
+//    print($page);
+
+    return $build;
+}
+function hitsa_events_calendar_add_block(){
+    $add_to_calendar_form = drupal_get_form('hitsa_events_add_to_calendar_form');
+    $output = '';
+
+        $output.='<div class="block" data-modal="true">';
+        $output.='           ';
+        $output.='           <h1 class="block-title">Lisa kalendrisse <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a></h1>';
+        $output.='			';
+        $output.='			<div class="row-spacer-xs"></div>';
+        $output.='			';
+        $output.= drupal_render($add_to_calendar_form);
+        $output.='    </div><!--/block-->';
+    return $output;
+}
+function hitsa_events_add_to_calendar_form($form,&$form_state){
+    $form=array(
+        '#id' => 'ajax-target',
+
+    );
+    $form['selections'] = array(
+        '#type' =>'container',
+        '#theme_wrappers' => array(),
+        '#prefix' =>'<div class="form-item">',
+        '#suffix' => '</div><!--/form-item-->',
+
+    );
+    $form['selections']['icaldownload'] = array(
+        '#name' => 'icaldownload',
+        '#id' => 'icaldownload',
+        '#type' => 'checkbox',
+        '#theme_wrappers' => array(),
+        '#title' => t('Download as iCal calendar event'),
+        '#value' => 'icaldownload',
+        '#suffix' => '<span class="check"></span>
+								</span><!--/customCheckbox-->
+								<span class="label-title">'.t('Download event as iCal event').'</span>
+							</label>',
+        '#prefix' => '<label class="full-width">
+								<span class="customCheckbox">',
+    );
+    $form['selections']['outlookevent'] = array(
+        '#name' => 'outlookevent',
+        '#id' => 'outlookevent',
+        '#type' => 'checkbox',
+        '#theme_wrappers' => array(),
+        '#title' => t('Download as iCal calendar event'),
+        '#value' => 'outlookevent',
+        '#suffix' => '<span class="check"></span>
+								</span><!--/customCheckbox-->
+								<span class="label-title">'.t('Add event to calendar (Outlook)').'</span>
+							</label>',
+        '#prefix' => '<label class="full-width">
+								<span class="customCheckbox">',
+    );
+    $form['selections']['email'] = array(
+        '#name' => 'email',
+        '#id' => 'email',
+        '#attributes' => array(
+            'data-plugin' => 'hideElement',
+            'data-relative' => 'emailInput',
+        ),
+        '#type' => 'checkbox',
+        '#theme_wrappers' => array(),
+        '#title' => t('Download as iCal calendar event'),
+        '#value' => 'email',
+        '#suffix' => '<span class="check"></span>
+								</span><!--/customCheckbox-->
+								<span class="label-title">'.t('Send event to your e-mail').'</span>
+							</label>',
+        '#prefix' => '<label class="full-width">
+								<span class="customCheckbox">',
+    );
+    $form['email_container'] = array(
+        '#type' => 'container',
+        '#theme_wrappers' => array(),
+        '#prefix' => '<div class="row-spacer"></div><div class="row">',
+        '#suffix' => '</div><!--/row-->'
+
+    );
+    $form['email_container']['email'] = array(
+        '#type' => 'textfield',
+        '#theme_wrappers' => array(),
+
+        '#prefix' => '<div class="col-12" id="emailInput">
+							<div class="form-item form-item_maxWidth form-item-h-offset">
+								<div class="form-item_title">'.t('Your e-mail address').' *</div>',
+        '#suffix' => '</div><!--/form-item-->
+						</div><!--/col-8-->',
+    );
+
+    $form['email_container']['submit'] = array(
+        '#value' => t('Ready'),
+        '#name' => 'event_submit',
+        '#ajax' =>  array(
+            'wrapper' =>'ajax-target',
+            'callback' => 'hitsa_events_add_event_to_calendar_actual',
+            'effect' => 'fade',
+        ),
+        '#buttontype' =>'button',
+        '#attributes' => array(
+            'class' => array('btn ',' btn-filled',' btn-maxWidth')
+        ),
+        '#prefix' => '<div class="col-12">
+							<div class="form-item form-item-h-offset">
+								<div class="form-item_title">&nbsp;</div>',
+        '#suffix' => '</div><!--/form-item-->
+						</div><!--/col-4-->',
+        '#type' => 'submit',
+        '#submit' => array('hitsa_events_add_event_to_calendar_actual'),
+
+    );
+
+    dpm($form);
+    return $form;
+}
+function hitsa_events_add_event_to_calendar_actual($form,&$form_state){
+    var_dump($form_state);
+    return 'kala';
 }
