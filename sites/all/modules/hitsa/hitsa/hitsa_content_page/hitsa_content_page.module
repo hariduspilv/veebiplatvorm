@@ -79,6 +79,7 @@ function content_page_form($node, $form_state) {
 function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   if($form_id === 'content_page_node_form') {
+    //$form['additional_settings']['#access'] = FALSE;
     // Show text summary by default.
     hitsa_core_formatted_text_show_summary();
     
@@ -160,6 +161,15 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
           ),
         );
       }
+      if(!empty($form['cp_service_type'])) {
+        $form['cp_service_type']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_service',
+            ),
+          ),
+        );
+      }
     }
     // Add subpage titles outside
     foreach($form['cp_subpages'][LANGUAGE_NONE] as &$subpage_fieldset) {
@@ -167,6 +177,35 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
         $subpage_title = $subpage_fieldset['#entity']->subpage_title[LANGUAGE_NONE][0]['safe_value'];
         $subpage_fieldset['#prefix'] = '<b>' . check_plain($subpage_title) . '</b>';
       }
+    }
+  }
+}
+
+function hitsa_content_page_node_presave($node) {
+  if($node->type === 'content_page') {
+    $emw_node = entity_metadata_wrapper('node', $node);
+    $cp_type = $emw_node->cp_type->value();
+    if($cp_type === 'cp_service' && $service_type = $emw_node->cp_service_type->value()) {
+      $service_menu_mlid = variable_get('hitsa_' . $service_type . '_mlid');
+      if($service_submenu = menu_link_load($service_menu_mlid)) {
+        $menu_link = array(
+          'link_path' => 'node/' . $node->nid,
+          'link_title' => $node->title,
+          'plid' => $service_menu_mlid,
+          'menu_name' => 'hitsa-main-menu',
+        );
+        /*
+        if(!empty($node->menu['mlid'])) {
+          $menu_link['mlid'] = $node->menu['mlid'];
+        }
+        */
+        menu_link_save($menu_link);
+      }
+      
+      
+      
+      
+      
     }
   }
 }

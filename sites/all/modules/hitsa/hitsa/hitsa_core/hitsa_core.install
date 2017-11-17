@@ -144,7 +144,7 @@ function _hitsa_core_menu_links() {
   $hitsa_main_menu = variable_get('hitsa_main_menu_name');
   if(!empty($hitsa_main_menu)) {
     
-    $school_type = variable_get('hitsa_school_type', HITSA_SCHOOL_GYMNASIUM);
+    $school_type = hitsa_core_get_school_type();
     
     switch($school_type) {
       case HITSA_SCHOOL_GYMNASIUM:
@@ -152,7 +152,7 @@ function _hitsa_core_menu_links() {
       case HITSA_SCHOOL_VOCATIONAL:
         $menu_links[] = array(
           'link_path' => '<front>',
-          'link_title' => $t('Continuing education'),
+          'link_title' => $t('Trainings'),
           'menu_name' => $hitsa_main_menu,
           'weight' => -7,
         );
@@ -162,6 +162,7 @@ function _hitsa_core_menu_links() {
           'link_title' => $t('Services'),
           'menu_name' => $hitsa_main_menu,
           'weight' => -6,
+          'hitsa_menu_type' => 'services',
         );
         break;
     }

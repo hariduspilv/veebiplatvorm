@@ -88,23 +88,6 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
-  /* Field: Content: Gallery */
-  $handler->display->display_options['fields']['cp_gallery']['id'] = 'cp_gallery';
-  $handler->display->display_options['fields']['cp_gallery']['table'] = 'field_data_cp_gallery';
-  $handler->display->display_options['fields']['cp_gallery']['field'] = 'cp_gallery';
-  $handler->display->display_options['fields']['cp_gallery']['label'] = '';
-  $handler->display->display_options['fields']['cp_gallery']['element_type'] = '0';
-  $handler->display->display_options['fields']['cp_gallery']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['cp_gallery']['element_wrapper_type'] = '0';
-  $handler->display->display_options['fields']['cp_gallery']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['cp_gallery']['type'] = 'image_url';
-  $handler->display->display_options['fields']['cp_gallery']['settings'] = array(
-    'url_type' => '1',
-    'image_style' => 'hitsa_article_small_thumbnail',
-    'image_link' => '',
-  );
-  $handler->display->display_options['fields']['cp_gallery']['delta_limit'] = '1';
-  $handler->display->display_options['fields']['cp_gallery']['delta_offset'] = '0';
   /* Field: Content: Path */
   $handler->display->display_options['fields']['path']['id'] = 'path';
   $handler->display->display_options['fields']['path']['table'] = 'node';
@@ -113,6 +96,24 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['path']['element_type'] = '0';
   $handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['path']['element_wrapper_type'] = '0';
+  /* Field: Field: Galerii */
+  $handler->display->display_options['fields']['subpage_images']['id'] = 'subpage_images';
+  $handler->display->display_options['fields']['subpage_images']['table'] = 'field_data_subpage_images';
+  $handler->display->display_options['fields']['subpage_images']['field'] = 'subpage_images';
+  $handler->display->display_options['fields']['subpage_images']['label'] = '';
+  $handler->display->display_options['fields']['subpage_images']['element_type'] = '0';
+  $handler->display->display_options['fields']['subpage_images']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['subpage_images']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['subpage_images']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['subpage_images']['type'] = 'image_url';
+  $handler->display->display_options['fields']['subpage_images']['settings'] = array(
+    'url_type' => '1',
+    'image_style' => 'hitsa_article_small_thumbnail',
+    'image_link' => '',
+  );
+  $handler->display->display_options['fields']['subpage_images']['delta_limit'] = '1';
+  $handler->display->display_options['fields']['subpage_images']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['subpage_images']['separator'] = '';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -189,23 +190,6 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
-  /* Field: Content: Gallery */
-  $handler->display->display_options['fields']['cp_gallery']['id'] = 'cp_gallery';
-  $handler->display->display_options['fields']['cp_gallery']['table'] = 'field_data_cp_gallery';
-  $handler->display->display_options['fields']['cp_gallery']['field'] = 'cp_gallery';
-  $handler->display->display_options['fields']['cp_gallery']['label'] = '';
-  $handler->display->display_options['fields']['cp_gallery']['element_type'] = '0';
-  $handler->display->display_options['fields']['cp_gallery']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['cp_gallery']['element_wrapper_type'] = '0';
-  $handler->display->display_options['fields']['cp_gallery']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['cp_gallery']['type'] = 'image_url';
-  $handler->display->display_options['fields']['cp_gallery']['settings'] = array(
-    'url_type' => '1',
-    'image_style' => 'hitsa_article_thumbnail',
-    'image_link' => '',
-  );
-  $handler->display->display_options['fields']['cp_gallery']['delta_limit'] = '1';
-  $handler->display->display_options['fields']['cp_gallery']['delta_offset'] = '0';
   /* Field: Content: Path */
   $handler->display->display_options['fields']['path']['id'] = 'path';
   $handler->display->display_options['fields']['path']['table'] = 'node';
@@ -214,6 +198,24 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['path']['element_type'] = '0';
   $handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['path']['element_wrapper_type'] = '0';
+  /* Field: Field: Galerii */
+  $handler->display->display_options['fields']['subpage_images']['id'] = 'subpage_images';
+  $handler->display->display_options['fields']['subpage_images']['table'] = 'field_data_subpage_images';
+  $handler->display->display_options['fields']['subpage_images']['field'] = 'subpage_images';
+  $handler->display->display_options['fields']['subpage_images']['label'] = '';
+  $handler->display->display_options['fields']['subpage_images']['element_type'] = '0';
+  $handler->display->display_options['fields']['subpage_images']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['subpage_images']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['subpage_images']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['subpage_images']['type'] = 'image_url';
+  $handler->display->display_options['fields']['subpage_images']['settings'] = array(
+    'url_type' => '1',
+    'image_style' => 'hitsa_article_thumbnail',
+    'image_link' => '',
+  );
+  $handler->display->display_options['fields']['subpage_images']['delta_limit'] = '1';
+  $handler->display->display_options['fields']['subpage_images']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['subpage_images']['separator'] = '';
   $handler->display->display_options['displays'] = array(
     'news_block' => 'news_block',
     'default' => 0,
@@ -231,6 +233,7 @@ function hitsa_articles_views_default_views() {
     t('News - Small'),
     t('News - Latest Attachment'),
   );
+
   
   $views[$view->name] = $view;
   return $views;

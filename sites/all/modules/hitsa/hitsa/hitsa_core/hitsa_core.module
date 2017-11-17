@@ -56,6 +56,9 @@ function hitsa_core_menu()
     );
     $items['sitemap'] = array(
     'title' => 'Sitemap',
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'hitsa-footer-menu',
+    'weight' => 1,
     'page callback' => 'hitsa_core_render_sitemap',
     'access callback' => true,
     );
@@ -97,6 +100,7 @@ function hitsa_core_render_sitemap()
 {
     $main_menu = menu_tree_all_data('hitsa-main-menu');
     $menu_tree_output = menu_tree_output($main_menu);
+    $menu_tree_output['#theme_wrappers'] = array('menu_tree__hitsa_sitemap');
     return theme('hitsa_sitemap', array('menu_tree' => $menu_tree_output));
 }
 
@@ -127,7 +131,6 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
         }
     
         //$form['#theme'] = 'main_menu_overview_form';
-        dpm($form);
     }
 }
 

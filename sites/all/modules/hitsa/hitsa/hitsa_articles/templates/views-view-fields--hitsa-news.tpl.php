@@ -24,12 +24,15 @@
  * @ingroup views_templates
  */
 ?>
+<?php //dpm($fields); ?>
 <div class="col-6">
   <a href="<?php print $fields['path']->content; ?>" class="object<?php if($view->current_display === 'news_block') {print ' object-horizontal';} ?>">
     <span class="object-inner">
-      <span class="object-image" style="background-image:url(<?php print $fields['cp_gallery']->content; ?>);">
+      <?php if(!empty($fields['subpage_images']->content)): ?>
+      <span class="object-image" style="background-image:url(<?php print $fields['subpage_images']->content; ?>);">
         <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
       </span>
+      <?php endif; ?>
       <span class="object-content">
         <span class="object-title"><?php print $fields['title']->content; ?></span>
         <span class="object-footer">

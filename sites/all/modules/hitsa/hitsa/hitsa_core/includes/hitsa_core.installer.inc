@@ -240,14 +240,39 @@ function hitsa_core_delete_menus($installed_menus = array(), $module = NULL) {
 * Menu links
 */
 function hitsa_core_add_menu_links($installed_menu_links = array(), $module = NULL) {
+  $menu_mlids = array();
   foreach ($installed_menu_links as $link) {
-    menu_link_save($link);
+    $menu_type = NULL;
+    if(isset($link['hitsa_menu_type'])) {
+      $menu_type = $link['hitsa_menu_type'];
+      unset($link['hitsa_menu_type']);
+    }
+    $mlid = menu_link_save($link);
+    if($mlid) {
+      $menu_mlids[] = $mlid;
+    }
+    if(isset($menu_type) && $mlid) {
+      variable_set("hitsa_" . $menu_type . "_mlid", $mlid);
+    }
+  }
+  if(!empty($menu_mlids)) {
+    variable_set($module . '_mlids', $menu_mlids);
   }
 }
 
 function hitsa_core_delete_menu_links($installed_menu_links = array(), $module = NULL) {
+  $menu_mlids = variable_get($module . '_mlids');
+  if(!empty($menu_mlids)) {
+    foreach($menu_mlids as $mlid) {
+      menu_link_delete($mlid);
+    }
+  }
+  variable_del($module . '_mlids');
   foreach ($installed_menu_links as $link) {
-    menu_link_delete(NULL, $link['link_path']);
+    if($link['hitsa_menu_type']) {
+      $menu_type = $link['hitsa_menu_type'];
+      variable_del("hitsa_" . $menu_type . "_mlid");
+    }
   }
 }
 

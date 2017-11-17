@@ -1,8 +1,8 @@
 <div class="col-4">
   <a href="<?php print url('node/' . $node->nid); ?>" class="object">
     <span class="object-inner">
-      <?php if(!empty($node->cp_gallery[LANGUAGE_NONE][0])): ?>
-      <span class="object-image" style="background-image:url(<?php print image_style_url('hitsa_core_thumbnail', $node->cp_gallery[LANGUAGE_NONE][0]['uri']); ?>);">
+      <?php if(!empty($node->subpage_images[LANGUAGE_NONE][0])): ?>
+      <span class="object-image" style="background-image:url(<?php print image_style_url('hitsa_core_thumbnail', $node->subpage_images[LANGUAGE_NONE][0]['uri']); ?>);">
         <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>">
       </span>
       <?php endif; ?>

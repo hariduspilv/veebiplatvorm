@@ -78,9 +78,9 @@ function hitsa_menu_tree__hitsa_main_menu($variables) {
 function hitsa_submenu_tree__hitsa_main_menu($variables) {
   $output = "";
   $output .= '<div class="header-nav_dropdown"><div class="inline"><div class="row"><div class="col-9">';
-  $output .= '<h3>' . $variables['parent'] . '</h3>';
+  $output .= '<h3>' . t($variables['parent']) . '</h3>';
   $output .= '<div class="row">';
-  
+
   foreach($variables['submenu'] as $submenu_column) {
     $output .= '<div class="col-4"><ul>';
     foreach($submenu_column as $submenu_link) {
@@ -92,11 +92,48 @@ function hitsa_submenu_tree__hitsa_main_menu($variables) {
   return $output;
 }
 
+function hitsa_menu_tree__hitsa_sitemap($variables) {
+  $menu_tree = '';
+  $menu_tree_array = array();
+  foreach($variables['#tree'] as $link) {
+    if(!empty($link['#theme'])) {
+      $link['#theme'] = array('menu_link__hitsa_sitemap');
+      //$menu_tree .= render($link);
+      $menu_tree_array[] = render($link);
+    }
+  }
+  $per_column = ceil(count($menu_tree_array) / 3);
+  $menu_tree_array_split = array_chunk($menu_tree_array, $per_column);
+
+  foreach($menu_tree_array_split as $delta => $menu_tree_column) {
+    if($delta === 0) array_unshift($menu_tree_column, '<h3 class="heading-link"><a href="' . url('<front>') . '">' . t('HOMEPAGE') . '</a></h3>');
+    $menu_tree .= '<div class="col-4 sm-12"><div class="sitemap">' . implode($menu_tree_column) . '</div></div>';
+  }
+  return $menu_tree;
+}
+
+function hitsa_menu_link__hitsa_sitemap(array $variables) {
+  $element = $variables['element'];
+  $sub_menu = '';
+  $output = '';
+
+  if (!empty($element['#below']) && $element['#original_link']['plid'] === '0') {
+    $sub_menu = drupal_render($element['#below']);
+    $output = '<h3>' . t($element['#title']) . '</h3>';
+  } else if($element['#original_link']['plid'] !== '0') {
+    $output = l($element['#title'], $element['#href'], $element['#localized_options']);
+  }
+  
+  return $output . $sub_menu . "\n";
+}
+
 function hitsa_menu_link__hitsa_main_menu($variables) {
   $element = $variables['element'];
   $sub_menu = '';
+
   $element['#attributes']['class'] = array();
   if ($element['#below']) {
+    $element['#title'] = t($element['#title']);
     $children_mids = array_fill_keys(element_children($element['#below']), TRUE);
     $children = array();
     foreach($element['#below'] as $key => $el) {
@@ -252,7 +289,7 @@ function hitsa_menu_link__hitsa_footer_menu($variables) {
 
 function hitsa_preprocess_menu_link(&$variables) {
   $hook = $variables['theme_hook_original'];
-  
+
   switch($hook) {
     case 'menu_link__hitsa_header_menu':
       if(isset($variables['element']['#attributes']['class'])) unset($variables['element']['#attributes']['class']);

@@ -55,6 +55,19 @@ function _hitsa_content_page_fields() {
         ),
       ),
     ),
+    'cp_service_type' => array(
+      'field_name' => 'cp_service_type',
+      'label' => $t('Service type'),
+      'type' => 'list_text',
+      'locked' => 1,
+      'settings' => array(
+        'allowed_values' => array(
+          'service_public' => $t('Public'),
+          'service_internal' => $t('Internal'),
+          'service_entrepreneurial' => $t('Entrepreneurial'),
+        ),
+      ),
+    ),
     'cp_image' => array(
       'field_name' => 'cp_image',
       'label' => $t('Image'),
@@ -236,6 +249,22 @@ function _hitsa_content_page_field_instances() {
         ),
       ),
       'required' => 1,
+    ),
+    'cp_service_type' => array(
+      'field_name' => 'cp_service_type',
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
+      'label' => $t('Service Type'),
+      'widget' => array(
+        'type' => 'options_select',
+        'module' => 'options',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'list_default',
+        ),
+      ),
     ),
     'cp_image' => array(
       'field_name' => 'cp_image',
@@ -531,7 +560,7 @@ function _hitsa_content_page_paragraphs() {
 }
 
 /*
-* Hitsa core nodes
+* Hitsa content page nodes
 */
 function _hitsa_content_page_nodes() {
   $main_menu_name = variable_get('hitsa_main_menu_name');
@@ -601,4 +630,43 @@ function _hitsa_content_page_image_styles() {
   );
   
   return $image_styles;
+}
+
+/*
+* Hitsa content page service links
+*/
+function _hitsa_content_page_menu_links() {
+  $t = get_t();
+  
+  $menu_links = array();
+  
+  $services_mlid = variable_get('hitsa_services_mlid');
+  if(!empty($services_mlid)) {
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('Public Services'),
+      'menu_name' => 'hitsa-main-menu',
+      'plid' => $services_mlid,
+      'weight' => 0,
+      'hitsa_menu_type' => 'service_public',
+    );
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('Internal Services'),
+      'menu_name' => 'hitsa-main-menu',
+      'plid' => $services_mlid,
+      'weight' => 1,
+      'hitsa_menu_type' => 'service_internal',
+    );
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => $t('Services for Entrepreneur'),
+      'menu_name' => 'hitsa-main-menu',
+      'plid' => $services_mlid,
+      'weight' => 2,
+      'hitsa_menu_type' => 'service_entrepreneurial',
+    );
+  }
+  
+  return $menu_links;
 }

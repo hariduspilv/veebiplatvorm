@@ -491,7 +491,7 @@ function _hitsa_contacts_menu_links() {
   $t = get_t();
   
   $menu_links = array();
-  
+  /*
   $hitsa_main_menu_name = variable_get('hitsa_main_menu_name');
   if(!empty($hitsa_main_menu_name)) {
     $menu_links[] = array(
@@ -500,7 +500,7 @@ function _hitsa_contacts_menu_links() {
       'menu_name' => $hitsa_main_menu_name,
       'weight' => 10,
     );
-  }
+  }*/
   
   return $menu_links;
 }

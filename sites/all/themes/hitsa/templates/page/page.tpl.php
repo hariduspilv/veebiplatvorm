@@ -99,6 +99,16 @@
   <?php print render($page['hero'])?>
   <?php endif;?>
   <div class="inline">
+    <?php if ($messages): ?>
+      <div id="messages">
+        <div class="section clearfix">
+      <?php print $messages; ?>
+        </div>
+      </div> <!-- /.section, /#messages -->
+    <?php endif; ?>
+    <?php if ($breadcrumb): ?>
+      <div id="breadcrumb"><?php print $breadcrumb; ?></div>
+    <?php endif; ?>
     <?php if(!empty($page['super_news'])):?>
       <div class="row">
          <div class="col-12">
@@ -129,21 +139,13 @@
     <?php endif?>
   </div><!--/row-->
   </div><!--/inline-->
-  <?php if ($messages): ?>
-    <div id="messages"><div class="section clearfix">
-      <?php print $messages; ?>
-    </div></div> <!-- /.section, /#messages -->
-  <?php endif; ?>
-
+  
+  <?php if($page['sidebar_right'] || $page['sidebar_second']): ?>
   <div class="inline">
   <?php if(drupal_is_front_page()): ?>
-    <?php //print $front_content; ?>
   <?php else: ?>
-    <?php if ($breadcrumb): ?>
-      <div id="breadcrumb"><?php print $breadcrumb; ?></div>
-    <?php endif; ?>
-
-    <?php if ($page['sidebar_right']): ?>
+    
+    <?php if($page['sidebar_right']): ?>
       <div id="sidebar-first" class="column sidebar"><div class="section">
         <?php print render($page['sidebar_right']); ?>
       </div></div> <!-- /.section, /#sidebar-first -->
@@ -175,7 +177,7 @@
   
   <?php endif; ?>
   </div> <!-- /.inline -->
-
+  <?php endif; ?>
 </div><!--/wrapper-->
 
 <footer class="main">

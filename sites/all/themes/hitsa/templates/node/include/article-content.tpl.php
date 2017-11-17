@@ -44,8 +44,8 @@
       </div><!--/button-row-->
       <?php endif; ?>
       <div class="row-spacer-xl"></div>
-      
-      <?php foreach($cp_image as $image): // Gallery ?>
+
+      <?php foreach($subpage_images as $image): // Gallery ?>
       <figure>
         <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" alt="<?php print check_plain($image['alt']); ?>">
         <figcaption><?php print check_plain($image['alt']); ?></figcaption>
