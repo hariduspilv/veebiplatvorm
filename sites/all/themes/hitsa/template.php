@@ -92,11 +92,56 @@ function hitsa_submenu_tree__hitsa_main_menu($variables) {
   return $output;
 }
 
+function hitsa_service_menu_tree__hitsa_main_menu($variables) {
+  $service_submenu = $variables['element'];
+  $output = "";
+  $output .= '<div class="header-nav_dropdown"><div class="inline"><div class="row"><div class="col-9">';
+  $output .= '<div class="row">';
+  foreach($service_submenu['#below'] as $service_subtype) {
+    if(!empty($service_subtype['#below'])) {
+      $output .= '<div class="col-4">';
+      $output .= '<h3>' . t($service_subtype['#title']) . '</h3>';
+      $output .= '<ul>';
+      if(!empty($service_subtype['#below'])) {
+        foreach($service_subtype['#below'] as $service) {
+          if(!empty($service['#original_link'])) {
+            $output .= render($service);
+          }
+        }
+      }
+      $output .= '</ul></div>';
+    }
+  }
+  $output .= '</div>';
+  
+  /*
+  foreach($variables['submenu'] as $submenu_column) {
+    $output .= '<div class="col-4"><ul>';
+    foreach($submenu_column as $submenu_link) {
+      $output .= render($submenu_link);
+    }
+    $output .= '</ul></div>';
+  }
+  */
+  $output .= '</div></div></div></div>';
+
+  return $output;
+}
+
 function hitsa_menu_tree__hitsa_sitemap($variables) {
   $menu_tree = '';
   $menu_tree_array = array();
-  foreach($variables['#tree'] as $link) {
-    if(!empty($link['#theme'])) {
+  $service_menu_mlid = variable_get('hitsa_services_mlid');
+  foreach($variables['#tree'] as $mlid => $link) {
+    if($mlid == $service_menu_mlid) {
+      foreach($link['#below'] as $service_subtype) {
+        if(!empty($service_subtype['#below'])) {
+          $link['#theme'] = array('menu_link__hitsa_sitemap__service');
+          $menu_tree_array[] = render($link);
+          break;
+        }
+      }
+    } else if(!empty($link['#theme'])) {
       $link['#theme'] = array('menu_link__hitsa_sitemap');
       //$menu_tree .= render($link);
       $menu_tree_array[] = render($link);
@@ -110,6 +155,17 @@ function hitsa_menu_tree__hitsa_sitemap($variables) {
     $menu_tree .= '<div class="col-4 sm-12"><div class="sitemap">' . implode($menu_tree_column) . '</div></div>';
   }
   return $menu_tree;
+}
+
+function hitsa_menu_tree__hitsa_services_block($variables) {
+  $output = '';
+  foreach($variables['#tree'] as $service_subtype) {
+    if(!empty($service_subtype['#below'])) {
+      //dpm($service_subtype);
+      
+    }
+  }
+  return '<ul class="header-nav_main">' . $variables['tree'] . '</ul>';
 }
 
 function hitsa_menu_link__hitsa_sitemap(array $variables) {
@@ -127,13 +183,55 @@ function hitsa_menu_link__hitsa_sitemap(array $variables) {
   return $output . $sub_menu . "\n";
 }
 
-function hitsa_menu_link__hitsa_main_menu($variables) {
+function hitsa_menu_link__hitsa_sitemap__service(array $variables) {
   $element = $variables['element'];
-  $sub_menu = '';
+  
+  $output = '';
+  $output = '<h3>' . t($element['#title']) . '</h3>';
+  $output .= '<ul>';
+  if (!empty($element['#below'])) {
+    foreach($element['#below'] as $service_subtype) {
+      if(!empty($service_subtype['#below'])) {
+        $output .= '<li>';
+        $output .= '<span>' . $service_subtype['#title'] . '</span>';
+        $output .= '<ul class="bullet-list_article">';
+        foreach($service_subtype['#below'] as $service) {
+          if(!empty($service['#original_link'])) {
+            $output .= '<li>' . render($service) . '</li>';
+          }
+        }
+        
+        $output .= '</li></ul>';
+      }
+    }
+  }
 
+  $output .= '</ul>';
+  return $output . "\n";
+}
+
+function hitsa_menu_link__hitsa_main_menu($variables) {
+  global $language;
+  
+  $element = $variables['element'];
+
+  $sub_menu = '';
   $element['#attributes']['class'] = array();
-  if ($element['#below']) {
-    $element['#title'] = t($element['#title']);
+  $service_menu_mlid = variable_get('hitsa_services_mlid');
+  $element['#title'] = t($element['#title']);
+  if($element['#original_link']['mlid'] === $service_menu_mlid) {
+    $sub_menu = theme('service_menu_tree__hitsa_main_menu', array('element' => $element));
+    $services_available = FALSE;
+    foreach($element['#below'] as $service_subtype) {
+      if(!empty($service_subtype['#below'])) {
+        $services_available = TRUE;
+      }
+    }
+    if(!$services_available) {
+      return ''; // No services available, hide menu.
+    }
+  }
+  else if ($element['#below']) {
     $children_mids = array_fill_keys(element_children($element['#below']), TRUE);
     $children = array();
     foreach($element['#below'] as $key => $el) {
@@ -142,7 +240,14 @@ function hitsa_menu_link__hitsa_main_menu($variables) {
       }
     }
     $children_split = array_chunk($children, 5);
-    $sub_menu = theme('submenu_tree__hitsa_main_menu', array('submenu' => $children_split, 'parent' => $element['#title']));
+    $sub_menu = theme('submenu_tree__hitsa_main_menu', 
+    array(
+      'submenu' => $children_split, 
+      'parent' => $element['#title'], 
+      'mlid' => $element['#original_link']['mlid'],
+      'plid' => $element['#original_link']['plid']
+      )
+    );
   } else if($element['#href'] === '<front>' && $element['#original_link']['depth'] === '1') {
     // Hide first level main menu elements without set link and children.
     return '';

@@ -46,6 +46,12 @@ function hitsa_core_theme() {
     ),
   );
   
+  $items['service_menu_tree'] = array(
+    'variables' => array(
+      'element' => NULL,
+    ),
+  );
+  
   $items['header_menu_tree'] = array(
     'render element' => 'tree',
   );
@@ -66,6 +72,7 @@ function hitsa_core_theme() {
     'variables' => array(
       'node' => NULL,
       'excerpt' => NULL,
+      'mlid' => NULL,
     ),
   );
   
@@ -74,6 +81,15 @@ function hitsa_core_theme() {
     'path' => drupal_get_path('module', 'hitsa_core') . '/templates',
     'variables' => array(
       'menu_tree' => NULL,
+    ),
+  );
+  
+  $items['hitsa_services_events'] = array(
+    'template' => 'hitsa-services-events-block',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/block',
+    'variables' => array(
+      'events' => NULL,
+      'services' => NULL,
     ),
   );
   
@@ -99,10 +115,11 @@ function hitsa_core_preprocess_page(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function hitsa_core_preprocess_hitsa_header(&$variables) {
+  global $language;
   // Load main menu
   $hitsa_main_menu_name = variable_get('hitsa_main_menu_name');
   if(!empty($hitsa_main_menu_name)) {
-    $main_menu = menu_tree_all_data($hitsa_main_menu_name);
+    $main_menu = i18n_menu_localize_tree(menu_tree_all_data($hitsa_main_menu_name));
     $variables['main_menu'] = menu_tree_output($main_menu);
   }
   // Load header menu

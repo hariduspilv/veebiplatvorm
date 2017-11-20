@@ -87,3 +87,24 @@ function hitsa_content_page_prepare_subpage_block($subpage_arrays, $display_styl
   }
   return $output;
 }
+
+function hitsa_content_page_services_block() {
+  $services_menu_mlid = variable_get('hitsa_services_mlid');
+  
+  $output = '';
+  
+  if(!empty($services_menu_mlid)) {
+    $tree = menu_tree_all_data('hitsa-main-menu');
+    foreach($tree as $child) {
+      if($child['link']['mlid'] == $services_menu_mlid){
+        $services_menu = $child;
+        break;
+      }
+    }
+  }
+  $services_menu_render = menu_tree_output($services_menu['below']);
+  $services_menu_render['#theme_wrappers'] = array('menu_tree__hitsa_services_block');
+
+  $output .= render($services_menu_render);
+  return $output;
+}

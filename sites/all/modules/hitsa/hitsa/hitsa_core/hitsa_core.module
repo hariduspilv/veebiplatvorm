@@ -23,7 +23,6 @@ function hitsa_core_menu()
     'page callback' => 'hitsa_core_event_settings',
     'access arguments' => array('administer hitsa page settings'),
     'file' => 'includes/hitsa_core_events.admin.inc',
-
     );
 
     $items['admin/hitsa/variables'] = array(
@@ -83,25 +82,46 @@ function hitsa_core_permission()
 function hitsa_core_block_info()
 {
     $blocks= array();
+    
+    $blocks['hitsa_services_events'] = array(
+      'info' => t('HITSA Services & Events'),
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'region' => 'sidebar_right',
+      'status' => "1",
+    );
     return $blocks;
 }
 
 function hitsa_core_block_view($delta = '')
 {
-    $output = array();
-    switch ($delta) {
-        
-    }
+  $output = array();
+  switch ($delta) {
+    case 'hitsa_our_stories':
+      if(module_exists('hitsa_events')) {
+        $events_content = hitsa_events_front_page_training_block();
+      }
+      if(module_exists('hitsa_content_page')) {
+        $services_content = hitsa_content_page_services_block();
+      }
+      $content = theme('hitsa_services_events', array(
+        'events' => !empty($events_content) ? $events_content : NULL,
+        'services' => !empty($services_content) ? $services_content : NULL,
+        )
+      );
+      $output = array('subject' => NULL, 'content' => $content);
+      break;
+  }
 
-    return $output;
+  return $output;
 }
 
 function hitsa_core_render_sitemap()
 {
-    $main_menu = menu_tree_all_data('hitsa-main-menu');
-    $menu_tree_output = menu_tree_output($main_menu);
-    $menu_tree_output['#theme_wrappers'] = array('menu_tree__hitsa_sitemap');
-    return theme('hitsa_sitemap', array('menu_tree' => $menu_tree_output));
+  $menu = i18n_menu_localize_tree(menu_tree_all_data('hitsa-main-menu'));
+  $menu_tree_output = menu_tree_output($menu);
+  $menu_tree_output['#theme_wrappers'] = array('menu_tree__hitsa_sitemap');
+  return theme('hitsa_sitemap', array('menu_tree' => $menu_tree_output));
 }
 
 /*

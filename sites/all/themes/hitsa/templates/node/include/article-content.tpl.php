@@ -44,13 +44,14 @@
       </div><!--/button-row-->
       <?php endif; ?>
       <div class="row-spacer-xl"></div>
-
-      <?php foreach($subpage_images as $image): // Gallery ?>
-      <figure>
-        <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" alt="<?php print check_plain($image['alt']); ?>">
-        <figcaption><?php print check_plain($image['alt']); ?></figcaption>
-      </figure>
-      <?php endforeach; ?>
+      <?php if(!empty($subpage_images)): ?>
+        <?php foreach($subpage_images as $image): // Gallery ?>
+        <figure>
+          <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" alt="<?php print check_plain($image['alt']); ?>">
+          <figcaption><?php print check_plain($image['alt']); ?></figcaption>
+        </figure>
+        <?php endforeach; ?>
+      <?php endif; ?>
     </div><!--/col-4-->
     <?php endif; ?>
   </div><!--/row-->
