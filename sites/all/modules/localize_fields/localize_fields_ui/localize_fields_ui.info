@@ -1,0 +1,18 @@
+name = "Localize Fields UI"
+description = "Provides translation of field labels, descriptions and list options to the field settings user interface."
+package = Multilingual
+
+core = 7.x
+php = 5.3
+
+dependencies[] = field
+dependencies[] = field_ui
+dependencies[] = locale
+dependencies[] = localize_fields
+
+; Information added by Drupal.org packaging script on 2016-05-05
+version = "7.x-1.6"
+core = "7.x"
+project = "localize_fields"
+datestamp = "1462456222"
+

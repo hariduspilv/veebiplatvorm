@@ -1,0 +1,66 @@
+<?php
+/**
+ * @file
+ *  Drupal Localize Fields UI module
+ */
+
+
+/**
+ * Adds translation fields to field instance settings forms.
+ *
+ * Implements hook_form_FORM_ID_alter() for field_ui_field_edit_form.
+ *
+ * @see field_ui_field_edit_form().
+ * @see LocalizeFieldsUI::fieldUIFieldEditFormAlter()
+ *
+ * @param &$form
+ * @param &$form_state
+ * @param $form_id
+ */
+function localize_fields_ui_form_field_ui_field_edit_form_alter(&$form, &$form_state, $form_id) {
+  module_load_include('inc', 'localize_fields_ui', 'inc/LocalizeFieldsUI');
+  LocalizeFieldsUI::fieldUIFieldEditFormAlter($form, $form_state);
+}
+
+/**
+ * Submit function for localize_fields_form_field_ui_field_edit_form_alter().
+ *
+ * @see LocalizeFieldsUI::fieldUIFieldEditFormSubmit()
+ *
+ * @param $form
+ * @param &$form_state
+ */
+function localize_fields_ui_field_ui_field_edit_form_submit($form, &$form_state) {
+  module_load_include('inc', 'localize_fields_ui', 'inc/LocalizeFieldsUI');
+  LocalizeFieldsUI::fieldUIFieldEditFormSubmit($form_state);
+}
+
+/**
+ * @param $form
+ * @param $form_state
+ */
+function _localize_fields_ui_admin_form_submit($form, &$form_state) {
+  // A submit function has to be declared in the global include scope (.module).
+
+  if ($form_state['values']['localize_fields_ui_clear_cache_now']) {
+    cache_clear_all('locale:', 'cache', TRUE);
+
+    // Here we always display the message, but we still only log if told to.
+    $message = t('Cleared translation cache of all languages.', array(), array('context' => 'module:localize_fields_ui'));
+    if (variable_get('localize_fields_ui_log_changes', 1)) {
+      watchdog(
+        'localize_fields_ui',
+        $message,
+        array(),
+        WATCHDOG_INFO
+      );
+    }
+    drupal_set_message($message);
+  }
+
+  // Don't save ..._clear_cache_now as variable.
+  unset(
+    $form_state['input']['localize_fields_ui_clear_cache_now'],
+    $form_state['values']['localize_fields_ui_clear_cache_now']
+  );
+}

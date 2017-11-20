@@ -619,7 +619,8 @@ function hitsa_catering_provider_html($provider)
     }
     $homepage=null;
     if (!empty($provider->field_homepage)) {
-        $homepage = $provider->field_homepage['und'][0]['value'];
+        dpm($provider);
+        $homepage = $provider->field_homepage['und'][0]['url'];
         $homepage_out.='<li>';
         $homepage_out.='                      <div class="before-home"></div>';
         $homepage_out.='                      <div class="list-details_text">';
@@ -630,7 +631,7 @@ function hitsa_catering_provider_html($provider)
     }
     $phone=null;
     if (!empty($provider->field_phone_number)) {
-        $phone = $provider->field_phone_number['und'][0]['value'];
+        $phone = check_plain($provider->field_phone_number['und'][0]['value']);
 
     }
     $output = '<div class="row">';
@@ -1084,14 +1085,14 @@ function hitsa_catering_front_page_block(){
 }
 function hitsa_catering_taxonomy_term_validate($form,&$form_state){
     if (!empty($form_state['values'])) {
-        if (!empty($form_state['values']['field_homepage'])) {
-            if (!empty($form_state['values']['field_homepage']['und'][0]['value'])) {
-                if (filter_var($form_state['values']['field_homepage']['und'][0]['value'], FILTER_VALIDATE_URL)) {
-                } else {
-                    form_set_error('field_homepage', $form_state['values']['field_homepage']['und'][0]['value'] . t(' is not a valid website'));
-                }
-            }
-        }
+//        if (!empty($form_state['values']['field_homepage'])) {
+//            if (!empty($form_state['values']['field_homepage']['und'][0]['value'])) {
+//                if (filter_var($form_state['values']['field_homepage']['und'][0]['value'], FILTER_VALIDATE_URL)) {
+//                } else {
+//                    form_set_error('field_homepage', $form_state['values']['field_homepage']['und'][0]['value'] . t(' is not a valid website'));
+//                }
+//            }
+//        }
         if (!empty($form_state['values']['field_phone_number'])) {
             if (!empty($form_state['values']['field_phone_number']['und'][0]['value'])) {
                $phone_number = $form_state['values']['field_phone_number']['und'][0]['value'];

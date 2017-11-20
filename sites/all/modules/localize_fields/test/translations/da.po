@@ -1,0 +1,390 @@
+# $Id$
+#
+# Danish translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  localize_fields_test.features.field_base.inc: n/a
+#  localize_fields_test.features.field_instance.inc: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2015-04-02 11:20+0200\n"
+"PO-Revision-Date: 2015-04-02 11:20+0200\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Danish <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: localize_fields_test.features.field_base.inc:448
+msgctxt "field:field_lclzflds_bool_radio:allowed_values"
+msgid "Boolean list radio unselected LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Boolsk liste radio ikke valgt"
+
+#: localize_fields_test.features.field_base.inc:449
+msgctxt "field:field_lclzflds_bool_radio:allowed_values"
+msgid "Boolean list radio selected LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Boolsk liste radio valgt"
+
+#: localize_fields_test.features.field_base.inc:450
+msgctxt "field:field_lclzflds_list_bool:allowed_values"
+msgid "Boolean list unselected LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Boolsk liste ikke valgt"
+
+#: localize_fields_test.features.field_base.inc:451
+msgctxt "field:field_lclzflds_list_bool:allowed_values"
+msgid "Boolean list selected LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Boolsk liste valgt"
+
+#: localize_fields_test.features.field_base.inc:452
+msgctxt "field:field_lclzflds_list_text:allowed_values"
+msgid "Alpha LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Et A"
+
+#: localize_fields_test.features.field_base.inc:455
+msgctxt "field:field_lclzflds_list_text_check:allowed_values"
+msgid "Alpha LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Et A"
+
+#: localize_fields_test.features.field_base.inc:453
+msgctxt "field:field_lclzflds_list_text:allowed_values"
+msgid "Beta LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Et B"
+
+#: localize_fields_test.features.field_base.inc:456
+msgctxt "field:field_lclzflds_list_text_check:allowed_values"
+msgid "Beta LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Et B"
+
+#: localize_fields_test.features.field_base.inc:454
+msgctxt "field:field_lclzflds_list_text:allowed_values"
+msgid "Gamma LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Et G"
+
+#: localize_fields_test.features.field_base.inc:457
+msgctxt "field:field_lclzflds_list_text_check:allowed_values"
+msgid "Gamma LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Et G"
+
+#: localize_fields_test.features.field_instance.inc:1128
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_date_to_multi:label"
+msgid "Multiple dates to dates LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret flere datoer til datoer"
+
+#: localize_fields_test.features.field_instance.inc:1129
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_date_to_multi:description"
+msgid "Multiple dates to dates help LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret flere datoer til datoer hjælp."
+
+#: localize_fields_test.features.field_instance.inc:1130
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_fieldcol_multi:label"
+msgid "Multiple field collections LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret flere feltsamlinger"
+
+#: localize_fields_test.features.field_instance.inc:1131
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_fieldcol_multi:description"
+msgid "Multiple field collections help LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret flere feltsamlinger hjælp."
+
+#: localize_fields_test.features.field_instance.inc:1132
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_file:label"
+msgid "File LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret fil"
+
+#: localize_fields_test.features.field_instance.inc:1164
+msgctxt "field_instance:localize_fields_test-field_lclzflds_file:label"
+msgid "File LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Fil"
+
+#: localize_fields_test.features.field_instance.inc:1133
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_file:description"
+msgid "File help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret fil hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1165
+msgctxt "field_instance:localize_fields_test-field_lclzflds_file:description"
+msgid "File help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Fil hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1134
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_integer_multi:label"
+msgid "Multiple integers LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret flere heltal"
+
+#: localize_fields_test.features.field_instance.inc:1174
+msgctxt "field_instance:localize_fields_test-field_lclzflds_integer_multi:label"
+msgid "Multiple integers LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere heltal"
+
+#: localize_fields_test.features.field_instance.inc:1135
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_integer_multi:description"
+msgid "Multiple integers help LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret flere heltal hjælp."
+
+#: localize_fields_test.features.field_instance.inc:1175
+msgctxt "field_instance:localize_fields_test-field_lclzflds_integer_multi:description"
+msgid "Multiple integers help LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere heltal hjælp."
+
+#: localize_fields_test.features.field_instance.inc:1136
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_integer_multi:prefix"
+msgid "Multiple integers prefix LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret flere heltals præfiks"
+
+#: localize_fields_test.features.field_instance.inc:1137
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_integer_multi:suffix"
+msgid "Multiple integers suffix LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret flere heltals suffiks"
+
+#: localize_fields_test.features.field_instance.inc:1138
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_list_bool:label"
+msgid "Boolean list LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret boolsk liste"
+
+#: localize_fields_test.features.field_instance.inc:1178
+msgctxt "field_instance:localize_fields_test-field_lclzflds_list_bool:label"
+msgid "Boolean list LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Boolsk liste"
+
+#: localize_fields_test.features.field_instance.inc:1139
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_list_bool:description"
+msgid "Boolean list help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret boolsk liste hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1179
+msgctxt "field_instance:localize_fields_test-field_lclzflds_list_bool:description"
+msgid "Boolean list help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Boolsk liste hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1140
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_list_text_check:label"
+msgid "Text list checkboxes LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret tekstliste checkbokse"
+
+#: localize_fields_test.features.field_instance.inc:1141
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_list_text_check:description"
+msgid "Text list checkboxes help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret tekstliste checkbokse hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1142
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_text:label"
+msgid "Text LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret tekst"
+
+#: localize_fields_test.features.field_instance.inc:1184
+msgctxt "field_instance:localize_fields_test-field_lclzflds_text:label"
+msgid "Text LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Tekst"
+
+#: localize_fields_test.features.field_instance.inc:1143
+msgctxt "field_instance:field_lclzflds_fieldcol-field_lclzflds_text:description"
+msgid "Text help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret tekst hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1185
+msgctxt "field_instance:localize_fields_test-field_lclzflds_text:description"
+msgid "Text help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Tekst hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1144
+msgctxt "field_instance:field_lclzflds_fieldcol_multi-field_lclzflds_decimal:label"
+msgid "Decimal LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret indlejret kommatal"
+
+#: localize_fields_test.features.field_instance.inc:1156
+msgctxt "field_instance:localize_fields_test-field_lclzflds_decimal:label"
+msgid "Decimal LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Kommatal"
+
+#: localize_fields_test.features.field_instance.inc:1145
+msgctxt "field_instance:field_lclzflds_fieldcol_multi-field_lclzflds_decimal:description"
+msgid "Decimal help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret indlejret kommatal hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1157
+msgctxt "field_instance:localize_fields_test-field_lclzflds_decimal:description"
+msgid "Decimal help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Kommatal hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1146
+msgctxt "field_instance:field_lclzflds_fieldcol_multi-field_lclzflds_decimal:prefix"
+msgid "Decimal prefix LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret indlejret kommatals præfiks"
+
+#: localize_fields_test.features.field_instance.inc:1158
+msgctxt "field_instance:localize_fields_test-field_lclzflds_decimal:prefix"
+msgid "Decimal prefix LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Kommatals præfiks"
+
+#: localize_fields_test.features.field_instance.inc:1147
+msgctxt "field_instance:field_lclzflds_fieldcol_multi-field_lclzflds_decimal:suffix"
+msgid "Decimal suffix LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret indlejret kommatals suffiks"
+
+#: localize_fields_test.features.field_instance.inc:1148
+msgctxt "field_instance:field_lclzflds_fieldcol_multi-field_lclzflds_image_multi:label"
+msgid "Multiple images LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret indlejret flere billeder"
+
+#: localize_fields_test.features.field_instance.inc:1170
+msgctxt "field_instance:localize_fields_test-field_lclzflds_image_multi:label"
+msgid "Multiple images LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere billeder"
+
+#: localize_fields_test.features.field_instance.inc:1149
+msgctxt "field_instance:field_lclzflds_fieldcol_multi-field_lclzflds_image_multi:description"
+msgid "Multiple images help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret indlejret flere billeder hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1171
+msgctxt "field_instance:localize_fields_test-field_lclzflds_image_multi:description"
+msgid "Multiple images help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere billeder hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1150
+msgctxt "field_instance:field_lclzflds_fieldcol_multi-field_lclzflds_text_multi:label"
+msgid "Multiple texts LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret indlejret flere tekster"
+
+#: localize_fields_test.features.field_instance.inc:1186
+msgctxt "field_instance:localize_fields_test-field_lclzflds_text_multi:label"
+msgid "Multiple texts LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere tekster"
+
+#: localize_fields_test.features.field_instance.inc:1151
+msgctxt "field_instance:field_lclzflds_fieldcol_multi-field_lclzflds_text_multi:description"
+msgid "Multiple texts help LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Indlejret indlejret flere tekster hjælp."
+
+#: localize_fields_test.features.field_instance.inc:1187
+msgctxt "field_instance:localize_fields_test-field_lclzflds_text_multi:description"
+msgid "Multiple texts help LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere tekster hjælp."
+
+#: localize_fields_test.features.field_instance.inc:1217
+msgctxt "field_instance:localize_fields_test-body:label"
+msgid "Body LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Brødtekst"
+
+#: localize_fields_test.features.field_instance.inc:1218
+msgctxt "field_instance:localize_fields_test-body:description"
+msgid "Body help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Body hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1219
+msgctxt "field_instance:localize_fields_test-field_lclzflds_bool_radio:label"
+msgid "Boolean list radio LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Boolsk liste radio"
+
+#: localize_fields_test.features.field_instance.inc:1153
+msgctxt "field_instance:localize_fields_test-field_lclzflds_bool_radio:description"
+msgid "Boolean list radio help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Boolsk liste radio hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1154
+msgctxt "field_instance:localize_fields_test-field_lclzflds_date:label"
+msgid "Date LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Dato"
+
+#: localize_fields_test.features.field_instance.inc:1155
+msgctxt "field_instance:localize_fields_test-field_lclzflds_date:description"
+msgid "Date help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Dato hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1159
+msgctxt "field_instance:localize_fields_test-field_lclzflds_decimal:suffix"
+msgid "Decimal puffix LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Kommatals suffiks"
+
+#: localize_fields_test.features.field_instance.inc:1160
+msgctxt "field_instance:localize_fields_test-field_lclzflds_fieldcol:label"
+msgid "Field collection LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Feltsamling"
+
+#: localize_fields_test.features.field_instance.inc:1161
+msgctxt "field_instance:localize_fields_test-field_lclzflds_fieldcol:description"
+msgid "Field collection help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Feltsamling hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1162
+msgctxt "field_instance:localize_fields_test-field_lclzflds_fieldcol_multi:label"
+msgid "Multiple 'field' \"collections\" LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere 'felt'-\"samlinger\""
+
+#: localize_fields_test.features.field_instance.inc:1163
+msgctxt "field_instance:localize_fields_test-field_lclzflds_fieldcol_multi:description"
+msgid "Multiple 'field collections' \"help\" LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere 'feltsamlinger' & \"hjælp\"."
+
+#: localize_fields_test.features.field_instance.inc:1166
+msgctxt "field_instance:localize_fields_test-field_lclzflds_file_multi:label"
+msgid "Multiple files LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere filer"
+
+#: localize_fields_test.features.field_instance.inc:1167
+msgctxt "field_instance:localize_fields_test-field_lclzflds_file_multi:description"
+msgid "Multiple files help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Flere filer hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1168
+msgctxt "field_instance:localize_fields_test-field_lclzflds_image:label"
+msgid "Image LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Billede"
+
+#: localize_fields_test.features.field_instance.inc:1169
+msgctxt "field_instance:localize_fields_test-field_lclzflds_image:description"
+msgid "Image help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Billede hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1172
+msgctxt "field_instance:localize_fields_test-field_lclzflds_integer_encoded:label"
+msgid "Integer with 'HTML' \"escaped\" label"
+msgstr "Heltal med 'HTML' \"escaped\" titel"
+
+#: localize_fields_test.features.field_instance.inc:1173
+msgctxt "field_instance:localize_fields_test-field_lclzflds_integer_encoded:description"
+msgid "Integer with 'HTML' \"escaped\" description"
+msgstr "Heltal med 'HTML' \"escaped\" hjælpetekst"
+
+#: localize_fields_test.features.field_instance.inc:1176
+msgctxt "field_instance:localize_fields_test-field_lclzflds_integer_multi:prefix"
+msgid "Integer prefix LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Heltals præfiks"
+
+#: localize_fields_test.features.field_instance.inc:1177
+msgctxt "field_instance:localize_fields_test-field_lclzflds_integer_multi:suffix"
+msgid "Integer suffix LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Heltals suffiks"
+
+#: localize_fields_test.features.field_instance.inc:1180
+msgctxt "field_instance:localize_fields_test-field_lclzflds_list_text:label"
+msgid "Text list LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Tekstliste"
+
+#: localize_fields_test.features.field_instance.inc:1181
+msgctxt "field_instance:localize_fields_test-field_lclzflds_list_text:description"
+msgid "Text list help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Tekstliste hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1182
+msgctxt "field_instance:localize_fields_test-field_lclzflds_term:label"
+msgid "Term reference LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Begrebsreference"
+
+#: localize_fields_test.features.field_instance.inc:1183
+msgctxt "field_instance:localize_fields_test-field_lclzflds_term:description"
+msgid "Term reference help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Begrebsreference hjælp: [current-date:short]."
+
+#: localize_fields_test.features.field_instance.inc:1188
+msgctxt "field_instance:localize_fields_test-field_lclzflds_textlong:label"
+msgid "Long text LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Lang tekst"
+
+#: localize_fields_test.features.field_instance.inc:1189
+msgctxt "field_instance:localize_fields_test-field_lclzflds_textlong:description"
+msgid "Long text help: [current-date:short] LOCALIZE_FIELDS_UNTRANSLATED"
+msgstr "Lang tekst hjælp: [current-date:short]."
