@@ -230,19 +230,6 @@ function hitsa_curriculum_node_validate($node,$form,&$form_state){
             }
         }
         if (!empty($form_state['values']['field_contacts'])){
-            $contacts_values = $form_state['values']['field_contacts']['und'];
-            unset($contacts_values['add_more']);
-            foreach($contacts_values as $contact_key => $contacts){
-                if (!empty($contacts['field_website'])){
-                    $website = $contacts['field_website']['und'][0]['value'];
-                    if (!empty($website)) {
-                        if (filter_var($website, FILTER_VALIDATE_URL)) {
-                        } else {
-                            form_set_error('field_contacts[und][0][field_website]', $website . t(' is not a valid website'));
-                        }
-                    }
-                }
-            }
         }
     }
 //    exit();
@@ -507,7 +494,6 @@ function hitsa_curriculum_contacts($contacts)
             $output .= '<ul class="list-details">';
             if (!empty($contact->field_website)) {
                 # code...
-                dpm($contact);
                 $output .= '   <li>';
                 $output .= '      <div class="before-home"></div>';
                 $output .= '      <div class="list-details_text">';
@@ -1056,6 +1042,10 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     }
                 }
                 elseif ($curriculum_type=='subject-field'){
+
+                    if (!empty($output_elements['short_description'])){
+                        $output.=$output_elements['short_description'];
+                    }
                     if (!empty($output_elements['body_element'])){
                         $output.=$output_elements['body_element'];
                     }

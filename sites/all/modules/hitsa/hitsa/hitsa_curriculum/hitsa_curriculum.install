@@ -4354,7 +4354,7 @@ function _hitsa_curriculum_conditional_fields(){
     $items["node:curriculum:14"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
-        'dependent' => 'field_speciality_description',
+        'dependent' => 'field_short_description',
         'dependee' => 'field_school_selections',
         'options' => array(
             'state' => 'visible',
