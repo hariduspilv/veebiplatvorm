@@ -828,14 +828,13 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                               <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
                               <a href="javascript:window.print();" class="btn-circle before-print"></a>
                            </span><!--/button-row-->
-    </h3>';
+    </h3><h5 class="sm-alignment"><span class="btn-bar align-right pull-right sm-show">
+                       <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                       <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                    </span><!--/button-row-->
+</h5>';
     if (!empty($content->field_table_description)) {
-        $output_elements['table_description'] = '<h5 class="sm-alignment">' . $content->field_table_description['und'][0]['value'] . '
-       <span class="btn-bar align-right pull-right sm-show">
-                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
-                              <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-                           </span><!--/button-row-->
-    </h5>';
+        $output_elements['table_description'] = '<p>'. $content->field_table_description['und'][0]['value'] .'</p>';
     }
     if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses'||$curriculum_type=='hobby-groups'||$curriculum_type=='hobby-activity'||$curriculum_type=='e-course') {
         if (!empty($content->field_curriculum_length)) {
@@ -958,8 +957,23 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     }
     if (!empty($content->field_jobs_pretext) && !empty($content->field_jobs)) {
         $output_elements['jobs'] = '<h5>' . t('Jobs in the future') . '</h5>';
-        $output_elements['jobs'] .= (!empty($content->field_jobs_pretext)) ? $content->field_speciality_description['und'][0]['value'] : '';
+        $output_elements['jobs'] .= (!empty($content->field_jobs_pretext)) ? $content->field_jobs_pretext['und'][0]['value'] : '';
         $output_elements['jobs'] .= hitsa_curriculum_jobs_part($content);
+    }
+    if (!empty($content->field_short_description)){
+        $output_elements['short_description'] = '<h5 class="sm-alignment">'.$content->field_short_description['und'][0]['value'].'<span class="btn-bar align-right pull-right sm-show">
+                       <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                       <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                    </span><!--/button-row-->
+</h5>';
+
+    }
+    else{
+        $output_elements['mobile_sharing_buttons']='<h5 class="sm-alignment"><span class="btn-bar align-right pull-right sm-show">
+                       <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                       <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                    </span><!--/button-row-->
+</h5>';
     }
     if (!empty($content->field_attachments)) {
         $output_elements['documents'] = hitsa_curriculum_attachments($content->field_attachments['und']);
@@ -974,6 +988,9 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     if (!empty($output_elements)) {
         switch ($school_type) {
             case 'middle':
+                if(empty($output_elements['short_description']) && !empty($output_elements['mobile_sharing_buttons'])){
+//                    $output.= $output_elements['mobile_sharing_buttons'];
+                }
                 if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses'||$curriculum_type=='hobby-groups'||$curriculum_type=='hobby-activity'||$curriculum_type=='e-course') {
                     if (!empty($output_elements['date_length'])) {
                         $output .= $output_elements['date_length'];
@@ -1013,6 +1030,9 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     }
                 }
                 if ($curriculum_type=='specialities'){
+                    if (!empty($output_elements['short_description'])){
+                        $output.=$output_elements['short_description'];
+                    }
                     if (!empty($output_elements['table_description'])){
                         $output.=$output_elements['table_description'];
                     }

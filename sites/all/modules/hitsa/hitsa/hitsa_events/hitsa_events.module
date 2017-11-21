@@ -25,10 +25,22 @@ function hitsa_events_menu()
       'page callback' => 'hitsa_events_endpoint',
       'access arguments' => array('access content'),
     );
-    $items['events/calendar/api/add'] = array(
+    $items['events/calendar/form-submission']=array(
+        'title' => t(''),
+        'page callback' => 'hitsa_events_calendar_submission',
+        'access arguments' => array('access content'),
+    );
+    $items['events/calendar/api/add/%/%'] = array(
       'title' => check_plain(t('Calendar')),
       'page callback' => 'hitsa_events_calendar_add',
+      'page arguments' => array(4,5),
       'access arguments' => array('access content'),
+    );
+    $items['training-calendar/register/%/%/%'] = array(
+        'title' => check_plain(t('Register to event')),
+        'page callback' => 'hitsa_events_register_event',
+        'page arguments' => array(2,3,4),
+        'access arguments' => array('access content'),
     );
     $items['api/events_autocomplete'] = array(
       'title' => check_plain(t('Calendar')),
@@ -627,6 +639,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
                     $training_tags.='<li><a href="">'.$tag.'</a></li>';
                 }
             }
+            if (!empty($event->field_registration_form)){
+                $reg_form_id = $event->field_registration_form['und'][0]['target_id'];
+            }
         }
     
         if ($event->title=='Fere') {
@@ -658,8 +673,10 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output.= ($type=='training'&&!empty($training_cost))?' '.$training_cost.' ':'';
         $output.= '<br />';
         $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
-        $output.= ($type!='training')?'<a href="/events/calendar/api/add" data-plugin="modal" class="before-calendar">'.t('Add to calendar').'</a>':'';
-        $output.= ($type=='training')?'<a class="before-register">'.t('Register to training').'</a>':'';
+        $output.= ($type!='training')?'<a href="/events/calendar/api/add/'.$event->nid.'/'.$start_date_date.'" data-plugin="modal" class="before-calendar">'.t('Add to calendar').'</a>':'';
+        if (!empty($reg_form_id)) {
+            $output .= ($type == 'training') ? '<a href="training-calendar/register/'.$event->nid.'/'.$reg_form_id.'/'.$start_date_date.'" data-plugin="modal" class="before-register">' . t('Register to training') . '</a>' : '';
+        }
         $output.= (!empty($tags_ready)&&$type!='training')?'<ul class="tags">':'';
         $output.= (!empty($tags_ready)&&$type!='training')?$tags_ready:'';
         $output.= (!empty($tags_ready)&&$type!='training')?'</ul><!--/tags-->':'';
@@ -670,8 +687,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output.= '</span><!--/object-content-->';
         $output.= '<span class="object-button">';
         $output.= '<!-- toggle muutuja on ID.. OBJEKTI ID -->';
-        $details_number = $event->nid;
+        $details_number = $event->nid+$start_date_date;
         $details_number.= (!empty($number))?$number:'';
+
         $output.= '<a href="javascript:void(0);" class="btn" data-toggle="object-details_'.$details_number.'" data-hide="object-details_'.$details_number.'">'.t('Read more').'</a>';
         $output.= '<div data-show="object-details_'.$details_number.'">';
         $output.= '<a href="" class="btn-circle before-share"></a>';
@@ -924,6 +942,14 @@ function hitsa_events_node_presave($node)
                 $node->period[$language->language][0]['tid'] = $time_period_tid;
             }
         }
+//        krumo($node);
+        if (!empty($node->field_event_type)) {
+            $event_type = $node->field_event_type['und'][0]['value'];
+            if ($event_type=='training') {
+                // hitsa_events_create_registration_form($node);
+            }
+        }
+        // exit();
     }
 }
 function hitsa_events_training_calendar()
@@ -947,9 +973,9 @@ function hitsa_events_training_calendar()
                         $event_html = hitsa_events_event_html($event, $type = 'training');
                         $events_array[]=$event_html;
                         // $output.= $event_html['html'];
-            
-                        $periods[$event_html['period']->tid] = $event_html['period'];
-                        $periods[$event_html['period']->tid]->events[] = array('date' => $event_html['start_date'],'html'=>$event_html['html']);
+                        dpm($event_html);
+                        $periods[$event_html['periods']->tid] = $event_html['periods'];
+                        $periods[$event_html['periods']->tid]->events[] = array('date' => $event_html['start_date'],'html'=>$event_html['html']);
                     } else {
                         $start_date = $event->event_date['und'][0]['value'];
                         $end_date = $event->event_date['und'][0]['value2'];
@@ -958,8 +984,8 @@ function hitsa_events_training_calendar()
                             $start_date_date = date('U', strtotime("+{$i} day", $start_date));
                             $event_html = hitsa_events_event_html($event, $type = 'training', $start_date_date);
                             $events_array[]=$event_html;
-                            $periods[$event_html['period']->tid] = $event_html['period'];
-                            $periods[$event_html['period']->tid]->events[] = array('date' => $event_html['start_date'],'html'=>$event_html['html']);
+                            $periods[$event_html['periods']->tid] = $event_html['periods'];
+                            $periods[$event_html['periods']->tid]->events[] = array('date' => $event_html['start_date'],'html'=>$event_html['html']);
                         }
                     }
                 }
@@ -975,7 +1001,7 @@ function hitsa_events_training_calendar()
     $output .= '
       
       <div class="row">
-         <div class="col-9">
+         <div class="col-12">
             
             <div class="block">';
     $output .= '<h2 class="block-title">'.t('Calendar').'</h2>';
@@ -1038,9 +1064,8 @@ function hitsa_events_training_calendar()
                   </div><!--/col-4-->
                </div><!--/row-->
                </form>';
-    $output .= '<div class="row-spacer"></div>';
     $output .= '<div class="row">';
-    $output .= '<div class="col-12">';
+    $output .= '<div class="col-12" data-postURL="api/kalender-ajax.html" data-plugin="filterContents">';
     $output.='<div class="accordion" data-plugin="accordion">';
     foreach ($periods as $period) {
         $output.= '<div class="accordion-entry">';
@@ -1294,11 +1319,11 @@ function hitsa_events_autocomplete(){
     print ($json);
 
 }
-function hitsa_events_calendar_add(){
+function hitsa_events_calendar_add($event_id=NULL,$date=NULL){
     $build = array();
     $build['calender_add_block'] = array(
         '#type' => 'markup',
-        '#markup' => hitsa_events_calendar_add_block(),
+        '#markup' => hitsa_events_calendar_add_block($event_id,$date),
     );
 //    $page = array(
 //        '#type' => 'page',
@@ -1308,24 +1333,43 @@ function hitsa_events_calendar_add(){
 
     return $build;
 }
-function hitsa_events_calendar_add_block(){
-    $add_to_calendar_form = drupal_get_form('hitsa_events_add_to_calendar_form');
+function hitsa_events_calendar_add_block($event_id=NULL,$date=NULL){
+    $form = drupal_get_form('hitsa_events_add_to_calendar_form',$event_id,$date);
+    // $form['email_container']['submit']['#attached']['js'][0]['data']['ajax']['edit-submit']['prevent']= 'default';
+    $form_real = array(
+        'form' => $form,
+    );
+//    krumo($form_real);
     $output = '';
-
+        $drupal_js = drupal_get_js();
+//        krumo($drupal_js);
         $output.='<div class="block" data-modal="true">';
         $output.='           ';
         $output.='           <h1 class="block-title">Lisa kalendrisse <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a></h1>';
         $output.='			';
         $output.='			<div class="row-spacer-xs"></div>';
         $output.='			';
-        $output.= drupal_render($add_to_calendar_form);
+        $output.= drupal_render($form_real);
+        // $output.= drupal_get_js();
         $output.='    </div><!--/block-->';
     return $output;
 }
-function hitsa_events_add_to_calendar_form($form,&$form_state){
+function hitsa_events_add_to_calendar_form($form,&$form_state,$event_id=NULL,$date=NULL){
     $form=array(
-        '#id' => 'ajax-target',
-
+        '#id' => 'ajax-target-sending',
+        '#action' => 'events/calendar/form-submission',
+        '#attributes' => array(
+            'data-plugin' => 'ajaxForm',
+        ),
+        '#method' => 'POST',
+    );
+    $form['event']=array(
+        '#type' => 'hidden',
+        '#value' =>$event_id,
+    );
+    $form['date']=array(
+        '#type' => 'hidden',
+        '#value' =>$date,
     );
     $form['selections'] = array(
         '#type' =>'container',
@@ -1398,32 +1442,199 @@ function hitsa_events_add_to_calendar_form($form,&$form_state){
 						</div><!--/col-8-->',
     );
 
-    $form['email_container']['submit'] = array(
+    $form['submit'] = array(
         '#value' => t('Ready'),
         '#name' => 'event_submit',
-        '#ajax' =>  array(
-            'wrapper' =>'ajax-target',
-            'callback' => 'hitsa_events_add_event_to_calendar_actual',
-            'effect' => 'fade',
-        ),
         '#buttontype' =>'button',
         '#attributes' => array(
-            'class' => array('btn ',' btn-filled',' btn-maxWidth')
+            'class' => array('btn ',' btn-filled',' btn-maxWidth'),
         ),
         '#prefix' => '<div class="col-12">
 							<div class="form-item form-item-h-offset">
 								<div class="form-item_title">&nbsp;</div>',
         '#suffix' => '</div><!--/form-item-->
 						</div><!--/col-4-->',
-        '#type' => 'submit',
-        '#submit' => array('hitsa_events_add_event_to_calendar_actual'),
+        '#type' => 'button',
 
     );
 
-    dpm($form);
     return $form;
 }
 function hitsa_events_add_event_to_calendar_actual($form,&$form_state){
-    var_dump($form_state);
-    return 'kala';
+    $commands[] = ajax_command_replace('#ajax-target-sending' , 'kala');
+    return array('#type' => 'ajax', '#commands' => $commands);
+}
+function hitsa_events_create_registration_form($node){
+    $enode = $node;
+    unset($node);
+    $node = new stdClass();
+    $node->type = 'webform';
+    node_object_prepare($node);
+    $node->title = 'Registration form for event '.$enode->title;
+    $node->language = $enode->language;
+    $node->body[LANGUAGE_NONE][0]['value']   = '';
+    $node->body[LANGUAGE_NONE][0]['format']  = 'full_html';
+    $node->uid = 1;
+    $node->promote = 0;
+    $node->comment = 0;
+    
+    // Create the webform components.
+    $components = array(
+    array(
+      'name' => t('First name'),
+      'form_key' => 'first_name',
+      'type' => 'textfield',
+      'mandatory' => 1,
+      'weight' => 10,
+      'pid' => 0,
+      'extra' => array(
+        'title_display' => 'inline',
+        'private' => 0,
+      ),
+    ),
+    array(
+      'name' => t('Last name'),
+      'form_key' => 'name',
+      'type' => 'textfield',
+      'mandatory' => 1,
+      'weight' => 5,
+      'pid' => 0,
+      'extra' => array(
+        'title_display' => 'inline',
+        'private' => 0,
+      ),
+    ),
+    array(
+      'name' => t('Email address'),
+      'form_key' => 'email_address',
+      'type' => 'email',
+      'mandatory' => 1,
+      'weight' => 25,
+      'pid' => 0,
+      'extra' => array(
+        'title_display' => 'inline',
+        'private' => 0,
+      ),
+    ),
+);
+    // Setup notification email.
+    $emails = array(
+      array(
+        'email' => 'somebody@example.tld',
+        'subject' => 'default',
+        'from_name' => 'default',
+        'from_address' => 'default',
+        'template' => 'default',
+        'excluded_components' => array(),
+      ),
+    );
+    
+    // Attach the webform to the node.
+    $node->webform = array(
+      'confirmation' => '',
+      'confirmation_format' => NULL,
+      'redirect_url' => '<confirmation>',
+      'status' => '1',
+      'block' => '0',
+      'teaser' => '0',
+      'allow_draft' => '0',
+      'auto_save' => '0',
+      'submit_notice' => '1',
+      'submit_text' => '',
+      'submit_limit' => '-1', // User can submit more than once.
+      'submit_interval' => '-1',
+      'total_submit_limit' => '-1',
+      'total_submit_interval' => '-1',
+      'record_exists' => TRUE,
+      'roles' => array(
+        0 => '1', // Anonymous user can submit this webform.
+      ),
+      'emails' => $emails,
+      'components' => $components,
+    );
+    // krumo($node);
+    // Save the node.
+    node_save($node);
+}
+function hitsa_events_register_event($event,$form_id,$date){
+    $build = array();
+    $node = node_load($form_id);
+    $webform = webform_node_view($node,'full');
+    $event = node_load($event);
+    $form = $node->content['webform'];
+    $form['#form']['#prefix']='  <div class="block" data-modal="true">';
+    $form['#form']['#prefix'].=' <h1 class="block-title">'.t('Register to course @course',array('@course'=> $event->title)).' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">'.t('Close').'</a></h1>';
+    $form['#form']['#suffix']='  </div>';
+    krumo($form);
+    $form['#form']['actions']['submit']['#buttontype']= 'button';
+    $form['#form']['actions']['submit']['#attributes']['class'][]='btn';
+    $form['#form']['actions']['submit']['#attributes']['class'][]='btn-filled';
+    $form['#form']['actions']['submit']['#attributes']['class'][]='btn-maxWidth';
+    $form = drupal_render($form);
+    $build['webform'] = array(
+        '#markup' => $form,
+    );
+    return $build;
+}
+function hitsa_events_calendar_submission(){
+    $build = array();
+    $file = hitsa_events_generat_ics($_POST);
+    $build['element'] = array(
+
+        '#markup' => '  <div class="block" data-modal="true">
+               
+               <h1 class="block-title">Lisa kalendrisse <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a></h1>
+					
+					<div class="row-spacer-xs"></div>
+					
+					'.$file.'
+					
+            </div><!--/block-->',
+    );
+    return $build;
+}
+
+function hitsa_events_generat_ics($post){
+//    krumo($post);
+    global $language;
+    if (!empty($post)){
+        if (!empty($post['event'])){
+            $event = node_load($post['event']);
+            if (!empty($event->locations)){
+            $location =  $event->locations[$language->language][0]['tid'];
+            $location = taxonomy_term_load($location);
+            }
+            module_load_include('inc','hitsa_events','includes/ICS');
+            include('includes/ICS-download.php');
+
+            $file_contents = $ics->to_string();
+            $calendar_location = 'public://calendars';
+            $file = file_save_data($file_contents,$calendar_location.'/calendar_event_'.$post['date'].'.ics',FILE_EXISTS_REPLACE);
+
+            //Create a link to the Drupal private path
+//            if (file_exists($file->uri)) {
+//                header('Content-Description: File Transfer');
+//                header('Content-Type: application/octet-stream');
+//                header('Content-Disposition: filename="'.$file->filename.'"');
+//                header('Expires: 0');
+//                header('Cache-Control: must-revalidate');
+//                header('Pragma: public');
+//                header('Content-Length: ' . $file->filesize);
+//                readfile($file->uri);
+////                exit;
+//            }
+            $file_link = file_create_url($file->uri);
+            $output = '<a class="cta-link before-calendar" href="'.$file_link.'">'.t('To download calendar .ics file click here').'</a>';
+//            if (!empty($post['outlookevent'])){
+//                $link_information = array(
+//                    'startdate' => gmdate('U',$post['date']),
+//                    'enddate' => gmdate('U',$post['date']),
+//                    'summary' => $event->title,
+//                );
+//                $outlook_link = '<a href="https://bay02.calendar.live.com/calendar/calendar.aspx?rru=addevent&dtstart='.$link_information['startdate'].'&dtend='.$link_information['enddate'].'&summary='.$link_information['summary'].'&location=Location+of+the+event&description=example+text.&allday=false&uid=">add to Outlook calendar</a>';
+//                $output.= $outlook_link;
+//            }
+            return $output;
+        }
+    }
 }
