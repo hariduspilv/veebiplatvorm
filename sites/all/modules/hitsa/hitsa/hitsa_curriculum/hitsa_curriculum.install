@@ -4426,12 +4426,11 @@ function _hitsa_curriculum_conditional_fields(){
             'selector' => '',
             'values_set' => 1,
             'value_form' => 'specialities',
-            'value' => array(
-                0 => array(
-                    'value' => 'specialities',
-                ),
+            'value' => array(),
+            'values' => array(
+                0 => 'subject-field',
+                1 => 'specialities',
             ),
-            'values' => array(),
         ),
     );
 

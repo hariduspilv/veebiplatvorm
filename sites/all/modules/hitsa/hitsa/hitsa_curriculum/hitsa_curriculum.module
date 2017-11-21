@@ -1043,11 +1043,11 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                 }
                 elseif ($curriculum_type=='subject-field'){
 
-                    if (!empty($output_elements['short_description'])){
-                        $output.=$output_elements['short_description'];
-                    }
                     if (!empty($output_elements['body_element'])){
                         $output.=$output_elements['body_element'];
+                    }
+                    if (!empty($output_elements['short_description'])){
+                        $output.=$output_elements['short_description'];
                     }
 
                     if (!empty($output_elements['table_description'])){
