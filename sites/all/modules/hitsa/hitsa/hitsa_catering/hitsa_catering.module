@@ -619,7 +619,7 @@ function hitsa_catering_provider_html($provider)
     }
     $homepage=null;
     if (!empty($provider->field_homepage)) {
-        dpm($provider);
+//        dpm($provider);
         $homepage = $provider->field_homepage['und'][0]['url'];
         $homepage_out.='<li>';
         $homepage_out.='                      <div class="before-home"></div>';
