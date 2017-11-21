@@ -105,6 +105,7 @@ function _hitsa_core_menus() {
       'menu_name' => 'hitsa-main-menu',
       'title' => $t('Main menu'),
       'description' => $t('HITSA Main menu for showing the primary links.'),
+      'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_header_menu' => array(
       'menu_name' => 'hitsa-header-menu',
@@ -152,14 +153,14 @@ function _hitsa_core_menu_links() {
       case HITSA_SCHOOL_VOCATIONAL:
         $menu_links[] = array(
           'link_path' => '<front>',
-          'link_title' => $t('Trainings'),
+          'link_title' => 'Trainings',
           'menu_name' => $hitsa_main_menu,
           'weight' => -7,
         );
         
         $menu_links[] = array(
           'link_path' => '<front>',
-          'link_title' => $t('Services'),
+          'link_title' => 'Services',
           'menu_name' => $hitsa_main_menu,
           'weight' => -6,
           'hitsa_menu_type' => 'services',
@@ -169,28 +170,28 @@ function _hitsa_core_menu_links() {
     
     $menu_links[] = array(
       'link_path' => '<front>',
-      'link_title' => $t('Admission'),
+      'link_title' => 'Admission',
       'menu_name' => $hitsa_main_menu,
       'weight' => -10,
     );
     
     $menu_links[] = array(
       'link_path' => '<front>',
-      'link_title' => $t('Studies'),
+      'link_title' => 'Studies',
       'menu_name' => $hitsa_main_menu,
       'weight' => -9,
     );
     
     $menu_links[] = array(
       'link_path' => '<front>',
-      'link_title' => $t('Student Life'),
+      'link_title' => 'Student Life',
       'menu_name' => $hitsa_main_menu,
       'weight' => -8,
     );
     
     $menu_links[] = array(
       'link_path' => '<front>',
-      'link_title' => $t('About us'),
+      'link_title' => 'About us',
       'menu_name' => $hitsa_main_menu,
       'weight' => -5,
     );
