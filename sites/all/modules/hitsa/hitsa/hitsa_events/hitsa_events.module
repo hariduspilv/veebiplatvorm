@@ -1565,7 +1565,6 @@ function hitsa_events_register_event($event,$form_id,$date){
     $form['#form']['#prefix']='  <div class="block" data-modal="true">';
     $form['#form']['#prefix'].=' <h1 class="block-title">'.t('Register to course @course',array('@course'=> $event->title)).' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">'.t('Close').'</a></h1>';
     $form['#form']['#suffix']='  </div>';
-    krumo($form);
     $form['#form']['actions']['submit']['#buttontype']= 'button';
     $form['#form']['actions']['submit']['#attributes']['class'][]='btn';
     $form['#form']['actions']['submit']['#attributes']['class'][]='btn-filled';
@@ -1633,9 +1632,44 @@ function hitsa_events_generate_ics($post){
             file_prepare_directory($calendar_location, $options = FILE_CREATE_DIRECTORY);
             $file = file_save_data($file_contents,$calendar_location.'/calendar_event_'.$post['date'].'.ics',FILE_EXISTS_REPLACE);
             $file_link = file_create_url($file->uri);
+            $errors=FALSE;
+            if (!empty($post['icaldownload'])) {
+                $output = '<a class="cta-link before-calendar" href="' . $file_link . '">' . t('To download calendar .ics file click here') . '</a>';
+            }
+            if (!empty($post['email'])){
+                $output.= '<br>';
+                if (!filter_var($post['email'], FILTER_VALIDATE_EMAIL)) {
+                    $form = drupal_get_form('hitsa_events_add_to_calendar_form');
+                    $form['event']['#value'] = $post['event'];
+                    $form['email_container']['email']['#attributes']['class'][]='notification';
+                    $form['email_container']['email']['#attributes']['class'][]='notification-error';
 
-            $output = '<a class="cta-link before-calendar" href="'.$file_link.'">'.t('To download calendar .ics file click here').'</a>';
-            return $output;
+                    $attributes = $form['selections']['email']['#attributes'];
+                    $attributes['checked']='';
+                    $form['selections']['email']['#attributes']=$attributes;
+                    $errors=TRUE;
+                    $output .=  '<div class="notification notification-error">'.t('Entered e-mail is not correct').'</div>';
+                    $output .=  drupal_render($form);
+
+                    return $output;
+                }
+                else{
+                    $send_mail = hitsa_events_send_mail($file_link,$post);
+                }
+
+            }
+            if (!$errors) {
+                return $output;
+            }
         }
     }
+}
+
+function hitsa_events_cron(){
+    $path = 'public://calendars';
+    $files = file_scan_directory($path,'/\.ics/' );
+    if (!empty($files)){
+        file_unmanaged_delete_recursive($path);
+    }
+//    exit();
 }
