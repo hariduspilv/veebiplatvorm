@@ -1578,12 +1578,12 @@ function hitsa_events_register_event($event,$form_id,$date){
 }
 function hitsa_events_calendar_submission(){
     $build = array();
-    $file = hitsa_events_generat_ics($_POST);
+    $file = hitsa_events_generate_ics($_POST);
     $build['element'] = array(
 
         '#markup' => '  <div class="block" data-modal="true">
                
-               <h1 class="block-title">Lisa kalendrisse <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a></h1>
+               <h1 class="block-title">'.t('Add to calendar').' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">'.t('Close').'</a></h1>
 					
 					<div class="row-spacer-xs"></div>
 					
@@ -1594,7 +1594,7 @@ function hitsa_events_calendar_submission(){
     return $build;
 }
 
-function hitsa_events_generat_ics($post){
+function hitsa_events_generate_ics($post){
 //    krumo($post);
     global $language;
     if (!empty($post)){
@@ -1604,36 +1604,37 @@ function hitsa_events_generat_ics($post){
             $location =  $event->locations[$language->language][0]['tid'];
             $location = taxonomy_term_load($location);
             }
+            $start_date = time();
+            $end_date = time();
             module_load_include('inc','hitsa_events','includes/ICS');
-            include('includes/ICS-download.php');
+            header('Content-type: text/calendar; charset=utf-8');
+            header('Content-Disposition: attachment; filename=invite.ics');
+            if (!empty($event->event_date)){
+                $start_date = date('Y-m-d g:iA',$event->event_date['und'][0]['value']);
+                $end_date = date('Y-m-d g:iA',$event->event_date['und'][0]['value2']);
+            }
+            if (!empty($event->body)){
+                $description = strip_tags($event->body['und'][0]['safe_value']);
+            }
+            else{
+                $description = $event->title;
+            }
+            $ics = new ICS(array(
+                'location' => $location->name,
+                'description' => $description,
+                'dtstart' => $start_date,
+                'dtend' => $end_date,
+                'summary' => $event->title,
+                'url' => url('calendar')
+            ));
 
             $file_contents = $ics->to_string();
             $calendar_location = 'public://calendars';
+            file_prepare_directory($calendar_location, $options = FILE_CREATE_DIRECTORY);
             $file = file_save_data($file_contents,$calendar_location.'/calendar_event_'.$post['date'].'.ics',FILE_EXISTS_REPLACE);
-
-            //Create a link to the Drupal private path
-//            if (file_exists($file->uri)) {
-//                header('Content-Description: File Transfer');
-//                header('Content-Type: application/octet-stream');
-//                header('Content-Disposition: filename="'.$file->filename.'"');
-//                header('Expires: 0');
-//                header('Cache-Control: must-revalidate');
-//                header('Pragma: public');
-//                header('Content-Length: ' . $file->filesize);
-//                readfile($file->uri);
-////                exit;
-//            }
             $file_link = file_create_url($file->uri);
+
             $output = '<a class="cta-link before-calendar" href="'.$file_link.'">'.t('To download calendar .ics file click here').'</a>';
-//            if (!empty($post['outlookevent'])){
-//                $link_information = array(
-//                    'startdate' => gmdate('U',$post['date']),
-//                    'enddate' => gmdate('U',$post['date']),
-//                    'summary' => $event->title,
-//                );
-//                $outlook_link = '<a href="https://bay02.calendar.live.com/calendar/calendar.aspx?rru=addevent&dtstart='.$link_information['startdate'].'&dtend='.$link_information['enddate'].'&summary='.$link_information['summary'].'&location=Location+of+the+event&description=example+text.&allday=false&uid=">add to Outlook calendar</a>';
-//                $output.= $outlook_link;
-//            }
             return $output;
         }
     }
