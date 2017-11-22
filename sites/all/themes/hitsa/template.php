@@ -762,7 +762,7 @@ function hitsa_pager($variables) {
         if ($i == $pager_current) {
           $items[] = array(
             'class' => array('active'),
-            'data' => $i,
+            'data' => '<a href="javascript:void(0);" data-page="' . $i . '">' . $i . '</a>',
           );
         }
         if ($i > $pager_current) {
