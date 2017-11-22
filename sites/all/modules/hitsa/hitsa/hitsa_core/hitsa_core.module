@@ -97,7 +97,7 @@ function hitsa_core_block_view($delta = '')
 {
   $output = array();
   switch ($delta) {
-    case 'hitsa_our_stories':
+    case 'hitsa_services_events':
       if(module_exists('hitsa_events')) {
         $events_content = hitsa_events_front_page_training_block();
       }
@@ -112,7 +112,6 @@ function hitsa_core_block_view($delta = '')
       $output = array('subject' => NULL, 'content' => $content);
       break;
   }
-
   return $output;
 }
 
