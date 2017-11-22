@@ -427,6 +427,24 @@ function hitsa_preprocess_menu_link(&$variables) {
 }
 
 /* Webform Theme Wrappers */
+function hitsa_preprocess_webform_form(&$variables) {
+  
+  $contact_us_webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
+  // "Contact Us" form
+  if($variables['nid'] === $contact_us_webform_nid) {
+    
+    if(!empty($variables['form']['actions']['submit'])) {
+      $variables['form']['actions']['submit']['#attributes']['class'] = array('btn btn-filled sm-stretch');
+    }
+    if(!empty($variables['form']['submitted']['name'])) {
+      $variables['form']['submitted']['name']['#wrapper_attributes']['class'][] = 'form-item_half';
+    }
+    if(!empty($variables['form']['submitted']['e_mail'])) {
+      $variables['form']['submitted']['e_mail']['#wrapper_attributes']['class'][] = 'form-item_half';
+    }
+  }
+}
+
 function hitsa_webform_element($variables) {
   $element = $variables['element'];
 
