@@ -1,4 +1,3 @@
-<?php dpm($nodes); ?>
 <?php foreach($nodes as $tid => $academic_year): ?>
   <div class="row">
         <div class="col-12">
