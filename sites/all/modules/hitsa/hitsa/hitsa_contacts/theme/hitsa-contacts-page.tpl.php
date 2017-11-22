@@ -46,24 +46,24 @@
         <div class="col-12">
           <div class="form-item-row">
             <div class="form-item after-search form-item_rounded">
-                           <div class="form-item_title"><?php print t('Search for person'); ?></div>
-                           <input type="text" name="person" placeholder="<?php print t('Search for person'); ?>" data-plugin="autocomplete" data-url="<?php print url('api/contact-autocomplete'); ?>" data-onsubmit="true" autocomplete="off"/>
-                        </div><!--/form-item-->
+              <div class="form-item_title"><?php print t('Search for person'); ?></div>
+              <input type="text" name="person" placeholder="<?php print t('Search for person'); ?>" data-plugin="autocomplete" data-url="<?php print url('api/contact-autocomplete'); ?>" data-onsubmit="true" autocomplete="off"/>
+            </div><!--/form-item-->
 
             <div class="form-item form-item_rounded">
-                           <div class="form-item_title"><?php print t('Job position'); ?></div>
-                           <select name="profession" data-plugin="SumoSelect">
-                              <option value=""><?php print t('Select category'); ?></option>
-                              <?php foreach($job_positions as $j): ?>
-                                <option value="<?php print $j->tid; ?>"><?php print check_plain($j->name); ?></option>
-                              <?php endforeach; ?>
-                           </select>
-                        </div><!--/form-item-->
+              <div class="form-item_title"><?php print t('Job position'); ?></div>
+              <select name="profession" data-plugin="SumoSelect">
+                 <option value=""><?php print t('Select category'); ?></option>
+                 <?php foreach($job_positions as $j): ?>
+                   <option value="<?php print $j->tid; ?>"><?php print check_plain($j->name); ?></option>
+                 <?php endforeach; ?>
+              </select>
+            </div><!--/form-item-->
 
             <div class="form-item">
-                           <div class="form-item_title">&nbsp;</div>
-                           <button class="btn btn-filled"><?php print t('Search'); ?></button>
-                        </div><!--/form-item-->
+              <div class="form-item_title">&nbsp;</div>
+              <button class="btn btn-filled"><?php print t('Search'); ?></button>
+            </div><!--/form-item-->
                         
           </div><!--/form-item-row-->
         </div><!--/col-12-->
