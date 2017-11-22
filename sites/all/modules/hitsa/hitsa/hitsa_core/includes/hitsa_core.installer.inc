@@ -53,8 +53,9 @@ function hitsa_core_add_field_instances($installed_instances = array(), $module 
 }
 
 function hitsa_core_delete_fields($installed_fields = array(), $module = NULL) {
+  
   foreach (array_keys($installed_fields) as $field) {
-      field_delete_field($field);
+    field_delete_field($field);
   }
 }
 

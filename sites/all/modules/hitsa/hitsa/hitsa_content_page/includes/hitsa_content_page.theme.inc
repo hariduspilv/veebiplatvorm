@@ -104,7 +104,7 @@ function hitsa_content_page_services_block() {
   }
   $services_menu_render = menu_tree_output($services_menu['below']);
   $services_menu_render['#theme_wrappers'] = array('menu_tree__hitsa_services_block');
-
+  
   $output .= render($services_menu_render);
   return $output;
 }

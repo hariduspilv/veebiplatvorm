@@ -15,7 +15,7 @@
             <span class="object-title"><?php print check_plain($node->title); ?></span>
             <span class="object-footer">
               <?php if(!empty($authors[$node->uid]->name)): ?>
-              <span class="before-shopping"><?php print $authors[$node->uid]->name; ?></span>
+              <span class="before-user"><?php print $authors[$node->uid]->name; ?></span>
               <?php endif; ?>
             </span><!--/object-footer-->
           </span><!--/object-content-->
