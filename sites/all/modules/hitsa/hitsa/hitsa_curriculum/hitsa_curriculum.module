@@ -1435,7 +1435,7 @@ function hitsa_curriculum_image_default_styles(){
             array(
                 'name' => 'image_scale',
                 'data' => array(
-                    'height' => 440,
+                    'width' => 780,
                     'upscale' => 1,
                 ),
                 'weight' => 0,

@@ -1654,7 +1654,7 @@ function hitsa_events_generate_ics($post){
                     return $output;
                 }
                 else{
-                    $send_mail = hitsa_events_send_mail($file_link,$post);
+                    $send_mail = hitsa_events_send_mail($file_link,$post,$event);
                 }
 
             }
@@ -1672,4 +1672,13 @@ function hitsa_events_cron(){
         file_unmanaged_delete_recursive($path);
     }
 //    exit();
+}
+
+function hitsa_events_send_mail($file_link,$post,$event){
+    krumo($post);
+    if (module_exists('simple_mail')){
+        if (!empty($post) && !empty($post['email'])) {
+            simple_mail_send($from = null, $post['email'], t('Calendar event'), $body);
+        }
+    }
 }
