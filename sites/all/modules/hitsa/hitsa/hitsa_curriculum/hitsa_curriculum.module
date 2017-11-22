@@ -417,7 +417,7 @@ function hitsa_curriculum_jobs_part($content = null)
     $output .= ' <div class="col-12">';
     if (!empty($content)) {
         if (!empty($content->field_jobs_pretext)) {
-            $output .= $content->field_jobs_pretext['und'][0]['value'];
+//            $output .= $content->field_jobs_pretext['und'][0]['value'];
         }
     }
     if (!empty($content->field_jobs)) {
