@@ -3126,13 +3126,13 @@ function hitsa_curriculum_delete_custom_node_fields()
 
                     }
                     elseif (count($fieldd['bundles']['node'])==1){
-                        field_delete_field($fieldd['field_name']);
+//                        field_delete_field($fieldd['field_name']);
                     }
                 }
             }
         }
         else {
-            field_delete_field($field);
+//            field_delete_field($field);
         }
     }
     $instances = field_info_instances('node', 'curriculum');
