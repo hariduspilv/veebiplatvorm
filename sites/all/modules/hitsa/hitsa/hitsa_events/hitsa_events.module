@@ -440,9 +440,15 @@ function hitsa_events_endpoint($loaded_page=NULL)
             foreach($year as $yeaar) {
                 if (is_object($yeaar)) {
                     $year_children = taxonomy_get_children($yeaar->tid, $yeaar->vid);
-                    foreach ($year_children as $children_year) {
-                        $db_or->condition('fdpr.period_tid', $children_year->tid, '=');
+                    if (!empty($year_children)) {
+                        foreach ($year_children as $children_year) {
+                            $db_or->condition('fdpr.period_tid', $children_year->tid, '=');
+                        }
                     }
+                    else{
+                        $db_or->condition('fdpr.period_tid', $yeaar->tid, '=');
+                    }
+
                 }
             }
         }
@@ -452,7 +458,7 @@ function hitsa_events_endpoint($loaded_page=NULL)
     if (!empty($category)&&$category[0]!='all'){
 
         $db_or = db_or();
-        $q->join('field_data_event_tags','fdet','fdet.entity_id=n.nid');
+        $q->join('field_data_event_tags','fdet','n.nid=fdet.entity_id');
         foreach($category as $category_tid){
             if($category_tid!='all') {
                 $db_or->condition('fdet.event_tags_tid', $category_tid, '=');
@@ -477,6 +483,9 @@ function hitsa_events_endpoint($loaded_page=NULL)
     if (!empty($nodes)) {
         $textured_nodes = hitsa_events_get_nodes_html($nodes);
     }
+//    else{
+//        return '';
+//    }
     if (!$loaded_page) {
         if (!empty($textured_nodes)) {
             print($textured_nodes);
@@ -672,7 +681,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output.= (!empty($time_hours_minutes))?$time_hours_minutes . '':'';
         $output.= ($type=='training'&&!empty($training_cost))?' '.$training_cost.' ':'';
         $output.= '<br />';
-        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
+//        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
         $output.= ($type!='training')?'<a href="/events/calendar/api/add/'.$event->nid.'/'.$start_date_date.'" data-plugin="modal" class="before-calendar">'.t('Add to calendar').'</a>':'';
         if (!empty($reg_form_id)) {
             $output .= ($type == 'training') ? '<a href="training-calendar/register/'.$event->nid.'/'.$reg_form_id.'/'.$start_date_date.'" data-plugin="modal" class="before-register">' . t('Register to training') . '</a>' : '';
@@ -1345,7 +1354,7 @@ function hitsa_events_calendar_add_block($event_id=NULL,$date=NULL){
 //        krumo($drupal_js);
         $output.='<div class="block" data-modal="true">';
         $output.='           ';
-        $output.='           <h1 class="block-title">Lisa kalendrisse <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a></h1>';
+        $output.='           <h1 class="block-title">'.t('Add to calendar').' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">'.t('Close').'</a></h1>';
         $output.='			';
         $output.='			<div class="row-spacer-xs"></div>';
         $output.='			';
@@ -1392,20 +1401,20 @@ function hitsa_events_add_to_calendar_form($form,&$form_state,$event_id=NULL,$da
         '#prefix' => '<label class="full-width">
 								<span class="customCheckbox">',
     );
-    $form['selections']['outlookevent'] = array(
-        '#name' => 'outlookevent',
-        '#id' => 'outlookevent',
-        '#type' => 'checkbox',
-        '#theme_wrappers' => array(),
-        '#title' => t('Download as iCal calendar event'),
-        '#value' => 'outlookevent',
-        '#suffix' => '<span class="check"></span>
-								</span><!--/customCheckbox-->
-								<span class="label-title">'.t('Add event to calendar (Outlook)').'</span>
-							</label>',
-        '#prefix' => '<label class="full-width">
-								<span class="customCheckbox">',
-    );
+//    $form['selections']['outlookevent'] = array(
+//        '#name' => 'outlookevent',
+//        '#id' => 'outlookevent',
+//        '#type' => 'checkbox',
+//        '#theme_wrappers' => array(),
+//        '#title' => t('Download as iCal calendar event'),
+//        '#value' => 'outlookevent',
+//        '#suffix' => '<span class="check"></span>
+//								</span><!--/customCheckbox-->
+//								<span class="label-title">'.t('Add event to calendar (Outlook)').'</span>
+//							</label>',
+//        '#prefix' => '<label class="full-width">
+//								<span class="customCheckbox">',
+//    );
     $form['selections']['email'] = array(
         '#name' => 'email',
         '#id' => 'email',
@@ -1633,11 +1642,11 @@ function hitsa_events_generate_ics($post){
             $file = file_save_data($file_contents,$calendar_location.'/calendar_event_'.$post['date'].'.ics',FILE_EXISTS_REPLACE);
             $file_link = file_create_url($file->uri);
             $errors=FALSE;
+            $output='';
             if (!empty($post['icaldownload'])) {
                 $output = '<a class="cta-link before-calendar" href="' . $file_link . '">' . t('To download calendar .ics file click here') . '</a>';
             }
             if (!empty($post['email'])){
-                $output.= '<br>';
                 if (!filter_var($post['email'], FILTER_VALIDATE_EMAIL)) {
                     $form = drupal_get_form('hitsa_events_add_to_calendar_form');
                     $form['event']['#value'] = $post['event'];
@@ -1654,9 +1663,20 @@ function hitsa_events_generate_ics($post){
                     return $output;
                 }
                 else{
-                    $send_mail = hitsa_events_send_mail($file_link,$post,$event);
+                    $send_mail = hitsa_events_send_mail($file->fid,$post,$event);
                 }
-
+                if(!empty($send_mail)){
+                    if (!empty($output)) {
+                        $output .= '<br>';
+                        $output .= '<br>';
+                    }
+                    if ($send_mail['success']==true) {
+                        $output .= $send_mail['message'];
+                    }
+                    else{
+                        $output .=  '<div class="notification notification-error">'.$send_mail['message'].'</div>';
+                    }
+                }
             }
             if (!$errors) {
                 return $output;
@@ -1676,9 +1696,57 @@ function hitsa_events_cron(){
 
 function hitsa_events_send_mail($file_link,$post,$event){
     krumo($post);
-    if (module_exists('simple_mail')){
-        if (!empty($post) && !empty($post['email'])) {
-            simple_mail_send($from = null, $post['email'], t('Calendar event'), $body);
+    if (!empty($post['email'])) {
+        $attachment = file_load($file_link);
+
+        $from = variable_get('site_mail', '');
+        $params = array(
+            'key' => 'event_initation',
+            'to' => $post['email'],
+            'from' => $from,
+            'subject' => t('Event invitation'),
+            'body' => t('Attached you find event invitation in .ics format'),
+            'attachment' => $attachment
+        );
+        $key = 'event_initation';
+        $to = $post['email'];
+        $language = $event->language;
+        $message = drupal_mail('hitsa_events', $key, $to, $language, $params, $from);
+        if ($message['send']==true){
+            if ($message['response']==true){
+                $return = array(
+                    'success'=>true,
+                    'message' => t('E-mail was successfully sent to: ').$post['email']
+                );
+                return $return;
+            }
+            else{
+                $return = array(
+                    'success'=>false,
+                    'message' => t('There was problem sending e-mail to address:').$post['email']
+                );
+                return $return;
+            }
         }
+        else{
+
+            $return = array(
+                'success'=>false,
+                t('There was problem sending e-mail to address:').$post['email']
+            );
+            return $return;
+        }
+    }
+}
+/**
+ * Implements hook_mail().
+ */
+function hitsa_events_mail($key, &$message, $params) {
+    $message['subject'] = $params['subject'];
+    $message['body'][] = $params['body'];
+
+    // Add attachment when available.
+    if (isset($params['attachment'])) {
+        $message['params']['attachments'][] = $params['attachment'];
     }
 }
