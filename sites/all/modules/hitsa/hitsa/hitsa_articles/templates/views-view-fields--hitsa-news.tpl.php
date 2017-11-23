@@ -36,8 +36,8 @@
       <span class="object-content">
         <span class="object-title"><?php print $fields['title']->content; ?></span>
         <span class="object-footer">
-          <span class="before-shopping"><?php print $fields['created']->content; ?></span>
-          <span class="before-shopping"><?php print $fields['name']->content; ?></span>
+          <span class="before-calendar"><?php print $fields['created']->content; ?></span>
+          <span class="before-user"><?php print $fields['name']->content; ?></span>
         </span><!--/object-footer-->
       </span><!--/object-content-->
     </span>

@@ -157,15 +157,39 @@ function hitsa_menu_tree__hitsa_sitemap($variables) {
   return $menu_tree;
 }
 
+/*
+* Services block
+*/
 function hitsa_menu_tree__hitsa_services_block($variables) {
   $output = '';
   foreach($variables['#tree'] as $service_subtype) {
     if(!empty($service_subtype['#below'])) {
-      //dpm($service_subtype);
-      
+      $output .= '<h5 class="size-large">' . $service_subtype['#title'] . '</h5>';
+      $output .= '<ul class="bullet-links">';
+      $service_subtype['#theme'] = 'menu_link__hitsa_services_block';
+      $output .= render($service_subtype);
+      $output .= '</ul>';
     }
   }
-  return '<ul class="header-nav_main">' . $variables['tree'] . '</ul>';
+  return '<div data-tab="tab-1">' . $output . '</div>';
+}
+
+function hitsa_menu_link__hitsa_services_block($variables) {
+  $output = '';
+  $service_subtype = $variables['element'];
+  $qty = 0;
+  foreach($service_subtype['#below'] as $service) {
+    if(!empty($service['#original_link'])) {
+      $link = l($service['#title'], $service['#href'], $service['#localized_options']);
+      $output .= '<li' . ((++$qty > 4) ? ' data-show="bullet-list-1"' : '') . '>' . $link . "</li>\n";
+    }
+  }
+  if($qty > 4) {
+    $output .= '<li><div data-toggle="bullet-list-1" class="bullet-list-show_more"><span data-hide="bullet-list-1" class="after-arrow_down">';
+    $output .= t('Show more') . ' (' . ($qty - 4) . ')' . '</span><span data-show="bullet-list-1" class="after-arrow_up">';
+    $output .= t('Show less') . '</span></div></li>';
+  }
+  return $output;
 }
 
 function hitsa_menu_link__hitsa_sitemap(array $variables) {
@@ -403,6 +427,24 @@ function hitsa_preprocess_menu_link(&$variables) {
 }
 
 /* Webform Theme Wrappers */
+function hitsa_preprocess_webform_form(&$variables) {
+  
+  $contact_us_webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
+  // "Contact Us" form
+  if($variables['nid'] === $contact_us_webform_nid) {
+    
+    if(!empty($variables['form']['actions']['submit'])) {
+      $variables['form']['actions']['submit']['#attributes']['class'] = array('btn btn-filled sm-stretch');
+    }
+    if(!empty($variables['form']['submitted']['name'])) {
+      $variables['form']['submitted']['name']['#wrapper_attributes']['class'][] = 'form-item_half';
+    }
+    if(!empty($variables['form']['submitted']['e_mail'])) {
+      $variables['form']['submitted']['e_mail']['#wrapper_attributes']['class'][] = 'form-item_half';
+    }
+  }
+}
+
 function hitsa_webform_element($variables) {
   $element = $variables['element'];
 
@@ -660,4 +702,226 @@ function hitsa_checkbox($variables) {
   _form_set_class($element, array('form-checkbox'));
 
   return '<input' . drupal_attributes($element['#attributes']) . ' /><span class="check"></span>';
+}
+
+function hitsa_pager($variables) {
+  $tags = $variables['tags'];
+  $element = $variables['element'];
+  $parameters = $variables['parameters'];
+  $quantity = $variables['quantity'];
+  global $pager_page_array, $pager_total;
+
+  // Calculate various markers within this pager piece:
+  // Middle is used to "center" pages around the current page.
+  $pager_middle = ceil($quantity / 2);
+  // current is the page we are currently paged to
+  $pager_current = $pager_page_array[$element] + 1;
+
+  // first is the first page listed by this pager piece (re quantity)
+  $pager_first = $pager_current - $pager_middle + 1;
+  // last is the last page listed by this pager piece (re quantity)
+  $pager_last = $pager_current + $quantity - $pager_middle;
+  // max is the maximum page number
+  $pager_max = $pager_total[$element];
+  // End of marker calculations.
+
+  // Prepare for generation loop.
+  $i = $pager_first;
+  if ($pager_last > $pager_max) {
+    // Adjust "center" if at end of query.
+    $i = $i + ($pager_max - $pager_last);
+    $pager_last = $pager_max;
+  }
+  if ($i <= 0) {
+    // Adjust "center" if at start of query.
+    $pager_last = $pager_last + (1 - $i);
+    $i = 1;
+  }
+  // End of generation loop preparation.
+  
+  //$li_first = theme('pager_first', array('text' => (isset($tags[0]) ? $tags[0] : t('«')), 'element' => $element, 'parameters' => $parameters));
+  $li_previous = ($pager_page_array[$element] > 0) 
+    ? '<a href="javascript:void(0);" data-page="prev" class="before-arrow_left"></a>' : '';
+  $li_next = ($pager_page_array[$element] < ($pager_total[$element] - 1)) 
+    ? '<a href="javascript:void(0);" data-page="next" class="before-arrow_right"></a>' : '';
+  //$li_last = theme('pager_last', array('text' => (isset($tags[4]) ? $tags[4] : t('»')), 'element' => $element, 'parameters' => $parameters));
+  
+  if ($pager_total[$element] > 1) {
+    /*
+    if ($li_first) {
+      $items[] = array(
+        'class' => array('pager-first'),
+        'data' => $li_first,
+      );
+    }*/
+    if ($li_previous) {
+      $items[] = array(
+        'class' => array('pager-previous'),
+        'data' => $li_previous,
+      );
+    }
+
+    // When there is more than one page, create the pager list.
+    if ($i != $pager_max) {
+      if ($i > 1) {
+        $items[] = array(
+          'class' => array('pager-ellipsis'),
+          'data' => '…',
+        );
+      }
+      // Now generate the actual pager piece.
+      for (; $i <= $pager_last && $i <= $pager_max; $i++) {
+        if ($i < $pager_current) {
+          $items[] = array(
+            'class' => array(),
+            'data' => theme('pager_previous', array('text' => $i, 'element' => $element, 'interval' => ($pager_current - $i), 'parameters' => $parameters)),
+          );
+        }
+        if ($i == $pager_current) {
+          $items[] = array(
+            'class' => array('active'),
+            'data' => '<a href="javascript:void(0);" data-page="' . $i . '">' . $i . '</a>',
+          );
+        }
+        if ($i > $pager_current) {
+          $items[] = array(
+            'class' => array(),
+            'data' => theme('pager_next', array('text' => $i, 'element' => $element, 'interval' => ($i - $pager_current), 'parameters' => $parameters)),
+          );
+        }
+      }
+      if ($i < $pager_max) {
+        $items[] = array(
+          'class' => array(),
+          'data' => '…',
+        );
+      }
+    }
+    // End generation.
+    if ($li_next) {
+      $items[] = array(
+        'class' => array(),
+        'data' => $li_next,
+      );
+    }
+    /*
+    if ($li_last) {
+      $items[] = array(
+        'class' => array(),
+        'data' => $li_last,
+      );
+    }
+    */
+
+    return theme('item_list__pager', array(
+      'items' => $items,
+      'attributes' => array('class' => array('pager')),
+    ));
+  }
+}
+
+function hitsa_item_list__pager($variables) {
+  $items = $variables['items'];
+  $title = $variables['title'];
+  $type = $variables['type'];
+  $attributes = $variables['attributes'];
+
+  // Only output the list container and title, if there are any list items.
+  // Check to see whether the block title exists before adding a header.
+  // Empty headers are not semantic and present accessibility challenges.
+  $output = '';
+  if (isset($title) && $title !== '') {
+    $output .= '<h3>' . $title . '</h3>';
+  }
+
+  if (!empty($items)) {
+    $output .= '<ul class="paginator" data-plugin="filterPaginator" data-relative="paginatorNumber">';
+    $num_items = count($items);
+    $i = 0;
+    foreach ($items as $item) {
+      $attributes = array();
+      $children = array();
+      $data = '';
+      $i++;
+      if (is_array($item)) {
+        foreach ($item as $key => $value) {
+          if ($key == 'data') {
+            $data = $value;
+          }
+          elseif ($key == 'children') {
+            $children = $value;
+          }
+          else {
+            $attributes[$key] = $value;
+          }
+        }
+      }
+      else {
+        $data = $item;
+      }
+
+      if (count($children) > 0) {
+        // Render nested list.
+        $data .= theme_item_list(array('items' => $children, 'title' => NULL, 'type' => $type, 'attributes' => $attributes));
+      }
+      if ($i == 1) {
+        $attributes['class'][] = 'first';
+      }
+      if ($i == $num_items) {
+        $attributes['class'][] = 'last';
+      }
+      $output .= '<li' . drupal_attributes($attributes) . '>' . $data . "</li>\n";
+    }
+    $output .= "</ul>";
+  }
+  return $output;
+}
+
+function hitsa_pager_link($variables) {
+  $text = $variables['text'];
+  $page_new = $variables['page_new'];
+  $element = $variables['element'];
+  $parameters = $variables['parameters'];
+  $attributes = $variables['attributes'];
+
+  $page = isset($_GET['page']) ? $_GET['page'] : '';
+  if ($new_page = implode(',', pager_load_array($page_new[$element], $element, explode(',', $page)))) {
+    $parameters['page'] = $new_page;
+  }
+
+  $query = array();
+  if (count($parameters)) {
+    $query = drupal_get_query_parameters($parameters, array());
+  }
+  if ($query_pager = pager_get_query_parameters()) {
+    $query = array_merge($query, $query_pager);
+  }
+
+  // Set each pager link title
+  if (!isset($attributes['title'])) {
+    static $titles = NULL;
+    if (!isset($titles)) {
+      $titles = array(
+        t('« first') => t('Go to first page'),
+        t('‹ previous') => t('Go to previous page'),
+        t('next ›') => t('Go to next page'),
+        t('last »') => t('Go to last page'),
+      );
+    }
+    if (isset($titles[$text])) {
+      $attributes['title'] = $titles[$text];
+    }
+    elseif (is_numeric($text)) {
+      $attributes['title'] = t('Go to page @number', array('@number' => $text));
+    }
+  }
+
+  // @todo l() cannot be used here, since it adds an 'active' class based on the
+  //   path only (which is always the current path for pager links). Apparently,
+  //   none of the pager links is active at any time - but it should still be
+  //   possible to use l() here.
+  // @see http://drupal.org/node/1410574
+  $attributes['href'] = url($_GET['q'], array('query' => $query));
+  $page = $text - 1;
+  return '<a href="javascript:void(0);" data-page="' . $page . '">' . check_plain($text) . '</a>';
 }

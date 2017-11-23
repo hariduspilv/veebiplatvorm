@@ -15,34 +15,6 @@
   <div class="row-spacer-xs"></div>
   <?php if(!empty($services)): ?>
   <?php print $services; ?>
-  <div data-tab="tab-1">
-    <h5 class="size-large">Avalikud teenused</h5>
-    
-    <ul class="bullet-links">
-       <li><a href="">Ruumide rent</a></li>
-       <li><a href="">Juuksur</a></li>
-       <li><a href="">Kohvik</a></li>
-       <li><a href="">Catering</a></li>
-       
-       <li data-show="bullet-list-1"><a href="">Ruumide rent</a></li>
-       <li data-show="bullet-list-1"><a href="">Juuksur</a></li>
-       <li data-show="bullet-list-1"><a href="">Kohvik</a></li>
-       <li data-show="bullet-list-1"><a href="">Catering</a></li>
-       
-       <li>
-          <div data-toggle="bullet-list-1" class="bullet-list-show_more"><span data-hide="bullet-list-1" class="after-arrow_down">Näita rohkem (4)</span><span data-show="bullet-list-1" class="after-arrow_up">Näita vähem</span></div>
-       </li>
-       
-    </ul>
-    
-    <h5 class="size-large">Teenused ettevõtjale</h5>
-    <ul class="bullet-links">
-       <li><a href="">Konsultatsioon</a></li>
-       <li><a href="">Arendusteenus</a></li>
-       <li><a href="">Uuringuteenus</a></li>
-       <li><a href="">Laboriteenus</a></li>
-    </ul>
-  </div><!--/data-tab-1-->
   <?php endif; ?>
   <?php if(!empty($events)): ?>
     <?php print $events; ?>

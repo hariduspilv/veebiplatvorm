@@ -627,6 +627,20 @@ function _hitsa_content_page_image_styles() {
 		    ),
 		  ),
 		),
+		array(
+      'style' => array(
+		    'name' => 'hitsa_article_modal_view',
+		    'label' => 'Article Modal Image (720x405)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale',
+		    'data' => array(
+		      'width' => 720,
+		      'height' => 405,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
   );
   
   return $image_styles;

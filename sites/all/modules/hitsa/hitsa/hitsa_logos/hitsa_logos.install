@@ -19,7 +19,10 @@ function hitsa_logos_uninstall() {
   
   // Delete Logos view
   $view = views_get_view('hitsa_logos');
-  views_delete_view($view);
+  if(!empty($view)) {
+    views_delete_view($view);
+  }
+  
 }
 
 function _hitsa_logos_fields() {

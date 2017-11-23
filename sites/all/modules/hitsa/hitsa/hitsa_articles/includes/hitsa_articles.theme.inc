@@ -56,6 +56,16 @@ function hitsa_articles_theme() {
     ),
   );
   
+  $items['hitsa_news_output'] = array(
+    'template' => 'hitsa-news-output',
+    'path' => drupal_get_path('module', 'hitsa_articles') . '/templates',
+    'variables' => array(
+      'nodes' => NULL,
+      'pager' => NULL,
+      'academic_year' => NULL,
+    ),
+  );
+  
   return $items;
 }
 
@@ -65,7 +75,10 @@ function hitsa_articles_preprocess_node(&$variables) {
       // Get the category title based on article type.
       $all_fields = field_info_fields();
       $variables['article_types_list'] = list_allowed_values($all_fields['article_type']);
-      
+
+      foreach($variables['article_types_list'] as &$type) {
+        $type = t($type);
+      }
       // Get "More articles" block nodes
       $more_articles = hitsa_articles_get_more_articles_block_nodes($variables);
       $articles_rendered = array();
@@ -81,6 +94,12 @@ function hitsa_articles_preprocess_node(&$variables) {
       $variables['more_articles_title'] = $article_type === 'our_stories' ? t('More stories') : t('More news');
       $link = $article_type === 'our_stories' ? url('our-stories') : url('news');
       $variables['more_articles_link'] = sprintf('<a href="%s" class="btn">%s</a>', $link, $article_type === 'our_stories' ? t('All stories') : t('All news'));
+      
+      // Set author and publish date
+      $author = user_load($variables['uid']);
+      if(!empty($author->name)) {
+        $variables['author_name'] = $author->name;
+      }
     }
   }
 }
@@ -93,17 +112,21 @@ function hitsa_articles_preprocess_block(&$variables) {
   }
 }
 
-function hitsa_articles_page_view($type) {
+function hitsa_articles_page_view($type, $filter = FALSE) {
   $query = drupal_get_query_parameters();
-  $query['article_type'] = $type;
-  $query['range'] = array(0, 12);
+  $query['article_type'] = empty($query['article_type']) ? $type : $query['article_type'];
+  $query['range'] = empty($query['range']) ? array(0, 12) : $query['range'];
+  $query['pager'] = 12;
   
   // Load academic years taxonomy
   $academic_years_vid = variable_get('hitsa_academic_years_vid');
   $academic_years = array_reverse(taxonomy_get_tree($academic_years_vid));
   
   // Load nodes
-  $nids_array = hitsa_articles_query_content($query);
+  if($result = hitsa_articles_query_content($query, TRUE)) {
+    $nids_array = !empty($result['content']) ? $result['content'] : NULL;
+  }
+
   if(!empty($nids_array['node'])) {
     $nodes = node_load_multiple(array_keys($nids_array['node']));
     
@@ -115,7 +138,9 @@ function hitsa_articles_page_view($type) {
       if(!empty($node->academic_year[LANGUAGE_NONE][0]['tid'])) {
         $articles_grouped[$node->academic_year[LANGUAGE_NONE][0]['tid']][] = theme('hitsa_article_teaser', array('node' => $node, 'author' => $author));
       }
+      // TODO: Handle articles without set academic year. 
     }
+    
     $articles_grouped_sorted = array();
     $academic_years_keyed = array();
     foreach($academic_years as $academic_year) {
@@ -127,13 +152,42 @@ function hitsa_articles_page_view($type) {
 
   }
 
-  return theme(
-    'news_page',
+  // Pager
+  $quantity = ceil($result['count'] / 12);
+  
+  $per_page = 12;
+  $current_page = pager_default_initialize($result['count'], 12);
+
+  $pager = hitsa_pager(
     array(
-      'nodes' => !empty($articles_grouped_sorted) ? $articles_grouped_sorted : array(),
-      'academic_years' => $academic_years,
-      'academic_year_keyed' => !empty($academic_years_keyed) ? $academic_years_keyed : array(),
-      'authors' => !empty($authors) ? $authors : array(),
+      'tags' => array(),
+      'element' => 0,
+      'parameters' => array(),
+      'quantity' => $quantity,
+      'pager_current' => !empty($query['page']) ? $query['page'] : 1
     )
   );
+
+  $news_output = theme('hitsa_news_output',
+    array(
+      'nodes' => !empty($articles_grouped_sorted) ? $articles_grouped_sorted : array(),
+      'academic_year_keyed' => !empty($academic_years_keyed) ? $academic_years_keyed : array(),
+      'authors' => !empty($authors) ? $authors : array(),
+      'pager' => $pager,
+    )
+  );
+
+  
+  if($filter) {
+    return $news_output;
+  } else {
+    return theme(
+      'news_page',
+      array(
+        'academic_years' => $academic_years,
+        'news_output' => $news_output,
+      )
+    );
+  }
+  
 }

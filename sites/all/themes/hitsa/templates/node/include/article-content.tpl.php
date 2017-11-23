@@ -9,14 +9,20 @@
   <div class="row">
     <?php if(!empty($content['cp_type']) && $content['cp_type']['#items'][0]['value'] === 'cp_contacts'): ?>
       <?php if(!empty($content['cp_contacts'])): ?>
-        <?php dpm($content); ?>
         <?php print render($content['cp_contacts']); ?>
       <?php endif; ?>
     <?php else: ?>
     <div class="col-8">
       <article class="padding-right">
         <?php if($node->type === 'article'): ?>
-        <h1><?php print $title; ?></h1>
+        <h1><?php print $title; ?>
+          <span class="editor-info">
+				  	<span class="before-calendar"><?php print format_date($node->created, 'hitsa_date_month'); ?></span>
+				  	<?php if(!empty($author_name)): ?>
+				  	<span class="before-user"><?php print check_plain($author_name); ?></span>
+				  	<?php endif; ?>
+				  </span>
+				</h1>
         <?php endif; ?>
         
         <?php if(!empty($body)): ?>
@@ -34,6 +40,12 @@
         <?php if(!empty($elements['cp_contact_information'])): ?>
           <?php print render($elements['cp_contact_information']); ?>
         <?php endif; ?>
+        
+        <?php if($node->type === 'article'): ?>
+          <span class="article-date">
+            <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
+          </span>
+        <?php endif; ?>
       </article>
     </div><!--/col-8-->
     <div class="col-4">
@@ -47,8 +59,13 @@
       <?php if(!empty($subpage_images)): ?>
         <?php foreach($subpage_images as $image): // Gallery ?>
         <figure>
-          <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" alt="<?php print check_plain($image['alt']); ?>">
-          <figcaption><?php print check_plain($image['alt']); ?></figcaption>
+          <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
+          title="<?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?>" 
+          data-plugin="modal" data-closebutton="<?php print t('Close'); ?>">
+            <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
+            alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
+          </a>
+          <figcaption><?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?></figcaption>
         </figure>
         <?php endforeach; ?>
       <?php endif; ?>

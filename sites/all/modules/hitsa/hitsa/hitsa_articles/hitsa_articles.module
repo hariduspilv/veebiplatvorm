@@ -21,6 +21,12 @@ function hitsa_articles_menu() {
     'access arguments' => array('access content'),
   );
   
+  $items['api/articles'] = array(
+    'title' => 'Articles API',
+    'page callback' => 'hitsa_articles_filter',
+    'access arguments' => array('access content'),
+  );
+  
   return $items;
 }
 
@@ -37,7 +43,10 @@ function hitsa_articles_get_more_articles_block_nodes($variables) {
     // Query up to 6 nodes
     $query['range'] = array(0, 6);
     
-    $articles_nids = hitsa_articles_query_content($query);
+    if($result = hitsa_articles_query_content($query)) {
+      $articles_nids = !empty($result['content']) ? $result['content'] : NULL;
+    }
+    
     if(!empty($articles_nids['node'])) {
       $articles = node_load_multiple(array_keys($articles_nids['node']));
     }
@@ -85,7 +94,9 @@ function hitsa_articles_block_view($delta = '') {
   switch($delta) {
     case 'hitsa_our_stories':
       $query = array('article_type' => 'our_stories', 'range' => array(0, 2));
-      $our_stories_nids = hitsa_articles_query_content($query);
+      if($result = hitsa_articles_query_content($query)) {
+        $our_stories_nids = !empty($result['content']) ? $result['content'] : NULL;
+      }
       
       if(!empty($our_stories_nids['node'])) {
         $our_stories_nodes = node_load_multiple(array_keys($our_stories_nids['node']));
@@ -100,7 +111,9 @@ function hitsa_articles_block_view($delta = '') {
     case 'hitsa_important_article':
       // Add the "Important article" block
       $query = array('article_type' => 'important', 'range' => array(0, 1));
-      $important_nid = hitsa_articles_query_content($query);
+      if($result = hitsa_articles_query_content($query)) {
+        $important_nid = !empty($result['content']) ? $result['content'] : NULL;
+      }
       if(!empty($important_nid['node'])) {
         $article_nid = reset($important_nid['node']);
         $important_article = node_load($article_nid->nid);
@@ -136,7 +149,16 @@ function hitsa_articles_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
-function hitsa_articles_query_content($q = array()) {
+function hitsa_articles_filter() {
+  global $language;
+  
+  $output = hitsa_articles_page_view('news', TRUE);
+  
+  print $output;
+  exit;
+}
+
+function hitsa_articles_query_content($q = array(), $count = FALSE) {
   $query = new EntityFieldQuery();
   
   $parameters = _hitsa_articles_set_query_parameters($q);
@@ -149,10 +171,18 @@ function hitsa_articles_query_content($q = array()) {
   foreach($parameters as $parameter) {
     $query->{$parameter['type']}(...$parameter['arguments']);
   }
-  
-  $result = $query->execute();
 
-  return $result;
+  $output = array();
+  
+  
+  
+  $output['content'] = $query->execute();
+  
+  if($count) {
+    $output['count'] = $query->range(0, PHP_INT_MAX)->count()->execute();
+  }
+
+  return $output;
 }
 
 function _hitsa_articles_set_query_parameters($query = array()) {
@@ -167,11 +197,45 @@ function _hitsa_articles_set_query_parameters($query = array()) {
   );
   
   // Page / Range
-  if(!empty($query['range'])) {
+  if(!empty($query['page'])) {
+    $page_range = ($query['page'] - 1) * 12;
+
+    $parameters[] = array(
+      'type' => 'range',
+      'arguments' => array($page_range, $page_range + 12),
+    );
+  } else if(!empty($query['range'])) {
+    
     $parameters[] = array(
       'type' => 'range',
       'arguments' => array($query['range'][0], $query['range'][1]),
     );
+  }
+  
+  // Pager
+  if(!empty($query['pager'])) {
+    $parameters[] = array(
+      'type' => 'pager',
+      'arguments' => array($query['pager']),
+    );
+  }
+  
+  // Academic year
+  if(!empty($query['category'])) {
+    $academic_years = explode(',', $query['category']);
+    
+    foreach($academic_years as $academic_year) {
+      if($academic_year === 'all') {
+        $academic_years = NULL;
+        break;
+      }
+    }
+    if(!empty($academic_years)) {
+      $parameters[] = array(
+        'type' => 'fieldCondition',
+        'arguments' => array('academic_year', 'tid', $academic_years, 'IN'),
+      );
+    }
   }
   
   // Type
@@ -189,6 +253,6 @@ function _hitsa_articles_set_query_parameters($query = array()) {
       'arguments' => array('entity_id', $query['nids_not_in'], 'NOT IN'),
     );
   }
-  
+
   return $parameters;
 }
