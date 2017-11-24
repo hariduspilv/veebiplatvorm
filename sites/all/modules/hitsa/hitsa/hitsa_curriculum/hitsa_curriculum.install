@@ -4896,7 +4896,7 @@ function hitsa_curriculum_add_custom_taxonomy_fields_instances()
       'entity_type' => 'taxonomy_term',
       'field_name' => 'field_icon_choice',
       'label' => 'Icon choice',
-      'required' => false,
+      'required' => true,
       'settings' => array(
         'entity_translation_sync' => false,
         'user_register_form' => false,
