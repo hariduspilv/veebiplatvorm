@@ -497,7 +497,9 @@ function hitsa_curriculum_contacts($contacts)
                 $output .= '   <li>';
                 $output .= '      <div class="before-home"></div>';
                 $output .= '      <div class="list-details_text">';
-                $output .= '         <p><a href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $contact->field_website['und'][0]['url'] . '</a></p>';
+                $url = str_replace('http://','',$contact->field_website['und'][0]['url']);
+                $url = str_replace('https://','',$url);
+                $output .= '         <p><a target="_blank" href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $url . '</a></p>';
                 $output .= '      </div><!--/list-details_text-->';
                 $output .= '   </li>';
             }
