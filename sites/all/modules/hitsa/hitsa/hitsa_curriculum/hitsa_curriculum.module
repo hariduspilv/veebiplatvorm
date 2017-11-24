@@ -1439,15 +1439,7 @@ function hitsa_curriculum_image_default_styles(){
     $styles['hc_pictures'] = array(
         'effects' => array(
             array(
-                'name' => 'image_scale',
-                'data' => array(
-                    'width' => 780,
-                    'upscale' => 1,
-                ),
-                'weight' => 0,
-            ),
-            array(
-                'name' => 'image_crop',
+                'name' => 'image_scale_and_image_crop',
                 'data' => array(
                     'width' => 780,
                     'height' => 440,
