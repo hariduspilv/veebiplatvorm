@@ -948,14 +948,14 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     }
     if (!empty($content->field_short_description)){
         if(!empty($output_elements['table_description'])){
-            $style = 'style=""';
+            $style = 'style="margin-bottom:0.2em"';
         }
         else{
             $style = '';
         }
 
         if (!empty($content->field_table_description)) {
-            $output_elements['table_description'] = '<p style="">'. $content->field_table_description['und'][0]['value'] .'</p>';
+            $output_elements['table_description'] = '<p style="margin-top: -1em">'. $content->field_table_description['und'][0]['value'] .'</p>';
         }
         $output_elements['short_description'] = '<h5 class="sm-alignment" '.$style.'>'.$content->field_short_description['und'][0]['value'].'<span class="btn-bar align-right pull-right sm-show">
                        <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
