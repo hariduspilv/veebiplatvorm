@@ -1058,6 +1058,10 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     if (!empty($output_elements['body_element'])){
                         $output.=$output_elements['body_element'];
                     }
+
+                    if (!empty($output_elements['documents'])){
+                        $output.=$output_elements['documents'];
+                    }
                     if (!empty($output_elements['short_description'])){
                         $output.=$output_elements['short_description'];
                     }
@@ -1067,9 +1071,6 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     }
                     if(!empty($output_elements['table'])){
                         $output.=$output_elements['table'];
-                    }
-                    if (!empty($output_elements['documents'])){
-                        $output.=$output_elements['documents'];
                     }
                     if (!empty($output_elements['pictures'])){
                         $output.=$output_elements['pictures'];
