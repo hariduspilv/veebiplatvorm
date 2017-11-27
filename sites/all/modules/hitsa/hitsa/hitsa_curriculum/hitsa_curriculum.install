@@ -112,23 +112,23 @@ function hitsa_curriculum_delete_custom_vocabularies()
 function hitsa_curriculum_add_custom_paragraphs_bundle()
 {
     $bundle = new stdClass();
-    $bundle->name = 'Contacts'; // user friendly label
+    $bundle->name = t('Contacts'); // user friendly label
     $bundle->bundle = 'contacts'; // machine name
     $bundle->locked = 1;
     $status = paragraphs_bundle_save($bundle);
     $bundle = new stdClass();
-    $bundle->name = 'Description'; // user friendly label
+    $bundle->name = t('Description'); // user friendly label
     $bundle->bundle = 'description'; // machine name
     $bundle->locked = 1;
     $status = paragraphs_bundle_save($bundle);
     $bundle = new stdClass();
-    $bundle->name = 'Table'; // user friendly label
+    $bundle->name = t('Table'); // user friendly label
     $bundle->bundle = 'table'; // machine name
     $bundle->locked = 1;
     $status = paragraphs_bundle_save($bundle);
     $status = paragraphs_bundle_save($bundle);
     $bundle = new stdClass();
-    $bundle->name = 'Jobs'; // user friendly label
+    $bundle->name = t('Jobs'); // user friendly label
     $bundle->bundle = 'jobs'; // machine name
     $bundle->locked = 1;
     $status = paragraphs_bundle_save($bundle);
@@ -1144,6 +1144,7 @@ function hitsa_curriculum_add_custom_node_fields()
     }
 }
 function _hitsa_curriculum_installed_node_fields(){
+
     $field_bases = array();
 
     // Exported field_base: 'body'.
@@ -1607,10 +1608,12 @@ function _hitsa_curriculum_installed_node_fields(){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
+            'add_row_localization_source' => 'Add another item',
             'entity_translation_sync' => FALSE,
+            'max_length' => 255,
         ),
         'translatable' => 0,
-        'type' => 'text_with_summary',
+        'type' => 'text',
     );
 
     // Exported field_base: 'field_table_descriptions'.
@@ -1706,7 +1709,6 @@ function _hitsa_curriculum_installed_node_fields(){
     return $field_bases;
 }
 function _hitsa_curriculum_installed_node_instances(){
-
     $field_instances = array();
 
     // Exported field_instance: 'node-curriculum-body'.
@@ -1877,7 +1879,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_contacts',
-        'label' => 'Contacts',
+        'label' => 'Kontaktid',
         'required' => 0,
         'settings' => array(
             'add_mode' => 'button',
@@ -1907,8 +1909,8 @@ function _hitsa_curriculum_installed_node_instances(){
             ),
             'default_edit_mode' => 'preview',
             'entity_translation_sync' => FALSE,
-            'title' => 'contact',
-            'title_multiple' => 'contacts',
+            'title' => 'kontakt',
+            'title_multiple' => 'kontakti',
             'user_register_form' => FALSE,
         ),
         'widget' => array(
@@ -2185,7 +2187,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_jobs',
-        'label' => 'Jobs',
+        'label' => 'Töökohad',
         'required' => 0,
         'settings' => array(
             'add_mode' => 'select',
@@ -2209,8 +2211,8 @@ function _hitsa_curriculum_installed_node_instances(){
             ),
             'default_edit_mode' => 'open',
             'entity_translation_sync' => FALSE,
-            'title' => 'Paragraph',
-            'title_multiple' => 'Paragraphs',
+            'title' => 'töökoht',
+            'title_multiple' => 'töökohta',
             'user_register_form' => FALSE,
         ),
         'widget' => array(
@@ -2601,7 +2603,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_specialitiy_table',
-        'label' => 'Specialitiy table',
+        'label' => 'Erialade tabel',
         'required' => 0,
         'settings' => array(
             'entity_translation_sync' => FALSE,
@@ -2644,7 +2646,7 @@ function _hitsa_curriculum_installed_node_instances(){
                     ),
                     'rebuild' => array(
                         'count_cols' => 4,
-                        'count_rows' => 19,
+                        'count_rows' => 20,
                         'rebuild' => 'Rebuild Table',
                     ),
                     'tabledata' => array(
@@ -2781,6 +2783,13 @@ function _hitsa_curriculum_installed_node_instances(){
                             'col_3' => '',
                             'weight' => 19,
                         ),
+                        'row_19' => array(
+                            'col_0' => 'Kokku',
+                            'col_1' => '',
+                            'col_2' => '',
+                            'col_3' => '',
+                            'weight' => 20,
+                        ),
                     ),
                 ),
             ),
@@ -2816,7 +2825,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_subjects_table',
-        'label' => 'Subjects table',
+        'label' => 'Õppeainete tabel',
         'required' => 0,
         'settings' => array(
             'entity_translation_sync' => FALSE,
@@ -2853,7 +2862,7 @@ function _hitsa_curriculum_installed_node_instances(){
                 'module' => 'text',
                 'settings' => array(),
                 'type' => 'text_default',
-                'weight' => 27,
+                'weight' => 29,
             ),
             'teaser' => array(
                 'label' => 'above',
@@ -2867,19 +2876,17 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Table description',
         'required' => 0,
         'settings' => array(
-            'display_summary' => 0,
             'entity_translation_sync' => FALSE,
-            'text_processing' => 1,
+            'text_processing' => 0,
             'user_register_form' => FALSE,
         ),
         'widget' => array(
             'active' => 1,
             'module' => 'text',
             'settings' => array(
-                'rows' => 20,
-                'summary_rows' => 5,
+                'size' => 60,
             ),
-            'type' => 'text_textarea_with_summary',
+            'type' => 'text_textfield',
             'weight' => 14,
         ),
     );
@@ -2909,7 +2916,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_table_descriptions',
-        'label' => 'Table descriptions',
+        'label' => 'Tabeli kirjeldused',
         'required' => 0,
         'settings' => array(
             'add_mode' => 'button',
@@ -2933,8 +2940,8 @@ function _hitsa_curriculum_installed_node_instances(){
             ),
             'default_edit_mode' => 'preview',
             'entity_translation_sync' => FALSE,
-            'title' => 'Description',
-            'title_multiple' => 'Descriptions',
+            'title' => 'kirjeldus',
+            'title_multiple' => 'kirjeldus',
             'user_register_form' => FALSE,
         ),
         'widget' => array(
@@ -3238,89 +3245,6 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:1"] = array(
-        'entity' => 'node',
-        'bundle' => 'curriculum',
-        'dependent' => 'field_attachments',
-        'dependee' => 'field_school_selections',
-        'options' => array(
-            'state' => '!visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'subject-field',
-            'value' => array(
-                0 => array(
-                    'value' => 'subject-field',
-                ),
-            ),
-            'values' => array(),
-        ),
-    );
 
     $items["node:curriculum:2"] = array(
         'entity' => 'node',
@@ -3922,90 +3846,6 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:9"] = array(
-        'entity' => 'node',
-        'bundle' => 'curriculum',
-        'dependent' => 'field_pictures',
-        'dependee' => 'field_school_selections',
-        'options' => array(
-            'state' => '!visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'subject-field',
-            'value' => array(
-                0 => array(
-                    'value' => 'subject-field',
-                ),
-            ),
-            'values' => array(),
-        ),
-    );
-
     $items["node:curriculum:10"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
@@ -4270,6 +4110,100 @@ function _hitsa_curriculum_conditional_fields(){
     $items["node:curriculum:13"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
+        'dependent' => 'field_short_description',
+        'dependee' => 'field_school_selections',
+        'options' => array(
+            'state' => 'visible',
+            'condition' => 'value',
+            'grouping' => 'AND',
+            'effect' => 'show',
+            'effect_options' => array(),
+            'element_view' => array(
+                1 => 1,
+                2 => 2,
+                5 => 0,
+                3 => 0,
+                4 => 0,
+            ),
+            'element_view_per_role' => 0,
+            'element_view_roles' => array(
+                1 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                2 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                3 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                7 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                8 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+            ),
+            'element_edit' => array(
+                1 => 1,
+                3 => 0,
+            ),
+            'element_edit_per_role' => 0,
+            'element_edit_roles' => array(
+                1 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                2 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                3 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                7 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                8 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+            ),
+            'selector' => '',
+            'values_set' => 3,
+            'value_form' => '_none',
+            'values' => array(
+                0 => 'subject-field',
+                1 => 'specialities',
+            ),
+            'value' => array(),
+        ),
+    );
+
+    $items["node:curriculum:14"] = array(
+        'entity' => 'node',
+        'bundle' => 'curriculum',
         'dependent' => 'field_specialitiy_table',
         'dependee' => 'field_school_selections',
         'options' => array(
@@ -4348,89 +4282,6 @@ function _hitsa_curriculum_conditional_fields(){
                 ),
             ),
             'values' => array(),
-        ),
-    );
-
-    $items["node:curriculum:14"] = array(
-        'entity' => 'node',
-        'bundle' => 'curriculum',
-        'dependent' => 'field_short_description',
-        'dependee' => 'field_school_selections',
-        'options' => array(
-            'state' => 'visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'specialities',
-            'value' => array(),
-            'values' => array(
-                0 => 'subject-field',
-                1 => 'specialities',
-            ),
         ),
     );
 
@@ -5052,7 +4903,7 @@ function hitsa_curriculum_add_custom_taxonomy_fields_instances()
       'entity_type' => 'taxonomy_term',
       'field_name' => 'field_icon_choice',
       'label' => 'Icon choice',
-      'required' => false,
+      'required' => true,
       'settings' => array(
         'entity_translation_sync' => false,
         'user_register_form' => false,

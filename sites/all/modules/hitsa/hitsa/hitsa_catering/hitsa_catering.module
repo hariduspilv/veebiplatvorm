@@ -423,10 +423,10 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['catering_provider']['#prefix'] = '<div class="col-3 d-flex">';
         $build['catering']['catering_provider']['#suffix'] = '</div>';
         $build['catering']['catering_provider']['#markup'] = $catering_providers_sidemenu;
-        $build['catering']['catering_table']['#prefix'] = '<div class="col-9"><article>';
+        $build['catering']['catering_table']['#prefix'] = '<div class="col-9 sm-12"><article>';
         $build['catering']['catering_table']['#suffix'] = '</div></article>';
     } else {
-        $build['catering']['catering_table']['#prefix'] = '<div class="col-12"><article>';
+        $build['catering']['catering_table']['#prefix'] = '<div class="col-12 sm-12"><article>';
         $build['catering']['catering_table']['#suffix'] = '</div></article>';
     }
   
@@ -771,7 +771,7 @@ function hitsa_catering_generate_header($node){
         }
         if (!empty($intro)) {
             $output .= '         <div class="intro">';
-            $output .= '            <p>'.$intro.'</p>';
+            $output .= $intro;
             $output .= '         </div><!--/intro-->';
         }
         if(!empty($body)) {

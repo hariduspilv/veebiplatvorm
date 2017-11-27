@@ -38,7 +38,7 @@ function hitsa_catering_uninstall(){
   // Delete fields and vocabularies
   hitsa_catering_delete_custom_node_fields();
   hitsa_catering_delete_custom_paragraphs_fields();
-  field_purge_batch(500);
+//  field_purge_batch(500);
   hitsa_catering_delete_custom_vocabularies();
   hitsa_catering_delete_vocabulary_fields();
   node_delete_multiple($node_ids); // Delete all catering nodes
@@ -410,7 +410,7 @@ function hitsa_catering_add_custom_paragraphs_fields(){
 
 function hitsa_catering_delete_custom_paragraphs_fields(){
   foreach (array_keys(_hitsa_catering_installed_paragraphs_fields()) as $field) {
-      field_delete_field($field);
+      //field_delete_field($field);
     }
     $instances = field_info_instances('paragraphs_item', 'catering_food_by_day');
     foreach ($instances as $instance_name => $field_instance) {
@@ -972,13 +972,13 @@ function hitsa_catering_delete_custom_node_fields() {
 
                   }
                   elseif (count($field_check['bundles']['node'])==1){
-                      field_delete_field($field_check['field_name']);
+//                      field_delete_field($field_check['field_name']);
                   }
               }
           }
       }
       else {
-          field_delete_field($field);
+//          field_delete_field($field);
       }
   }
   $instances = field_info_instances('node', 'catering');

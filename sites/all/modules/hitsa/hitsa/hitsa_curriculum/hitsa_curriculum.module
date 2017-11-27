@@ -445,11 +445,12 @@ function hitsa_curriculum_attachments($attachments)
 {
     if (!empty($attachments)) {
         $output = '';
+        $output .= '<div class="row-spacer"></div>';
         $output .= '<div class="row">';
         $output .= '<div class="col-12">';
         foreach ($attachments as $key => $attachment) {
             $attachment_url = file_create_url($attachment['uri']);
-            $output .= '<a class="link-circle" href="' . $attachment_url . '">';
+            $output .= '<a target="_blank" class="link-circle" href="' . $attachment_url . '">';
             $output .= '<span class="before-document"></span>';
             $output .= $attachment['filename'];
             $output .= '</a><!--/link-circle-->';
@@ -463,6 +464,7 @@ function hitsa_curriculum_pictures($pictures)
 {
     if (!empty($pictures)) {
         $output = '';
+        $output .= '<div class="row-spacer"></div>';
         $output .= '<div class="row">';
         foreach ($pictures as $key => $picture) {
             $picture_text = '';
@@ -497,7 +499,9 @@ function hitsa_curriculum_contacts($contacts)
                 $output .= '   <li>';
                 $output .= '      <div class="before-home"></div>';
                 $output .= '      <div class="list-details_text">';
-                $output .= '         <p><a href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $contact->field_website['und'][0]['title'] . '</a></p>';
+                $url = str_replace('http://','',$contact->field_website['und'][0]['url']);
+                $url = str_replace('https://','',$url);
+                $output .= '         <p><a target="_blank" href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $url . '</a></p>';
                 $output .= '      </div><!--/list-details_text-->';
                 $output .= '   </li>';
             }
@@ -955,7 +959,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         }
 
         if (!empty($content->field_table_description)) {
-            $output_elements['table_description'] = '<p style="margin-top: -1em">'. $content->field_table_description['und'][0]['value'] .'</p>';
+            $output_elements['table_description'] = '<p style="margin-top: 0em">'. $content->field_table_description['und'][0]['value'] .'</p>';
         }
         $output_elements['short_description'] = '<h5 class="sm-alignment" '.$style.'>'.$content->field_short_description['und'][0]['value'].'<span class="btn-bar align-right pull-right sm-show">
                        <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
@@ -1056,6 +1060,10 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     if (!empty($output_elements['body_element'])){
                         $output.=$output_elements['body_element'];
                     }
+
+                    if (!empty($output_elements['documents'])){
+                        $output.=$output_elements['documents'];
+                    }
                     if (!empty($output_elements['short_description'])){
                         $output.=$output_elements['short_description'];
                     }
@@ -1066,11 +1074,12 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     if(!empty($output_elements['table'])){
                         $output.=$output_elements['table'];
                     }
-
+                    if (!empty($output_elements['pictures'])){
+                        $output.=$output_elements['pictures'];
+                    }
                     if (!empty($output_elements['contacts'])){
                         $output.=$output_elements['contacts'];
                     }
-
                 }
                 else {
                     if (!empty($output_elements['documents'])) {
@@ -1433,15 +1442,7 @@ function hitsa_curriculum_image_default_styles(){
     $styles['hc_pictures'] = array(
         'effects' => array(
             array(
-                'name' => 'image_scale',
-                'data' => array(
-                    'width' => 780,
-                    'upscale' => 1,
-                ),
-                'weight' => 0,
-            ),
-            array(
-                'name' => 'image_crop',
+                'name' => 'image_scale_and_crop',
                 'data' => array(
                     'width' => 780,
                     'height' => 440,
