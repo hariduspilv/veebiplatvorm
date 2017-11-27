@@ -449,7 +449,7 @@ function hitsa_curriculum_attachments($attachments)
         $output .= '<div class="col-12">';
         foreach ($attachments as $key => $attachment) {
             $attachment_url = file_create_url($attachment['uri']);
-            $output .= '<a class="link-circle" href="' . $attachment_url . '">';
+            $output .= '<a target="_blank" class="link-circle" href="' . $attachment_url . '">';
             $output .= '<span class="before-document"></span>';
             $output .= $attachment['filename'];
             $output .= '</a><!--/link-circle-->';

@@ -2646,7 +2646,7 @@ function _hitsa_curriculum_installed_node_instances(){
                     ),
                     'rebuild' => array(
                         'count_cols' => 4,
-                        'count_rows' => 19,
+                        'count_rows' => 20,
                         'rebuild' => 'Rebuild Table',
                     ),
                     'tabledata' => array(
@@ -2782,6 +2782,13 @@ function _hitsa_curriculum_installed_node_instances(){
                             'col_2' => '',
                             'col_3' => '',
                             'weight' => 19,
+                        ),
+                        'row_19' => array(
+                            'col_0' => 'Kokku',
+                            'col_1' => '',
+                            'col_2' => '',
+                            'col_3' => '',
+                            'weight' => 20,
                         ),
                     ),
                 ),
