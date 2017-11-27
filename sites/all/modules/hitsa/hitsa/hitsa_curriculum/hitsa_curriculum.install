@@ -2187,7 +2187,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_jobs',
-        'label' => 'Jobs',
+        'label' => 'Töökohad',
         'required' => 0,
         'settings' => array(
             'add_mode' => 'select',
