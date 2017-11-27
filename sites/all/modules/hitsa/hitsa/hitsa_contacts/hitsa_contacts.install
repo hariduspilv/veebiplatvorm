@@ -19,7 +19,7 @@ function hitsa_contacts_install() {
 function hitsa_contacts_uninstall() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_contacts', 'uninstall');
-  hitsa_core_delete_nodes('contact');
+  //hitsa_core_delete_nodes('contact');
   field_purge_batch(500);
   hitsa_contacts_delete_contact_form(); // Delete "Contact Us" webform
   
@@ -225,13 +225,7 @@ function _hitsa_contacts_field_instances() {
       'entity_type' => 'node',
       'label' => $t('Job Position'),
       'widget' => array(
-        'type' => 'entityreference_autocomplete',
-        'module' => 'entityreference',
-        'settings' => array(
-          'entityreference_autocreate' => array(
-            'active' => 1,
-          ),
-        ),
+        'type' => 'options_select',
       ),
       'required' => 1,
       'display' => array(
@@ -246,6 +240,7 @@ function _hitsa_contacts_field_instances() {
       'bundle' => 'contact',
       'entity_type' => 'node',
       'label' => $t('Phone Nr.'),
+      'description' => $t('Example') . ': +372 55555555', 
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
@@ -297,6 +292,7 @@ function _hitsa_contacts_field_instances() {
       'bundle' => 'contact',
       'entity_type' => 'node',
       'label' => $t('Reception times'),
+      'description' => $t('Example') . ': E-R kell 15-18', 
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
@@ -339,6 +335,7 @@ function _hitsa_contacts_field_instances() {
       'entity_type' => 'paragraphs_item',
       'bundle' => 'contacts_department',
       'label' => $t('Department'),
+      'required' => TRUE,
       'widget' => array(
         'type' => 'options_select',
         'module' => 'options',

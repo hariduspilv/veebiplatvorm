@@ -13,7 +13,7 @@ function hitsa_locations_install() {
 function hitsa_locations_uninstall() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_locations', 'uninstall');
-  hitsa_core_delete_nodes('contact_location');
+  //hitsa_core_delete_nodes('contact_location');
   field_purge_batch(500);
   
   // Delete Locations view
@@ -65,6 +65,7 @@ function _hitsa_locations_field_instances() {
       'entity_type' => 'node',
       'bundle' => 'contact_location',
       'label' => $t('Phone Nr.'),
+      'required' => TRUE,
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
@@ -81,6 +82,7 @@ function _hitsa_locations_field_instances() {
       'entity_type' => 'node',
       'bundle' => 'contact_location',
       'label' => $t('E-Mail'),
+      'required' => TRUE,
       'widget' => array(
         'type' => 'email_textfield',
         'module' => 'email',
@@ -97,6 +99,7 @@ function _hitsa_locations_field_instances() {
       'entity_type' => 'node',
       'bundle' => 'contact_location',
       'label' => $t('Address'),
+      'required' => TRUE,
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
@@ -113,6 +116,7 @@ function _hitsa_locations_field_instances() {
       'bundle' => 'contact_location',
       'entity_type' => 'node',
       'label' => $t('Visiting hours'),
+      'required' => TRUE,
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
