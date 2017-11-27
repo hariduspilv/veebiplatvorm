@@ -445,6 +445,7 @@ function hitsa_curriculum_attachments($attachments)
 {
     if (!empty($attachments)) {
         $output = '';
+        $output .= '<div class="row-spacer"></div>';
         $output .= '<div class="row">';
         $output .= '<div class="col-12">';
         foreach ($attachments as $key => $attachment) {
