@@ -35,19 +35,19 @@
         
       </div><!--/row-->
       
-      <div class="row-spacer-xs"></div>
+      <div class="row-spacer-xs sm-hide"></div>
       <hr />
-      <div class="row-spacer"></div>
+      <div class="row-spacer sm-hide"></div>
                
       <div class="row">
         <div class="col-12">
           <div class="form-item-row">
-            <div class="form-item after-search form-item_rounded">
+            <div class="form-item after-search form-item_rounded form-item-stretch">
               <div class="form-item_title"><?php print t('Search for person'); ?></div>
               <input type="text" name="person" placeholder="<?php print t('Search for person'); ?>" data-plugin="autocomplete" data-url="<?php print url('api/contact-autocomplete'); ?>" data-onsubmit="true" autocomplete="off"/>
             </div><!--/form-item-->
 
-            <div class="form-item form-item_rounded">
+            <div class="form-item form-item_rounded form-item-stretch">
               <div class="form-item_title"><?php print t('Job position'); ?></div>
               <select name="profession" data-plugin="SumoSelect">
                  <option value=""><?php print t('Select category'); ?></option>

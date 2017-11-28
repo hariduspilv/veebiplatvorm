@@ -5,6 +5,7 @@
 function hitsa_locations_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_locations', 'install');
+  variable_set('comment_location', '0'); // Disable commenting
 }
 
 /*
@@ -65,6 +66,7 @@ function _hitsa_locations_field_instances() {
       'entity_type' => 'node',
       'bundle' => 'contact_location',
       'label' => $t('Phone Nr.'),
+      'description' => $t('Example') . ': +372 55555555',
       'required' => TRUE,
       'widget' => array(
         'type' => 'text_textfield',
@@ -116,6 +118,7 @@ function _hitsa_locations_field_instances() {
       'bundle' => 'contact_location',
       'entity_type' => 'node',
       'label' => $t('Visiting hours'),
+      'description' => $t('Example') . ': E-R kell 15-18',
       'required' => TRUE,
       'widget' => array(
         'type' => 'text_textfield',
