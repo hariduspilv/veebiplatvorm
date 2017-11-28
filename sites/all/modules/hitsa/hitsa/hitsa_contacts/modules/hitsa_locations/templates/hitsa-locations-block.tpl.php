@@ -68,7 +68,7 @@
       <div class="accordion-entry">
         <div class="accordion-title"><?php print t('Parking'); ?></div>
         <div class="accordion-content">
-           <?php print nl2br(check_plain($location->location_parking[LANGUAGE_NONE][0]['safe_value'])); ?>
+          <p><?php print nl2br(check_plain($location->location_parking[LANGUAGE_NONE][0]['safe_value'])); ?></p>
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php endif; ?>
@@ -77,7 +77,7 @@
       <div class="accordion-entry">
         <div class="accordion-title"><?php print t('Transportation'); ?></div>
         <div class="accordion-content">
-          <?php print nl2br(check_plain($location->location_transport[LANGUAGE_NONE][0]['safe_value'])); ?>
+          <p><?php print nl2br(check_plain($location->location_transport[LANGUAGE_NONE][0]['safe_value'])); ?></p>
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php endif; ?>
