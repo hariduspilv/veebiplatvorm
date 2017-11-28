@@ -598,7 +598,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
             $output.= '<tbody>';
             $output.= '<tr>';
             $output.= '<td rowspan="'.$max_rows.'">';
-            $output.= $row_name->name;
+            $output.= '<b>'.$row_name->name.'</b>';
             $output.= '</td>';
             $output.= $meal_days;
             $output.= '</tr>';
