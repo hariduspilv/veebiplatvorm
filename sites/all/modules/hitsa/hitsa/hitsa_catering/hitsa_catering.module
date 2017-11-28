@@ -378,6 +378,11 @@ function hitsa_catering_week($start_date = null)
     } else {
      //   $start_date = strtotime($start_date);
     }
+    $tabs = menu_local_tabs();
+    if (!empty($tabs)) {
+        $tabs = drupal_render($tabs);
+        $build['catering_edit']['#markup'] = $tabs;
+    }
     //krumo($start_date);
     $monday = date("U", strtotime('this week monday', $start_date));
     $sunday = date("U", strtotime('sunday this week', $start_date));
@@ -408,6 +413,7 @@ function hitsa_catering_week($start_date = null)
             }
         }
     }
+
     $catering_html = null;
     if (!empty($loaded_menu->field_catering_provider)) {
         $catering_provider = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
@@ -753,6 +759,18 @@ function hitsa_catering_check_block_visibility($translated,$not_translated){
 function hitsa_catering_generate_header($node){
     $output = '';
     if (!empty($node)) {
+        global $user;
+
+        $edit_links = '';
+        if (!empty($user)){
+            if ($user->uid>0){
+                $edit_url = url('node/'.$node->nid.'/edit');
+                $edit_links = '<ul class="tabs primary"><li><a href="'.$edit_url.'">'.t('Edit').'</a></li></ul>';
+            }
+        }
+        if (!empty($edit_links)){
+            $output.=$edit_links;
+        }
         $output .= '<div class="block">';
         $output.='<h2 class="block-title">'.$node->title.'</h2>';
         $output.='<div class="row-spacer-xs"></div>';
@@ -1142,7 +1160,11 @@ function hitsa_curriculum_catering_header($content){
         $sunday = format_date(strtotime('sunday midnight',$date_start),'custom','d.F');
         $week_text = t('Menu week').' '.$monday.'-'.$sunday;
     }
+
     $output = '';
+
+
+    $output='';
     $output.='<h3 class="sm-block-title">'.$catering_provider_name;
     $output.='<span class="btn-bar align-right pull-right sm-hide">';
     $output.='                         <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
