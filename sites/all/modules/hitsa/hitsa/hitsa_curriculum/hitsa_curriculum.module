@@ -526,7 +526,7 @@ function hitsa_curriculum_contacts($contacts)
                 $output .= '   <li>';
                 $output .= '      <div class="before-envelope"></div>';
                 $output .= '      <div class="list-details_text">';
-                $output .= '         <p><a href="' . $contact->field_contact_email['und'][0]['email'] . '">' . $contact->field_contact_email['und'][0]['email'] . '</a></p>';
+                $output .= '         <p><a href="mailto:' . $contact->field_contact_email['und'][0]['email'] . '">' . $contact->field_contact_email['und'][0]['email'] . '</a></p>';
                 $output .= '      </div><!--/list-details_text-->';
                 $output .= '   </li>';
             }
