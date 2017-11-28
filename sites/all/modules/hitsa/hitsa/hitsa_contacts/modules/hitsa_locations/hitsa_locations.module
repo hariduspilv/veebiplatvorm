@@ -17,6 +17,55 @@ function hitsa_locations_node_info() {
   );
 }
 
+function hitsa_locations_block_info() {
+  $blocks['hitsa_locations'] = array(
+    'info' => t('HITSA Locations'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'contact',
+    'region' => 'sidebar_right',
+    'status' => "1",
+  );
+  
+  return $blocks;
+}
+
+function hitsa_locations_theme() {
+  $items['locations_block'] = array(
+    'template' => 'hitsa-locations-block',
+    'path' => drupal_get_path('module', 'hitsa_locations') . '/templates',
+    'variables' => array(
+      'locations' => NULL,
+    ),
+  );
+  return $items;
+}
+
+function hitsa_locations_block_content() {
+  // Add location block data
+  $locations = array();
+  $nids_array = views_get_view_result('hitsa_locations', 'locations_sort');
+  if(!empty($nids_array)) {
+    $nids = array();
+    foreach($nids_array as $n) {
+      $nids[] = $n->nid;
+    }
+    $locations = node_load_multiple($nids);
+    return theme('locations_block', array('locations' => $locations));
+  } else {
+    return '';
+  }
+}
+
+function hitsa_locations_block_view($delta = '') {
+  $output = array();
+  switch($delta) {
+    case 'hitsa_locations':
+      $output = array('subject' => NULL, 'content' => hitsa_locations_block_content());
+      break;
+  }
+  return $output;
+}
+
 /*
 * Implements hook_form().
 */
