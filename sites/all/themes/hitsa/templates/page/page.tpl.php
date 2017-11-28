@@ -117,10 +117,10 @@
       </div><!--/row-->
     <?php endif;?>
     
-      <?php if ($tabs): ?>
+      <?php if ($tabs && !empty($tabs_rendered = render($tabs))): ?>
         <div class="row">
           <div class="col-12">
-            <?php print render($tabs); ?>
+            <?php print $tabs_rendered; ?>
           </div><!--/col-12-->
         </div><!--/row-->
       <?php endif; ?>

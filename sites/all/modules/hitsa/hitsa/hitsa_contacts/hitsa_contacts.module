@@ -8,11 +8,11 @@ function hitsa_contacts_menu() {
   
   $items['contact'] = array(
     'title' => 'Contact',
-    'page callback' => 'hitsa_contacts_page_view',
-    'access arguments' => array('access content'),
+    'page callback' => 'hitsa_contact_page',
     'file' => 'includes/hitsa_contacts.form.inc',
     'type' => MENU_NORMAL_ITEM,
     'menu_name' => 'hitsa-main-menu',
+    'access callback' => TRUE,
     'weight' => 7,
   );
   
@@ -44,10 +44,14 @@ function hitsa_contacts_block_info() {
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => 'contact',
     'region' => 'content',
-    'status' => "0",
+    'status' => "1",
   );
   
   return $blocks;
+}
+
+function hitsa_contact_page() {
+  return '';
 }
 
 function hitsa_contacts_block_view($delta = '') {
@@ -83,19 +87,6 @@ function hitsa_contacts_page_view() {
   // Nodes grouped by department
   $nids_array = hitsa_core_get_content_by_type('node', 'contact');
   $nodes_grouped = _hitsa_contacts_group_by_department($nids_array);
-
-  // Add location block data
-  if(module_exists('hitsa_locations')) {
-    $locations = array();
-    $nids_array = views_get_view_result('hitsa_locations', 'locations_sort');
-    if(!empty($nids_array)) {
-      $nids = array();
-      foreach($nids_array as $n) {
-        $nids[] = $n->nid;
-      }
-      $locations = node_load_multiple($nids);
-    }
-  }
   
   // Render accordion
   $contact_accordion = theme('contacts_page_accordion',
