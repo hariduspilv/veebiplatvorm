@@ -7,7 +7,7 @@
 
 <div id="branding" class="clearfix">
 
-	
+
 
 	<?php print render($title_prefix); ?>
 
