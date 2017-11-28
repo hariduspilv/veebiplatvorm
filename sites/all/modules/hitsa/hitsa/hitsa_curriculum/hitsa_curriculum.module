@@ -357,6 +357,7 @@ function hitsa_curriculum_generate_table($table,$descriptions=NULL,$type=NULL)
 {
     $output = '';
     if (!empty($table) && !empty($table['tabledata'])) {
+
         $output .= '<div class="table_wrapper" data-plugin="responsiveTable">';
         $output .= '<table>';
             $table_data = $table['tabledata'];
@@ -391,7 +392,13 @@ function hitsa_curriculum_generate_table($table,$descriptions=NULL,$type=NULL)
             $output .= '<tr>';
             for ($j = 0; $j < $columns_count; $j++) {
                 $output .= '<td>';
+                if ($type=='subject-field' && $i==$rows_count-1){
+                    $output.='<b>';
+                }
                 $output .= $table_data['tabledata']['row_' . $i]['col_' . $j];
+                if ($type=='subject-field'  && $i==$rows_count-1){
+                    $output.='<b>';
+                }
                 if($j>=1){
                     if(!empty($table_data['tabledata']['row_' . $i]['col_' . $j])){
                         $show_table=TRUE;
