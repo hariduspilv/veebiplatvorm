@@ -107,7 +107,6 @@
       </div> <!-- /.section, /#messages -->
     <?php endif; ?>
     <?php if ($breadcrumb): ?>
-      <div id="breadcrumb"><?php// print $breadcrumb; ?></div>
     <?php endif; ?>
     <?php if(!empty($page['super_news'])):?>
       <div class="row">
@@ -116,14 +115,7 @@
          </div><!--/col-12-->
       </div><!--/row-->
     <?php endif;?>
-    
-      <?php if ($tabs): ?>
-        <div class="row">
-          <div class="col-12">
-            <?php// print render($tabs); ?>
-          </div><!--/col-12-->
-        </div><!--/row-->
-      <?php endif; ?>
+
   <div class="row">
     <?php if(!empty($page['sidebar_right'])):?>
       <div class="col-9">

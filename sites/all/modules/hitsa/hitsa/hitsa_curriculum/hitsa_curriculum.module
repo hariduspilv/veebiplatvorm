@@ -683,8 +683,11 @@ function hitsa_curriculum_custom_block($curriculum_type)
         }
         $tabs = menu_local_tabs();
         $tabs = drupal_render($tabs);
-        if (!empty($tabs)){
-            $output.=$tabs;
+        global $user;
+        if ($user->uid!=0) {
+            if (!empty($tabs)) {
+                $output .= $tabs;
+            }
         }
         $left_side = hitsa_curriculum_generate_left_custom_titles($real_content, $type, $active_id);
         $content = null;
