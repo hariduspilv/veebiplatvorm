@@ -925,3 +925,21 @@ function hitsa_pager_link($variables) {
   $page = $text - 1;
   return '<a href="javascript:void(0);" data-page="' . $page . '">' . check_plain($text) . '</a>';
 }
+
+function hitsa_gallery_grid($variables) {
+  
+  $output = '<ul class="gallery-thumbs">';
+  foreach($variables['grid']['#items'] as $image) {
+    $output .= '<li><a href="javascript:void(0);" ';
+    $output .= 'style="background-image:url(' . image_style_url('hitsa_gallery_thumbnail', $image['uri']) . ')" ';
+    $output .= 'data-image="' . image_style_url('hitsa_gallery_image_full', $image['uri']) . '" ';
+    $output .= 'data-download="' . file_create_url($image['uri']) . '" ';
+    $output .= 'data-id="' . $image['fid'] . '" ';
+    $output .= 'title="' . (!empty($image['field_file_image_title_text']) ? check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['safe_value']) : '') . '">';
+    $output .= '<img src="' . '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-1.gif" ';
+    $output .= 'alt="' . (!empty($image['field_file_image_alt_text']) ? check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['safe_value']) : '') . '">';
+    $output .= '</a></li>';
+  }
+  $output .= '</ul>';
+  return $output;
+}
