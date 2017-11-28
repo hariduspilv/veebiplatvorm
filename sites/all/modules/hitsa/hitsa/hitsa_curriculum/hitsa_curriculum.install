@@ -1221,7 +1221,7 @@ function _hitsa_curriculum_installed_node_fields(){
     // Exported field_base: 'field_contacts'.
     $field_bases['field_contacts'] = array(
         'active' => 1,
-        'cardinality' => -1,
+        'cardinality' => 1,
         'deleted' => 0,
         'entity_types' => array(),
         'field_name' => 'field_contacts',
@@ -1416,7 +1416,7 @@ function _hitsa_curriculum_installed_node_fields(){
     // Exported field_base: 'field_pictures'.
     $field_bases['field_pictures'] = array(
         'active' => 1,
-        'cardinality' => -1,
+        'cardinality' => 2,
         'deleted' => 0,
         'entity_types' => array(),
         'field_name' => 'field_pictures',
@@ -1428,6 +1428,7 @@ function _hitsa_curriculum_installed_node_fields(){
         'locked' => 0,
         'module' => 'image',
         'settings' => array(
+            'add_row_localization_source' => 'Add another item',
             'default_image' => 0,
             'entity_translation_sync' => array(
                 0 => 'fid',
@@ -1520,14 +1521,14 @@ function _hitsa_curriculum_installed_node_fields(){
         'module' => 'list',
         'settings' => array(
             'allowed_values' => array(
-                'subject-field' => 'Õppesuund',
-                'preparatory-courses' => 'Ettevalmistuskursus',
-                'elective-subjects' => 'Valikaine',
-                'hobby-groups' => 'Huviring',
-                'specialities' => 'Eriala',
-                'elective-courses' => 'Vabaaine',
-                'hobby-activity' => 'Huvitegevus',
-                'e-course' => 'E-kursus',
+                'subject-field' => 'Subject field',
+                'preparatory-courses' => 'Preparatory courses',
+                'elective-subjects' => 'Elective subjects',
+                'hobby-groups' => 'Hobby Groups',
+                'specialities' => 'Speciality',
+                'elective-courses' => 'Elective courses',
+                'hobby-activity' => 'Hobby activity',
+                'e-course' => 'E-Course',
             ),
             'allowed_values_function' => '',
             'entity_translation_sync' => FALSE,
@@ -1570,6 +1571,7 @@ function _hitsa_curriculum_installed_node_fields(){
         'locked' => 0,
         'module' => 'tablefield',
         'settings' => array(
+            'add_row_localization_source' => 'Add another item',
             'entity_translation_sync' => FALSE,
         ),
         'translatable' => 0,
@@ -1587,6 +1589,7 @@ function _hitsa_curriculum_installed_node_fields(){
         'locked' => 0,
         'module' => 'tablefield',
         'settings' => array(
+            'add_row_localization_source' => 'Add another item',
             'entity_translation_sync' => FALSE,
         ),
         'translatable' => 0,
@@ -1709,6 +1712,7 @@ function _hitsa_curriculum_installed_node_fields(){
     return $field_bases;
 }
 function _hitsa_curriculum_installed_node_instances(){
+
     $field_instances = array();
 
     // Exported field_instance: 'node-curriculum-body'.
@@ -1887,25 +1891,21 @@ function _hitsa_curriculum_installed_node_instances(){
                 'catering_food_by_day' => -1,
                 'contacts' => 'contacts',
                 'contacts_department' => -1,
-                'content_and_description' => -1,
                 'description' => -1,
-                'subpage_ref' => -1,
+                'jobs' => -1,
+                'reception_time' => -1,
+                'subpage' => -1,
                 'table' => -1,
-                'table_body' => -1,
-                'table_header' => -1,
-                'table_row' => -1,
             ),
             'bundle_weights' => array(
                 'catering_food_by_day' => 2,
                 'contacts' => 3,
                 'contacts_department' => 4,
-                'content_and_description' => 5,
                 'description' => 6,
-                'subpage_ref' => 7,
+                'jobs' => 14,
+                'reception_time' => 15,
+                'subpage' => 16,
                 'table' => 8,
-                'table_body' => 9,
-                'table_header' => 10,
-                'table_row' => 11,
             ),
             'default_edit_mode' => 'preview',
             'entity_translation_sync' => FALSE,
@@ -2117,7 +2117,7 @@ function _hitsa_curriculum_installed_node_instances(){
             'module' => 'options',
             'settings' => array(),
             'type' => 'options_select',
-            'weight' => 2,
+            'weight' => 3,
         ),
     );
 
@@ -2197,7 +2197,8 @@ function _hitsa_curriculum_installed_node_instances(){
                 'contacts_department' => -1,
                 'description' => -1,
                 'jobs' => 'jobs',
-                'subpage_ref' => -1,
+                'reception_time' => -1,
+                'subpage' => -1,
                 'table' => -1,
             ),
             'bundle_weights' => array(
@@ -2206,13 +2207,14 @@ function _hitsa_curriculum_installed_node_instances(){
                 'contacts_department' => 4,
                 'description' => 5,
                 'jobs' => 6,
-                'subpage_ref' => 7,
+                'reception_time' => 15,
+                'subpage' => 16,
                 'table' => 8,
             ),
             'default_edit_mode' => 'open',
             'entity_translation_sync' => FALSE,
             'title' => 'töökoht',
-            'title_multiple' => 'töökohta',
+            'title_multiple' => 'töökohad',
             'user_register_form' => FALSE,
         ),
         'widget' => array(
@@ -2487,7 +2489,7 @@ function _hitsa_curriculum_installed_node_instances(){
             'module' => 'options',
             'settings' => array(),
             'type' => 'options_select',
-            'weight' => 3,
+            'weight' => 0,
         ),
     );
 
@@ -2514,7 +2516,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_short_description',
-        'label' => 'Short description',
+        'label' => 'Table title',
         'required' => 0,
         'settings' => array(
             'entity_translation_sync' => FALSE,
@@ -2541,17 +2543,17 @@ function _hitsa_curriculum_installed_node_instances(){
                     'caption' => '',
                     'import' => array(
                         'file' => '',
-                        'import' => 'Upload CSV',
+                        'import' => 'Lae CSV üles',
                     ),
                     'paste' => array(
                         'data' => '',
                         'paste_delimiter' => '',
-                        'paste_import' => 'Import & Rebuild',
+                        'paste_import' => 'Impordi & Uuenda',
                     ),
                     'rebuild' => array(
                         'count_cols' => 4,
                         'count_rows' => 2,
-                        'rebuild' => 'Rebuild Table',
+                        'rebuild' => 'Uuenda tabel',
                     ),
                     'tabledata' => array(
                         'row_0' => array(
@@ -2637,17 +2639,17 @@ function _hitsa_curriculum_installed_node_instances(){
                     'caption' => '',
                     'import' => array(
                         'file' => '',
-                        'import' => 'Upload CSV',
+                        'import' => 'Lae CSV üles',
                     ),
                     'paste' => array(
                         'data' => '',
                         'paste_delimiter' => '',
-                        'paste_import' => 'Import & Rebuild',
+                        'paste_import' => 'Impordi & Uuenda',
                     ),
                     'rebuild' => array(
                         'count_cols' => 4,
                         'count_rows' => 20,
-                        'rebuild' => 'Rebuild Table',
+                        'rebuild' => 'Uuenda tabel',
                     ),
                     'tabledata' => array(
                         'row_0' => array(
@@ -2916,11 +2918,12 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_table_descriptions',
-        'label' => 'Tabeli kirjeldused',
+        'label' => 'Tabeli column/row description text',
         'required' => 0,
         'settings' => array(
             'add_mode' => 'button',
             'allowed_bundles' => array(
+                'catering_food_by_day' => -1,
                 'contacts' => -1,
                 'contacts_department' => -1,
                 'description' => 'description',
@@ -2930,6 +2933,7 @@ function _hitsa_curriculum_installed_node_instances(){
                 'table' => -1,
             ),
             'bundle_weights' => array(
+                'catering_food_by_day' => 10,
                 'contacts' => 2,
                 'contacts_department' => 3,
                 'description' => 4,
@@ -3097,28 +3101,28 @@ function _hitsa_curriculum_installed_node_instances(){
     // Included for use with string extractors like potx.
     t('Assessment');
     t('Attachments');
-    t('Contacts');
     t('Days it takes place');
     t('Description');
+    t('Erialade tabel');
     t('Field');
     t('Instructor');
-    t('Jobs');
     t('Jobs pretext');
+    t('Kontaktid');
     t('Length');
     t('Pictures');
     t('Premise');
     t('Rating');
     t('Room');
-    t('Short description');
-    t('Specialitiy table');
     t('Start ');
-    t('Subjects table');
     t('Tabbed content page type');
+    t('Tabeli column/row description text');
     t('Table description');
-    t('Table descriptions');
+    t('Table title');
     t('Target group');
     t('Textbooks');
     t('Time it ends');
+    t('Töökohad');
+    t('Õppeainete tabel');
 
     return $field_instances;
 }
