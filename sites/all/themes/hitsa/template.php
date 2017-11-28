@@ -13,6 +13,26 @@ function hitsa_preprocess_page(&$variables) {
   if(drupal_is_front_page()) {
     $variables['front_content'] = theme('hitsa_front_content');
   }
+    if (isset($variables['node'])) {
+
+        // Ref suggestions cuz it's stupid long.
+        $suggests = &$variables['theme_hook_suggestions'];
+
+        // Get path arguments.
+        $args = arg();
+        // Remove first argument of "node".
+        unset($args[0]);
+
+        // Set type.
+        $type = "page__type_{$variables['node']->type}";
+
+        // Bring it all together.
+        $suggests = array_merge(
+            $suggests,
+            array($type),
+            theme_get_suggestions($args, $type)
+        );
+    }
 }
 
 function hitsa_preprocess_hitsa_front_content(&$variables) {

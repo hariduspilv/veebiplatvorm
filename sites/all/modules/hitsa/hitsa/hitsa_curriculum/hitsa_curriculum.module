@@ -318,6 +318,15 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
     switch ($form_id) {
         case 'curriculum_node_form':
 
+//            $form['field_header_information'] = array(
+//                '#type' => 'container',
+//                '#prefix' => '<div id="header_target">',
+//                '#suffix' => '</div>'
+//            );
+//            $form['field_school_selections']['und']['#ajax']= array(
+//                'wrapper' => 'header_target',
+//                'callback' => 'hitsa_curriculum_header_get',
+//            );
             if (!empty($form['field_school_selections'])){
                 $options=$form['field_school_selections']['und']['#options'];
                 foreach ($options as $options_key => $options_value){
@@ -325,11 +334,12 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
                 }
             }
 
-
-
             return $form;
             break;
     }
+}
+function hitsa_curriculum_header_get($form,&$form_state){
+
 }
 function hitsa_curriculum_page($type = null, $name = null)
 {
@@ -670,6 +680,11 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 $active_id = $real_key;
                 break;
             }
+        }
+        $tabs = menu_local_tabs();
+        $tabs = drupal_render($tabs);
+        if (!empty($tabs)){
+            $output.=$tabs;
         }
         $left_side = hitsa_curriculum_generate_left_custom_titles($real_content, $type, $active_id);
         $content = null;
@@ -1130,7 +1145,22 @@ function hitsa_curriculum_generate_header($header)
         $output_image .= '    <figcaption>' . $picture_text . '</figcaption>';
         $output_image .= '   </figure>';
     }
-    $output = '<div class="block">
+    global $user;
+
+    $edit_links = '';
+    if (!empty($user)){
+        if ($user->uid>0){
+            if (user_access('edit any content')){
+                $edit_url = url('node/'.$header->nid.'/edit');
+                $edit_links = '<ul class="tabs primary"><li><a href="'.$edit_url.'">'.t('Edit').'</a></li></ul>';
+            }
+        }
+    }
+    $output='';
+    if (!empty($edit_links)){
+        $output.=$edit_links;
+    }
+    $output .= '<div class="block">
     
     <h2 class="block-title">'.$header->title.'</h2>
     
@@ -1417,7 +1447,6 @@ function hitsa_curriculum_url_friendly_strings($string){
 }
 function hitsa_curriculum_check_block_visibility($source,$selection){
 //    $block = block_load('hitsa_curriculum',$selection);
-//    krumo($block);
     $query = db_select('block','block');
     $query -> condition('block.delta',$selection,'=');
     $query -> condition('block.theme','hitsa','=');
