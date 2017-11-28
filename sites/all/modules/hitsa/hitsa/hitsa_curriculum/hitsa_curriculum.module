@@ -1150,7 +1150,7 @@ function hitsa_curriculum_generate_header($header)
     $edit_links = '';
     if (!empty($user)){
         if ($user->uid>0){
-            if (user_access('edit any content')){
+            if (user_access('administer any content')){
                 $edit_url = url('node/'.$header->nid.'/edit');
                 $edit_links = '<ul class="tabs primary"><li><a href="'.$edit_url.'">'.t('Edit').'</a></li></ul>';
             }
