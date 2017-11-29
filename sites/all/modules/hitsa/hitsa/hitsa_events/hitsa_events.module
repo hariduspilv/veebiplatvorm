@@ -1774,8 +1774,7 @@ function hitsa_events_training_event_registration(){
 }
 
 function hitsa_events_generate_custom_form($components){
-    krumo($components);
-    
+
     if (!empty($components)){
         $form = array(
             '#action' => 'training-calendar/registration',
@@ -1784,9 +1783,23 @@ function hitsa_events_generate_custom_form($components){
             ),
         );
         if (is_array($components)){
+            krumo($components);
             foreach ($components as $cmp_key => $component){
                 krumo($component);
-                if ($component->type=='textfield'||$component->type=='textarea'||$component->type=='email') {
+                if ($component['type']=='textfield'||$component['type']=='email') {
+                    $form['form_element_id_' . $cmp_key] = array(
+                        '#prefix' => '<div class="form-item form-item_maxWidth form-item-h-offset">
+								<div class="form-item_title">' . t($component['name']) . '*</div>',
+                        '#suffix' => '</div>',
+                        '#type' => ($component['type' != 'email']) ? $component['type'] : 'textfield',
+                        '#name' => $component['form_key'],
+                        '#required' => $component['required'],
+                        '#weight' => $component['weight'],
+
+                    );
+                }
+                elseif ($component['type']=='textarea'){
+
                     $form['form_element_id_' . $cmp_key] = array(
                         '#prefix' => '<div class="form-item form-item_maxWidth form-item-h-offset">
 								<div class="form-item_title">' . t($component['name']) . '*</div>',
@@ -1809,6 +1822,7 @@ function hitsa_events_generate_custom_form($components){
                     ),
                     '#name' => 'submit',
                     '#value' => t('Register'),
+                    '#weight' => 100,
                 );
                 return $form;
             }
