@@ -49,6 +49,11 @@ function _hitsa_locations_fields() {
       'label' => $t('Parking'),
       'type' => 'text_long',
     ),
+    'location_parking_attachment' => array(
+      'field_name' => 'location_parking_attachment',
+      'label' => $t('Parking - Attachment'),
+      'type' => 'file',
+    ),
     'location_transport' => array(
       'field_name' => 'location_transport',
       'label' => $t('Transportation'),
@@ -146,6 +151,18 @@ function _hitsa_locations_field_instances() {
           'type' => 'text_default',
         )
       )
+    ),
+    'location_parking_attachment' => array(
+      'field_name' => 'location_parking_attachment',
+      'bundle' => 'contact_location',
+      'entity_type' => 'node',
+      'label' => $t('Parking - Attachment'),
+      'widget' => array(
+        'type' => 'media_generic',
+      ),
+      'settings' => array(
+        'description_field' => 1,
+      ),
     ),
     'location_transport' => array(
       'field_name' => 'location_transport',
