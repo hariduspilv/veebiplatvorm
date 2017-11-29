@@ -1,7 +1,7 @@
 <?php if(!empty($locations)): ?>
   <?php foreach($locations as $location): ?>
-  <div class="block block-narrow">
-    <h2 class="block-title"><?php print check_plain($location->title); ?></h2>
+  <div class="block block-narrow sm-hide">
+    <h2 class="block-title sm-borderless"><?php print check_plain($location->title); ?></h2>
     
     <div class="accordion accordion-xs" data-plugin="accordion">
                   
