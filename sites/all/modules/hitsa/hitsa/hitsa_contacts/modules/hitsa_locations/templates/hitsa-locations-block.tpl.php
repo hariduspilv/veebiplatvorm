@@ -64,11 +64,24 @@
       </div><!--/accordion-entry-->
       <?php endif; ?>
       
-      <?php if(!empty($location->location_parking)): ?>
+      <?php if(!empty($location->location_parking) || !empty($location->location_parking_attachment)): ?>
       <div class="accordion-entry">
         <div class="accordion-title"><?php print t('Parking'); ?></div>
         <div class="accordion-content">
+          <?php if(!empty($location->location_parking)): ?>
           <p><?php print nl2br(check_plain($location->location_parking[LANGUAGE_NONE][0]['safe_value'])); ?></p>
+          <?php endif; ?>
+          <?php if(!empty($location->location_parking_attachment)): ?>
+          <p>
+            <a href="<?php print file_create_url($location->location_parking_attachment[LANGUAGE_NONE][0]['uri']); ?>">
+            <?php if(!empty($location->location_parking_attachment[LANGUAGE_NONE][0]['title'])): ?>
+              <?php print $location->location_parking_attachment[LANGUAGE_NONE][0]['title']; ?>
+            <?php else: ?>
+              <?php print t('Attachment'); ?>
+            <?php endif; ?>
+            </a>
+          </p>
+          <?php endif; ?>
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php endif; ?>
