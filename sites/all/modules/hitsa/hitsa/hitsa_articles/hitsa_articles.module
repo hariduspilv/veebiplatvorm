@@ -146,6 +146,10 @@ function hitsa_articles_form_alter(&$form, &$form_state, $form_id) {
   if($form_id === 'article_node_form') {
     // Show summary by default.
     hitsa_core_formatted_text_show_summary();
+    if(!empty($form['body'])) {
+      $form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
+      $form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
+    }
   }
 }
 

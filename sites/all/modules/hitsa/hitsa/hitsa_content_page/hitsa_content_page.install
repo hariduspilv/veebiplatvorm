@@ -32,14 +32,14 @@ function _hitsa_content_page_fields() {
   return array(
     'cp_type' => array(
       'field_name' => 'cp_type',
-      'label' => $t('Content Page Type'),
+      'label' => 'Sisulehe tüüp',
       'type' => 'list_text',
       'settings' => array(
         'allowed_values' => array(
-          'cp_simple' => $t('Simple'),
-          'cp_tabbed' => $t('Tabbed'),
-          'cp_service' => $t('Service'),
-          'cp_contacts' => $t('Contacts'),
+          'cp_simple' => 'Sisuleht lihtne',
+          'cp_tabbed' => 'Sakkidega sisuleht',
+          'cp_service' => 'Teenus',
+          'cp_contacts' => 'Konsultatsiooniajad',
           'cp_specialities' => $t('Specialities'),
         ),
       ),
@@ -214,6 +214,7 @@ function _hitsa_content_page_field_instances() {
       'widget' => array(
         'type' => 'options_select',
         'module' => 'options',
+        'weight' => -100
       ),
       'display' => array(
         'default' => array(
@@ -304,7 +305,7 @@ function _hitsa_content_page_field_instances() {
       'field_name' => 'cp_subpages',
       'bundle' => 'content_page',
       'entity_type' => 'node',
-      'label' => $t('Subpages'),
+      'label' => 'Alamlehed',
       'widget' => array(
         'type' => 'paragraphs_embed',
         'module' => 'paragraphs',
@@ -551,7 +552,7 @@ function _hitsa_content_page_paragraphs() {
   $paragraphs = array();
   
   $paragraphs['subpage'] = (object) array(
-    'name' => $t('Subpage'),
+    'name' => 'Alamleht',
     'bundle' => 'subpage',
     'locked' => 1,
   );

@@ -74,14 +74,14 @@ function _hitsa_articles_field_instances() {
       'entity_type' => 'node',
       'bundle' => 'article',
       'type' => 'image',
-      'label' => $t('Gallery'),
+      'label' => $t('Pictures'),
       'widget' => array(
         'type' => 'media_generic',
         'module' => 'media',
       ),
       'display' => array(
         'default' => array(
-          'label' => $t('Gallery'),
+          'label' => $t('Pictures'),
           'type' => 'image',
         )
       )

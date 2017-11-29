@@ -1,7 +1,7 @@
 <article id="subpage">
   <h3><?php $title = field_get_items('paragraphs_item', $subpage, 'subpage_title'); print check_plain($title[0]['safe_value']); ?>
     <span class="btn-bar align-right pull-right">
-       <a href="" class="btn-circle before-share"></a>
+       <a href="" class="btn-circle before-share" data-plugin="share"></a>
        <a href="javascript:window.print();" class="btn-circle before-print"></a>
     </span><!--/button-row-->
   </h3>

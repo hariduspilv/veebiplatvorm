@@ -1,0 +1,49 @@
+<?php
+module_load_include('inc', 'hitsa_gallery', 'includes/hitsa_gallery.theme');
+
+function hitsa_gallery_node_info() {
+  return array(
+    'gallery' => array(
+      'name' => t('Gallery'),
+      'base' => 'gallery',
+      'description' => t('Gallery container.'),
+      'has_title' => TRUE,
+      'title_label' => t('Title'),
+    ),
+  );
+}
+
+function hitsa_gallery_menu() {
+  $items['gallery'] = array(
+    'title' => 'Gallery',
+    'page callback' => 'hitsa_gallery_page_view',
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'hitsa-header-menu',
+    'weight' => 1,
+  );
+  
+  $items['api/gallery'] = array(
+    'title' => 'Gallery API',
+    'page callback' => 'hitsa_gallery_filter',
+    'access arguments' => array('access content'),
+  );
+  
+  return $items;
+}
+
+/**
+ * Implement hook_form()
+ */
+function gallery_form($node, $form_state) {
+  return node_content_form($node, $form_state);
+}
+
+function hitsa_gallery_filter() {
+  global $language;
+  
+  $output = hitsa_gallery_page_view(TRUE);
+  
+  print $output;
+  exit;
+}

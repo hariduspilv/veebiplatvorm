@@ -1,0 +1,152 @@
+<?php
+
+/*
+* Implements hook_install.
+*/
+function hitsa_gallery_install() {
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_gallery', 'install');
+  
+  variable_set('language_content_type_gallery', TRANSLATION_ENABLED); // Make multilingual
+  variable_set('comment_gallery', '0'); // Disable commenting
+  variable_set('i18n_node_options_gallery', array('required')); // Disable language neutral option
+}
+
+/*
+* Implements hook_uninstall.
+*/
+function hitsa_gallery_uninstall() {
+  module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+  hitsa_core_installer('hitsa_gallery', 'uninstall');
+  hitsa_core_delete_nodes('gallery');
+  field_purge_batch(500);
+  variable_del('language_content_type_gallery');
+}
+
+function _hitsa_gallery_fields() {
+  $t = get_t();
+  
+  return array(
+    'gallery_author' => array(
+      'field_name' => 'gallery_author',
+      'label' => $t('Author'),
+      'type' => 'text',
+    ),
+    'gallery_date' => array(
+      'field_name' => 'gallery_date',
+      'label' => $t('Date'),
+      'type' => 'datestamp',
+      'settings' => array(
+        'granularity' => array(
+          'month' => 'month',
+          'day' => 'day',
+          'year' => 'year',
+          'hour' => 0,
+          'minute' => 0,
+          'second' => 0,
+        ),
+        'todate' => 'required',
+      ),
+    ),
+    'gallery_images' => array(
+      'field_name' => 'gallery_images',
+      'label' => $t('Gallery Images'),
+      'type' => 'image',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+    ),
+  );
+}
+
+function _hitsa_gallery_field_instances() {
+  $t = get_t();
+  return array(
+    'gallery_author' => array(
+      'field_name' => 'gallery_author',
+      'bundle' => 'gallery',
+      'entity_type' => 'node',
+      'label' => $t('Author'),
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'text_default',
+        )
+      )
+    ),
+    'academic_year' => array(
+      'field_name' => 'academic_year',
+      'entity_type' => 'node',
+      'bundle' => 'gallery',
+      'label' => $t('Academic year'),
+      'widget' => array(
+        'type' => 'options_select',
+      ),
+      'required' => 1,
+    ),
+    'gallery_date' => array(
+      'field_name' => 'gallery_date',
+      'entity_type' => 'node',
+      'bundle' => 'gallery',
+      'label' => $t('Date'),
+      'widget' => array(
+        'type' => 'date_popup',
+        'module' => 'date',
+      ),
+    ),
+    'gallery_images' => array(
+      'field_name' => 'gallery_images',
+      'entity_type' => 'node',
+      'bundle' => 'gallery',
+      'type' => 'image',
+      'label' => $t('Gallery Images'),
+      'widget' => array(
+        'type' => 'media_generic',
+        'module' => 'media',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => $t('Gallery Images'),
+          'type' => 'image',
+        ),
+      ),
+    ),
+  );
+}
+
+function _hitsa_gallery_image_styles() {
+  $image_styles = array(
+    array(
+      'style' => array(
+		    'name' => 'hitsa_gallery_thumbnail',
+		    'label' => 'Gallery Thumbnail (54 x 54)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale_and_crop',
+		    'data' => array(
+		      'width' => 54,
+		      'height' => 54,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
+		array(
+      'style' => array(
+		    'name' => 'hitsa_gallery_image_full',
+		    'label' => 'Gallery Image (805 x 436)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale_and_crop',
+		    'data' => array(
+		      'width' => 805,
+		      'height' => 436,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
+  );
+  
+  return $image_styles;
+}

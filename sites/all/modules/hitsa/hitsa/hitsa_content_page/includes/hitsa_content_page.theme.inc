@@ -36,6 +36,24 @@ function hitsa_content_page_theme() {
     ),
   );
   
+  $items['content_page_grid'] = array(
+    'template' => 'hitsa-content-page',
+    'path' => drupal_get_path('module', 'hitsa_content_page') . '/templates',
+    'variables' => array(
+      'nodes' => NULL,
+    ),
+  );
+  
+  $items['content_output'] = array(
+    'template' => 'hitsa-content-output',
+    'path' => drupal_get_path('module', 'hitsa_content_page') . '/templates',
+    'variables' => array(
+      'nodes' => NULL,
+      'pager' => NULL,
+      'academic_year' => NULL,
+    ),
+  );
+  
   return $items;
 }
 
@@ -53,6 +71,9 @@ function hitsa_content_page_preprocess_node(&$variables) {
       
     }
   }
+}
+
+function hitsa_content_page_preprocess_content_page_grid(&$variables) {
 }
 
 function hitsa_content_page_prepare_subpage_block($subpage_arrays, $display_style) {
@@ -107,4 +128,82 @@ function hitsa_content_page_services_block() {
   
   $output .= render($services_menu_render);
   return $output;
+}
+
+function hitsa_content_page_view($query = array(), $filter = FALSE, $type = NULL) {
+  // Load academic years taxonomy
+  $academic_years_vid = variable_get('hitsa_academic_years_vid');
+  $academic_years = array_reverse(taxonomy_get_tree($academic_years_vid));
+  
+  // Load nodes
+  if($result = hitsa_content_page_query_content($query, TRUE)) {
+    $nids_array = !empty($result['content']) ? $result['content'] : NULL;
+  }
+
+  if(!empty($nids_array['node'])) {
+    $nodes = node_load_multiple(array_keys($nids_array['node']));
+    
+    // Sort and group the content based on the academic year.
+    $articles_grouped = array();
+
+    foreach($nodes as $node) {
+      $author = user_load($node->uid);
+      if(!empty($node->academic_year[LANGUAGE_NONE][0]['tid'])) {
+        $articles_grouped[$node->academic_year[LANGUAGE_NONE][0]['tid']][] = theme('hitsa_content_page_teaser', array('node' => $node, 'author' => $author));
+      }
+      // TODO: Handle content without set academic year. 
+    }
+    
+    $articles_grouped_sorted = array();
+    $academic_years_keyed = array();
+    foreach($academic_years as $academic_year) {
+      $academic_years_keyed[$academic_year->tid] = $academic_year->name;
+      if(isset($articles_grouped[$academic_year->tid])) {
+        $articles_grouped_sorted[$academic_year->tid] = array_merge($articles_grouped[$academic_year->tid]);
+      }
+    }
+
+  }
+
+  // Pager
+  $quantity = ceil($result['count'] / 12);
+  
+  $per_page = 12;
+  $current_page = pager_default_initialize($result['count'], 12);
+
+  $pager = hitsa_pager(
+    array(
+      'tags' => array(),
+      'element' => 0,
+      'parameters' => array(),
+      'quantity' => $quantity,
+      'pager_current' => !empty($query['page']) ? $query['page'] : 1
+    )
+  );
+
+  $output = theme('content_output',
+    array(
+      'nodes' => !empty($articles_grouped_sorted) ? $articles_grouped_sorted : array(),
+      'academic_year_keyed' => !empty($academic_years_keyed) ? $academic_years_keyed : array(),
+      'authors' => !empty($authors) ? $authors : array(),
+      'pager' => $pager,
+      'bundle' => !empty($query['bundle']) ? $query['bundle'] : NULL,
+    )
+  );
+
+  
+  if($filter) {
+    return $output;
+  } else {
+    return theme(
+      'content_page_grid',
+      array(
+        'academic_years' => $academic_years,
+        'output' => $output,
+        'bundle' => !empty($query['bundle']) ? $query['bundle'] : NULL,
+        'content_type' => $type,
+      )
+    );
+  }
+  
 }

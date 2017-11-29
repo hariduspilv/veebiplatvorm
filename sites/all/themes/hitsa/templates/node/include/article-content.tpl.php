@@ -12,7 +12,7 @@
         <?php print render($content['cp_contacts']); ?>
       <?php endif; ?>
     <?php else: ?>
-    <div class="col-8">
+    <div class="col-8 sm-12">
       <article class="padding-right">
         <?php if($node->type === 'article'): ?>
         <h1><?php print $title; ?>
@@ -48,15 +48,15 @@
         <?php endif; ?>
       </article>
     </div><!--/col-8-->
-    <div class="col-4">
+    <div class="col-4 sm-12 no-print">
       <?php if($node->type === 'article' || ($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple')): ?>
       <div class="btn-bar align-right">
-        <a href="" class="btn-circle before-share"></a>
+        <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
         <a href="javascript:window.print();" class="btn-circle before-print"></a>
       </div><!--/button-row-->
       <?php endif; ?>
       <div class="row-spacer-xl"></div>
-      <?php if(!empty($subpage_images)): ?>
+      <?php if(!empty($subpage_images) || !empty($subpage_images = $cp_image)): ?>
         <?php foreach($subpage_images as $image): // Gallery ?>
         <figure>
           <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 

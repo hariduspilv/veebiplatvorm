@@ -2,6 +2,16 @@
 
 module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.theme');
 
+function hitsa_content_page_menu() {
+  $items['api/content'] = array(
+    'title' => 'Articles API',
+    'page callback' => 'hitsa_content_filter',
+    'access arguments' => array('access content'),
+  );
+  
+  return $items;
+}
+
 /**
  * Implements hook_node_info()
  */
@@ -16,6 +26,9 @@ function hitsa_content_page_node_info() {
     ),
   );
 }
+
+
+
 
 // Field groups
 /*
@@ -227,4 +240,128 @@ function hitsa_content_page_node_update($node) {
 
 function hitsa_content_page_update_page_type($form, &$form_state) {
   return $form;
+}
+
+function hitsa_content_page_query_content($q = array(), $count = FALSE) {
+  $query = new EntityFieldQuery();
+  
+  $parameters = _hitsa_content_page_set_query_parameters($q);
+  
+  foreach($parameters as $parameter) {
+    $query->{$parameter['type']}(...$parameter['arguments']);
+  }
+
+  $output = array();
+  
+  $output['content'] = $query->execute();
+  
+  if($count) {
+    $output['count'] = $query->range(0, PHP_INT_MAX)->count()->execute();
+  }
+
+  return $output;
+}
+
+function _hitsa_content_page_set_query_parameters($query = array()) {
+  global $language;
+
+  $parameters = array();
+  
+  // Order by
+  if(!empty($query['order_by'])) {
+    $parameters[] = array(
+     'type' => 'propertyOrderBy',
+     'arguments' => array($query['order_by']['parameter'], $query['order_by']['direction']),
+    );
+  }
+  
+  // Status
+  if(!empty($query['status'])) {
+    $parameters[] = array(
+     'type' => 'propertyCondition',
+     'arguments' => array('status', $query['status']),
+    );
+  }
+  
+  // Entity type
+  if(!empty($query['entity_type'])) {
+    $parameters[] = array(
+     'type' => 'entityCondition',
+     'arguments' => array('entity_type', $query['entity_type']),
+    );
+  }
+  
+  // Bundle
+  if(!empty($query['bundle'])) {
+    $parameters[] = array(
+     'type' => 'entityCondition',
+     'arguments' => array('bundle', $query['bundle']),
+    );
+  }
+  
+  // Language
+  $parameters[] = array(
+    'type' => 'propertyCondition',
+    'arguments' => array('language', $language->language),
+  );
+  
+  // Page / Range
+  if(!empty($query['page'])) {
+    $page_range = ($query['page'] - 1) * 12;
+
+    $parameters[] = array(
+      'type' => 'range',
+      'arguments' => array($page_range, $page_range + 12),
+    );
+  } else if(!empty($query['range'])) {
+    
+    $parameters[] = array(
+      'type' => 'range',
+      'arguments' => array($query['range'][0], $query['range'][1]),
+    );
+  }
+  
+  // Pager
+  if(!empty($query['pager'])) {
+    $parameters[] = array(
+      'type' => 'pager',
+      'arguments' => array($query['pager']),
+    );
+  }
+  
+  // Academic year
+  if(!empty($query['category'])) {
+    $academic_years = explode(',', $query['category']);
+    
+    foreach($academic_years as $academic_year) {
+      if($academic_year === 'all') {
+        $academic_years = NULL;
+        break;
+      }
+    }
+    if(!empty($academic_years)) {
+      $parameters[] = array(
+        'type' => 'fieldCondition',
+        'arguments' => array('academic_year', 'tid', $academic_years, 'IN'),
+      );
+    }
+  }
+  
+  // Type
+  if(!empty($query['article_type'])) {
+    $parameters[] = array(
+      'type' => 'fieldCondition',
+      'arguments' => array('article_type', 'value', $query['article_type']),
+    );
+  }
+  
+  // Exclude
+  if(!empty($query['nids_not_in'])) {
+    $parameters[] = array(
+      'type' => 'entityCondition',
+      'arguments' => array('entity_id', $query['nids_not_in'], 'NOT IN'),
+    );
+  }
+
+  return $parameters;
 }
