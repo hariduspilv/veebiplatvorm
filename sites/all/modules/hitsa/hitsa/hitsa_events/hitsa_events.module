@@ -1775,6 +1775,7 @@ function hitsa_events_training_event_registration(){
 
 function hitsa_events_generate_custom_form($components){
     krumo($components);
+    
     if (!empty($components)){
         $form = array(
             '#action' => 'training-calendar/registration',
