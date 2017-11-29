@@ -963,3 +963,9 @@ function hitsa_gallery_grid($variables) {
   $output .= '</ul>';
   return $output;
 }
+function hitsa_css_alter(&$css) {
+    $exclude = array(
+        'modules/system/system.theme.css' => FALSE,
+    );
+    $css = array_diff_key($css, $exclude);
+}
