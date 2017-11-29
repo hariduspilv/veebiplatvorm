@@ -72,15 +72,22 @@
           <p><?php print nl2br(check_plain($location->location_parking[LANGUAGE_NONE][0]['safe_value'])); ?></p>
           <?php endif; ?>
           <?php if(!empty($location->location_parking_attachment)): ?>
-          <p>
-            <a href="<?php print file_create_url($location->location_parking_attachment[LANGUAGE_NONE][0]['uri']); ?>">
-            <?php if(!empty($location->location_parking_attachment[LANGUAGE_NONE][0]['description'])): ?>
-              <?php print $location->location_parking_attachment[LANGUAGE_NONE][0]['description']; ?>
-            <?php else: ?>
-              <?php print t('Attachment'); ?>
-            <?php endif; ?>
-            </a>
-          </p>
+          <ul class="list-details">
+            <li>
+              <div class="list-details_text">
+                <p>
+                  <a href="<?php print file_create_url($location->location_parking_attachment[LANGUAGE_NONE][0]['uri']); ?>" target="_blank">
+                  <?php if(!empty($location->location_parking_attachment[LANGUAGE_NONE][0]['description'])): ?>
+                    <?php print $location->location_parking_attachment[LANGUAGE_NONE][0]['description']; ?>
+                  <?php else: ?>
+                    <?php print t('Attachment'); ?>
+                  <?php endif; ?>
+                  </a>
+                  
+                </p>
+              </div>
+            </li>
+          </ul>
           <?php endif; ?>
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
