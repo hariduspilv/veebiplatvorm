@@ -544,7 +544,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
             }
         }
     }
-    krumo($loaded_menu);
+    
 
     $monday_date ='';
     $tuesday_date ='';
