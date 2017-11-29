@@ -1,6 +1,8 @@
 <?php if(!empty($locations)): ?>
-  <?php foreach($locations as $location): ?>
-  <div class="block block-narrow sm-hide">
+  <?php 
+  $i = 0;
+  foreach($locations as $location): ?>
+  <div class="block block-narrow <?php if($type === 'primary') {print 'sm-show';} else if($i === 0) print 'sm-hide'; ?>">
     <h2 class="block-title sm-borderless"><?php print check_plain($location->title); ?></h2>
     
     <div class="accordion accordion-xs" data-plugin="accordion">
@@ -105,5 +107,7 @@
     </div><!--/accordion-->
                
   </div><!--/block-->
-  <?php endforeach; ?>
+  <?php 
+  $i++;
+  endforeach; ?>
 <?php endif; ?>
