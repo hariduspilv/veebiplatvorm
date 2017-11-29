@@ -855,7 +855,6 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
             $end = $content->field_curriculum_length['und'][0]['value2'];
             $start = format_date($start, 'custom', 'd.F.Y', null, $language->language);
             $end = format_date($end, 'custom', 'd.F.Y', null, $language->language);
-            dpm($curriculum_type);
             if ($curriculum_type=='preparatory-courses'||$curriculum_type=='e-course') {
 
                     $output_elements['date_length'] = '<p><b>' . t('Course druation') . ': </b>' . $start . ' - ' . $end . '</p>';
