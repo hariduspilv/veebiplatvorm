@@ -857,13 +857,9 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
             $end = format_date($end, 'custom', 'd.F.Y', null, $language->language);
             dpm($curriculum_type);
             if ($curriculum_type=='preparatory-courses'||$curriculum_type=='e-course') {
-                if ($curriculum_type=='preparatory-courses'){
 
-                    $output_elements['date_length'] = '<p><b>' . t('Course druation') . ': </b>' . $start .  '</p>';
-                }
-                else {
                     $output_elements['date_length'] = '<p><b>' . t('Course druation') . ': </b>' . $start . ' - ' . $end . '</p>';
-                }
+
             } elseif ($curriculum_type=='elective-subjects'||$curriculum_type=='elective-courses') {
                 $output_elements['date_length'] = '<p><b>'.t('Duration of subject').': </b>' .  $start . ' - ' . $end . '</p>';
             } elseif ($curriculum_type=='hobby-groups'||$curriculum_type=='hobby-activity') {
@@ -875,7 +871,12 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
             $start = format_date($start, 'custom', 'd.F.Y - G:i', null, $language->language);
             $output_elements['date_start'] = '<p>' . $start . '</p>';
             if ($curriculum_type=='preparatory-courses'||$curriculum_type=='e-course') {
-                $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start . ' - ' . $end . '</p>';
+                if ($curriculum_type=='preparatory-courses'){
+                    $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start . '</p>';
+                }
+                else{
+                    $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start . ' - ' . $end . '</p>';
+                }
             } elseif ($curriculum_type=='elective-subjects' or $curriculum_type=='elective-courses') {
                 $output_elements['date_start'] = '<p><b>'.t('Subject starts on').': </b>'  . $start . ' - ' . $end . '</p>';
             } elseif ($curriculum_type=='hobby-groups'||$curriculum_type=='hobby-activity') {
