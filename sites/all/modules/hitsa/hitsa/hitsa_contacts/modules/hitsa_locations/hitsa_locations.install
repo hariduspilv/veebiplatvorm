@@ -162,6 +162,7 @@ function _hitsa_locations_field_instances() {
       ),
       'settings' => array(
         'description_field' => 1,
+        'file_extensions' => 'pdf doc docx rtf txt odt xls xlsx ods csv ppt odp pptx jpg jpeg png gif',
       ),
     ),
     'location_transport' => array(
