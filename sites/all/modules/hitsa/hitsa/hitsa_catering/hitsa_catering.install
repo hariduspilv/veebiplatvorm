@@ -7,14 +7,14 @@
 function hitsa_catering_install(){
     node_types_rebuild();
     $types = node_type_get_types();
-    
+
     hitsa_catering_add_custom_vocubularies();
     hitsa_catering_add_custom_taxonomy_fields();
     hitsa_catering_add_custom_paragraphs_bundle();
-    
+
     hitsa_catering_add_custom_paragraphs_fields();
     hitsa_catering_add_custom_node_fields();
-    
+
     hitsa_catering_add_custom_field_groups();
 }
 
@@ -23,27 +23,27 @@ function hitsa_catering_install(){
 * Implements hook_uninstall.
 */
 function hitsa_catering_uninstall(){
-  $node_type = 'catering';
-  $paragraphs_bundle = 'catering_food_by_day';
-  $contact_types = array('contact');
-  
-  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
-  $result = db_query($sql, array(':type' => $node_type));
-  $node_ids = array();
-  foreach ($result as $row) {
-    $node_ids[] = $row->nid;
-  }
-  
-  
-  // Delete fields and vocabularies
-  hitsa_catering_delete_custom_node_fields();
-  hitsa_catering_delete_custom_paragraphs_fields();
+    $node_type = 'catering';
+    $paragraphs_bundle = 'catering_food_by_day';
+    $contact_types = array('contact');
+
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+    $result = db_query($sql, array(':type' => $node_type));
+    $node_ids = array();
+    foreach ($result as $row) {
+        $node_ids[] = $row->nid;
+    }
+
+
+    // Delete fields and vocabularies
+    hitsa_catering_delete_custom_node_fields();
+    hitsa_catering_delete_custom_paragraphs_fields();
 //  field_purge_batch(500);
-  hitsa_catering_delete_custom_vocabularies();
-  hitsa_catering_delete_vocabulary_fields();
-  node_delete_multiple($node_ids); // Delete all catering nodes
-  node_type_delete($node_type); // Delete contact content type
-  paragraphs_bundle_delete($paragraphs_bundle); // Delete paragraphs bundle
+    hitsa_catering_delete_custom_vocabularies();
+    hitsa_catering_delete_vocabulary_fields();
+    node_delete_multiple($node_ids); // Delete all catering nodes
+    node_type_delete($node_type); // Delete contact content type
+    paragraphs_bundle_delete($paragraphs_bundle); // Delete paragraphs bundle
 }
 
 
@@ -51,122 +51,122 @@ function hitsa_catering_uninstall(){
 * HITSA catering vocabulary
 */
 function _hitsa_catering_vocabularies(){
-  $vocabularies = array();
+    $vocabularies = array();
 
-  $vocabularies['catering_food_type'] = array(
-    'vocabulary' => (object) array(
-      'name' => t('Catering food types'),
-      'description' => t('Different catering food types'),
-      'machine_name' => 'catering_food_type',
-        'language' => 'und',
-        'i18n_mode' => 1,
-    ),
-    'terms' => array(
-      (object) array(
-          'name' => t('School meals'),
-          'language' => 'en',
+    $vocabularies['catering_food_type'] = array(
+        'vocabulary' => (object) array(
+            'name' => t('Catering food types'),
+            'description' => t('Different catering food types'),
+            'machine_name' => 'catering_food_type',
+            'language' => 'und',
+            'i18n_mode' => 1,
+        ),
+        'terms' => array(
+            (object) array(
+                'name' => t('School meals'),
+                'language' => 'en',
 
-      ),
-      (object) array(
-        'name' => t('Vegetarian food'),
-          'language' => 'en',
-      ),
-      (object) array(
-        'name' => t('Lactose free'),
-          'language' => 'en',
-      ),
-    ),
-  );
-  $vocabularies['catering_provider'] = array(
-    'vocabulary' => (object) array(
-      'name' => t('Catering provider'),
-      'description' => t('Catering company information'),
-      'machine_name' => 'catering_provider',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-      'language' => 'und',
-      'i18n_mode' => 0,
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
+            ),
+            (object) array(
+                'name' => t('Vegetarian food'),
+                'language' => 'en',
+            ),
+            (object) array(
+                'name' => t('Lactose free'),
+                'language' => 'en',
+            ),
         ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
-      ),
     );
-  $vocabularies['catering_food_subcategory'] = array(
-    'vocabulary' => (object)array(
-      'name' => 'Food subcategory',
-      'machine_name' => 'catering_food_subcategory',
-      'description' => '',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-      'language' => 'und',
-      'i18n_mode' => 1,
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
+    $vocabularies['catering_provider'] = array(
+        'vocabulary' => (object) array(
+            'name' => t('Catering provider'),
+            'description' => t('Catering company information'),
+            'machine_name' => 'catering_provider',
+            'hierarchy' => 0,
+            'module' => 'taxonomy',
+            'weight' => 0,
+            'language' => 'und',
+            'i18n_mode' => 0,
+            'rdf_mapping' => array(
+                'rdftype' => array(
+                    0 => 'skos:ConceptScheme',
+                ),
+                'name' => array(
+                    'predicates' => array(
+                        0 => 'dc:title',
+                    ),
+                ),
+                'description' => array(
+                    'predicates' => array(
+                        0 => 'rdfs:comment',
+                    ),
+                ),
+            ),
         ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
+    );
+    $vocabularies['catering_food_subcategory'] = array(
+        'vocabulary' => (object)array(
+            'name' => 'Food subcategory',
+            'machine_name' => 'catering_food_subcategory',
+            'description' => '',
+            'hierarchy' => 0,
+            'module' => 'taxonomy',
+            'weight' => 0,
+            'language' => 'und',
+            'i18n_mode' => 1,
+            'rdf_mapping' => array(
+                'rdftype' => array(
+                    0 => 'skos:ConceptScheme',
+                ),
+                'name' => array(
+                    'predicates' => array(
+                        0 => 'dc:title',
+                    ),
+                ),
+                'description' => array(
+                    'predicates' => array(
+                        0 => 'rdfs:comment',
+                    ),
+                ),
+            ),
         ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
+        'terms' => array(
+            (object) array(
+                'name' => t('Main dish'),
+                'language' => 'en',
+            ),
+            (object) array(
+                'name' => t('Dessert'),
+                'language' => 'en',
+            ),
         ),
-      ),
-    ),
-    'terms' => array(
-      (object) array(
-        'name' => t('Main dish'),
-          'language' => 'en',
-      ),
-      (object) array(
-        'name' => t('Dessert'),
-          'language' => 'en',
-      ),
-    ),
-  );
-  return $vocabularies;
+    );
+    return $vocabularies;
 }
 
 function hitsa_catering_add_custom_vocubularies(){
-  // Create vocabulary
-  foreach (_hitsa_catering_vocabularies() as $v) {
-    taxonomy_vocabulary_save($v['vocabulary']);
-        
-    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-    if(!empty($v['terms']) && $vocab) {
-      // Add generic terms
-      foreach($v['terms'] as $term) {
-        $term->vid = $vocab->vid;
-        taxonomy_term_save($term);
-      }
+    // Create vocabulary
+    foreach (_hitsa_catering_vocabularies() as $v) {
+        taxonomy_vocabulary_save($v['vocabulary']);
+
+        $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+        if(!empty($v['terms']) && $vocab) {
+            // Add generic terms
+            foreach($v['terms'] as $term) {
+                $term->vid = $vocab->vid;
+                taxonomy_term_save($term);
+            }
+        }
     }
-  }
 }
 
 function hitsa_catering_delete_custom_vocabularies() {
-  foreach (_hitsa_catering_vocabularies() as $v) {
-    if(!empty($v['vocabulary'])) {
-      $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-      taxonomy_vocabulary_delete($vocab->vid);
+    foreach (_hitsa_catering_vocabularies() as $v) {
+        if(!empty($v['vocabulary'])) {
+            $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+            taxonomy_vocabulary_delete($vocab->vid);
+        }
     }
-  }
 }
 
 
@@ -174,243 +174,243 @@ function hitsa_catering_delete_custom_vocabularies() {
 * HITSA catering paragraph type
 */
 function hitsa_catering_add_custom_paragraphs_bundle(){
-  $bundle = new stdClass();
-  $bundle->name = 'Food'; // user friendly label
-  $bundle->bundle = 'catering_food_by_day'; // machine name
-  $bundle->locked = 0;
-  $status = paragraphs_bundle_save($bundle);
+    $bundle = new stdClass();
+    $bundle->name = 'Food'; // user friendly label
+    $bundle->bundle = 'catering_food_by_day'; // machine name
+    $bundle->locked = 0;
+    $status = paragraphs_bundle_save($bundle);
 }
 
 function _hitsa_catering_installed_paragraphs_fields(){
-  $field_bases = array();
-  
-  $field_bases['field_food_name'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_food_name',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
-  );
+    $field_bases = array();
 
-  $field_bases['field_food_subcategory'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_food_subcategory',
-    'indexes' => array(
-      'target_id' => array(
-        0 => 'target_id',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'entityreference',
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'handler' => 'base',
-      'handler_settings' => array(
-        'behaviors' => array(
-          'views-select-list' => array(
-            'status' => 0,
-          ),
+    $field_bases['field_food_name'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_food_name',
+        'indexes' => array(
+            'format' => array(
+                0 => 'format',
+            ),
         ),
-        'sort' => array(
-          'type' => 'none',
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+            'max_length' => 255,
         ),
-        'target_bundles' => array(
-          'food_subcategory' => 'catering_food_subcategory',
-        ),
-      ),
-      'target_type' => 'taxonomy_term',
-    ),
-    'translatable' => 0,
-    'type' => 'entityreference',
-  );
+        'translatable' => 0,
+        'type' => 'text',
+    );
 
-  $field_bases['field_food_type'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_food_type',
-    'indexes' => array(
-      'target_id' => array(
-        0 => 'target_id',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'entityreference',
-    'settings' => array(
-      'handler' => 'base',
-      'handler_settings' => array(
-        'behaviors' => array(
-          'views-select-list' => array(
-            'status' => 0,
-          ),
+    $field_bases['field_food_subcategory'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_food_subcategory',
+        'indexes' => array(
+            'target_id' => array(
+                0 => 'target_id',
+            ),
         ),
-        'sort' => array(
-          'type' => 'none',
+        'locked' => 0,
+        'module' => 'entityreference',
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'handler' => 'base',
+            'handler_settings' => array(
+                'behaviors' => array(
+                    'views-select-list' => array(
+                        'status' => 0,
+                    ),
+                ),
+                'sort' => array(
+                    'type' => 'none',
+                ),
+                'target_bundles' => array(
+                    'food_subcategory' => 'catering_food_subcategory',
+                ),
+            ),
+            'target_type' => 'taxonomy_term',
         ),
-        'target_bundles' => array(
-          'catering_food_type' => 'catering_food_type',
+        'translatable' => 0,
+        'type' => 'entityreference',
+    );
+
+    $field_bases['field_food_type'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_food_type',
+        'indexes' => array(
+            'target_id' => array(
+                0 => 'target_id',
+            ),
         ),
-      ),
-      'target_type' => 'taxonomy_term',
-    ),
-    'translatable' => 0,
-    'type' => 'entityreference',
-  );
-  
-  return $field_bases;
+        'locked' => 0,
+        'module' => 'entityreference',
+        'settings' => array(
+            'handler' => 'base',
+            'handler_settings' => array(
+                'behaviors' => array(
+                    'views-select-list' => array(
+                        'status' => 0,
+                    ),
+                ),
+                'sort' => array(
+                    'type' => 'none',
+                ),
+                'target_bundles' => array(
+                    'catering_food_type' => 'catering_food_type',
+                ),
+            ),
+            'target_type' => 'taxonomy_term',
+        ),
+        'translatable' => 0,
+        'type' => 'entityreference',
+    );
+
+    return $field_bases;
 }
 
 function _hitsa_catering_installed_paragraphs_instances(){
-  $field_instances = array();
-  
-  $field_instances['paragraphs_item-catering_food_by_day-field_food_name'] = array(
-    'bundle' => 'catering_food_by_day',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 2,
-      ),
-      'paragraphs_editor_preview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_food_name',
-    'label' => 'Food name',
-    'required' => 1,
-    'settings' => array(
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 0,
-    ),
-  );
-  $field_instances['paragraphs_item-catering_food_by_day-field_food_subcategory'] = array(
-    'bundle' => 'catering_food_by_day',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
+    $field_instances = array();
+
+    $field_instances['paragraphs_item-catering_food_by_day-field_food_name'] = array(
+        'bundle' => 'catering_food_by_day',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'text',
+                'settings' => array(),
+                'type' => 'text_default',
+                'weight' => 2,
+            ),
+            'paragraphs_editor_preview' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
         ),
-        'type' => 'entityreference_label',
-        'weight' => 3,
-      ),
-      'paragraphs_editor_preview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_food_subcategory',
-    'label' => 'Food subcategory',
-    'required' => TRUE,
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 2,
-    ),
-  );
-  $field_instances['paragraphs_item-catering_food_by_day-field_food_type'] = array(
-    'bundle' => 'catering_food_by_day',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_food_name',
+        'label' => 'Food name',
+        'required' => 1,
         'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
+            'text_processing' => 0,
+            'user_register_form' => FALSE,
         ),
-        'type' => 'entityreference_label',
-        'weight' => 1,
-      ),
-      'paragraphs_editor_preview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_food_type',
-    'label' => 'Food type',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 1,
-    ),
-  );
-  
-  return $field_instances;
+        'widget' => array(
+            'active' => 1,
+            'module' => 'text',
+            'settings' => array(
+                'size' => 60,
+            ),
+            'type' => 'text_textfield',
+            'weight' => 0,
+        ),
+    );
+    $field_instances['paragraphs_item-catering_food_by_day-field_food_subcategory'] = array(
+        'bundle' => 'catering_food_by_day',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'entityreference',
+                'settings' => array(
+                    'bypass_access' => FALSE,
+                    'link' => FALSE,
+                ),
+                'type' => 'entityreference_label',
+                'weight' => 3,
+            ),
+            'paragraphs_editor_preview' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_food_subcategory',
+        'label' => 'Food subcategory',
+        'required' => TRUE,
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'module' => 'options',
+            'settings' => array(),
+            'type' => 'options_select',
+            'weight' => 2,
+        ),
+    );
+    $field_instances['paragraphs_item-catering_food_by_day-field_food_type'] = array(
+        'bundle' => 'catering_food_by_day',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'entityreference',
+                'settings' => array(
+                    'bypass_access' => FALSE,
+                    'link' => FALSE,
+                ),
+                'type' => 'entityreference_label',
+                'weight' => 1,
+            ),
+            'paragraphs_editor_preview' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_food_type',
+        'label' => 'Food type',
+        'required' => 1,
+        'settings' => array(
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'options',
+            'settings' => array(),
+            'type' => 'options_select',
+            'weight' => 1,
+        ),
+    );
+
+    return $field_instances;
 }
 
 function hitsa_catering_add_custom_paragraphs_fields(){
-  foreach (_hitsa_catering_installed_paragraphs_fields() as $field) {
-    field_create_field($field);
-  }
-  foreach (_hitsa_catering_installed_paragraphs_instances() as $field_instance) {
-    $field_instance['entity_type'] = 'paragraphs_item';
-    $field_instance['bundle'] = 'catering_food_by_day';
-    field_create_instance($field_instance);
-  }
+    foreach (_hitsa_catering_installed_paragraphs_fields() as $field) {
+        field_create_field($field);
+    }
+    foreach (_hitsa_catering_installed_paragraphs_instances() as $field_instance) {
+        $field_instance['entity_type'] = 'paragraphs_item';
+        $field_instance['bundle'] = 'catering_food_by_day';
+        field_create_instance($field_instance);
+    }
 }
 
 function hitsa_catering_delete_custom_paragraphs_fields(){
-  foreach (array_keys(_hitsa_catering_installed_paragraphs_fields()) as $field) {
-      //field_delete_field($field);
+    foreach (array_keys(_hitsa_catering_installed_paragraphs_fields()) as $field) {
+        //field_delete_field($field);
     }
     $instances = field_info_instances('paragraphs_item', 'catering_food_by_day');
     foreach ($instances as $instance_name => $field_instance) {
@@ -423,115 +423,115 @@ function hitsa_catering_delete_custom_paragraphs_fields(){
 * HITSA catering node type
 */
 function _hitsa_catering_installed_node_fields(){
-  $t = get_t();
-  $field_bases = array();
-  
-  // Exported field_base: 'field_catering_provider'.
-  $field_bases['field_catering_provider'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_catering_provider',
-    'indexes' => array(
-      'target_id' => array(
-        0 => 'target_id',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'entityreference',
-    'settings' => array(
-      'handler' => 'base',
-      'handler_settings' => array(
-        'behaviors' => array(
-          'views-select-list' => array(
-            'status' => 0,
-          ),
-        ),
-        'sort' => array(
-          'type' => 'none',
-        ),
-        'target_bundles' => array(
-          'catering_provider' => 'catering_provider',
-        ),
-      ),
-      'target_type' => 'taxonomy_term',
-    ),
-    'translatable' => 0,
-    'type' => 'entityreference',
-  );
+    $t = get_t();
+    $field_bases = array();
 
-  $field_bases['field_catering_monday'] = array(
-    'field_name' => 'field_catering_monday',
-    'module' => 'paragraphs',
-    'label' => $t('Monday'),
-    'type' => 'paragraphs',
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'paragraphs',
-    'settings' => array(),
-    'translatable' => 0,
-  );
-  
-  $field_bases['field_catering_tuesday'] = array(
-    'field_name' => 'field_catering_tuesday',
-    'module' => 'paragraphs',
-    'label' => $t('Tuesday'),
-    'type' => 'paragraphs',
-    'cardinality' => -1,
-  );
-  
-  $field_bases['field_catering_wednesday'] = array(
-    'field_name' => 'field_catering_wednesday',
-    'module' => 'paragraphs',
-    'label' => $t('Wednesday'),
-    'type' => 'paragraphs',
-    'cardinality' => -1,
-  );
+    // Exported field_base: 'field_catering_provider'.
+    $field_bases['field_catering_provider'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_catering_provider',
+        'indexes' => array(
+            'target_id' => array(
+                0 => 'target_id',
+            ),
+        ),
+        'locked' => 0,
+        'module' => 'entityreference',
+        'settings' => array(
+            'handler' => 'base',
+            'handler_settings' => array(
+                'behaviors' => array(
+                    'views-select-list' => array(
+                        'status' => 0,
+                    ),
+                ),
+                'sort' => array(
+                    'type' => 'none',
+                ),
+                'target_bundles' => array(
+                    'catering_provider' => 'catering_provider',
+                ),
+            ),
+            'target_type' => 'taxonomy_term',
+        ),
+        'translatable' => 0,
+        'type' => 'entityreference',
+    );
 
-  $field_bases['field_catering_thursday'] = array(
-    'field_name' => 'field_catering_thursday',
-    'module' => 'paragraphs',
-    'label' => $t('Thursday'),
-    'type' => 'paragraphs',
-    'cardinality' => -1,
-  );
-  
-  $field_bases['field_catering_friday'] = array(
-    'field_name' => 'field_catering_friday',
-    'module' => 'paragraphs',
-    'label' => $t('Friday'),
-    'type' => 'paragraphs',
-    'cardinality' => -1,
-  );
+    $field_bases['field_catering_monday'] = array(
+        'field_name' => 'field_catering_monday',
+        'module' => 'paragraphs',
+        'label' => $t('Monday'),
+        'type' => 'paragraphs',
+        'active' => 1,
+        'cardinality' => -1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'indexes' => array(),
+        'locked' => 0,
+        'module' => 'paragraphs',
+        'settings' => array(),
+        'translatable' => 0,
+    );
 
-  $field_bases['field_date'] = array(
-    'entity_types' => array(),
-    'field_name' => 'field_date',
-    'label' => $t('Date'),
-    'module' => 'date',
-    'settings' => array(
-      'cache_count' => 4,
-      'cache_enabled' => 0,
-      'granularity' => array(
-        'day' => 'day',
-        'hour' => 0,
-        'minute' => 0,
-        'month' => 'month',
-        'second' => 0,
-        'year' => 'year',
-      ),
-      'timezone_db' => '',
-      'todate' => 'required',
-      'tz_handling' => 'none',
-    ),
-    'translatable' => 0,
-    'type' => 'datestamp',
-  );
+    $field_bases['field_catering_tuesday'] = array(
+        'field_name' => 'field_catering_tuesday',
+        'module' => 'paragraphs',
+        'label' => $t('Tuesday'),
+        'type' => 'paragraphs',
+        'cardinality' => -1,
+    );
+
+    $field_bases['field_catering_wednesday'] = array(
+        'field_name' => 'field_catering_wednesday',
+        'module' => 'paragraphs',
+        'label' => $t('Wednesday'),
+        'type' => 'paragraphs',
+        'cardinality' => -1,
+    );
+
+    $field_bases['field_catering_thursday'] = array(
+        'field_name' => 'field_catering_thursday',
+        'module' => 'paragraphs',
+        'label' => $t('Thursday'),
+        'type' => 'paragraphs',
+        'cardinality' => -1,
+    );
+
+    $field_bases['field_catering_friday'] = array(
+        'field_name' => 'field_catering_friday',
+        'module' => 'paragraphs',
+        'label' => $t('Friday'),
+        'type' => 'paragraphs',
+        'cardinality' => -1,
+    );
+
+    $field_bases['field_date'] = array(
+        'entity_types' => array(),
+        'field_name' => 'field_date',
+        'label' => $t('Date'),
+        'module' => 'date',
+        'settings' => array(
+            'cache_count' => 4,
+            'cache_enabled' => 0,
+            'granularity' => array(
+                'day' => 'day',
+                'hour' => 0,
+                'minute' => 0,
+                'month' => 'month',
+                'second' => 0,
+                'year' => 'year',
+            ),
+            'timezone_db' => '',
+            'todate' => 'required',
+            'tz_handling' => 'none',
+        ),
+        'translatable' => 0,
+        'type' => 'datestamp',
+    );
     // Exported field_base: 'field_catering_pictures'.
     $field_bases['field_catering_pictures'] = array(
         'active' => 1,
@@ -556,328 +556,328 @@ function _hitsa_catering_installed_node_fields(){
         'translatable' => 0,
         'type' => 'image',
     );
-  return $field_bases;
+    return $field_bases;
 }
 
 function _hitsa_catering_installed_node_instances(){
-  $t = get_t();
-  $field_instances = array();
-  
-  $field_instances['field_date'] = array(
-    'bundle' => 'catering',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-          'show_remaining_days' => FALSE,
+    $t = get_t();
+    $field_instances = array();
+
+    $field_instances['field_date'] = array(
+        'bundle' => 'catering',
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'date',
+                'settings' => array(
+                    'format_type' => 'long',
+                    'fromto' => 'both',
+                    'multiple_from' => '',
+                    'multiple_number' => '',
+                    'multiple_to' => '',
+                    'show_remaining_days' => FALSE,
+                ),
+                'type' => 'date_default',
+                'weight' => 1,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
         ),
-        'type' => 'date_default',
-        'weight' => 1,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_date',
-    'label' => $t('Date'),
-    'required' => 0,
-    'settings' => array(
-      'default_value' => 'now',
-      'default_value2' => 'same',
-      'default_value_code' => '',
-      'default_value_code2' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'date',
-      'settings' => array(
-        'increment' => 15,
-        'input_format' => 'd/m/Y',
-        'input_format_custom' => '',
-        'label_position' => 'above',
-        'no_fieldset' => 0,
-        'text_parts' => array(),
-        'year_range' => '-3:+3',
-      ),
-      'type' => 'date_popup',
-      'weight' => 3,
-    ),
-  );
-  
-  $field_instances['node-catering-field_catering_monday'] = array(
-    'bundle' => 'catering',
-    'default_value' => NULL,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'paragraphs',
+        'entity_type' => 'node',
+        'field_name' => 'field_date',
+        'label' => $t('Date'),
+        'required' => 0,
         'settings' => array(
-          'view_mode' => 'full',
+            'default_value' => 'now',
+            'default_value2' => 'same',
+            'default_value_code' => '',
+            'default_value_code2' => '',
+            'user_register_form' => FALSE,
         ),
-        'type' => 'paragraphs_view',
-        'weight' => 2,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_catering_monday',
-    'label' => $t('Monday'),
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'button',
-      'allowed_bundles' => array(
-        'catering_food_by_day' => 'catering_food_by_day',
-      ),
-      'bundle_weights' => array(
-        'catering_food_by_day' => -2,
-      ),
-      'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 5,
-    ),
-  );
-  
-  $field_instances['node-catering-field_catering_tuesday'] = array(
-    'bundle' => 'catering',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'paragraphs',
+        'widget' => array(
+            'active' => 1,
+            'module' => 'date',
+            'settings' => array(
+                'increment' => 15,
+                'input_format' => 'd/m/Y',
+                'input_format_custom' => '',
+                'label_position' => 'above',
+                'no_fieldset' => 0,
+                'text_parts' => array(),
+                'year_range' => '-3:+3',
+            ),
+            'type' => 'date_popup',
+            'weight' => 3,
+        ),
+    );
+
+    $field_instances['node-catering-field_catering_monday'] = array(
+        'bundle' => 'catering',
+        'default_value' => NULL,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'paragraphs',
+                'settings' => array(
+                    'view_mode' => 'full',
+                ),
+                'type' => 'paragraphs_view',
+                'weight' => 2,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_catering_monday',
+        'label' => $t('Monday'),
+        'required' => 0,
         'settings' => array(
-          'view_mode' => 'full',
+            'add_mode' => 'button',
+            'allowed_bundles' => array(
+                'catering_food_by_day' => 'catering_food_by_day',
+            ),
+            'bundle_weights' => array(
+                'catering_food_by_day' => -2,
+            ),
+            'default_edit_mode' => 'open',
+            'title' => 'Toit',
+            'title_multiple' => 'Toitu',
+            'user_register_form' => FALSE,
         ),
-        'type' => 'paragraphs_view',
-        'weight' => 3,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_catering_tuesday',
-    'label' => $t('Tuesday'),
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'button',
-      'allowed_bundles' => array(
-        'catering_food_by_day' => 'catering_food_by_day',
-      ),
-      'bundle_weights' => array(
-        'catering_food_by_day' => -2,
-      ),
-      'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 6,
-    ),
-  );
-  
-  $field_instances['node-catering-field_catering_wednesday'] = array(
-    'bundle' => 'catering',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'paragraphs',
+        'widget' => array(
+            'active' => 0,
+            'module' => 'paragraphs',
+            'settings' => array(),
+            'type' => 'paragraphs_embed',
+            'weight' => 5,
+        ),
+    );
+
+    $field_instances['node-catering-field_catering_tuesday'] = array(
+        'bundle' => 'catering',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'paragraphs',
+                'settings' => array(
+                    'view_mode' => 'full',
+                ),
+                'type' => 'paragraphs_view',
+                'weight' => 3,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_catering_tuesday',
+        'label' => $t('Tuesday'),
+        'required' => 0,
         'settings' => array(
-          'view_mode' => 'full',
+            'add_mode' => 'button',
+            'allowed_bundles' => array(
+                'catering_food_by_day' => 'catering_food_by_day',
+            ),
+            'bundle_weights' => array(
+                'catering_food_by_day' => -2,
+            ),
+            'default_edit_mode' => 'open',
+            'title' => 'Toit',
+            'title_multiple' => 'Toitu',
+            'user_register_form' => FALSE,
         ),
-        'type' => 'paragraphs_view',
-        'weight' => 4,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_catering_wednesday',
-    'label' => $t('Wednesday'),
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'button',
-      'allowed_bundles' => array(
-        'catering_food_by_day' => 'catering_food_by_day',
-      ),
-      'bundle_weights' => array(
-        'catering_food_by_day' => -2,
-      ),
-      'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 7,
-    ),
-  );
-  
-  $field_instances['node-catering-field_catering_thursday'] = array(
-    'bundle' => 'catering',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'paragraphs',
+        'widget' => array(
+            'active' => 0,
+            'module' => 'paragraphs',
+            'settings' => array(),
+            'type' => 'paragraphs_embed',
+            'weight' => 6,
+        ),
+    );
+
+    $field_instances['node-catering-field_catering_wednesday'] = array(
+        'bundle' => 'catering',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'paragraphs',
+                'settings' => array(
+                    'view_mode' => 'full',
+                ),
+                'type' => 'paragraphs_view',
+                'weight' => 4,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_catering_wednesday',
+        'label' => $t('Wednesday'),
+        'required' => 0,
         'settings' => array(
-          'view_mode' => 'full',
+            'add_mode' => 'button',
+            'allowed_bundles' => array(
+                'catering_food_by_day' => 'catering_food_by_day',
+            ),
+            'bundle_weights' => array(
+                'catering_food_by_day' => -2,
+            ),
+            'default_edit_mode' => 'open',
+            'title' => 'Toit',
+            'title_multiple' => 'Toitu',
+            'user_register_form' => FALSE,
         ),
-        'type' => 'paragraphs_view',
-        'weight' => 5,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_catering_thursday',
-    'label' => $t('Thursday'),
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'button',
-      'allowed_bundles' => array(
-        'catering_food_by_day' => 'catering_food_by_day',
-      ),
-      'bundle_weights' => array(
-        'catering_food_by_day' => -2,
-      ),
-      'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 8,
-    ),
-  );
-  
-  $field_instances['node-catering-field_catering_friday'] = array(
-    'bundle' => 'catering',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'paragraphs',
+        'widget' => array(
+            'active' => 0,
+            'module' => 'paragraphs',
+            'settings' => array(),
+            'type' => 'paragraphs_embed',
+            'weight' => 7,
+        ),
+    );
+
+    $field_instances['node-catering-field_catering_thursday'] = array(
+        'bundle' => 'catering',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'paragraphs',
+                'settings' => array(
+                    'view_mode' => 'full',
+                ),
+                'type' => 'paragraphs_view',
+                'weight' => 5,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_catering_thursday',
+        'label' => $t('Thursday'),
+        'required' => 0,
         'settings' => array(
-          'view_mode' => 'full',
+            'add_mode' => 'button',
+            'allowed_bundles' => array(
+                'catering_food_by_day' => 'catering_food_by_day',
+            ),
+            'bundle_weights' => array(
+                'catering_food_by_day' => -2,
+            ),
+            'default_edit_mode' => 'open',
+            'title' => 'Toit',
+            'title_multiple' => 'Toitu',
+            'user_register_form' => FALSE,
         ),
-        'type' => 'paragraphs_view',
-        'weight' => 6,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_catering_friday',
-    'label' => $t('Friday'),
-    'required' => 0,
-    'settings' => array(
-      'add_mode' => 'button',
-      'allowed_bundles' => array(
-        'catering_food_by_day' => 'catering_food_by_day',
-      ),
-      'bundle_weights' => array(
-        'catering_food_by_day' => -2,
-      ),
-      'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'paragraphs',
-      'settings' => array(),
-      'type' => 'paragraphs_embed',
-      'weight' => 9,
-    ),
-  );
-  $field_instances['node-catering-field_catering_provider'] = array(
-          'bundle' => 'catering',
-          'default_value' => null,
-          'deleted' => 0,
-          'description' => t('This allows to choose which catering company has this menu'),
-          'entity_type' => 'node',
-          'field_name' => 'field_catering_provider',
-          'label' => st('Catering company selection'),
-          'required' => 0,
-          'settings' => array(
+        'widget' => array(
+            'active' => 0,
+            'module' => 'paragraphs',
+            'settings' => array(),
+            'type' => 'paragraphs_embed',
+            'weight' => 8,
+        ),
+    );
+
+    $field_instances['node-catering-field_catering_friday'] = array(
+        'bundle' => 'catering',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'paragraphs',
+                'settings' => array(
+                    'view_mode' => 'full',
+                ),
+                'type' => 'paragraphs_view',
+                'weight' => 6,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_catering_friday',
+        'label' => $t('Friday'),
+        'required' => 0,
+        'settings' => array(
+            'add_mode' => 'button',
+            'allowed_bundles' => array(
+                'catering_food_by_day' => 'catering_food_by_day',
+            ),
+            'bundle_weights' => array(
+                'catering_food_by_day' => -2,
+            ),
+            'default_edit_mode' => 'open',
+            'title' => 'Toit',
+            'title_multiple' => 'Toitu',
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'active' => 0,
+            'module' => 'paragraphs',
+            'settings' => array(),
+            'type' => 'paragraphs_embed',
+            'weight' => 9,
+        ),
+    );
+    $field_instances['node-catering-field_catering_provider'] = array(
+        'bundle' => 'catering',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => t('This allows to choose which catering company has this menu'),
+        'entity_type' => 'node',
+        'field_name' => 'field_catering_provider',
+        'label' => st('Catering company selection'),
+        'required' => 0,
+        'settings' => array(
             'entity_translation_sync' => false,
             'user_register_form' => false,
-          ),
-          'widget' => array(
+        ),
+        'widget' => array(
             'active' => 0,
             'module' => 'options',
             'settings' => array(
-              'autocomplete_path' => 'taxonomy/autocomplete',
-              'size' => 60,
+                'autocomplete_path' => 'taxonomy/autocomplete',
+                'size' => 60,
             ),
             'type' => 'options_buttons',
-            'weight' => -3,
-          ),
+            'weight' => 2,
+        ),
     );
     // Exported field_instance: 'node-catering-field_catering_pictures'.
     $field_instances['node-catering-field_catering_pictures'] = array(
@@ -945,232 +945,232 @@ function _hitsa_catering_installed_node_instances(){
     // Translatables
     // Included for use with string extractors like potx.
     t('catering pictures');
-  return $field_instances;
+    return $field_instances;
 }
 
 function hitsa_catering_add_custom_node_fields(){
-  foreach (_hitsa_catering_installed_node_fields() as $field) {
-      $field_check = field_info_field($field['field_name']);
-      if (empty($field_check)) {
-          field_create_field($field);
-      }
-  }
-  foreach (_hitsa_catering_installed_node_instances() as $field_instance) {
-    $field_instance['entity_type'] = 'node';
-    $field_instance['bundle'] = 'catering';
-    field_create_instance($field_instance);
-  }
+    foreach (_hitsa_catering_installed_node_fields() as $field) {
+        $field_check = field_info_field($field['field_name']);
+        if (empty($field_check)) {
+            field_create_field($field);
+        }
+    }
+    foreach (_hitsa_catering_installed_node_instances() as $field_instance) {
+        $field_instance['entity_type'] = 'node';
+        $field_instance['bundle'] = 'catering';
+        field_create_instance($field_instance);
+    }
 }
 
 function hitsa_catering_delete_custom_node_fields() {
-  foreach (array_keys(_hitsa_catering_installed_node_fields()) as $field) {
-      $field_check = field_info_field($field);
-      if (!empty($field_check)){
-          if (!empty($field_check['bundles'])){
-              if (!empty($field_check['bundles']['node'])){
-                  if (count($field_check['bundles']['node'])>1){
+    foreach (array_keys(_hitsa_catering_installed_node_fields()) as $field) {
+        $field_check = field_info_field($field);
+        if (!empty($field_check)){
+            if (!empty($field_check['bundles'])){
+                if (!empty($field_check['bundles']['node'])){
+                    if (count($field_check['bundles']['node'])>1){
 
-                  }
-                  elseif (count($field_check['bundles']['node'])==1){
+                    }
+                    elseif (count($field_check['bundles']['node'])==1){
 //                      field_delete_field($field_check['field_name']);
-                  }
-              }
-          }
-      }
-      else {
+                    }
+                }
+            }
+        }
+        else {
 //          field_delete_field($field);
-      }
-  }
-  $instances = field_info_instances('node', 'catering');
-  foreach ($instances as $instance_name => $field_instance) {
-    field_delete_instance($field_instance);
-  }
+        }
+    }
+    $instances = field_info_instances('node', 'catering');
+    foreach ($instances as $instance_name => $field_instance) {
+        field_delete_instance($field_instance);
+    }
 }
 
 function _hitsa_catering_custom_field_groups(){
-  $field_groups = array();
-  
-  $field_group = (object) array(
-    'identifier' => 'group_monday|node|toitlustus|form',
-    'group_name' => 'group_monday',
-    'entity_type' => 'node',
-    'bundle' => 'catering',
-    'mode' => 'form',
-    'parent_name' => '',
-    'table' => 'field_group',
-    'type' => 'Overridden',
-    'disabled' => FALSE,
-    'label' => 'Monday',
-    'weight' => '4',
-    'children' => array(
-      'field_catering_monday',
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'formatter' => 'closed',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $field_groups[] = $field_group;
-  
-  $field_group = (object) array(
-    'identifier' => 'group_tuesday|node|toitlustus|form',
-    'group_name' => 'group_tuesday',
-    'entity_type' => 'node',
-    'bundle' => 'catering',
-    'mode' => 'form',
-    'parent_name' => '',
-    'table' => 'field_group',
-    'type' => 'Overridden',
-    'disabled' => FALSE,
-    'label' => 'Tuesday',
-    'weight' => '5',
-    'children' => array(
-      'field_catering_tuesday',
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'formatter' => 'closed',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $field_groups[] = $field_group;
+    $field_groups = array();
 
-  $field_group = (object) array(
-    'identifier' => 'group_wednesday|node|toitlustus|form',
-    'group_name' => 'group_wednesday',
-    'entity_type' => 'node',
-    'bundle' => 'catering',
-    'mode' => 'form',
-    'parent_name' => '',
-    'table' => 'field_group',
-    'type' => 'Overridden',
-    'disabled' => FALSE,
-    'label' => 'Wednesday',
-    'weight' => '6',
-    'children' => array(
-      'field_catering_wednesday',
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'formatter' => 'closed',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $field_groups[] = $field_group;
-  
-  $field_group = (object) array(
-    'identifier' => 'group_thursday|node|toitlustus|form',
-    'group_name' => 'group_thursday',
-    'entity_type' => 'node',
-    'bundle' => 'catering',
-    'mode' => 'form',
-    'parent_name' => '',
-    'table' => 'field_group',
-    'type' => 'Overridden',
-    'disabled' => FALSE,
-    'label' => 'Thursday',
-    'weight' => '7',
-    'children' => array(
-      'field_catering_thursday',
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'formatter' => 'closed',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $field_groups[] = $field_group;
-  
-  $field_group = (object) array(
-    'identifier' => 'group_friday|node|toitlustus|form',
-    'group_name' => 'group_friday',
-    'entity_type' => 'node',
-    'bundle' => 'catering',
-    'mode' => 'form',
-    'parent_name' => '',
-    'table' => 'field_group',
-    'type' => 'Overridden',
-    'disabled' => FALSE,
-    'label' => 'Friday',
-    'weight' => '8',
-    'children' => array(
-      'field_catering_friday',
-    ),
-    'format_type' => 'tab',
-    'format_settings' => array(
-      'formatter' => 'closed',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $field_groups[] = $field_group;
+    $field_group = (object) array(
+        'identifier' => 'group_monday|node|toitlustus|form',
+        'group_name' => 'group_monday',
+        'entity_type' => 'node',
+        'bundle' => 'catering',
+        'mode' => 'form',
+        'parent_name' => '',
+        'table' => 'field_group',
+        'type' => 'Overridden',
+        'disabled' => FALSE,
+        'label' => 'Monday',
+        'weight' => '4',
+        'children' => array(
+            'field_catering_monday',
+        ),
+        'format_type' => 'tab',
+        'format_settings' => array(
+            'formatter' => 'closed',
+            'instance_settings' => array(
+                'description' => '',
+                'classes' => '',
+                'required_fields' => 1,
+            ),
+        ),
+    );
+    $field_groups[] = $field_group;
 
-  $field_group = (object)array(
-      'identifier' => 'group_pictures|node|catering|form',
-      'group_name' => 'group_pictures',
-      'entity_type' => 'node',
-      'bundle' => 'catering',
-      'mode' => 'form',
-      'parent_name' => '',
-      'label' => 'Pictures',
-      'weight' => '10',
-      'children' => array(
-          0 => 'field_catering_pictures',
-          ),
-      'format_type' => 'tab',
-      'format_settings' => array(
-          'formatter' => 'closed',
-          'instance_settings' => array(
-              'description' => '',
-              'classes' => 'group-pictures field-group-tab',
-              'required_fields' => 1,
-              ),
-          ),
-  );
-  $field_groups[] = $field_group;
-  return $field_groups;
+    $field_group = (object) array(
+        'identifier' => 'group_tuesday|node|toitlustus|form',
+        'group_name' => 'group_tuesday',
+        'entity_type' => 'node',
+        'bundle' => 'catering',
+        'mode' => 'form',
+        'parent_name' => '',
+        'table' => 'field_group',
+        'type' => 'Overridden',
+        'disabled' => FALSE,
+        'label' => 'Tuesday',
+        'weight' => '5',
+        'children' => array(
+            'field_catering_tuesday',
+        ),
+        'format_type' => 'tab',
+        'format_settings' => array(
+            'formatter' => 'closed',
+            'instance_settings' => array(
+                'description' => '',
+                'classes' => '',
+                'required_fields' => 1,
+            ),
+        ),
+    );
+    $field_groups[] = $field_group;
+
+    $field_group = (object) array(
+        'identifier' => 'group_wednesday|node|toitlustus|form',
+        'group_name' => 'group_wednesday',
+        'entity_type' => 'node',
+        'bundle' => 'catering',
+        'mode' => 'form',
+        'parent_name' => '',
+        'table' => 'field_group',
+        'type' => 'Overridden',
+        'disabled' => FALSE,
+        'label' => 'Wednesday',
+        'weight' => '6',
+        'children' => array(
+            'field_catering_wednesday',
+        ),
+        'format_type' => 'tab',
+        'format_settings' => array(
+            'formatter' => 'closed',
+            'instance_settings' => array(
+                'description' => '',
+                'classes' => '',
+                'required_fields' => 1,
+            ),
+        ),
+    );
+    $field_groups[] = $field_group;
+
+    $field_group = (object) array(
+        'identifier' => 'group_thursday|node|toitlustus|form',
+        'group_name' => 'group_thursday',
+        'entity_type' => 'node',
+        'bundle' => 'catering',
+        'mode' => 'form',
+        'parent_name' => '',
+        'table' => 'field_group',
+        'type' => 'Overridden',
+        'disabled' => FALSE,
+        'label' => 'Thursday',
+        'weight' => '7',
+        'children' => array(
+            'field_catering_thursday',
+        ),
+        'format_type' => 'tab',
+        'format_settings' => array(
+            'formatter' => 'closed',
+            'instance_settings' => array(
+                'description' => '',
+                'classes' => '',
+                'required_fields' => 1,
+            ),
+        ),
+    );
+    $field_groups[] = $field_group;
+
+    $field_group = (object) array(
+        'identifier' => 'group_friday|node|toitlustus|form',
+        'group_name' => 'group_friday',
+        'entity_type' => 'node',
+        'bundle' => 'catering',
+        'mode' => 'form',
+        'parent_name' => '',
+        'table' => 'field_group',
+        'type' => 'Overridden',
+        'disabled' => FALSE,
+        'label' => 'Friday',
+        'weight' => '8',
+        'children' => array(
+            'field_catering_friday',
+        ),
+        'format_type' => 'tab',
+        'format_settings' => array(
+            'formatter' => 'closed',
+            'instance_settings' => array(
+                'description' => '',
+                'classes' => '',
+                'required_fields' => 1,
+            ),
+        ),
+    );
+    $field_groups[] = $field_group;
+
+    $field_group = (object)array(
+        'identifier' => 'group_pictures|node|catering|form',
+        'group_name' => 'group_pictures',
+        'entity_type' => 'node',
+        'bundle' => 'catering',
+        'mode' => 'form',
+        'parent_name' => '',
+        'label' => 'Pictures',
+        'weight' => '10',
+        'children' => array(
+            0 => 'field_catering_pictures',
+        ),
+        'format_type' => 'tab',
+        'format_settings' => array(
+            'formatter' => 'closed',
+            'instance_settings' => array(
+                'description' => '',
+                'classes' => 'group-pictures field-group-tab',
+                'required_fields' => 1,
+            ),
+        ),
+    );
+    $field_groups[] = $field_group;
+    return $field_groups;
 }
 
 function hitsa_catering_add_custom_field_groups(){
-  foreach(_hitsa_catering_custom_field_groups() as $field_group){
-    field_group_group_save($field_group);
-  }
+    foreach(_hitsa_catering_custom_field_groups() as $field_group){
+        field_group_group_save($field_group);
+    }
 }
 function hitsa_catering_add_custom_taxonomy_fields(){
-  foreach (hitsa_catering_add_custom_taxonomy_field_base() as $field) {
-      $field_check = field_info_field($field['field_name']);
-      if (empty($field_check)) {
-          field_create_field($field);
-      }
-  }
-  foreach (hitsa_catering_add_custom_taxonomy_field_instance() as $field_instance) {
-    
-    field_create_instance($field_instance);
-  }
+    foreach (hitsa_catering_add_custom_taxonomy_field_base() as $field) {
+        $field_check = field_info_field($field['field_name']);
+        if (empty($field_check)) {
+            field_create_field($field);
+        }
+    }
+    foreach (hitsa_catering_add_custom_taxonomy_field_instance() as $field_instance) {
+
+        field_create_instance($field_instance);
+    }
 }
 
 function hitsa_catering_add_custom_taxonomy_field_base(){
-  $field_bases = array();
+    $field_bases = array();
     // Exported field_base: 'field_catering_provider_big_name'.
     $field_bases['field_catering_provider_big_name'] = array(
         'active' => 1,
@@ -1342,11 +1342,11 @@ function hitsa_catering_add_custom_taxonomy_field_base(){
     );
 
 
-  return $field_bases;
+    return $field_bases;
 }
 function hitsa_catering_add_custom_taxonomy_field_instance(){
-  
-  $field_instances = array();
+
+    $field_instances = array();
 
     $field_instances['taxonomy_term-catering_food_subcategory-field_food_icon'] = array(
         'bundle' => 'catering_food_subcategory',
@@ -1578,19 +1578,19 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
     t('Homepage');
     t('Phone number');
 
-  // Translatables
-  // Included for use with string extractors like potx.
-  t('Catering provider pictures');
-  t('Email');
-  t('Homepage');
-  t('Location');
-  t('Phone number');
+    // Translatables
+    // Included for use with string extractors like potx.
+    t('Catering provider pictures');
+    t('Email');
+    t('Homepage');
+    t('Location');
+    t('Phone number');
 
-  return $field_instances;
+    return $field_instances;
 }
 
 function hitsa_catering_delete_vocabulary_fields(){
-  foreach (array_keys(hitsa_catering_add_custom_taxonomy_field_base()) as $field) {
+    foreach (array_keys(hitsa_catering_add_custom_taxonomy_field_base()) as $field) {
 //      field_delete_field($field);
     }
     $instances = field_info_instances('taxonomy_term', 'catering_provider');
