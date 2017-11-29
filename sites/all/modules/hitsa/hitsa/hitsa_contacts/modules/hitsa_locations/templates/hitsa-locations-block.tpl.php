@@ -74,8 +74,8 @@
           <?php if(!empty($location->location_parking_attachment)): ?>
           <p>
             <a href="<?php print file_create_url($location->location_parking_attachment[LANGUAGE_NONE][0]['uri']); ?>">
-            <?php if(!empty($location->location_parking_attachment[LANGUAGE_NONE][0]['title'])): ?>
-              <?php print $location->location_parking_attachment[LANGUAGE_NONE][0]['title']; ?>
+            <?php if(!empty($location->location_parking_attachment[LANGUAGE_NONE][0]['description'])): ?>
+              <?php print $location->location_parking_attachment[LANGUAGE_NONE][0]['description']; ?>
             <?php else: ?>
               <?php print t('Attachment'); ?>
             <?php endif; ?>
