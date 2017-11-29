@@ -80,6 +80,14 @@
  * @ingroup themeable
  */
 ?>
+<?php if((node_access("update", $node, $user) === TRUE)): ?>
+<div class="row">
+  <ul class="tabs primary">
+    <li><a href="<?php print url('node/' . $node->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
+    <li><a href="<?php print url('node/' . $node->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
+  </ul>          
+</div>
+<?php endif; ?>
 <div class="object object-horizontal">
   <span class="object-inner">
     <?php if(!empty($node->contact_image)): // Contact Image ?>
@@ -106,7 +114,10 @@
       </div><!--/object-content_col-->
       <div class="object-content_col">
         <?php if(!empty($content['reception_times'])): ?>
-          <?php print render($content['reception_times']); ?>
+            <p><b><?php print t('Reception time'); ?>:</b></p>
+            <?php foreach($content['reception_times']['#items'] as $reception_time): ?>
+            <?php print check_plain($reception_time['safe_value']); ?><br>
+            <?php endforeach; ?>
         <?php endif; ?>
       </div><!--/object-content_col-->
     </span><!--/object-content-->

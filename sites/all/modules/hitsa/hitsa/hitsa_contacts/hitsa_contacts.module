@@ -320,6 +320,7 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
   // Validate the phone number field.
   if(!empty($form['phone_nr'])) {
     $form['#validate'][] = 'hitsa_contacts_validate_phone_number';
+    $form['phone_nr'][LANGUAGE_NONE][0]['value']['#attributes']['autocomplete'] = 'off';
   }
   
   switch($form_id) {
