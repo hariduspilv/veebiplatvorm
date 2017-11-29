@@ -2918,7 +2918,7 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
         'entity_type' => 'node',
         'field_name' => 'field_table_descriptions',
-        'label' => 'Tabeli column/row description text',
+        'label' => 'Tabeli veeru/rea juhendav abitekst',
         'required' => 0,
         'settings' => array(
             'add_mode' => 'button',

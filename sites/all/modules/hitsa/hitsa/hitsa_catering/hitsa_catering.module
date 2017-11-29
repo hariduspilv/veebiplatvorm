@@ -544,6 +544,21 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
             }
         }
     }
+    krumo($loaded_menu);
+
+    $monday_date ='';
+    $tuesday_date ='';
+    $wednesday_date='';
+    $thursday_date ='';
+    $friday_date = '';
+    if (!empty($loaded_menu->field_date)){
+        $start_date = $loaded_menu->field_date['und'][0]['value'];
+        $monday_date = date('d.m',strtotime('monday midnight',$start_date));
+        $tuesday_date = date('d.m',strtotime('tuesday midnight',$start_date));
+        $wednesday_date = date('d.m',strtotime('wednesday midnight',$start_date));
+        $thursday_date = date('d.m',strtotime('thursday midnight',$start_date));
+        $friday_date = date('d.m',strtotime('friday midnight',$start_date));
+    }
     if (!empty($row_names) && !empty($day_meals)) {
         $output  = '<div class="table_wrapper" data-plugin="responsiveTable">';
         $output .= '<table>';
@@ -553,18 +568,28 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         $output .= '</th>';
         $output .= '<th>';
         $output .= t('Monday');
+        $output .= '<br/>';
+        $output .= $monday_date;
         $output .= '</th>';
         $output .= '<th>';
         $output .= t('Tuesday');
+        $output .= '<br/>';
+        $output .= $tuesday_date;
         $output .= '</th>';
         $output .= '<th>';
         $output .= t('Wednesday');
+        $output .= '<br/>';
+        $output .= $wednesday_date;
         $output .= '</th>';
         $output .= '<th>';
         $output .= t('Thursday');
+        $output .= '<br/>';
+        $output .= $thursday_date;
         $output .= '</th>';
         $output .= '<th>';
         $output .= t('Friday');
+        $output .= '<br/>';
+        $output .= $friday_date;
         $output .= '</th>';
         $output .= '</tr>';
         $output .= '</thead>';
