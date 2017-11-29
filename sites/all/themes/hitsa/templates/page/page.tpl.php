@@ -126,14 +126,14 @@
       <?php endif; ?>
   <div class="row">
     <?php if(!empty($page['sidebar_right'])):?>
-      <div class="col-9">
+      <div class="col-9 sm-12">
     <?php else:?>
       <div class="col-12">
     <?php endif;?>
     <?php print render($page['content']); ?>
       </div><!--/col-x-->
     <?php if(!empty($page['sidebar_right'])):?>
-      <div class="col-3">
+      <div class="col-3 sm-12">
       <?php print render($page['sidebar_right'])?>
       </div><!--/col-x-->
     <?php endif?>
