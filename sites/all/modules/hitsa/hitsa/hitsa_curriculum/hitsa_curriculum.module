@@ -317,7 +317,6 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
 {
     switch ($form_id) {
         case 'curriculum_node_form':
-
 //            $form['field_header_information'] = array(
 //                '#type' => 'container',
 //                '#prefix' => '<div id="header_target">',
@@ -333,7 +332,6 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
                     $form['field_school_selections']['und']['#options'][$options_key] = t($options_value);
                 }
             }
-
             return $form;
             break;
     }

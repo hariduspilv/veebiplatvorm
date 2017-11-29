@@ -559,9 +559,9 @@ function _hitsa_catering_installed_node_fields(){
   return $field_bases;
 }
 
-function _hitsa_catering_installed_node_instances(){
+function Toittering_installed_node_instances(){
   $t = get_t();
-  $field_instances = array();
+  Toitutances = array();
   
   $field_instances['field_date'] = array(
     'bundle' => 'catering',
@@ -651,8 +651,8 @@ function _hitsa_catering_installed_node_instances(){
         'catering_food_by_day' => -2,
       ),
       'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
+      'title' => 'Toit',
+      'title_multiple' => 'Toitu',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -699,8 +699,8 @@ function _hitsa_catering_installed_node_instances(){
         'catering_food_by_day' => -2,
       ),
       'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
+      'title' => 'Toit',
+      'title_multiple' => 'Toitu',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -747,8 +747,8 @@ function _hitsa_catering_installed_node_instances(){
         'catering_food_by_day' => -2,
       ),
       'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
+      'title' => 'Toit',
+      'title_multiple' => 'Toitu',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -795,8 +795,8 @@ function _hitsa_catering_installed_node_instances(){
         'catering_food_by_day' => -2,
       ),
       'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
+      'title' => 'Toit',
+      'title_multiple' => 'Toitu',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -843,8 +843,8 @@ function _hitsa_catering_installed_node_instances(){
         'catering_food_by_day' => -2,
       ),
       'default_edit_mode' => 'open',
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
+      'title' => 'Toit',
+      'title_multiple' => 'Toitu',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -876,7 +876,7 @@ function _hitsa_catering_installed_node_instances(){
               'size' => 60,
             ),
             'type' => 'options_buttons',
-            'weight' => -3,
+            'weight' => 2,
           ),
     );
     // Exported field_instance: 'node-catering-field_catering_pictures'.
