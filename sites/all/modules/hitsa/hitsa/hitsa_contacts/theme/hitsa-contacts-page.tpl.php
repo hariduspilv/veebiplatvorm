@@ -27,11 +27,7 @@
              <?php endforeach; ?>
           </div><!--/btn-bar-->
           
-        </div><!--/col-9-->
-        
-        <div class="col-3">
-
-        </div><!--/col-3-->
+        </div><!--/col-12-->
         
       </div><!--/row-->
       
