@@ -1,0 +1,8 @@
+<?php
+
+
+    function hitsa_ckeditor_install(){
+
+        dpm('We were here');
+
+    }
