@@ -184,7 +184,7 @@ function hitsa_core_preprocess_hitsa_header_mobile(&$variables) {
   $site_logo_fid = variable_get_value('hitsa_site_logo_fid');
   $logo_file = file_load($site_logo_fid);
   if($logo_file) {
-    $variables['site_logo'] = image_style_url('hitsa_core_logo', $logo_file->uri);
+    $variables['site_logo'] = image_style_url('hitsa_core_logo_mobile', $logo_file->uri);
   }
 }
 
