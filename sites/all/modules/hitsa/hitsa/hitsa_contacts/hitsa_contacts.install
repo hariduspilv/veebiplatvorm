@@ -300,7 +300,7 @@ function _hitsa_contacts_field_instances() {
       'bundle' => 'contact',
       'entity_type' => 'node',
       'label' => $t('Contact CV Link'),
-      'description' => 'Lisa viitav link, avaneb alati uues aknas.',
+      'description' => 'Lisa viitav link.',
       'widget' => array(
         'type' => 'link_field',
         'module' => 'link',

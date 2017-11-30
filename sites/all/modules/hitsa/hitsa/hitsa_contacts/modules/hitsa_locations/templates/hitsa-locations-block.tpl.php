@@ -3,6 +3,12 @@
   $i = 0;
   foreach($locations as $location): ?>
   <div class="block block-narrow <?php if($type === 'primary') {print 'sm-show';} else if($i === 0) print 'sm-hide'; ?>">
+    <?php if((node_access("update", $location, $user) === TRUE)): ?>
+      <ul class="tabs primary" style="margin-bottom: 30px;">
+        <li><a href="<?php print url('node/' . $location->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
+        <li><a href="<?php print url('node/' . $location->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
+      </ul>          
+    <?php endif; ?>
     <h2 class="block-title sm-borderless"><?php print check_plain($location->title); ?></h2>
     
     <div class="accordion accordion-xs" data-plugin="accordion">
