@@ -111,6 +111,22 @@ function hitsa_core_block_view($delta = '')
       );
       $output = array('subject' => NULL, 'content' => $content);
       break;
+    case 'language_mobile':
+      if (drupal_multilingual()) {
+        $path = drupal_is_front_page() ? '<front>' : $_GET['q'];
+        $type = 'language';
+        $links = language_negotiation_get_switch_links($type, $path);
+        
+        if (isset($links->links)) {
+          drupal_add_css(drupal_get_path('module', 'locale') . '/locale.css');
+          $class = "language-switcher-{$links->provider}";
+          $variables = array('links' => $links->links, 'attributes' => array('class' => array($class)));
+          $block['content'] = theme('links__mobile_locale_block', $variables);
+          $block['subject'] = t('Languages');
+          return $block;
+        }
+      }
+      break;
   }
   return $output;
 }

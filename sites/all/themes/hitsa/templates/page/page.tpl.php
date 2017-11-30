@@ -88,13 +88,18 @@
 ?>
 <div class="wrapper">
    
-  <header class="main">
+  <header class="main sm-hide">
    <?php if(!empty($page['header'])): ?>
     <?php print drupal_render($page['header']); ?>
     <?php elseif(!empty($header)):?>
     <?php print $header?>
    <?php endif; ?>
   </header><!--/main-->
+  
+  <?php if(!empty($mobile_menu)): ?>
+    <?php print $mobile_menu; ?>
+  <?php endif; ?>
+  
   <?php if(!empty($page['hero'])):?>
   <?php print render($page['hero'])?>
   <?php endif;?>

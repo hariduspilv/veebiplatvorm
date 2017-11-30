@@ -77,10 +77,25 @@ function _hitsa_contacts_fields() {
       'label' => $t('E-Mail'),
       'type' => 'email',
     ),
+    'cv_attachment_type' => array(
+      'field_name' => 'cv_attachment_type',
+      'type' => 'list_text',
+      'settings' => array(
+        'allowed_values' => array(
+          'contact_cv' => 'Link',
+          'contact_cv_attachment' => 'Manus',
+        ),
+      ),
+    ),
     'contact_cv' => array(
       'field_name' => 'contact_cv',
-      'label' => $t('CV'),
+      'label' => $t('CV Link'),
       'type' => 'link_field',
+    ),
+    'contact_cv_attachment' => array(
+      'field_name' => 'contact_cv_attachment',
+      'label' => $t('CV Attachment'),
+      'type' => 'file',
     ),
     'reception_times' => array(
       'field_name' => 'reception_times',
@@ -268,11 +283,23 @@ function _hitsa_contacts_field_instances() {
         )
       )
     ),
+    'cv_attachment_type' => array(
+      'field_name' => 'cv_attachment_type',
+      'bundle' => 'contact',
+      'entity_type' => 'node',
+      'label' => $t('CV Attachment Type'),
+      'widget' => array(
+        'type' => 'options_select',
+        'module' => 'options',
+      ),
+      'default_value' => array(0 => array('value' => 'contact_cv')),
+      'required' => TRUE,
+    ),
     'contact_cv' => array(
       'field_name' => 'contact_cv',
       'bundle' => 'contact',
       'entity_type' => 'node',
-      'label' => $t('Contact CV'),
+      'label' => $t('Contact CV Link'),
       'description' => 'Lisa viitav link, avaneb alati uues aknas.',
       'widget' => array(
         'type' => 'link_field',
@@ -288,11 +315,30 @@ function _hitsa_contacts_field_instances() {
         'title' => 'none',
       ),
     ),
+    'contact_cv_attachment' => array(
+      'field_name' => 'contact_cv_attachment',
+      'bundle' => 'contact',
+      'entity_type' => 'node',
+      'label' => $t('Contact CV Attachment'),
+      'widget' => array(
+        'type' => 'media_generic',
+        'module' => 'media',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'type' => 'file_default',
+        ),
+      ),
+      'settings' => array(
+        'file_extensions' => 'pdf doc docx rtf txt odt xls xlsx ods csv ppt odp pptx jpg jpeg png gif',
+      ),
+    ),
     'reception_times' => array(
       'field_name' => 'reception_times',
       'bundle' => 'contact',
       'entity_type' => 'node',
-      'label' => $t('Reception times'),
+      'label' => $t('Reception time'),
       'description' => $t('Example') . ': E-R kell 15-18', 
       'widget' => array(
         'type' => 'text_textfield',
@@ -409,7 +455,7 @@ function _hitsa_contacts_paragraphs() {
   $paragraphs = array();
   
   $paragraphs['contacts_department'] = (object) array(
-    'name' => $t('Contact Department'),
+    'name' => 'Osakond',
     'bundle' => 'contacts_department',
     'locked' => 1,
   );
@@ -546,7 +592,7 @@ function hitsa_contacts_add_contact_form() {
   // Create the webform components.
   $components = array(
     array(
-      'name' => 'Your name',
+      'name' => 'Ees- ja perekonnanimi',
       'form_key' => 'name',
       'type' => 'textfield',
       'required' => 1,
@@ -554,7 +600,7 @@ function hitsa_contacts_add_contact_form() {
       'pid' => 0,
     ),
     array(
-      'name' => 'Your e-mail',
+      'name' => 'E-mail',
       'form_key' => 'e_mail',
       'type' => 'email',
       'required' => 1,
@@ -562,14 +608,14 @@ function hitsa_contacts_add_contact_form() {
       'pid' => 0,
     ),
     array(
-      'name' => 'Message',
+      'name' => 'Sõnum',
       'form_key' => 'message',
       'type' => 'textarea',
       'required' => 1,
       'weight' => 2,
       'pid' => 0,
       'extra' => array(
-        'description' => '* marked fields are required'
+        'description' => '* märgitud väljad on kohustuslikud'
       ),
     ),
   );

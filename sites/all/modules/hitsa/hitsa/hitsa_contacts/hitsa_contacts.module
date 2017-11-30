@@ -338,6 +338,21 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
         $form['#validate'][] = 'hitsa_contacts_validate_phone_number';
       }
       drupal_add_css('.date-year, .date-spacer {display: none;}', 'inline'); // Hide the year select field, we won't use it.
+      if(!empty($form['contact_cv'])) {
+        $form['contact_cv']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cv_attachment_type"]' => array('value' => 'contact_cv'),
+          ),
+        );
+      }
+      if(!empty($form['contact_cv_attachment'])) {
+        $form['contact_cv_attachment']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cv_attachment_type"]' => array('value' => 'contact_cv_attachment'),
+          ),
+        );
+      }
+      //dpm($form);
       break;
     case 'views_exposed_form':
       if($form['#id'] === 'views-exposed-form-hitsa-contacts-contacts-page') {

@@ -98,7 +98,13 @@
     <span class="object-content">
       <div class="object-content_col">
         <p>
-          <b><?php print check_plain($node->title); // Name ?> <?php if(!empty($node->contact_cv)): // Contact CV ?><a target="_blank" href="<?php print $node->contact_cv[LANGUAGE_NONE][0]['url']; ?>">(CV)</a><?php endif; ?></b>
+          <b><?php print check_plain($node->title); // Name ?> 
+          <?php 
+          $attachment_type = !empty($node->cv_attachment_type) ? $node->cv_attachment_type[LANGUAGE_NONE][0]['value']: NULL;
+          if(!empty($node->{$attachment_type})): // Contact CV ?>
+          <a target="_blank" href="<?php if($attachment_type === 'contact_cv') {print $node->contact_cv[LANGUAGE_NONE][0]['url'];} else print file_create_url($node->contact_cv_attachment[LANGUAGE_NONE][0]['uri']); ?>">(CV)</a>
+          <?php endif; ?>
+          </b>
         </p>
         <p>
           <?php if($job_position_field = field_get_items('node', $node, 'job_position')): // Job position ?>
