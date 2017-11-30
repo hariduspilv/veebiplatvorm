@@ -47,6 +47,15 @@ function hitsa_contacts_block_info() {
     'status' => "1",
   );
   
+  $blocks['hitsa_contacts_contact_us_mobile'] = array(
+    'info' => t('HITSA Contacts - Contact Us (Mobile)'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'contact',
+    'region' => 'sidebar_right',
+    'status' => "1",
+    'weight' => 100,
+  );
+  
   return $blocks;
 }
 
@@ -60,6 +69,17 @@ function hitsa_contacts_block_view($delta = '') {
     case 'hitsa_contacts':
       $output = array('subject' => NULL, 'content' => hitsa_contacts_page_view());
       break;
+    case 'hitsa_contacts_contact_us_mobile':
+      $hitsa_contacts_contact_us_webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
+      $content = '';
+      if(!empty($hitsa_contacts_contact_us_webform_nid)) {
+        $wnode = node_load($hitsa_contacts_contact_us_webform_nid);
+        $contact_form = drupal_get_form('webform_client_form_' . $hitsa_contacts_contact_us_webform_nid, $wnode, array());
+        $content = '<div class="block sm-show"><h2 class="block-title">' . t('Contact Us') . '</h2>';
+        $content .= render($contact_form);
+        $content .= '</div>';
+      }
+      $output = array('subject' => NULL, 'content' => $content);
   }
   return $output;
 }
