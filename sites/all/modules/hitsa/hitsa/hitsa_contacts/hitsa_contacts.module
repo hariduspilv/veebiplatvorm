@@ -75,7 +75,7 @@ function hitsa_contacts_block_view($delta = '') {
       if(!empty($hitsa_contacts_contact_us_webform_nid)) {
         $wnode = node_load($hitsa_contacts_contact_us_webform_nid);
         $contact_form = drupal_get_form('webform_client_form_' . $hitsa_contacts_contact_us_webform_nid, $wnode, array());
-        $content = '<div class="block sm-show"><h2 class="block-title">' . t('Contact Us') . '</h2>';
+        $content = '<div class="block sm-show"><h2 class="block-title">' . t('Contact us') . '</h2>';
         $content .= render($contact_form);
         $content .= '</div>';
       }
