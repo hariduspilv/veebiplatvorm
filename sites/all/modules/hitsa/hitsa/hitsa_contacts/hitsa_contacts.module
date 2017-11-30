@@ -422,7 +422,7 @@ function hitsa_contacts_node_view($node, $view_mode, $langcode) {
 // Make the department paragraph field required.
 function hitsa_contacts_department_required($form, &$form_state) {
   if(count($form_state['values']['contact_departments'][LANGUAGE_NONE]) <= 1) {
-    form_set_error('contact_departments', 'Department is required');
+    form_set_error('contact_departments', t('!name field is required.', array('!name' => $form['contact_departments'][LANGUAGE_NONE]['#title'])));
   }
 }
 
