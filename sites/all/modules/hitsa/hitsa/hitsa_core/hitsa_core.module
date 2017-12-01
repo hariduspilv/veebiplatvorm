@@ -144,9 +144,8 @@ function hitsa_core_render_sitemap()
  */
 function hitsa_core_form_alter(&$form, &$form_state, $form_id)
 {
-  //dpm($form);
-    if (!empty($form['language'])) { // Set language as the topmost element
-        $form['language']['#weight'] = -100;
+    if (!empty($form['#node_edit_form']) && !empty($form['language'])) { // Set language as the topmost element, before title
+        $form['#pre_render'][] = 'hitsa_core_reposition_node_form_fields';
     }
   // Any node form with an academic year field.
     if (!empty($form['#node_edit_form']) && isset($form['academic_year'])) {
@@ -167,6 +166,14 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
     
         //$form['#theme'] = 'main_menu_overview_form';
     }
+}
+
+function hitsa_core_reposition_node_form_fields($elements) {
+  if(!empty($elements['language']) && !empty($elements['title'])) {
+    $elements['title']['#weight'] = -100;
+    $elements['language']['#weight'] = $elements['title']['#weight'] + 1;
+  }
+  return $elements;
 }
 
 function hitsa_core_webform_component_info_alter(&$components)
