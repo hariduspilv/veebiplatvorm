@@ -169,7 +169,7 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
 }
 
 function hitsa_core_reposition_node_form_fields($elements) {
-  if(!empty($elements['language']) && !empty($elements['title'])) {
+  if(!empty($elements['language'])) {
     $elements['language']['#weight'] = -100;
   }
   return $elements;
