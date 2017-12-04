@@ -516,7 +516,7 @@ function hitsa_curriculum_contacts($contacts)
                 $output .= '      <div class="list-details_text">';
                 $url = str_replace('http://','',$contact->field_website['und'][0]['url']);
                 $url = str_replace('https://','',$url);
-                $output .= '         <p><a target="_blank" href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $url . '</a></p>';
+                $output .= '         <p><a target="_blank" href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $contact->field_website['und'][0]['title'] . '</a></p>';
                 $output .= '      </div><!--/list-details_text-->';
                 $output .= '   </li>';
             }
@@ -865,6 +865,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                 $output_elements['date_length'] = '<p><b>'.t('Hobby activity duration').': </b>' .  $start . ' - ' . $end . '</p>';
             }
         }
+        
         if (!empty($content->field_curriculum_start)) {
             $start = $content->field_curriculum_start['und'][0]['value'];
             $start = format_date($start, 'custom', 'd.F.Y - G:i', null, $language->language);
@@ -874,12 +875,12 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start . '</p>';
                 }
                 else{
-                    $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start . ' - ' . $end . '</p>';
+                    $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start  . '</p>';
                 }
             } elseif ($curriculum_type=='elective-subjects' or $curriculum_type=='elective-courses') {
-                $output_elements['date_start'] = '<p><b>'.t('Subject starts on').': </b>'  . $start . ' - ' . $end . '</p>';
+                $output_elements['date_start'] = '<p><b>'.t('Subject starts on').': </b>'  . $start . '</p>';
             } elseif ($curriculum_type=='hobby-groups'||$curriculum_type=='hobby-activity') {
-                $output_elements['date_start'] = '<p><b>'.t('Hobby activities start on').': </b>'  . $start . ' - ' . $end . '</p>';
+                $output_elements['date_start'] = '<p><b>'.t('Hobby activities start on').': </b>'  . $start .'</p>';
             }
         }
         if (!empty($content->field_days_place)) {
