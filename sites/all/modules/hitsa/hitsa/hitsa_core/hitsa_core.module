@@ -111,6 +111,22 @@ function hitsa_core_block_view($delta = '')
       );
       $output = array('subject' => NULL, 'content' => $content);
       break;
+    case 'language_mobile':
+      if (drupal_multilingual()) {
+        $path = drupal_is_front_page() ? '<front>' : $_GET['q'];
+        $type = 'language';
+        $links = language_negotiation_get_switch_links($type, $path);
+        
+        if (isset($links->links)) {
+          drupal_add_css(drupal_get_path('module', 'locale') . '/locale.css');
+          $class = "language-switcher-{$links->provider}";
+          $variables = array('links' => $links->links, 'attributes' => array('class' => array($class)));
+          $block['content'] = theme('links__mobile_locale_block', $variables);
+          $block['subject'] = t('Languages');
+          return $block;
+        }
+      }
+      break;
   }
   return $output;
 }
@@ -128,9 +144,8 @@ function hitsa_core_render_sitemap()
  */
 function hitsa_core_form_alter(&$form, &$form_state, $form_id)
 {
-  //dpm($form);
-    if (!empty($form['language'])) { // Set language as the topmost element
-        $form['language']['#weight'] = -100;
+    if (!empty($form['#node_edit_form']) && !empty($form['language'])) { // Set language as the topmost element, before title
+        $form['#pre_render'][] = 'hitsa_core_reposition_node_form_fields';
     }
   // Any node form with an academic year field.
     if (!empty($form['#node_edit_form']) && isset($form['academic_year'])) {
@@ -151,6 +166,13 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
     
         //$form['#theme'] = 'main_menu_overview_form';
     }
+}
+
+function hitsa_core_reposition_node_form_fields($elements) {
+  if(!empty($elements['language'])) {
+    $elements['language']['#weight'] = -100;
+  }
+  return $elements;
 }
 
 function hitsa_core_webform_component_info_alter(&$components)

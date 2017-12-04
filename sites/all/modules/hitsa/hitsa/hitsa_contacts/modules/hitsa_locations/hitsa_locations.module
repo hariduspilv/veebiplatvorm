@@ -26,6 +26,15 @@ function hitsa_locations_block_info() {
     'status' => "1",
   );
   
+  $blocks['hitsa_locations_primary'] = array(
+    'info' => t('HITSA Locations Primary (mobile)'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'contact',
+    'region' => 'content',
+    'status' => "1",
+    'weight' => -100,
+  );
+  
   return $blocks;
 }
 
@@ -35,12 +44,13 @@ function hitsa_locations_theme() {
     'path' => drupal_get_path('module', 'hitsa_locations') . '/templates',
     'variables' => array(
       'locations' => NULL,
+      'type' => NULL,
     ),
   );
   return $items;
 }
 
-function hitsa_locations_block_content() {
+function hitsa_locations_block_content($type = 'primary') {
   // Add location block data
   $locations = array();
   $nids_array = views_get_view_result('hitsa_locations', 'locations_sort');
@@ -49,8 +59,15 @@ function hitsa_locations_block_content() {
     foreach($nids_array as $n) {
       $nids[] = $n->nid;
     }
-    $locations = node_load_multiple($nids);
-    return theme('locations_block', array('locations' => $locations));
+    if($type === 'primary') {
+      $first_nid = reset($nids);
+      $locations = array(node_load($first_nid));
+      return theme('locations_block', array('locations' => $locations, 'type' => 'primary'));
+    } else {
+      $locations = node_load_multiple($nids);
+      return theme('locations_block', array('locations' => $locations, 'type' => 'secondary'));
+    }
+    
   } else {
     return '';
   }
@@ -60,6 +77,9 @@ function hitsa_locations_block_view($delta = '') {
   $output = array();
   switch($delta) {
     case 'hitsa_locations':
+      $output = array('subject' => NULL, 'content' => hitsa_locations_block_content('secondary'));
+      break;
+    case 'hitsa_locations_primary':
       $output = array('subject' => NULL, 'content' => hitsa_locations_block_content());
       break;
   }

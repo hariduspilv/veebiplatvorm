@@ -1,6 +1,14 @@
 <?php if(!empty($locations)): ?>
-  <?php foreach($locations as $location): ?>
-  <div class="block block-narrow sm-hide">
+  <?php 
+  $i = 0;
+  foreach($locations as $location): ?>
+  <div class="block block-narrow <?php if($type === 'primary') {print 'sm-show';} else if($i === 0) print 'sm-hide'; ?>">
+    <?php if((node_access("update", $location, $user) === TRUE)): ?>
+      <ul class="tabs primary" style="margin-bottom: 30px;">
+        <li><a href="<?php print url('node/' . $location->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
+        <li><a href="<?php print url('node/' . $location->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
+      </ul>          
+    <?php endif; ?>
     <h2 class="block-title sm-borderless"><?php print check_plain($location->title); ?></h2>
     
     <div class="accordion accordion-xs" data-plugin="accordion">
@@ -72,15 +80,22 @@
           <p><?php print nl2br(check_plain($location->location_parking[LANGUAGE_NONE][0]['safe_value'])); ?></p>
           <?php endif; ?>
           <?php if(!empty($location->location_parking_attachment)): ?>
-          <p>
-            <a href="<?php print file_create_url($location->location_parking_attachment[LANGUAGE_NONE][0]['uri']); ?>">
-            <?php if(!empty($location->location_parking_attachment[LANGUAGE_NONE][0]['description'])): ?>
-              <?php print $location->location_parking_attachment[LANGUAGE_NONE][0]['description']; ?>
-            <?php else: ?>
-              <?php print t('Attachment'); ?>
-            <?php endif; ?>
-            </a>
-          </p>
+          <ul class="list-details">
+            <li>
+              <div class="list-details_text">
+                <p>
+                  <a href="<?php print file_create_url($location->location_parking_attachment[LANGUAGE_NONE][0]['uri']); ?>" target="_blank">
+                  <?php if(!empty($location->location_parking_attachment[LANGUAGE_NONE][0]['description'])): ?>
+                    <?php print $location->location_parking_attachment[LANGUAGE_NONE][0]['description']; ?>
+                  <?php else: ?>
+                    <?php print t('Attachment'); ?>
+                  <?php endif; ?>
+                  </a>
+                  
+                </p>
+              </div>
+            </li>
+          </ul>
           <?php endif; ?>
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
@@ -98,5 +113,7 @@
     </div><!--/accordion-->
                
   </div><!--/block-->
-  <?php endforeach; ?>
+  <?php 
+  $i++;
+  endforeach; ?>
 <?php endif; ?>

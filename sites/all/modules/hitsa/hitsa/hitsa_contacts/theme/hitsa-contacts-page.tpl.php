@@ -72,7 +72,7 @@
     </div><!--/block-->
       
 <?php if(!empty($contact_form)): ?>     
-<div class="block">
+<div class="block sm-hide">
   
   <h2 class="block-title"><?php print t('Contact us'); ?></h2>
   <?php print render($contact_form); ?>

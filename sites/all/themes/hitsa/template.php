@@ -1,6 +1,9 @@
 <?php
 
 function hitsa_preprocess_page(&$variables) {
+  drupal_add_js('http://maps.google.com/maps/api/js?sensor=false', 'external');
+  drupal_add_js('http://maps.google.com/maps-api-v3/api/js/31/0/intl/en_gb/util.js', 'external');
+  drupal_add_js('http://maps.google.com/maps-api-v3/api/js/31/0/intl/en_gb/stats.js', 'external');
     if ($variables['is_front']) {
       $variables['page']['content']['system_main']['#access'] = FALSE;
     }
@@ -134,20 +137,102 @@ function hitsa_service_menu_tree__hitsa_main_menu($variables) {
   }
   $output .= '</div>';
   
-  /*
-  foreach($variables['submenu'] as $submenu_column) {
-    $output .= '<div class="col-4"><ul>';
-    foreach($submenu_column as $submenu_link) {
-      $output .= render($submenu_link);
-    }
-    $output .= '</ul></div>';
-  }
-  */
   $output .= '</div></div></div></div>';
 
   return $output;
 }
 
+/* Mobile main menu render functions */
+function hitsa_menu_tree__hitsa_main_menu_mobile($variables) {
+  $output = '';
+  foreach($variables['#tree'] as &$menu_link) {
+    if(!isset($menu_link['#href'])) continue;
+    $menu_link['#theme'] = 'menu_link__hitsa_main_menu_mobile';
+    $output .= render($menu_link);
+  }
+  return '<ul>' . $output . '</ul>';
+}
+
+function hitsa_submenu_tree__hitsa_main_menu_mobile($variables) {
+  $output = "";
+  $output .= '<ul>';
+
+  foreach($variables['submenu'] as $submenu_column) {
+    foreach($submenu_column as $submenu_link) {
+      $output .= render($submenu_link);
+    }
+    
+  }
+  $output .= '</ul>';
+  return $output;
+}
+
+function hitsa_service_menu_tree__hitsa_main_menu_mobile($variables) {
+  $service_submenu = $variables['element'];
+  $output = "";
+  $output .= '<ul>';
+  foreach($service_submenu['#below'] as $service_subtype) {
+    if(!empty($service_subtype['#below'])) {
+      $services_output = '';
+      foreach($service_subtype['#below'] as $service) {
+          if(!empty($service['#original_link'])) {
+            $services_output .= render($service);
+          }
+        }
+      $output .= '<li><a href="">' .  t($service_subtype['#title']) . '</a><ul>' . $services_output .  '</ul></li>';
+    }
+  }
+  $output .= '</ul>';
+  return $output;
+}
+
+function hitsa_menu_link__hitsa_main_menu_mobile($variables) {
+  global $language;
+  
+  $element = $variables['element'];
+
+  $sub_menu = '';
+  $element['#attributes']['class'] = array();
+  $service_menu_mlid = variable_get('hitsa_services_mlid');
+  $element['#title'] = t($element['#title']);
+  if($element['#original_link']['mlid'] === $service_menu_mlid) {
+    $sub_menu = theme('service_menu_tree__hitsa_main_menu_mobile', array('element' => $element));
+    $services_available = FALSE;
+    foreach($element['#below'] as $service_subtype) {
+      if(!empty($service_subtype['#below'])) {
+        $services_available = TRUE;
+      }
+    }
+    if(!$services_available) {
+      return ''; // No services available, hide menu.
+    }
+  }
+  else if ($element['#below']) {
+    $children_mids = array_fill_keys(element_children($element['#below']), TRUE);
+    $children = array();
+    foreach($element['#below'] as $key => $el) {
+      if(isset($children_mids[$key])) {
+        $children[$key] = $el;
+      }
+    }
+    $children_split = array_chunk($children, 5);
+    $sub_menu = theme('submenu_tree__hitsa_main_menu_mobile', 
+    array(
+      'submenu' => $children_split, 
+      'parent' => $element['#title'], 
+      'mlid' => $element['#original_link']['mlid'],
+      'plid' => $element['#original_link']['plid']
+      )
+    );
+  } else if($element['#href'] === '<front>' && $element['#original_link']['depth'] === '1') {
+    // Hide first level main menu elements without set link and children.
+    return '';
+  }
+  $output = l($element['#title'], $element['#href'], $element['#localized_options']);
+  return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
+}
+
+/* Sitemap */
 function hitsa_menu_tree__hitsa_sitemap($variables) {
   $menu_tree = '';
   $menu_tree_array = array();
@@ -256,7 +341,7 @@ function hitsa_menu_link__hitsa_sitemap__service(array $variables) {
 
 function hitsa_menu_link__hitsa_main_menu($variables) {
   global $language;
-  
+
   $element = $variables['element'];
 
   $sub_menu = '';
@@ -317,6 +402,17 @@ function hitsa_quicklinks_menu_tree__hitsa_quicklinks_menu($variables) {
   return '<ul class="header-quicklinks">' . $variables['tree']['#children'] . $fb_link_item . '</ul>';
 }
 
+/* Quicklinks menu render functions */
+function hitsa_quicklinks_menu_tree__hitsa_quicklinks_mobile_menu($variables) {
+  $fb_link = variable_get_value('hitsa_fb_link');
+  $fb_link_item = '';
+  if(!empty($fb_link)) {
+    $fb_link_item = sprintf('<li><a href="%s" target="_blank" class="before-facebook-circle">Facebook</a></li>', check_url($fb_link));
+  }
+  
+  return '<ul>' . $variables['tree']['#children'] . $fb_link_item . '</ul>';
+}
+
 /* Language switcher render functions */
 function hitsa_links__locale_block($variables) {
   $links = $variables['links'];
@@ -324,7 +420,6 @@ function hitsa_links__locale_block($variables) {
   $heading = $variables['heading'];
   global $language_url;
   $output = '';
-
   if (count($links) > 0) {
     // Treat the heading first if it is present to prepend it to the
     // list of links.
@@ -390,12 +485,75 @@ function hitsa_links__locale_block($variables) {
       $output .= "</li>\n";
     }
     
-    // WIP : Add Global Search
     $output .= '<li><form method="get" action="' . url('search') . '">
                 <div class="header-search"><input type="text" name="query" placeholder="' . t('Search') .'">
                 <button></button></div></form></li>';
 
     $output .= '</ul>';
+  }
+
+  return $output;
+}
+
+function hitsa_links__mobile_locale_block($variables) {
+  $links = $variables['links'];
+  $attributes = $variables['attributes'];
+  $heading = $variables['heading'];
+  global $language_url;
+  $output = '';
+
+  if (count($links) > 0) {
+
+    $output .= '<div class="language">';
+
+    $num_links = count($links);
+    $i = 1;
+    foreach($links as $key => $link) {
+      if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page()))
+         && (empty($link['language']) || $link['language']->language == $language_url->language)) {
+          $title = _hitsa_language_abbreviations($link['language']->language);
+          $output .= '<div class="language-active">' . $title . '</div>';
+      }
+    }
+
+    $output .= '<div class="language-more">';
+    foreach ($links as $key => $link) {
+      $class = array($key);
+
+      // Add first, last and active classes to the list of links to help out
+      // themers.
+      if ($i == 1) {
+        $class[] = 'first';
+      }
+      if ($i == $num_links) {
+        $class[] = 'last';
+      }
+      if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page()))
+         && (empty($link['language']) || $link['language']->language == $language_url->language)) {
+        $class[] = 'active';
+      }
+
+      if (isset($link['href'])) {
+        // Pass in $link as $options, they share the same keys.
+        $output .= l($link['title'], $link['href'], $link);
+      }
+      elseif (!empty($link['title'])) {
+        // Some links are actually not links, but we wrap these in <span> for
+        // adding title and class attributes.
+        if (empty($link['html'])) {
+          $link['title'] = check_plain($link['title']);
+        }
+        $span_attributes = '';
+        if (isset($link['attributes'])) {
+          $span_attributes = drupal_attributes($link['attributes']);
+        }
+        $output .= '<span' . $span_attributes . '>' . $link['title'] . '</span>';
+      }
+
+      $i++;
+    }
+
+    $output .= '</div></div>';
   }
 
   return $output;

@@ -88,13 +88,18 @@
 ?>
 <div class="wrapper">
    
-  <header class="main">
+  <header class="main sm-hide">
    <?php if(!empty($page['header'])): ?>
     <?php print drupal_render($page['header']); ?>
     <?php elseif(!empty($header)):?>
     <?php print $header?>
    <?php endif; ?>
   </header><!--/main-->
+  
+  <?php if(!empty($mobile_menu)): ?>
+    <?php print $mobile_menu; ?>
+  <?php endif; ?>
+  
   <?php if(!empty($page['hero'])):?>
   <?php print render($page['hero'])?>
   <?php endif;?>
@@ -126,14 +131,14 @@
       <?php endif; ?>
   <div class="row">
     <?php if(!empty($page['sidebar_right'])):?>
-      <div class="col-9">
+      <div class="col-9 sm-12">
     <?php else:?>
       <div class="col-12">
     <?php endif;?>
     <?php print render($page['content']); ?>
       </div><!--/col-x-->
     <?php if(!empty($page['sidebar_right'])):?>
-      <div class="col-3">
+      <div class="col-3 sm-12">
       <?php print render($page['sidebar_right'])?>
       </div><!--/col-x-->
     <?php endif?>

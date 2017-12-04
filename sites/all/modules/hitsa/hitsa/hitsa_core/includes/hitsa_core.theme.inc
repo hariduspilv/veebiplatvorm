@@ -33,6 +33,12 @@ function hitsa_core_theme() {
     'path' => drupal_get_path('theme', 'hitsa') . '/templates/include',
   );
   
+  $items['hitsa_header_mobile'] = array(
+    'render element' => 'header',
+    'template' => 'header-mobile',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/include',
+  );
+  
   $items['hitsa_footer'] = array(
     'render element' => 'footer',
     'template' => 'footer',
@@ -103,6 +109,7 @@ function hitsa_core_preprocess_webform_form(&$vars) {
 }
 
 function hitsa_core_preprocess_page(&$variables) {
+  $variables['mobile_menu'] = theme('hitsa_header_mobile');
   if(drupal_is_front_page()) {
     // Front page specific additions
     if(module_exists('hitsa_articles')) {
@@ -146,6 +153,38 @@ function hitsa_core_preprocess_hitsa_header(&$variables) {
   $logo_file = file_load($site_logo_fid);
   if($logo_file) {
     $variables['site_logo'] = image_style_url('hitsa_core_logo', $logo_file->uri);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hitsa_core_preprocess_hitsa_header_mobile(&$variables) {
+  global $language;
+  // Load main menu
+  $hitsa_main_menu_name = variable_get('hitsa_main_menu_name');
+  if(!empty($hitsa_main_menu_name)) {
+    $main_menu = i18n_menu_localize_tree(menu_tree_all_data($hitsa_main_menu_name));
+    $variables['main_menu_mobile'] = menu_tree_output($main_menu);
+    $variables['main_menu_mobile']['#theme_wrappers'] = array('menu_tree__hitsa_main_menu_mobile');
+  }
+  // Quicklinks menu
+  $hitsa_quicklinks_menu_name = variable_get('hitsa_quicklinks_menu_name');
+  if(!empty($hitsa_quicklinks_menu_name)) {
+    $quicklinks_menu = menu_tree_all_data($hitsa_quicklinks_menu_name);
+    $variables['quicklinks_menu'] = menu_tree_output($quicklinks_menu);
+    $variables['quicklinks_menu']['#theme_wrappers'] = array('quicklinks_menu_tree__hitsa_quicklinks_mobile_menu');
+  }
+  // Language switcher
+  $language_switcher = module_invoke('hitsa_core', 'block_view', 'language_mobile');
+  if(!empty($language_switcher['content'])) {
+    $variables['language_switcher_mobile'] = $language_switcher['content'];
+  }
+  // Main logo
+  $site_logo_fid = variable_get_value('hitsa_site_logo_fid');
+  $logo_file = file_load($site_logo_fid);
+  if($logo_file) {
+    $variables['site_logo'] = image_style_url('hitsa_core_logo_mobile', $logo_file->uri);
   }
 }
 

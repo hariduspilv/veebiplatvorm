@@ -253,6 +253,20 @@ function _hitsa_core_image_styles() {
 		    ),
 		  ),
 		),
+		array(
+      'style' => array(
+		    'name' => 'hitsa_core_logo_mobile',
+		    'label' => 'School Logo Mobile (700x)'
+		  ),
+		  'effect' => array(
+		    'name' => 'image_scale',
+		    'data' => array(
+		      'width' => 700,
+		      'height' => NULL,
+		      'upscale' => FALSE,
+		    ),
+		  ),
+		),
   );
   
   return $image_styles;

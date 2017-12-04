@@ -47,6 +47,15 @@ function hitsa_contacts_block_info() {
     'status' => "1",
   );
   
+  $blocks['hitsa_contacts_contact_us_mobile'] = array(
+    'info' => t('HITSA Contacts - Contact Us (Mobile)'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => 'contact',
+    'region' => 'sidebar_right',
+    'status' => "1",
+    'weight' => 100,
+  );
+  
   return $blocks;
 }
 
@@ -60,6 +69,17 @@ function hitsa_contacts_block_view($delta = '') {
     case 'hitsa_contacts':
       $output = array('subject' => NULL, 'content' => hitsa_contacts_page_view());
       break;
+    case 'hitsa_contacts_contact_us_mobile':
+      $hitsa_contacts_contact_us_webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
+      $content = '';
+      if(!empty($hitsa_contacts_contact_us_webform_nid)) {
+        $wnode = node_load($hitsa_contacts_contact_us_webform_nid);
+        $contact_form = drupal_get_form('webform_client_form_' . $hitsa_contacts_contact_us_webform_nid, $wnode, array());
+        $content = '<div class="block sm-show"><h2 class="block-title">' . t('Contact us') . '</h2>';
+        $content .= render($contact_form);
+        $content .= '</div>';
+      }
+      $output = array('subject' => NULL, 'content' => $content);
   }
   return $output;
 }
@@ -338,6 +358,21 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
         $form['#validate'][] = 'hitsa_contacts_validate_phone_number';
       }
       drupal_add_css('.date-year, .date-spacer {display: none;}', 'inline'); // Hide the year select field, we won't use it.
+      if(!empty($form['contact_cv'])) {
+        $form['contact_cv']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cv_attachment_type"]' => array('value' => 'contact_cv'),
+          ),
+        );
+      }
+      if(!empty($form['contact_cv_attachment'])) {
+        $form['contact_cv_attachment']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cv_attachment_type"]' => array('value' => 'contact_cv_attachment'),
+          ),
+        );
+      }
+      //dpm($form);
       break;
     case 'views_exposed_form':
       if($form['#id'] === 'views-exposed-form-hitsa-contacts-contacts-page') {
@@ -407,7 +442,7 @@ function hitsa_contacts_node_view($node, $view_mode, $langcode) {
 // Make the department paragraph field required.
 function hitsa_contacts_department_required($form, &$form_state) {
   if(count($form_state['values']['contact_departments'][LANGUAGE_NONE]) <= 1) {
-    form_set_error('contact_departments', 'Department is required');
+    form_set_error('contact_departments', t('!name field is required.', array('!name' => $form['contact_departments'][LANGUAGE_NONE]['#title'])));
   }
 }
 
