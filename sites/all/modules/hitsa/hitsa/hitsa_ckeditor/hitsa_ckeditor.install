@@ -19,11 +19,28 @@ function hitsa_ckeditor_install()
         // higher weight here to ensure that this format will not be the default
         // format for anyone.
         'weight' => 11,
-        'filters' => array(),
+        'filters' => array(
+
+        ),
     );
     $hitsa_custom = (object)$hitsa_custom;
     $hitsa_custom->weight = -100;
     filter_format_save($hitsa_custom);
+    $filters = filter_list_format('hitsa_custom');
+    $format = filter_format_load('hitsa_custom');
+    dpm($filters);
+    $filters_array = array();
+    foreach ($filters as $filter_id => $filter_opts) { //Convert to an array, which is expected by the save function.
+        $filters[$filter_id] = (array) $filter_opts;
+        if ($filter_id=='filter_html'||$filter_id=='filter_html_escape') {
+            $filters[$filter_id]['status'] = 0;
+        }
+        else{
+            $filters[$filter_id]['status'] = 1;
+        }
+    }
+    $format->filters=$filters;
+    filter_format_save($format);
 
     $roles = user_roles('TRUE');
     foreach ($roles as $role_key => $role) {
@@ -45,5 +62,6 @@ function hitsa_ckeditor_install()
             ))->execute();
         }
     }
+
 
 }
