@@ -516,7 +516,7 @@ function hitsa_curriculum_contacts($contacts)
                 $output .= '      <div class="list-details_text">';
                 $url = str_replace('http://','',$contact->field_website['und'][0]['url']);
                 $url = str_replace('https://','',$url);
-                $output .= '         <p><a target="_blank" href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $url . '</a></p>';
+                $output .= '         <p><a target="_blank" href="' . $contact->field_website['und'][0]['url'] . '" target="_blank">' . $contact->field_website['und'][0]['title'] . '</a></p>';
                 $output .= '      </div><!--/list-details_text-->';
                 $output .= '   </li>';
             }
@@ -857,7 +857,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
             $end = format_date($end, 'custom', 'd.F.Y', null, $language->language);
             if ($curriculum_type=='preparatory-courses'||$curriculum_type=='e-course') {
 
-                    $output_elements['date_length'] = '<p><b>' . t('Course druation') . ': </b>' . $start . ' - ' . $end . '</p>';
+                    $output_elements['date_length'] = '<p><b>' . t('Course duration') . ': </b>' . $start . ' - ' . $end . '</p>';
 
             } elseif ($curriculum_type=='elective-subjects'||$curriculum_type=='elective-courses') {
                 $output_elements['date_length'] = '<p><b>'.t('Duration of subject').': </b>' .  $start . ' - ' . $end . '</p>';
@@ -865,21 +865,22 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                 $output_elements['date_length'] = '<p><b>'.t('Hobby activity duration').': </b>' .  $start . ' - ' . $end . '</p>';
             }
         }
+
         if (!empty($content->field_curriculum_start)) {
             $start = $content->field_curriculum_start['und'][0]['value'];
             $start = format_date($start, 'custom', 'd.F.Y - G:i', null, $language->language);
             $output_elements['date_start'] = '<p>' . $start . '</p>';
             if ($curriculum_type=='preparatory-courses'||$curriculum_type=='e-course') {
                 if ($curriculum_type=='preparatory-courses'){
-                    $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start . '</p>';
+                    $output_elements['date_start'] = '<p>' . $start . '</p>';
                 }
                 else{
-                    $output_elements['date_start'] = '<p><b>'.t('Course starts on').': </b>' . $start . ' - ' . $end . '</p>';
+                    $output_elements['date_start'] = '<p>' . $start  . '</p>';
                 }
             } elseif ($curriculum_type=='elective-subjects' or $curriculum_type=='elective-courses') {
-                $output_elements['date_start'] = '<p><b>'.t('Subject starts on').': </b>'  . $start . ' - ' . $end . '</p>';
+                $output_elements['date_start'] = '<p><b>'.t('Subject starts on').': </b>'  . $start . '</p>';
             } elseif ($curriculum_type=='hobby-groups'||$curriculum_type=='hobby-activity') {
-                $output_elements['date_start'] = '<p><b>'.t('Hobby activities start on').': </b>'  . $start . ' - ' . $end . '</p>';
+                $output_elements['date_start'] = '<p><b>'.t('Hobby activities start on').': </b>'  . $start .'</p>';
             }
         }
         if (!empty($content->field_days_place)) {
@@ -889,7 +890,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
             $output_elements['instructor'] = '<p><b>' .t('Instructor').': </b>'. $content->field_instructor['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_room)) {
-            $output_elements['room'] = '<p><b>' .t('Room').' </b>'. $content->field_room['und'][0]['value'] . '</p>';
+            $output_elements['room'] = '<p><b>' .t('Room').': </b>'. $content->field_room['und'][0]['value'] . '</p>';
         }
         if (!empty($content->field_target_group)) {
             $output_elements['target_group'] = '<p><b>' .t('Target group').': </b>'. $content->field_target_group['und'][0]['value'] . '</p>';

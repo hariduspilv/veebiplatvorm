@@ -32,7 +32,7 @@ function hitsa_catering_block_info()
     $blocks = array();
 
     // This example comes from node.module.
-    $pages = "catering\ncatering/*";
+    $pages = "catering\ncatering/*\ntoitlustamine\ntoitlustamine/*";
     $blocks['catering_block'] = array(
         'info' => t('Catering ' . ' block'),
         'region' => 'content',
@@ -340,7 +340,6 @@ function hitsa_catering_node_presave($node)
             }
             $week = $monday . ' - ' . $sunday;
             $node->title = truncate_utf8(sprintf(t('Menu week:') . ' %s', $week), 255) . ' ' . $catering_provder_name;
-            krumo($node);
         }
     }
 //    exit();
@@ -1195,8 +1194,8 @@ function hitsa_curriculum_catering_header($content)
     }
     if (!empty($content->field_date)) {
         $date_start = $content->field_date['und'][0]['value'];
-        $monday = format_date(strtotime('monday midnight', $date_start), 'custom', 'd.F');
-        $sunday = format_date(strtotime('sunday midnight', $date_start), 'custom', 'd.F');
+        $monday = format_date(strtotime('monday midnight', $date_start), 'custom', 'd.m');
+        $sunday = format_date(strtotime('sunday midnight', $date_start), 'custom', 'd.m');
         $week_text = t('Menu week') . ' ' . $monday . '-' . $sunday;
     }
 
