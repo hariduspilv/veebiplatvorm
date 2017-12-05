@@ -90,11 +90,11 @@
 <?php endif; ?>
 <div class="object object-horizontal">
   <span class="object-inner">
-    <?php if(!empty($node->contact_image)): // Contact Image ?>
-    <span class="object-image object-image-circle" style="background-image:url(<?php print image_style_url('hitsa_contacts_page_image', $node->contact_image[LANGUAGE_NONE][0]['uri']); ?>);">
+    
+    <span class="object-image object-image-circle<?php if(empty($node->contact_image)): ?> object-no_image<?php endif; ?>" 
+    <?php if(!empty($node->contact_image)): ?>style="background-image:url(<?php print image_style_url('hitsa_contacts_page_image', $node->contact_image[LANGUAGE_NONE][0]['uri']); ?>);<?php endif; ?>">
       <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
     </span>
-    <?php endif; ?>
     <span class="object-content">
       <div class="object-content_col">
         <p>

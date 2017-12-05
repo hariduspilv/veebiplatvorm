@@ -194,7 +194,7 @@ function hitsa_content_page_autocomplete($type) {
   $parameters = drupal_get_query_parameters();
 
   if(!empty($parameters['search'])) {
-    $result = db_query('SELECT title FROM {node} n
+    $result = db_query('SELECT DISTINCT title FROM {node} n
       WHERE type = :type 
       AND status = 1
       AND title LIKE :search',

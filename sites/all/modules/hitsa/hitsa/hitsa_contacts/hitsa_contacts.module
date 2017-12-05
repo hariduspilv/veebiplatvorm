@@ -137,7 +137,7 @@ function hitsa_contacts_filter_autocomplete() {
   $parameters = drupal_get_query_parameters();
   
   if(!empty($parameters['search'])) {
-    $result = db_query('SELECT title FROM {node} n
+    $result = db_query('SELECT DISTINCT title FROM {node} n
       WHERE type = :contact 
       AND status = 1
       AND title LIKE :search',
@@ -372,7 +372,9 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
           ),
         );
       }
-      //dpm($form);
+      if(!empty($form['cv_attachment_type'])) {
+        $form['cv_attachment_type'][LANGUAGE_NONE]['#required'] = FALSE;
+      }
       break;
     case 'views_exposed_form':
       if($form['#id'] === 'views-exposed-form-hitsa-contacts-contacts-page') {
