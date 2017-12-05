@@ -40,15 +40,14 @@ function content_page_form($node, $form_state) {
 function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   if($form_id === 'content_page_node_form') {
-    //$form['additional_settings']['#access'] = FALSE;
-    
     if($user->uid !== '1') {
       $form['cp_display_style']['#access'] = FALSE;
       //$form['cp_type']['#access'] = FALSE;
     }
     
     if(isset($form['cp_type'])) { // Set field conditions
-      //dpm($form);
+      // Image is required
+      $form['#validate'][] = 'hitsa_content_page_required_fields';
       if(!empty($form['cp_subpages'])) {
         $form['cp_subpages']['#states'] = array(
           'visible' => array(
@@ -80,6 +79,13 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
       if(!empty($form['cp_image'])) {
         $form['cp_image']['#states'] = array(
           'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              array('value' => 'cp_tabbed'),
+              array('value' => 'cp_service'),
+              array('value' => 'cp_specialities'),
+            ),
+          ),
+          'required' => array(
             ':input[name^="cp_type"]' => array(
               array('value' => 'cp_tabbed'),
               array('value' => 'cp_service'),
@@ -141,6 +147,19 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
       }
     }
   }
+}
+
+function hitsa_content_page_required_fields($form, &$form_state) {
+  // Specific CP type is set and image is not added.
+  if(!empty($form_state['values']['cp_type']) 
+  && in_array($form_state['values']['cp_type'][LANGUAGE_NONE][0]['value'], 
+    array('cp_service', 'cp_tabbed', 'cp_specialities'))
+  && $form_state['values']['cp_image'][LANGUAGE_NONE][0]['fid'] === 0
+  ) {
+    form_set_error('cp_image', 
+  t('!name field is required.', array('!name' => $form['cp_image'][LANGUAGE_NONE][0]['#title'])));
+  }
+  
 }
 
 /*
