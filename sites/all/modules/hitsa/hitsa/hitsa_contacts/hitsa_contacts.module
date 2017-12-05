@@ -345,7 +345,14 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
   
   switch($form_id) {
     case 'contact_node_form':
-      dpm($form);
+      // Hide duplicate reception time descriptions
+      if(!empty($form['reception_times'])) {
+        foreach($form['reception_times'][LANGUAGE_NONE] as &$field) {
+          if(empty($field['#description'])) continue;
+          $field['#description'] = '';
+        }
+      }
+      
       // We'll set the title using first+last name.
       $form['title']['#access'] = FALSE;
       // Import ID is for internal use only.
