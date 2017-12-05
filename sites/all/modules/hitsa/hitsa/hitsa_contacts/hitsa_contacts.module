@@ -351,10 +351,8 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
           if(empty($field['#description'])) continue;
           $field['#description'] = '';
           $field['value']['#description'] = '';
-          dpm($field);
         }
       }
-      dpm($form);
       // We'll set the title using first+last name.
       $form['title']['#access'] = FALSE;
       // Import ID is for internal use only.
