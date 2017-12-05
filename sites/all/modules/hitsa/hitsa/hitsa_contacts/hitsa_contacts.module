@@ -350,6 +350,7 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
         foreach($form['reception_times'][LANGUAGE_NONE] as &$field) {
           if(empty($field['#description'])) continue;
           $field['#description'] = '';
+          $field['value']['#description'] = '';
           dpm($field);
         }
       }
