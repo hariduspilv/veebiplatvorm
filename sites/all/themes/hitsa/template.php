@@ -2,7 +2,7 @@
 
 function hitsa_preprocess_page(&$variables) {
   $google_api_key = !empty($key = variable_get_value('hitsa_google_api_key')) ? '&key=' . $key : '';
-  drupal_add_js('http://maps.google.com/maps/api/js?sensor=false' . $google_api_key, 'external');
+  drupal_add_js('https://maps.google.com/maps/api/js?sensor=false' . $google_api_key, 'external');
     if ($variables['is_front']) {
       $variables['page']['content']['system_main']['#access'] = FALSE;
     }
