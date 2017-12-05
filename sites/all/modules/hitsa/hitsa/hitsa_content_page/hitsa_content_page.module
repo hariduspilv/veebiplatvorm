@@ -41,8 +41,6 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   if($form_id === 'content_page_node_form') {
     //$form['additional_settings']['#access'] = FALSE;
-    // Show text summary by default.
-    hitsa_core_formatted_text_show_summary();
     
     if($user->uid !== '1') {
       $form['cp_display_style']['#access'] = FALSE;
@@ -131,6 +129,9 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
           ),
         );
       }
+    }
+    if(isset($form['body'])) {
+      $form['body'][LANGUAGE_NONE][0]['summary']['#description'] = ''; // Hide summary description
     }
     // Add subpage titles outside
     foreach($form['cp_subpages'][LANGUAGE_NONE] as &$subpage_fieldset) {

@@ -419,3 +419,8 @@ function hitsa_core_get_school_type()
 {
     return variable_get('hitsa_school_type', HITSA_SCHOOL_GYMNASIUM);
 }
+
+function hitsa_core_js_alter(&$javascript) {
+  // remove the JS that does the show/hide summary
+  unset($javascript['modules/field/modules/text/text.js']);
+}
