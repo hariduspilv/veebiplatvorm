@@ -50,6 +50,12 @@ function _hitsa_articles_fields() {
         ),
       ),
     ),
+    'article_video' => array(
+      'field_name' => 'article_video',
+      'label' => $t('Video'),
+      'type' => 'file',
+      'cardinality' => 1,
+    ),
   );
 }
 
@@ -68,6 +74,9 @@ function _hitsa_articles_field_instances() {
       ),
       'required' => 1,
       'default_value' => array(0 => array('value' => 'news')),
+      'description' => "Uudis: Siia alla käivad kõik uudised, mis kuvatakse ka avalehel uudiste blokis.<br>
+                        Meie lood: Siia alla käivad lood, mis kuvatakse avalehel, aga mis võivad seal olla kauem (nt lugu kooli remondist, mõnest õpetajast vms)<br>
+                        Oluline: Siia alla käib 1 uudis, mis on eriti oluline ja mis kuvatakse avalehel foto ja sisu vahel värvilise kasti sees. Selliseid uudiseid saab olla ainult 1 korraga."
     ),
     'subpage_images' => array(
       'field_name' => 'subpage_images',
@@ -85,6 +94,29 @@ function _hitsa_articles_field_instances() {
           'type' => 'image',
         )
       )
+    ),
+    'article_video' => array(
+      'field_name' => 'article_video',
+      'entity_type' => 'node',
+      'bundle' => 'article',
+      'type' => 'file',
+      'label' => $t('Video'),
+      'widget' => array(
+        'type' => 'media_generic',
+        'module' => 'media',
+        'settings' => array(
+          'allowed_types' => array(
+            'video' => 'video',
+          ),
+          'allowed_schemes' => array(
+            'vimeo' => 'vimeo',
+            'youtube' => 'youtube',
+          ),
+          'browser_plugins' => array(
+            'media_internet' => 'media_internet',
+          ),
+        ),
+      ),
     ),
     'academic_year' => array(
       'field_name' => 'academic_year',

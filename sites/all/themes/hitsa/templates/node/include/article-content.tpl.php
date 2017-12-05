@@ -56,8 +56,8 @@
       </div><!--/button-row-->
       <?php endif; ?>
       <div class="row-spacer-xl"></div>
-      <?php if(!empty($subpage_images) || !empty($subpage_images = $cp_image)): ?>
-        <?php foreach($subpage_images as $image): // Gallery ?>
+
+      <?php if(!empty($subpage_images) || !empty($subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
         <figure>
           <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
           title="<?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?>" 
@@ -67,7 +67,32 @@
           </a>
           <figcaption><?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?></figcaption>
         </figure>
-        <?php endforeach; ?>
+      <?php endif; ?>
+      <?php if(!empty($article_video)): ?>
+      <figure>
+        <a href="<?php print file_create_url($article_video[0]['uri']); ?>" 
+        title="<?php print check_plain($article_video[0]['filename']); ?>" 
+        data-plugin="modal" data-closebutton="<?php print t('Close'); ?>">
+          <?php if(!empty($video_thumbnail)): ?>
+          <img src="<?php print $video_thumbnail; ?>" 
+          alt="<?php print check_plain($article_video[0]['filename']); ?>">
+          <?php else: ?>
+          <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
+          alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
+          <?php endif; ?>
+        </a>
+        <figcaption><?php print check_plain($article_video[0]['filename']); ?></figcaption>
+      </figure>
+      <?php elseif(!empty($subpage_images[1])): $image = $subpage_images[1]; ?>
+      <figure>
+        <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
+        title="<?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?>" 
+        data-plugin="modal" data-closebutton="<?php print t('Close'); ?>">
+          <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
+          alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
+        </a>
+        <figcaption><?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?></figcaption>
+      </figure>
       <?php endif; ?>
     </div><!--/col-4-->
     <?php endif; ?>

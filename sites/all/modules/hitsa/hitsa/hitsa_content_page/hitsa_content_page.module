@@ -27,58 +27,6 @@ function hitsa_content_page_node_info() {
   );
 }
 
-
-
-
-// Field groups
-/*
-function hitsa_content_page_ctools_plugin_api($module, $api) {
-  if ($module == 'field_group' && $api == 'field_group') {
-    return array('version' => 1);
-  }
-}
-
-function hitsa_content_page_field_group_info() {
-  $groups = array();
-  
-  $groups['group_ci|paragraphs_item|subpage|form'] = (object) array(
-    'identifier' => 'group_ci|paragraphs_item|subpage|form',
-    'group_name' => 'group_ci',
-    'entity_type' => 'paragraphs_item',
-    'bundle' => 'subpage',
-    'mode' => 'form',
-    'parent_name' => '',
-    'disabled' => false,
-    'data' => array(
-      'label' => 'Contact information',
-      'weight' => '3',
-      'children' => array(
-        0 => 'cinfo_contact_person',
-        1 => 'cinfo_homepage_url',
-        2 => 'cinfo_e_mail',
-        3 => 'cinfo_phone_nr',
-        4 => 'cinfo_address',
-      ),
-      'format_type' => 'fieldset',
-      'format_settings' => 
-      array(
-        'label' => 'Contact information',
-        'instance_settings' => 
-        array(
-          'required_fields' => 1,
-          'id' => '',
-          'classes' => 'group-ci field-group-fieldset',
-          'description' => '',
-        ),
-        'formatter' => 'collapsed',
-      ),
-    ),
-  );
-  dpm($groups);
-  
-  return $groups;
-}
-*/
 /**
  * Implement hook_form()
  */
@@ -242,6 +190,34 @@ function hitsa_content_page_update_page_type($form, &$form_state) {
   return $form;
 }
 
+function hitsa_content_page_autocomplete($type) {
+  $parameters = drupal_get_query_parameters();
+
+  if(!empty($parameters['search'])) {
+    $result = db_query('SELECT title FROM {node} n
+      WHERE type = :type 
+      AND status = 1
+      AND title LIKE :search',
+      array(
+        ':type' => $type,
+        ':search' => '%' . db_like($parameters['search']) . '%'
+      )
+    );
+    
+    $titles = $result->fetchCol();
+    
+    $autocomplete = (object) array(
+      'list' => array(),
+    );
+    
+    foreach($titles as $title) {
+      $autocomplete->list[] = (object) array('title' => $title);
+    }
+    
+    drupal_json_output($autocomplete);
+  }
+}
+
 function hitsa_content_page_query_content($q = array(), $count = FALSE) {
   $query = new EntityFieldQuery();
   
@@ -304,6 +280,31 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
     'type' => 'propertyCondition',
     'arguments' => array('language', $language->language),
   );
+  
+  // Date
+  if(!empty($query['date']) && preg_match("/\d{2}\/\d{2}\/\d{4} - \d{2}\/\d{2}\/\d{4}/", $query['date']) === 1) {
+    $date_range = explode(" - ", $query['date']);
+    $date_from = date_create_from_format("d/m/Y H:i", $date_range[0] . ' 00:00');
+    $date_to = date_create_from_format("d/m/Y H:i", $date_range[1] . ' 23:59');
+    
+    $parameters[] = array(
+      'type' => 'propertyCondition',
+      'arguments' => array('created', $date_from->getTimestamp(), '>='),
+    );
+    
+    $parameters[] = array(
+      'type' => 'propertyCondition',
+      'arguments' => array('created', $date_to->getTimestamp(), '<='),
+    );
+  }
+  
+  // Title
+  if(!empty($query['title'])) {
+    $parameters[] = array(
+      'type' => 'propertyCondition',
+      'arguments' => array('title', '%' . $query['title'] . '%', 'LIKE'),
+    );
+  }
   
   // Page / Range
   if(!empty($query['page'])) {

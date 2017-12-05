@@ -33,6 +33,37 @@
           <?php endif; ?>
           </div><!--/col-3-->
         </div><!--/row-->
+        
+        <div class="row-spacer-xs sm-hide"></div>
+        <hr />
+        <div class="row-spacer sm-hide"></div>
+          
+        <div class="row">
+          <div class="col-12">
+             <div class="form-item-row">
+                
+                <div class="form-item after-search form-item_rounded form-item-stretch">
+                   <div class="form-item_title"><?php print t('Search by title'); ?></div>
+                   <input type="text" name="title" placeholder="<?php print t('Start typing'); ?>" data-plugin="autocomplete" data-url="<?php print url("api/$bundle-autocomplete"); ?>" data-onSubmit="true" />
+                </div><!--/form-item-->
+                
+                <div class="form-item form-item_rounded after-calendar form-item-stretch">
+                   <div class="form-item_title"><?php print t('Date'); ?></div>
+                   <input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="<?php print t('Pick date'); ?>" />
+                </div><!--/form-item-->
+                
+                <div class="row-spacer-xs sm-show"></div>
+                
+                <div class="form-item">
+                   <div class="form-item_title sm-hide">&nbsp;</div>
+                   <button class="btn btn-filled"><?php print t('Search'); ?></button>
+                </div><!--/form-item-->
+                
+             </div><!--/form-item-row-->
+          </div><!--/col-12-->
+        </div><!--/row-->
+        
+      <div class="row-spacer sm-hide"></div>
       </form>
       
       <div class="row-spacer sm-hide"></div>

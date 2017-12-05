@@ -27,6 +27,12 @@ function hitsa_articles_menu() {
     'access arguments' => array('access content'),
   );
   
+  $items['api/article-autocomplete'] = array(
+    'title' => 'Articles API',
+    'page callback' => 'hitsa_articles_autocomplete',
+    'access arguments' => array('access content'),
+  );
+  
   return $items;
 }
 
@@ -145,7 +151,9 @@ function article_form($node, $form_state) {
 function hitsa_articles_form_alter(&$form, &$form_state, $form_id) {
   if($form_id === 'article_node_form') {
     // Show summary by default.
-    hitsa_core_formatted_text_show_summary();
+    if(empty($form['body'][LANGUAGE_NONE][0]['summary']['#default_value'])) {
+      hitsa_core_formatted_text_show_summary();
+    }
     if(!empty($form['body'])) {
       $form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
       $form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
@@ -160,6 +168,10 @@ function hitsa_articles_filter() {
   
   print $output;
   exit;
+}
+
+function hitsa_articles_autocomplete() {
+  hitsa_content_page_autocomplete('article');
 }
 
 function hitsa_articles_query_content($q = array(), $count = FALSE) {
