@@ -235,7 +235,8 @@ function hitsa_core_preprocess_hitsa_footer(&$variables) {
   }
   
   // School Location Map
-  $variables['hitsa_school_place_id'] = variable_get_value('hitsa_school_place_id');
+  $variables['google_api_key'] = variable_get_value('hitsa_google_api_key');
+  $variables['hitsa_school_place_coords'] = variable_get_value('hitsa_school_place_coords');
 }
 
 function hitsa_core_menu_overview_form($variables) {

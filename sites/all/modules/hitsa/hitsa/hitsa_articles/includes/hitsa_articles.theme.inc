@@ -75,6 +75,7 @@ function hitsa_articles_preprocess_node(&$variables) {
       // Get the category title based on article type.
       $all_fields = field_info_fields();
       $variables['article_types_list'] = list_allowed_values($all_fields['article_type']);
+      
       foreach($variables['article_types_list'] as &$type) {
         $type = t($type);
       }

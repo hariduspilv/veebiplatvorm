@@ -22,9 +22,8 @@
   </div><!--/row-->
 </div><!--/inline-->
 
-<?php if(!empty($hitsa_school_place_id)): ?>
-<div class="map">
-  <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBQW5d3aaKFwt_7LaKW683Q8VAcJjv7SbU&q=<?php print urlencode($hitsa_school_place_id); ?>" style="border:0" allowfullscreen></iframe>
+<?php if(!empty($hitsa_school_place_coords) && !empty($google_api_key)): ?>
+<div class="map" data-plugin="googleMaps" data-coords="<?php print check_plain($hitsa_school_place_coords); ?>" data-icon="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/mapIcon.png'; ?>">
 </div><!--/map-->
 <?php endif; ?>
    

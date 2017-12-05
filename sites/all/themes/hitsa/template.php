@@ -1,9 +1,8 @@
 <?php
 
 function hitsa_preprocess_page(&$variables) {
-  drupal_add_js('http://maps.google.com/maps/api/js?sensor=false', 'external');
-  drupal_add_js('http://maps.google.com/maps-api-v3/api/js/31/0/intl/en_gb/util.js', 'external');
-  drupal_add_js('http://maps.google.com/maps-api-v3/api/js/31/0/intl/en_gb/stats.js', 'external');
+  $google_api_key = !empty($key = variable_get_value('hitsa_google_api_key')) ? '&key=' . $key : '';
+  drupal_add_js('http://maps.google.com/maps/api/js?sensor=false' . $google_api_key, 'external');
     if ($variables['is_front']) {
       $variables['page']['content']['system_main']['#access'] = FALSE;
     }
@@ -216,6 +215,7 @@ function hitsa_menu_link__hitsa_main_menu_mobile($variables) {
       }
     }
     $children_split = array_chunk($children, 5);
+
     $sub_menu = theme('submenu_tree__hitsa_main_menu_mobile', 
     array(
       'submenu' => $children_split, 
@@ -368,7 +368,15 @@ function hitsa_menu_link__hitsa_main_menu($variables) {
         $children[$key] = $el;
       }
     }
-    $children_split = array_chunk($children, 5);
+    $children_qty = count($children);
+    if($children_qty <= 12) {
+      $chunk = 3;
+    } else if($children_qty <= 16) {
+      $chunk = 4;
+    } else {
+      $chunk = 5;
+    }
+    $children_split = array_chunk($children, $chunk);
     $sub_menu = theme('submenu_tree__hitsa_main_menu', 
     array(
       'submenu' => $children_split, 
