@@ -99,12 +99,12 @@ function hitsa_menu_tree__hitsa_main_menu($variables) {
 
 function hitsa_submenu_tree__hitsa_main_menu($variables) {
   $output = "";
-  $output .= '<div class="header-nav_dropdown"><div class="inline"><div class="row"><div class="col-9">';
+  $output .= '<div class="header-nav_dropdown"><div class="inline"><div class="row"><div class="col-12">';
   $output .= '<h3>' . t($variables['parent']) . '</h3>';
   $output .= '<div class="row">';
 
   foreach($variables['submenu'] as $submenu_column) {
-    $output .= '<div class="col-4"><ul>';
+    $output .= '<div class="col-3"><ul>';
     foreach($submenu_column as $submenu_link) {
       $output .= render($submenu_link);
     }
