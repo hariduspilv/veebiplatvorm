@@ -91,8 +91,8 @@
 <div class="object object-horizontal">
   <span class="object-inner">
     
-    <span class="object-image object-image-circle<?php if(empty($node->contact_image)): ?> object-no_image<?php endif; ?>" 
-    <?php if(!empty($node->contact_image)): ?>style="background-image:url(<?php print image_style_url('hitsa_contacts_page_image', $node->contact_image[LANGUAGE_NONE][0]['uri']); ?>);<?php endif; ?>">
+    <span class="object-image object-image-circle<?php if(empty($content['contact_image'])): ?> object-no_image<?php endif; ?>" 
+    <?php if(!empty($content['contact_image'])): ?>style="background-image:url(<?php print image_style_url('hitsa_contacts_page_image', $content['contact_image']['#items'][0]['uri']); ?>);<?php endif; ?>">
       <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
     </span>
     <span class="object-content">
@@ -100,9 +100,10 @@
         <p>
           <b><?php print check_plain($node->title); // Name ?> 
           <?php 
-          $attachment_type = !empty($node->cv_attachment_type) ? $node->cv_attachment_type[LANGUAGE_NONE][0]['value']: NULL;
-          if(!empty($node->{$attachment_type})): // Contact CV ?>
-          <a target="_blank" href="<?php if($attachment_type === 'contact_cv') {print $node->contact_cv[LANGUAGE_NONE][0]['url'];} else print file_create_url($node->contact_cv_attachment[LANGUAGE_NONE][0]['uri']); ?>">(CV)</a>
+          $attachment_type = !empty($content['cv_attachment_type']) ? $content['cv_attachment_type']['#items'][0]['value'] : NULL;
+          if(!empty($content[$attachment_type])): // Contact CV ?>
+          <?php //dpm($content[$attachment_type]); ?>
+          <a target="_blank" href="<?php if($attachment_type === 'contact_cv') {print check_url($content[$attachment_type]['#items'][0]['url']);} else print file_create_url($content[$attachment_type]['#items'][0]['uri']); ?>">(CV)</a>
           <?php endif; ?>
           </b>
         </p>

@@ -21,6 +21,26 @@ function _hitsa_core_fields() {
   $t = get_t();
   
   return array(
+    'field_image_author' => array(
+      'field_name' => 'field_image_author',
+      'label' => $t('Author'),
+      'type' => 'text',
+    ),
+    'field_image_date' => array(
+      'field_name' => 'field_image_date',
+      'label' => $t('Date'),
+      'type' => 'datestamp',
+      'settings' => array(
+        'granularity' => array(
+          'month' => 'month',
+          'day' => 'day',
+          'year' => 'year',
+          'hour' => 0,
+          'minute' => 0,
+          'second' => 0,
+        ),
+      ),
+    ),
     'academic_year_period' => array(
       'field_name' => 'academic_year_period',
       'label' => $t('Period'),
@@ -70,6 +90,18 @@ function _hitsa_core_field_instances() {
         'type' => 'date_text',
         'module' => 'date',
       ),
+    ),
+    'field_image_author' => array(
+      'label' => $t('Author'),
+      'field_name' => 'field_image_author',
+      'entity_type' => 'file',
+      'bundle' => 'image',
+    ),
+    'field_image_date' => array(
+      'label' => $t('Date'),
+      'field_name' => 'field_image_date',
+      'entity_type' => 'file',
+      'bundle' => 'image',
     ),
   );
 }
@@ -194,6 +226,7 @@ function _hitsa_core_menu_links() {
       'link_title' => 'About us',
       'menu_name' => $hitsa_main_menu,
       'weight' => -5,
+      'hitsa_menu_type' => 'about_us',
     );
   }
   

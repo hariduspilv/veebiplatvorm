@@ -305,9 +305,18 @@ function hitsa_core_delete_date_formats($installed_date_formats = array(), $modu
 function hitsa_core_add_image_styles($installed_image_styles = array(), $module = NULL) {
   foreach($installed_image_styles as $style_array) {
     $style = image_style_save($style_array['style']);
-    $effect = $style_array['effect'];
-    $effect['isid'] = $style['isid'];
-    image_effect_save($effect);
+    // Add effects
+    if(!empty($style_array['effect'])) {
+      $effect = $style_array['effect'];
+      $effect['isid'] = $style['isid'];
+      image_effect_save($effect);
+    } else if(!empty($style_array['effects'])) {
+      $effects = $style_array['effects'];
+      foreach($effects as $effect) {
+        $effect['isid'] = $style['isid'];
+        image_effect_save($effect);
+      }
+    }
   }
 }
 
