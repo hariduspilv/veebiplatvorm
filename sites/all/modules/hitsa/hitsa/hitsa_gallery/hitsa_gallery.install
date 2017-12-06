@@ -106,14 +106,16 @@ function _hitsa_gallery_image_styles() {
 		      'module' => 'manualcrop',
 		      'data' => array(
 		        'keepproportions' => 0,
+		        'width' => NULL,
+		        'height' => NULL,
 		        'style_name' => 'hitsa_gallery_image_full',
 		      ),
 		    ),
 		    array(
-		      'name' => 'image_scale_and_crop',
+		      'name' => 'image_scale',
 		      'data' => array(
 		        'width' => 805,
-		        'height' => 436,
+		        'height' => NULL,
 		        'upscale' => FALSE,
 		      ),
 		    ),
