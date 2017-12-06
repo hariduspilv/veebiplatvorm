@@ -60,7 +60,7 @@ function hitsa_gallery_latest_gallery_preview() {
     ->entityCondition('bundle', 'gallery')
     ->propertyCondition('status', NODE_PUBLISHED)
     ->propertyCondition('language', $language->language)
-    ->propertyOrderBy('created')
+    ->propertyOrderBy('created', 'DESC')
     ->range(0, 1);
     
   $result = $query->execute();
