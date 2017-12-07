@@ -32,6 +32,7 @@ function _hitsa_core_installer_types() {
     'image_styles',
     'roles',
     'nodes',
+    'path_aliases',
   );
 }
 
@@ -347,4 +348,19 @@ function hitsa_core_delete_roles($installed_roles = array(), $module = NULL) {
   foreach($installed_roles as $name => $permissions) {
     user_role_delete($name);
   }
+}
+
+/**
+ * Path aliases
+ */
+function hitsa_core_add_path_aliases($installed_path_aliases = array(), $module = NULL) {
+  foreach($installed_path_aliases as $path => $alias_set) {
+    foreach($alias_set as $lang => $path_alias) {
+      $alias_array = array('source' => $path, 'alias' => $path_alias, 'language' => $lang);
+      path_save($alias_array);
+    }
+  }
+}
+
+function hitsa_core_delete_path_aliases($installed_path_aliases = array(), $module = NULL) {
 }

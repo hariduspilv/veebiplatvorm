@@ -169,3 +169,17 @@ function _hitsa_gallery_image_styles() {
   
   return $image_styles;
 }
+
+/*
+* Hitsa articles path aliases
+*/
+function _hitsa_gallery_path_aliases() {
+  $path_aliases = array();
+  
+  $path_aliases['gallery'] = array(
+    'et' => 'galerii',
+    'ru' => 'galereja',
+  );
+  
+  return $path_aliases;
+}

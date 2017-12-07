@@ -130,3 +130,22 @@ function _hitsa_articles_field_instances() {
     ),
   );
 }
+
+/*
+* Hitsa articles path aliases
+*/
+function _hitsa_articles_path_aliases() {
+  $path_aliases = array();
+  
+  $path_aliases['news'] = array(
+    'et' => 'uudised',
+    'ru' => 'novosti',
+  );
+  
+  $path_aliases['our-stories'] = array(
+    'et' => 'meie-lood',
+    'ru' => 'nashi-istorii',
+  );
+  
+  return $path_aliases;
+}

@@ -575,6 +575,20 @@ function _hitsa_contacts_image_styles() {
 }
 
 /*
+* Hitsa contacts path aliases
+*/
+function _hitsa_contacts_path_aliases() {
+  $path_aliases = array();
+  
+  $path_aliases['contact'] = array(
+    'et' => 'kontakt',
+    'ru' => 'kontakt',
+  );
+  
+  return $path_aliases;
+}
+
+/*
 * "Contact us" webform.
 */
 function hitsa_contacts_add_contact_form() {
