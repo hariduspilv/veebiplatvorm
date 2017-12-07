@@ -241,7 +241,7 @@ function hitsa_logos_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['path'] = 'admin/logos/sort';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Logos - Sort';
+  $handler->display->display_options['menu']['title'] = 'Logod - sorteeri';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;
@@ -343,20 +343,6 @@ function hitsa_logos_views_default_views() {
   $handler->display->display_options['filters']['logo_type_value']['field'] = 'logo_type_value';
   $handler->display->display_options['filters']['logo_type_value']['value'] = array(
     'award' => 'award',
-  );
-  $translatables['hitsa_logos'] = array(
-    t('Master'),
-    t('veel'),
-    t('Rakenda'),
-    t('Tühista'),
-    t('Sorteerimise alus'),
-    t('Kasvav'),
-    t('Kahanev'),
-    t('Partners'),
-    t('Awards'),
-    t('Partners - Sort'),
-    t('Logos - Sort'),
-    t('Awards - Sort'),
   );
 
   $views[$view->name] = $view;
