@@ -1,9 +1,8 @@
 <?php
 
 function hitsa_preprocess_page(&$variables) {
-  drupal_add_js('http://maps.google.com/maps/api/js?sensor=false', 'external');
-  drupal_add_js('http://maps.google.com/maps-api-v3/api/js/31/0/intl/en_gb/util.js', 'external');
-  drupal_add_js('http://maps.google.com/maps-api-v3/api/js/31/0/intl/en_gb/stats.js', 'external');
+  $google_api_key = !empty($key = variable_get_value('hitsa_google_api_key')) ? '&key=' . $key : '';
+  drupal_add_js('https://maps.google.com/maps/api/js?sensor=false' . $google_api_key, 'external');
     if ($variables['is_front']) {
       $variables['page']['content']['system_main']['#access'] = FALSE;
     }
@@ -100,18 +99,35 @@ function hitsa_menu_tree__hitsa_main_menu($variables) {
 
 function hitsa_submenu_tree__hitsa_main_menu($variables) {
   $output = "";
-  $output .= '<div class="header-nav_dropdown"><div class="inline"><div class="row"><div class="col-9">';
+  
+  // Add gallery to "About us" submenu
+  if(module_exists('hitsa_gallery')) {
+    $about_us_mlid = variable_get('hitsa_about_us_mlid');
+    if(!empty($about_us_mlid) && $about_us_mlid == $variables['mlid']) {
+      $gallery_teaser = hitsa_gallery_latest_gallery_preview();
+      //dpm($gallery_teaser);
+    }
+  }
+  
+  $output .= '<div class="header-nav_dropdown"><div class="inline"><div class="row"><div class="col-' . (!empty($gallery_teaser) ? '9' : '12') . '">';
   $output .= '<h3>' . t($variables['parent']) . '</h3>';
   $output .= '<div class="row">';
-
+  
   foreach($variables['submenu'] as $submenu_column) {
-    $output .= '<div class="col-4"><ul>';
+    $output .= '<div class="col-3"><ul>';
     foreach($submenu_column as $submenu_link) {
       $output .= render($submenu_link);
     }
     $output .= '</ul></div>';
   }
-  $output .= '</div></div></div></div></div>';
+  
+  $output .= '</div></div>';
+  
+  if(!empty($gallery_teaser)) {
+    $output .= $gallery_teaser;
+  }
+  
+  $output .= '</div></div></div>';
   return $output;
 }
 
@@ -216,6 +232,7 @@ function hitsa_menu_link__hitsa_main_menu_mobile($variables) {
       }
     }
     $children_split = array_chunk($children, 5);
+
     $sub_menu = theme('submenu_tree__hitsa_main_menu_mobile', 
     array(
       'submenu' => $children_split, 
@@ -368,7 +385,15 @@ function hitsa_menu_link__hitsa_main_menu($variables) {
         $children[$key] = $el;
       }
     }
-    $children_split = array_chunk($children, 5);
+    $children_qty = count($children);
+    if($children_qty <= 12) {
+      $chunk = 3;
+    } else if($children_qty <= 16) {
+      $chunk = 4;
+    } else {
+      $chunk = 5;
+    }
+    $children_split = array_chunk($children, $chunk);
     $sub_menu = theme('submenu_tree__hitsa_main_menu', 
     array(
       'submenu' => $children_split, 
@@ -605,6 +630,19 @@ function hitsa_preprocess_menu_link(&$variables) {
 }
 
 /* Webform Theme Wrappers */
+function hitsa_form($variables) {
+  $element = $variables['element'];
+  if (isset($element['#action'])) {
+    $element['#attributes']['action'] = drupal_strip_dangerous_protocols($element['#action']);
+  }
+  element_set_attributes($element, array('method', 'id'));
+  if (empty($element['#attributes']['accept-charset'])) {
+    $element['#attributes']['accept-charset'] = "UTF-8";
+  }
+  // Anonymous DIV to satisfy XHTML compliance.
+  return '<form' . drupal_attributes($element['#attributes']) . '><div class="row">' . $element['#children'] . '</div></form>';
+}
+
 function hitsa_preprocess_webform_form(&$variables) {
   
   $contact_us_webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
@@ -1113,7 +1151,22 @@ function hitsa_gallery_grid($variables) {
     $output .= 'data-image="' . image_style_url('hitsa_gallery_image_full', $image['uri']) . '" ';
     $output .= 'data-download="' . file_create_url($image['uri']) . '" ';
     $output .= 'data-id="' . $image['fid'] . '" ';
-    $output .= 'title="' . (!empty($image['field_file_image_title_text']) ? check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['safe_value']) : '') . '">';
+    
+
+    $title = array();
+    // Image metadata
+    if(!empty($image['field_file_image_title_text'])) {
+      $title[] = check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']);
+    }
+    if(!empty($image['field_image_author'])) {
+      $title[] = check_plain($image['field_image_author'][LANGUAGE_NONE][0]['value']);
+    }
+    if(!empty($image['field_image_date'])) {
+      $title[] = date("d.m.Y", $image['field_image_date'][LANGUAGE_NONE][0]['value']);
+    }
+    $title = implode(', ', $title);
+    
+    $output .= 'title="' . $title . '">';
     $output .= '<img src="' . '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-1.gif" ';
     $output .= 'alt="' . (!empty($image['field_file_image_alt_text']) ? check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['safe_value']) : '') . '">';
     $output .= '</a></li>';

@@ -7,4 +7,6 @@ version = "7.x-dev"
 dependencies[] = hitsa_core
 dependencies[] = hitsa_content_page
 dependencies[] = media
+dependencies[] = media_bulk_upload
+dependencies[] = manualcrop
 dependencies[] = image_url_formatter

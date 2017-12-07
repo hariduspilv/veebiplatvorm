@@ -86,6 +86,7 @@
     var types = document.getElementById('type-selector');
     var strictBounds = document.getElementById('strict-bounds-selector');
     var hitsaSchoolPlaceIdElement = document.getElementsByName('hitsa_school_place_id')[0];
+    var hitsaSchoolPlaceCoordsElement = document.getElementsByName('hitsa_school_place_coords')[0];
 
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
 
@@ -115,8 +116,10 @@
         return;
       }
       // Set HITSA Place ID
+      console.log();
       hitsaSchoolPlaceIdElement.value = place.name + ', ' + place.formatted_address;
-
+      hitsaSchoolPlaceCoordsElement.value = place.geometry.location.lat() + ',' + place.geometry.location.lng();
+      
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
         map.fitBounds(place.geometry.viewport);

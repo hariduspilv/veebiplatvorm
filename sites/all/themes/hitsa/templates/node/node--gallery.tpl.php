@@ -4,7 +4,11 @@
     
     <div class="block sm-opaque" data-plugin="gallery" data-modal="true">
                
-      <h1 class="block-title"><?php print $title; ?> <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close"><?php print t('Close'); ?></a></h1>
+      <h1 class="block-title"><?php print $title; ?> 
+      <?php if($modal): ?>
+      <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close"><?php print t('Close'); ?></a>
+      <?php endif; ?>
+      </h1>
                
 			<div class="gallery-wrapper">
 				<div class="row">
@@ -19,7 +23,6 @@
 				
 				<div class="row sm-grow">
 					<div class="col-3 sm-hide">
-					  
 						<?php if(!empty($content['gallery_images'])): ?>
 						  <?php print render($content['gallery_images']); ?>
 						<?php endif; ?>
@@ -66,6 +69,16 @@
 </div>
 <?php elseif($view_mode === 'search_result'): ?>
   <?php include 'include/search-result.tpl.php'; ?>
+<?php elseif($view_mode === 'menu_teaser'): ?>
+<div class="col-3">
+  <h4><?php print check_plain($title); ?></h4>
+  <?php if(!empty($content['gallery_images'])): ?>
+  <a href="<?php print $node_url; ?>"><img <?php if(!empty($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value'])) 
+  {print 'alt="' . check_plain($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']) . '"';} ?> 
+  src="<?php print image_style_url('hitsa_gallery_menu_teaser', $content['gallery_images']['#items'][0]['uri']); ?>"></a>
+  <?php endif; ?>
+  <a href="<?php print $node_url; ?>" class="btn"><?php print t('Check gallery'); ?></a>
+</div>
 <?php else: ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 

@@ -35,6 +35,8 @@ function hitsa_gallery_preprocess_node(&$variables) {
     if(!empty($variables['content']['gallery_images'])) {
       $variables['content']['gallery_images']['#theme'] = 'gallery_grid';
     }
+    $query = drupal_get_query_parameters();
+    $variables['modal'] = (!empty($query['type']) && $query['type'] === 'modal') ? TRUE : FALSE;
   }
 }
 
@@ -48,4 +50,26 @@ function hitsa_gallery_page_view($filter = FALSE) {
   $query['order_by'] = array('parameter' => 'created', 'direction' => 'DESC');
   
   return hitsa_content_page_view($query, $filter, 'gallery');
+}
+
+function hitsa_gallery_latest_gallery_preview() {
+  global $language;
+  
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'gallery')
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->propertyCondition('language', $language->language)
+    ->propertyOrderBy('created', 'DESC')
+    ->range(0, 1);
+    
+  $result = $query->execute();
+  if(!empty($result['node'])) {
+    $nids = array_keys($result['node']);
+    $node = node_load(reset($nids));
+    $node_view = node_view($node);
+    $node_view['#view_mode'] = 'menu_teaser';
+    return render($node_view);
+  }
+  return NULL;
 }

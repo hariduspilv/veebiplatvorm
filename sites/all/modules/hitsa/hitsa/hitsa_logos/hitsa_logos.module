@@ -69,3 +69,13 @@ function hitsa_logos_theme_registry_alter(&$theme_registry) {
     }
   }
 }
+
+function hitsa_logos_form_alter(&$form, &$form_state, $form_id) {
+  
+  if($form_id === 'views_form_hitsa_logos_awards_sort') {
+    $form['title'] = array('#markup' => '<h2 style="margin-bottom:0px;">' . t('Awards') . '</h2>');
+  }
+  if($form_id === 'views_form_hitsa_logos_partners_sort') {
+    $form['title'] = array('#markup' => '<h2 style="margin-bottom:0px;">' . t('Partners') . '</h2>');
+  }
+}

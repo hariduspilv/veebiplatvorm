@@ -144,7 +144,7 @@ function hitsa_core_render_sitemap()
  */
 function hitsa_core_form_alter(&$form, &$form_state, $form_id)
 { 
-  if(!empty($form['body'])) {
+  if(!empty($form['body']) && $form['#node']->type !== 'curriculum') {
       $form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
       $form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
       $form['body'][LANGUAGE_NONE][0]['summary']['#description'] = ''; // Hide summary description

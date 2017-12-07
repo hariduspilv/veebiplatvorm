@@ -29,6 +29,12 @@ function hitsa_gallery_menu() {
     'access arguments' => array('access content'),
   );
   
+  $items['api/gallery-autocomplete'] = array(
+    'title' => 'Gallery API',
+    'page callback' => 'hitsa_gallery_autocomplete',
+    'access arguments' => array('access content'),
+  );
+  
   return $items;
 }
 
@@ -46,4 +52,8 @@ function hitsa_gallery_filter() {
   
   print $output;
   exit;
+}
+
+function hitsa_gallery_autocomplete() {
+  hitsa_content_page_autocomplete('gallery');
 }

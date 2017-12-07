@@ -32,6 +32,7 @@ function _hitsa_core_installer_types() {
     'image_styles',
     'roles',
     'nodes',
+    'path_aliases',
   );
 }
 
@@ -305,9 +306,18 @@ function hitsa_core_delete_date_formats($installed_date_formats = array(), $modu
 function hitsa_core_add_image_styles($installed_image_styles = array(), $module = NULL) {
   foreach($installed_image_styles as $style_array) {
     $style = image_style_save($style_array['style']);
-    $effect = $style_array['effect'];
-    $effect['isid'] = $style['isid'];
-    image_effect_save($effect);
+    // Add effects
+    if(!empty($style_array['effect'])) {
+      $effect = $style_array['effect'];
+      $effect['isid'] = $style['isid'];
+      image_effect_save($effect);
+    } else if(!empty($style_array['effects'])) {
+      $effects = $style_array['effects'];
+      foreach($effects as $effect) {
+        $effect['isid'] = $style['isid'];
+        image_effect_save($effect);
+      }
+    }
   }
 }
 
@@ -338,4 +348,19 @@ function hitsa_core_delete_roles($installed_roles = array(), $module = NULL) {
   foreach($installed_roles as $name => $permissions) {
     user_role_delete($name);
   }
+}
+
+/**
+ * Path aliases
+ */
+function hitsa_core_add_path_aliases($installed_path_aliases = array(), $module = NULL) {
+  foreach($installed_path_aliases as $path => $alias_set) {
+    foreach($alias_set as $lang => $path_alias) {
+      $alias_array = array('source' => $path, 'alias' => $path_alias, 'language' => $lang);
+      path_save($alias_array);
+    }
+  }
+}
+
+function hitsa_core_delete_path_aliases($installed_path_aliases = array(), $module = NULL) {
 }

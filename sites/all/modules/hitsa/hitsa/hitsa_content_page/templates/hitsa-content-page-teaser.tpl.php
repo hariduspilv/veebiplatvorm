@@ -1,5 +1,5 @@
 <div class="col-4">
-  <a href="<?php print url('node/' . $node->nid); ?>" class="object"<?php if($node->type === 'gallery') print ' data-plugin="modal"'; ?>>
+  <a href="<?php print url('node/' . $node->nid); ?><?php if($node->type === 'gallery') print '?type=modal'; ?>" class="object"<?php if($node->type === 'gallery') print ' data-plugin="modal"'; ?>>
     <span class="object-inner">
       <?php 
       if($node->type === 'article') {
@@ -15,11 +15,11 @@
       <span class="object-content">
         <span class="object-title"><?php print check_plain($node->title); ?></span>
         <span class="object-footer">
-          <?php if($node->type === 'article'): ?>
-          <span class="before-shopping"><?php print format_date($node->created, 'hitsa_date_month'); ?></span>
-          <?php endif; ?>
-          <?php if(!empty($author->name)): ?>
-          <span class="before-shopping"><?php print $author->name; ?></span>
+          <span class="before-calendar"><?php print format_date($node->created, 'hitsa_date_month'); ?></span>
+          <?php if(!empty($author->name && $node->type === 'article')): ?>
+          <span class="before-user"><?php print $author->name; ?></span>
+          <?php elseif($node->type === 'gallery' && !empty($node->gallery_author)): ?>
+          <span class="before-user"><?php print check_plain($node->gallery_author[LANGUAGE_NONE][0]['value']); ?></span>
           <?php endif; ?>
         </span><!--/object-footer-->
       </span><!--/object-content-->

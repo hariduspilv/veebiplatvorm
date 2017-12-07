@@ -338,6 +338,12 @@ function _hitsa_content_page_field_instances() {
           'match_operator' => 'CONTAINS',
         ),
       ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'entityreference_entity_view',
+        ),
+      ),
     ),
     // Subpage Paragraph
     'subpage_title' => array(

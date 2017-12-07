@@ -32,22 +32,6 @@ function _hitsa_gallery_fields() {
       'label' => $t('Author'),
       'type' => 'text',
     ),
-    'gallery_date' => array(
-      'field_name' => 'gallery_date',
-      'label' => $t('Date'),
-      'type' => 'datestamp',
-      'settings' => array(
-        'granularity' => array(
-          'month' => 'month',
-          'day' => 'day',
-          'year' => 'year',
-          'hour' => 0,
-          'minute' => 0,
-          'second' => 0,
-        ),
-        'todate' => 'required',
-      ),
-    ),
     'gallery_images' => array(
       'field_name' => 'gallery_images',
       'label' => $t('Gallery Images'),
@@ -86,16 +70,6 @@ function _hitsa_gallery_field_instances() {
       ),
       'required' => 1,
     ),
-    'gallery_date' => array(
-      'field_name' => 'gallery_date',
-      'entity_type' => 'node',
-      'bundle' => 'gallery',
-      'label' => $t('Date'),
-      'widget' => array(
-        'type' => 'date_popup',
-        'module' => 'date',
-      ),
-    ),
     'gallery_images' => array(
       'field_name' => 'gallery_images',
       'entity_type' => 'node',
@@ -105,6 +79,9 @@ function _hitsa_gallery_field_instances() {
       'widget' => array(
         'type' => 'media_generic',
         'module' => 'media',
+        'settings' => array(
+          'manualcrop_enable' => 1,
+        ),
       ),
       'display' => array(
         'default' => array(
@@ -120,33 +97,89 @@ function _hitsa_gallery_image_styles() {
   $image_styles = array(
     array(
       'style' => array(
+		    'name' => 'hitsa_gallery_image_full',
+		    'label' => 'Gallery Image (805 x 436)'
+		  ),
+		  'effects' => array(
+		    array(
+		      'name' => 'manualcrop_crop',
+		      'module' => 'manualcrop',
+		      'data' => array(
+		        'keepproportions' => 0,
+		        'width' => NULL,
+		        'height' => NULL,
+		        'style_name' => 'hitsa_gallery_image_full',
+		      ),
+		    ),
+		    array(
+		      'name' => 'image_scale',
+		      'data' => array(
+		        'width' => 805,
+		        'height' => NULL,
+		        'upscale' => FALSE,
+		      ),
+		    ),
+		  ),
+		),
+    array(
+      'style' => array(
 		    'name' => 'hitsa_gallery_thumbnail',
 		    'label' => 'Gallery Thumbnail (54 x 54)'
 		  ),
-		  'effect' => array(
-		    'name' => 'image_scale_and_crop',
-		    'data' => array(
-		      'width' => 54,
-		      'height' => 54,
-		      'upscale' => FALSE,
+		  'effects' => array(
+		    array(
+		      'name' => 'manualcrop_reuse',
+		      'data' => array(
+		        'reuse_crop_style' => 'hitsa_gallery_image_full',
+		      ),
+		    ),
+		    array(
+		      'name' => 'image_scale_and_crop',
+		      'data' => array(
+		        'width' => 54,
+		        'height' => 54,
+		        'upscale' => FALSE,
+		      ),
 		    ),
 		  ),
 		),
 		array(
       'style' => array(
-		    'name' => 'hitsa_gallery_image_full',
-		    'label' => 'Gallery Image (805 x 436)'
+		    'name' => 'hitsa_gallery_menu_teaser',
+		    'label' => 'Gallery Menu Teaser (260 x 147)'
 		  ),
-		  'effect' => array(
-		    'name' => 'image_scale_and_crop',
-		    'data' => array(
-		      'width' => 805,
-		      'height' => 436,
-		      'upscale' => FALSE,
+		  'effects' => array(
+		    array(
+		      'name' => 'manualcrop_reuse',
+		      'data' => array(
+		        'reuse_crop_style' => 'hitsa_gallery_image_full',
+		      ),
+		    ),
+		    array(
+		      'name' => 'image_scale_and_crop',
+		      'data' => array(
+		        'width' => 260,
+		        'height' => 147,
+		        'upscale' => FALSE,
+		      ),
 		    ),
 		  ),
 		),
   );
   
   return $image_styles;
+}
+
+/*
+* Hitsa articles path aliases
+*/
+function _hitsa_gallery_path_aliases() {
+  $path_aliases = array();
+  
+  $path_aliases['gallery'] = array(
+    'et' => 'galerii',
+    'ru' => 'galereja',
+  );
+  
+  return $path_aliases;
 }

@@ -116,7 +116,7 @@ function hitsa_articles_block_view($delta = '') {
       break;
     case 'hitsa_important_article':
       // Add the "Important article" block
-      $query = array('article_type' => 'important', 'range' => array(0, 1));
+      $query = array('article_type' => 'important', 'range' => array(0, 1), 'propertyOrderBy' => 'published');
       if($result = hitsa_articles_query_content($query)) {
         $important_nid = !empty($result['content']) ? $result['content'] : NULL;
       }
