@@ -837,14 +837,15 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     }
     $output .= '
     <h3 class="sm-block-title">' . $content->title . '
-       <span class="btn-bar align-right pull-right sm-hide">
+      <span class="btn-bar align-right pull-right sm-hide">
                               <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
                               <a href="javascript:window.print();" class="btn-circle before-print"></a>
                            </span><!--/button-row-->
-    </h3><h5 class="sm-alignment"><span class="btn-bar align-right pull-right sm-show">
-                       <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
-                       <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-                    </span><!--/button-row-->
+    </h3><h5 class="sm-alignment">
+    <span class="btn-bar align-right pull-right sm-show">
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                           </span><!--/button-row-->
 </h5>';
     if (!empty($content->field_table_description)) {
         $output_elements['table_description'] = '<p>'. $content->field_table_description['und'][0]['value'] .'</p>';
@@ -993,17 +994,17 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
             $output_elements['table_description'] = '<p style="margin-top: 0em">'. $content->field_table_description['und'][0]['value'] .'</p>';
         }
         $output_elements['short_description'] = '<h5 class="sm-alignment" '.$style.'>'.$content->field_short_description['und'][0]['value'].'<span class="btn-bar align-right pull-right sm-show">
-                       <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
-                       <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-                    </span><!--/button-row-->
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                           </span><!--/button-row-->
 </h5>';
 
     }
     else{
         $output_elements['mobile_sharing_buttons']='<h5 class="sm-alignment"><span class="btn-bar align-right pull-right sm-show">
-                       <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
-                       <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-                    </span><!--/button-row-->
+                              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                              <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                           </span><!--/button-row-->
 </h5>';
     }
     if (!empty($content->field_attachments)) {
