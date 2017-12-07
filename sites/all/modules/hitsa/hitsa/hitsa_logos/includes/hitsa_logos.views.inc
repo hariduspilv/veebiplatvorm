@@ -107,6 +107,8 @@ function hitsa_logos_views_default_views() {
   
   /* Display: Partners */
   $handler = $view->new_display('block', 'Partners', 'partners_block');
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['defaults']['cache'] = FALSE;
   $handler->display->display_options['cache']['type'] = 'time';
   $handler->display->display_options['cache']['results_lifespan'] = '3600';
@@ -117,6 +119,8 @@ function hitsa_logos_views_default_views() {
   
   /* Display: Awards */
   $handler = $view->new_display('block', 'Awards', 'awards_block');
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['defaults']['cache'] = FALSE;
   $handler->display->display_options['cache']['type'] = 'time';
   $handler->display->display_options['cache']['results_lifespan'] = '3600';
