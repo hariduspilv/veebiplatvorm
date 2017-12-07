@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * Implements hook_ckeditor_plugin().
+ */
+function ckeditor_media_ckeditor_plugin() {
+  $plugins = array();
+  $plugins['mediaBrowser'] = array(
+    // Plugin name.
+    'name' => 'mediaBrowser',
+    // Plugin description - it will be displayed in the plugins management section of the profile settings.
+    'desc' => t('Media Browser for File Upload/Browsing'),
+    // The full path to the CKEditor plugin directory, trailing slash included.
+    'path' => base_path() . drupal_get_path('module', 'ckeditor_media') . '/plugins/mediaBrowser/',
+  );
+  return $plugins;
+}
+
+/**
+ * Implements form_FORM_ID_alter() for "ckeditor_admin_profile_form".
+ */
+function ckeditor_media_form_ckeditor_admin_profile_form_alter(&$form, &$form_state) {
+  $form['ckeditor_upload_settings']['filebrowser']['#options']['ckeditor_media'] = t('Media browser');
+  $form['ckeditor_upload_settings']['filebrowser_image']['#options']['ckeditor_media'] = t('Media browser');
+  $form['ckeditor_upload_settings']['filebrowser_flash']['#options']['ckeditor_media'] = t('Media browser');
+}
+
+/**
+ * Implements hook_ckeditor_settings_alter() from CKEditor.
+ */
+function ckeditor_media_ckeditor_settings_alter(&$settings, $conf) {
+  // Determine which file browser is being used.
+  $filebrowser = !empty($conf['filebrowser']) ? $conf['filebrowser'] : 'none';
+  $filebrowser_image = !empty($conf['filebrowser_image']) ? $conf['filebrowser_image'] : $filebrowser;
+  $filebrowser_flash = !empty($conf['filebrowser_flash']) ? $conf['filebrowser_flash'] : $filebrowser;
+
+  // Set file browser to Media url. This doesn't actually get used the way
+  // CKEditor expects, but it assists our Javascript plugin by making sure the
+  // browse buttons exist in widgets like image2.
+  if ($filebrowser === 'ckeditor_media') {
+    $settings['filebrowserBrowseUrl'] = url('media/browser');
+  }
+  if ($filebrowser_image === 'ckeditor_media') {
+    $settings['filebrowserImageBrowseUrl'] = url('media/browser');
+  }
+  if ($filebrowser_flash === 'ckeditor_media') {
+    $settings['filebrowserFlashBrowseUrl'] = url('media/browser');
+  }
+}
+
+/**
+ * Implements hook_wysiwyg_plugin().
+ */
+function ckeditor_media_wysiwyg_plugin($editor, $version) {
+  switch ($editor) {
+    case 'ckeditor':
+      return array(
+        'mediaBrowser' => array(
+          'buttons' => array(
+            'mediaBrowser' => t('CKEditor Media Browser'),
+          ),
+          // The full path to the CKEditor plugin directory, trailing slash excluded.
+          'path' => drupal_get_path('module', 'ckeditor_media') . '/plugins/mediaBrowser',
+          'url' => 'http://drupal.org/project/ckeditor_media',
+          'filename' => 'plugin.js',
+          'load' => TRUE,
+        )
+      );
+      break;
+  }
+}
+
+/**
+ * Implements hook_wysiwyg_editor_settings_alter().
+ */
+function ckeditor_media_wysiwyg_editor_settings_alter(&$settings, $context) {
+  // Check if the editor is CKEditor.
+  if ($context['profile']->editor == 'ckeditor') {
+
+    // Introduce a setting for the image browser so the button exists.
+    $settings['filebrowserImageBrowseUrl'] = '#';
+
+  }
+}

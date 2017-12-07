@@ -1,0 +1,76 @@
+h1,h2,h3,h4,h5,h6,th,td{
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+}
+h6{
+  font-size: 18px;
+    font-weight: bold;
+}
+h5{
+    font-size: 16px;
+    font-weight:500;
+}
+h4{
+    font-size: 19px;
+    font-weight: 500;
+}
+h3{
+    font-size: 21px;
+}
+h2{
+    font-size: 25px;
+
+}
+h1{
+    font-size: 30px;
+}
+p{
+    font-size:100%;
+    font-family: 'Rubik', sans-serif;
+}
+a {
+    color: #14468A;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+li {
+    padding-left: 1.25rem;
+    position: relative;
+    margin: 0.625rem 0;
+}
+ul{
+    list-style: none;
+}
+table{
+
+    border-collapse: separate;
+    padding: 0;
+    border: #BDBDBD 1px solid;
+    -webkit-border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    border-radius: 0.25rem;
+    margin: 2.5rem 0 1.875rem 0;
+}
+table thead{
+    display: table-header-group;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+table thead tr {
+
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+table tbody tr:nth-child(odd) {
+    background: #eeeeee;
+}

@@ -1,0 +1,13 @@
+name        = CKEditor Media Browser
+description = Allow the Media module to be the file browser for CKEditor.
+core        = 7.x
+package     = User Interface
+dependencies[] = media (2.x)
+dependencies[] = media_wysiwyg
+
+; Information added by Drupal.org packaging script on 2016-04-18
+version = "7.x-2.0-beta2"
+core = "7.x"
+project = "ckeditor_media"
+datestamp = "1461023041"
+

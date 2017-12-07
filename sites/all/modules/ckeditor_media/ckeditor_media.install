@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Enable media_wysiwyg.
+ */
+function ckeditor_media_update_7000() {
+	if (!module_exists('media_wysiwyg')) {
+		module_enable(array('media_wysiwyg'));
+	}
+}

@@ -1,0 +1,14 @@
+name = "WYSIWYG CKEditor CKFinder bridge"
+description = "Integrates CKFinder into the WYSIWYG version of CKEditor"
+core = 7.x
+package = User interface
+configure = admin/config/content/ckfinder
+dependencies[] = wysiwyg
+dependencies[] = libraries
+
+; Information added by drupal.org packaging script on 2012-09-24
+version = "7.x-1.1"
+core = "7.x"
+project = "WYSIWYG-CKFinder"
+datestamp = "1348452589"
+

@@ -1,0 +1,210 @@
+<?php
+/**
+ * @file
+ * The main module file for the module.
+ */
+
+/**
+ * Implements hook_wysiwyg_plugin().
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_wysiwyg_plugin($editor, $version) {
+
+  if ($editor === 'ckeditor') {
+    $ckfinder_path = libraries_get_path('ckfinder');
+    $base_path = base_path();
+    $settings = array(
+      'filebrowserBrowseUrl'      => $base_path . $ckfinder_path
+      . '/ckfinder.html',
+      'filebrowserImageBrowseUrl' => $base_path . $ckfinder_path
+      . '/ckfinder.html?Type=Images',
+      'filebrowserUploadUrl'      => $base_path . $ckfinder_path
+      . '/core/connector/php/connector.php?command=QuickUpload&type=Files',
+      'filebrowserImageUploadUrl' => $base_path . $ckfinder_path
+      . '/core/connector/php/connector.php?command=QuickUpload&type=Images',
+    );
+
+    return array(
+      'ckfinder'     => array(
+        'extensions' => array('ckfinder' => t('CKFinder')),
+        'path'       => $ckfinder_path ,
+        'filename'   => 'ckfinder.js',
+        'url'        => 'http://ckfinder.com/',
+        'load'       => FALSE,
+        'internal'   => FALSE,
+        'options'    => $settings,
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_perm().
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_permission() {
+  $arr = array();
+  if (libraries_get_path('ckfinder')) {
+    $arr['allow CKFinder file uploads'] = array(
+      'title' => t('allow CKFinder file uploads'),
+      'description' => t('Allows the user to use CKFinder with CKEditor'),
+    );
+  }
+  $arr['administer CKFinder'] = array(
+    'title' => t('Administer CKFinder'),
+    'description' => t('Allows the user to Administer CKFinder configurations'),
+  );
+  return $arr;
+}
+
+/**
+ * Implements of hook_menu().
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_menu() {
+  $items['admin/config/content/ckfinder'] = array(
+    'title' => 'CKFinder',
+    'description' => 'Administer CKFinder configuration',
+    'access arguments' => array('administer CKFinder'),
+    'page callback' => 'wysiwyg_ckeditor_ckfinder_bridge_admin',
+  );
+  return $items;
+}
+
+/**
+ * Administration form.
+ *
+ * Runs some basic checks before creating the administration form
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_admin() {
+  global $base_path;
+
+  // Check that CKFinder is installed.
+  $ckfinder_path = libraries_get_path('ckfinder');
+  if (empty($ckfinder_path)) {
+    drupal_set_message(check_plaint(t('The WYSIWYG/CKEDITOR/CKFINDER bridge module requires CKFinder to be installed in the libraries path. Please install it, then re-enable this module.')), 'error');
+  }
+
+  // Check that we have write permissions on the configuration file.
+  $full_ckfinder_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . substr($base_path, 1) . $ckfinder_path;
+  $conf_file_path     = $full_ckfinder_path . DIRECTORY_SEPARATOR . 'config.php';
+  $conf_dir           = dirname($conf_file_path);
+  if (!file_prepare_directory($conf_dir)) {
+    drupal_set_message(t('The WYSIWYG/CKEDITOR/CKFINDER bridge module requires write permissions to the :dir directory', array(':dir' => $full_ckfinder_path)), 'error');
+  }
+
+  return drupal_get_form('wysiwyg_ckeditor_ckfinder_bridge_admin_form');
+
+}
+
+/**
+ * Build the Admin form using Drupal form builder API.
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_admin_form() {
+  global $base_path;
+
+  $items = array();
+
+  $items['ckfinder_files_location'] = array(
+    '#type' => 'textfield',
+    '#title' => t('The location where CKFinder will save files - trailing / is required'),
+    '#default_value' => variable_get('ckfinder_files_location', $base_path . 'sites/default/files/'),
+    '#size' => 64,
+    '#maxlength' => 255,
+    '#attributes' => array(),
+    '#description' => t("The location where CKFinder will save files - trailing / is required."),
+    '#required' => TRUE,
+  );
+
+  $ckfinder_path = libraries_get_path('ckfinder');
+  $default = $base_path . $ckfinder_path . '/ckfinder.html';
+  $items['ckfinder_file_browswer'] = array(
+    '#type' => 'textfield',
+    '#title' => t('The location where CKFinder browser is located - trailing / is required.'),
+    '#default_value' => variable_get('ckfinder_file_browswer', $default),
+    '#size' => 64,
+    '#maxlength' => 255,
+    '#attributes' => array(),
+    '#description' => t("The location where CKFinder browser is located - trailing / is required. Only change this if the default settings fail."),
+    '#required' => TRUE,
+  );
+
+  $items['ckfinder_licence_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('CKFinder licence name'),
+    '#default_value' => variable_get('ckfinder_licence_name', ''),
+    '#size' => 64,
+    '#maxlength' => 255,
+    '#attributes' => array(),
+    '#description' => t("The licence name without which CKFinder will run as a demo version."),
+    '#required' => FALSE,
+  );
+
+  $items['ckfinder_licence_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('CKFinder licence key'),
+    '#default_value' => variable_get('ckfinder_licence_key', ''),
+    '#size' => 64,
+    '#maxlength' => 255,
+    '#attributes' => array(),
+    '#description' => t("The licence key without which CKFinder will run as a demo version."),
+    '#required' => FALSE,
+  );
+
+  $items['chmod_folders'] = array(
+    '#type' => 'textfield',
+    '#title' => t('chmod folders'),
+    '#default_value' => variable_get('chmod_folders', '0777'),
+    '#size' => 8,
+    '#maxlength' => 8,
+    '#attributes' => array(),
+    '#description' => t("Folder permissions to be set. Set to 0 to disable this feature, or if using Windows."),
+    '#required' => FALSE,
+  );
+
+  $items['chmod_files'] = array(
+    '#type' => 'textfield',
+    '#title' => t('chmod files'),
+    '#default_value' => variable_get('chmod_files', '0755'),
+    '#size' => 8,
+    '#maxlength' => 8,
+    '#attributes' => array(),
+    '#description' => t("Folder permissions to be set. Set to 0 to disable this feature, or if using Windows."),
+    '#required' => FALSE,
+  );
+
+  return system_settings_form($items);
+}
+
+/**
+ * Validation of the settings form.
+ *
+ * Uses the form API validation hook
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_admin_form_validate($form, &$form_state) {
+
+  global $base_path;
+  $directory = $_SERVER['DOCUMENT_ROOT'] . $form_state['values']['ckfinder_files_location'];
+
+  if (!file_exists($directory) || !touch($directory)) {
+    form_set_error('ckfinder_files_location', t('Unable to write to this file location'));
+  }
+
+}
+
+/**
+ * Standard hook help.
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#wysiwyg_ckeditor_ckfinder_bridge':
+      $output = '';
+      $output .= '<h3>' . t('Description') . '</h3>';
+      $output .= '<p>' . t("This module allows you to use CKFinder with the WYSIWYG version of CKEditor.
+This module requires both the libraries and WYSIWYG modules. Please read the
+installation instructions carefully.") . '<p>';
+      $output .= t(
+        'Please see !link',
+        array('!link' => l(t('the module project page'), 'http://drupal.org/sandbox/jrsinclair/1348830'))
+      );
+      return $output;
+    break;
+  }
+}

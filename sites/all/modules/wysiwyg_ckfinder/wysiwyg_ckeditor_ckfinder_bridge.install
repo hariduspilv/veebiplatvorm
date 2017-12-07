@@ -1,0 +1,112 @@
+<?php
+/**
+ * @file
+ * The install file for the module.
+ */
+
+/**
+ * Implements hook_enable().
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_enable() {
+
+  global $base_path;
+  $module_path = drupal_get_path('module', 'wysiwyg_ckeditor_ckfinder_bridge');
+  $this_path   = realpath(dirname(__FILE__));
+  $regex_pat   = '~' . DIRECTORY_SEPARATOR . "$module_path\$~";
+  $base_dir    = preg_replace($regex_pat, '', $this_path);
+
+  // Check that CKFinder is installed.
+  $ckfinder_path = libraries_get_path('ckfinder');
+  if (empty($ckfinder_path)) {
+    drupal_set_message(check_plain(t('The WYSIWYG/CKEDITOR/CKFINDER bridge module requires CKFinder to be installed in the libraries path. Please install it, then re-enable this module.')), 'warning');
+    return;
+  }
+
+  $full_ckfinder_path = DRUPAL_ROOT . DIRECTORY_SEPARATOR . substr($base_path, 1) . $ckfinder_path;
+  $conf_file_path     = $full_ckfinder_path . DIRECTORY_SEPARATOR . 'config.php';
+  $conf_file_dir      = dirname($conf_file_path);
+
+  // Check that we have write permissions on the configuration file.
+  if (!file_prepare_directory($conf_file_dir)) {
+    drupal_set_message(t('The WYSIWYG/CKEDITOR/CKFINDER bridge module requires write permissions to the :dir directory', array(':dir' => $full_ckfinder_path)), 'warning');
+    return;
+  }
+
+  // Attempt to install.
+  $installed = FALSE;
+  if (file_exists($conf_file_path)) {
+    $conf_file_str = file_get_contents($conf_file_path);
+    $installed     = strpos($conf_file_str, '-- Do not remove this line. Required by wysiwyg_ckeditor_ckfinder_bridge module --');
+  }
+  if ($installed !== FALSE) {
+    drupal_set_message(t('Configuration file already appears to have been updated. Please test to check that CKFinder is working. If not, try re-installing both the WYSIWYG/CKEDITOR/CKFINDER bridge module and the CKFinder library.'));
+    return;
+  }
+  else {
+    $module_path     = $base_dir . DIRECTORY_SEPARATOR . drupal_get_path('module', 'wysiwyg_ckeditor_ckfinder_bridge');
+    $mod_config_path = $module_path . DIRECTORY_SEPARATOR . 'config.php';
+    $filemgr_conf    = $module_path . DIRECTORY_SEPARATOR . 'filemanager.config.php';
+
+    if (file_exists($conf_file_path)) {
+      rename($conf_file_path, $conf_file_path . '.orig');
+    }
+    copy($mod_config_path, $conf_file_path);
+    if (!file_exists($conf_file_path)) {
+      drupal_set_message(t('Could not copy config file to :path. You will need to manually copy from the module directory to the library directory.', array(':path' => $conf_file_path)));
+    }
+  }
+
+  drupal_set_message(t('The WYSIWYG/CKEDITOR/CKFINDER bridge module has been installed. Be sure to check the permissions for "allow CKFinder file uploads". Please also make sure that your $cookie_domain variable is set correctly in settings.php'));
+}
+
+/**
+ * Implementation of hook requirements.
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_requirements($phase) {
+
+  global $base_path;
+
+  switch ($phase) {
+    case 'install':
+      // Check that CKFinder is installed.
+      $t = get_t();
+      $ckfinder_path = libraries_get_path('ckfinder');
+      if (empty($ckfinder_path)) {
+        $requirements['ckfinder_wysiwyg'] = array(
+          'value' => $t('Not installed'),
+          'severity' => REQUIREMENT_ERROR,
+          'description' => $t('The ckfinder library is missing or in the wrong directory.'),
+        );
+        return $requirements;
+      }
+
+      // Check that we have write permissions on the configuration file.
+      $full_ckfinder_path = DRUPAL_ROOT . DIRECTORY_SEPARATOR . check_plain(substr($base_path, 1)) . $ckfinder_path;
+      $conf_file_path = $full_ckfinder_path . DIRECTORY_SEPARATOR . 'config.php';
+      if (!touch($conf_file_path)) {
+        $requirements['ckfinder_wysiwyg'] = array(
+          'value' => $t('Not installed'),
+          'severity' => REQUIREMENT_ERROR,
+          'description' => $t('Unable to write to the CKFinder directory.'),
+        );
+        return $requirements;
+
+      }
+      break;
+  }
+
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function wysiwyg_ckeditor_ckfinder_bridge_uninstall() {
+  $to_delete = array(
+    'ckfinder_licence_name', 'ckfinder_licence_key', 'ckfinder_files_location',
+    'ckfinder_file_browswer',
+  );
+  foreach ($to_delete as $var) {
+    variable_del($var);
+  }
+}

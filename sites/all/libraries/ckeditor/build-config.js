@@ -13,10 +13,10 @@
  * (1) http://ckeditor.com/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) http://ckeditor.com/builder/8f1649d30b5c57ec60f0c9f7a687058f
+ * (2) http://ckeditor.com/builder/23ed3212d6042e4604090836d4134d73
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) http://ckeditor.com/builder/download/8f1649d30b5c57ec60f0c9f7a687058f
+ * (3) http://ckeditor.com/builder/download/23ed3212d6042e4604090836d4134d73
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -56,6 +56,7 @@ var CKBUILDER_CONFIG = {
 		'basicstyles' : 1,
 		'bidi' : 1,
 		'blockquote' : 1,
+		'clipboard' : 1,
 		'colorbutton' : 1,
 		'colordialog' : 1,
 		'contextmenu' : 1,
@@ -63,10 +64,10 @@ var CKBUILDER_CONFIG = {
 		'dialogadvtab' : 1,
 		'div' : 1,
 		'elementspath' : 1,
-		'embedsemantic' : 1,
 		'enterkey' : 1,
 		'entities' : 1,
 		'filebrowser' : 1,
+		'filetools' : 1,
 		'find' : 1,
 		'flash' : 1,
 		'floatingspace' : 1,
@@ -88,7 +89,6 @@ var CKBUILDER_CONFIG = {
 		'maximize' : 1,
 		'newpage' : 1,
 		'pagebreak' : 1,
-		'pastecode' : 1,
 		'pastefromword' : 1,
 		'pastetext' : 1,
 		'preview' : 1,
@@ -110,7 +110,9 @@ var CKBUILDER_CONFIG = {
 		'tabletools' : 1,
 		'templates' : 1,
 		'toolbar' : 1,
-		'videoembed' : 1,
+		'undo' : 1,
+		'uploadcare' : 1,
+		'uploadfile' : 1,
 		'wsc' : 1,
 		'wysiwygarea' : 1,
 		'youtube' : 1
