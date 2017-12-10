@@ -112,7 +112,6 @@
       </div> <!-- /.section, /#messages -->
     <?php endif; ?>
     <?php if ($breadcrumb): ?>
-      <!--<div id="breadcrumb"><?php// print $breadcrumb; ?></div>-->
     <?php endif; ?>
     <?php if(!empty($page['super_news'])):?>
       <div class="row">
