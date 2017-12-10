@@ -1180,3 +1180,53 @@ function hitsa_css_alter(&$css) {
     );
     $css = array_diff_key($css, $exclude);
 }
+function hitsa_checkboxes($variables) {
+    $element = $variables['element'];
+    $attributes = array(
+
+    );
+    if (isset($element['#id'])) {
+        $attributes['id'] = $element['#id'];
+    }
+    $attributes['class'][] = 'form-checkboxes';
+    if (!empty($element['#attributes']['class'])) {
+        $attributes['class'] = array_merge($attributes['class'], $element['#attributes']['class']);
+    }
+    if (isset($element['#attributes']['title'])) {
+        $attributes['title'] = $element['#attributes']['title'];
+    }
+    return  (!empty($element['#children']) ? $element['#children'] : '');
+}
+function hitsa_radio($variables) {
+    $element = $variables['element'];
+    $element['#attributes']['type'] = 'radio';
+    element_set_attributes($element, array(
+        'id',
+        'name',
+        '#return_value' => 'value',
+    ));
+    if (isset($element['#return_value']) && $element['#value'] !== FALSE && $element['#value'] == $element['#return_value']) {
+        $element['#attributes']['checked'] = 'checked';
+    }
+    _form_set_class($element, array(
+        'form-radio','customRadio'
+    ));
+    return '<input' . drupal_attributes($element['#attributes']) . ' />';
+}
+function hitsa_radios($variables) {
+    $element = $variables['element'];
+    $attributes = array(
+
+    );
+    if (isset($element['#id'])) {
+        $attributes['id'] = $element['#id'];
+    }
+    $attributes['class'] = 'form-radios';
+    if (!empty($element['#attributes']['class'])) {
+        $attributes['class'] .= ' ' . implode(' ', $element['#attributes']['class']);
+    }
+    if (isset($element['#attributes']['title'])) {
+        $attributes['title'] = $element['#attributes']['title'];
+    }
+    return (!empty($element['#children']) ? $element['#children'] : '') ;
+}

@@ -250,16 +250,16 @@ function hitsa_catering_node_insert($node)
                 $catering_provder_name = $catering_provider->name;
             }
         }
-        if (!($lookup_main)) {
-            $path_main = array(
-                'source' => 'catering',
-                'alias' => t('catering'),
-                'pid' => null,
-                'language' => $node->language,
-                'pathauto' => 0,
-            );
-            path_save($path_main);
-        }
+//        if (!($lookup_main)) {
+//            $path_main = array(
+//                'source' => 'catering',
+//                'alias' => t('catering'),
+//                'pid' => null,
+//                'language' => $node->language,
+//                'pathauto' => 0,
+//            );
+//            path_save($path_main);
+//        }
         $monday = date('d/m/Y', strtotime('this week monday', $start_date));
         $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
         hitsa_catering_check_block_visibility(t('catering'), 'catering');
@@ -313,16 +313,16 @@ function hitsa_catering_node_presave($node)
             if (!empty($node->nid)) {
                 if (!empty($monday) && !empty($sunday)) {
                     $lookup_main = drupal_lookup_path('source', t('catering'), $node->language);
-                    if (!($lookup_main)) {
-                        $path_main = array(
-                            'source' => 'catering',
-                            'alias' => t('catering'),
-                            'pid' => null,
-                            'language' => $node->language,
-                            'pathauto' => 0,
-                        );
-                        path_save($path_main);
-                    }
+//                    if (!($lookup_main)) {
+//                        $path_main = array(
+//                            'source' => 'catering',
+//                            'alias' => t('catering'),
+//                            'pid' => null,
+//                            'language' => $node->language,
+//                            'pathauto' => 0,
+//                        );
+//                        path_save($path_main);
+//                    }
 
                     hitsa_catering_check_block_visibility(t('catering'), 'catering');
                     $alias = t('catering') . '/' . $monday . '-' . $sunday;
@@ -361,6 +361,9 @@ function hitsa_catering_week($start_date = null)
                 if ($node->type == 'catering') {
 
                     $lookup = drupal_lookup_path('source', t('catering'), $node->language);
+                    if (empty($lookup)){
+                        $lookup = drupal_lookup_path('source', t('content/catering'), $node->language);
+                    }
                     $node_header = menu_get_object("node", 1, $lookup);
                     $node_header_part = hitsa_catering_generate_header($node_header);
                     $build['catering_header']['#markup'] = $node_header_part;
