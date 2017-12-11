@@ -1267,3 +1267,34 @@ function hitsa_radios($variables)
     }
     return (!empty($element['#children']) ? $element['#children'] : '');
 }
+
+function hitsa_status_messages($variables) {
+  $display = $variables['display'];
+  $output = '';
+
+  $status_heading = array(
+    'status' => ' notification-success',
+    'error' => ' notification-danger',
+    'warning' => '',
+  );
+  foreach (drupal_get_messages($display) as $type => $messages) {
+    
+    $output .= '<div class="row"><div class="col-12">';
+    $output .= '<div class="notification' . $status_heading[$type] . '" data-plugin="notification">';
+    $output .= '<div class="notification-sign"></div>';
+    $output .= '<div class="notification-text">';
+    if (count($messages) > 1) {
+      
+      foreach ($messages as $message) {
+        $output .= '<p>' . $message . "</p>\n";
+      }
+    }
+    else {
+      $output .= '<p>' . reset($messages) . '</p>';
+    }
+    $output .= '</div>';
+    $output .= '<div class="notification-close">' . t('Close') . '<span class="before-close"></span></div>';
+    $output .= "</div></div></div>";
+  }
+  return $output;
+  }

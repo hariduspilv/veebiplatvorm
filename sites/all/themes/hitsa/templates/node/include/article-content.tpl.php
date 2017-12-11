@@ -42,6 +42,7 @@
         <?php endif; ?>
         
         <?php if($node->type === 'article'): ?>
+          <div class="row-spacer-xs"></div>
           <span class="article-date">
             <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
           </span>
