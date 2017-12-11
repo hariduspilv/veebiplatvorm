@@ -1,4 +1,4 @@
-<div class="col-4">
+<div class="col-4 sm-12">
   <a href="<?php print url('node/' . $node->nid); ?><?php if($node->type === 'gallery') print '?type=modal'; ?>" class="object"<?php if($node->type === 'gallery') print ' data-plugin="modal"'; ?>>
     <span class="object-inner">
       <?php 
