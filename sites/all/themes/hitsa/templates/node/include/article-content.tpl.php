@@ -3,6 +3,10 @@
   $heading_title = check_plain($article_types_list[$article_type[0]['value']]);
   ?>
   <h1 class="block-title"><?php print $heading_title; ?></h1>
+  <?php elseif($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_service'): 
+  $heading_title = t('Services');
+  ?>
+  <h1 class="block-title"><?php print $heading_title; ?></h1>
   <?php else: 
   $heading_title = $title;
   ?>
@@ -27,6 +31,8 @@
 				  	<?php endif; ?>
 				  </span>
 				</h1>
+				<?php else: ?>
+				<h1><?php print $title; ?></h1>
         <?php endif; ?>
         
         <?php if(!empty($body)): ?>
@@ -40,7 +46,7 @@
           <?php print nl2br($body[0]['safe_value']); ?>
         <?php endif; ?>
         <?php endif; ?>
-        
+
         <?php if(!empty($elements['cp_contact_information'])): ?>
           <?php print render($elements['cp_contact_information']); ?>
         <?php endif; ?>
@@ -54,12 +60,13 @@
       </article>
     </div><!--/col-8-->
     <div class="col-4 sm-12 no-print">
-      <?php if($node->type === 'article' || ($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple')): ?>
+      <?php if($node->type === 'article' || $node->type === 'content_page'): ?>
       <div class="btn-bar align-right">
         <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
         <a href="javascript:window.print();" class="btn-circle before-print"></a>
       </div><!--/button-row-->
       <?php endif; ?>
+    
       <div class="row-spacer-xl"></div>
 
       <?php if(!empty($subpage_images) || !empty($subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
@@ -92,7 +99,7 @@
       <figure>
         <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
         title="<?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?>" 
-        data-plugin="modal" data-closebutton="<?php print t('Close'); ?>">
+        data-plugin="modal" data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>">
           <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
           alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
         </a>
