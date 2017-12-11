@@ -100,7 +100,6 @@ function hitsa_core_block_view($delta = '')
     case 'hitsa_services_events':
       if(module_exists('hitsa_events')) {
         $events_content = hitsa_events_front_page_training_block();
-        dpm($events_content);
       }
       if(module_exists('hitsa_content_page')) {
         $services_content = hitsa_content_page_services_block();
