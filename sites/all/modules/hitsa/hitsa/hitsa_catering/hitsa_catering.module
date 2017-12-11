@@ -525,7 +525,9 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                     if (!empty($meal->field_food_subcategory)) {
                         $subcategory = taxonomy_term_load($meal->field_food_subcategory['und'][0]['target_id']);
                         $subcategory->dishes = array();
-                        $meals_array[$meal->field_food_type['und'][0]['entity']->name]['foods'][$subcategory->name] = $subcategory;
+                        if(!empty($meal->field_food_type['und'][0]['entity'])) {
+                            $meals_array[$meal->field_food_type['und'][0]['entity']->name]['foods'][$subcategory->name] = $subcategory;
+                        }
                     }
                     if (!empty($subcategory)) {
                         $food_type = taxonomy_term_load($meal->field_food_type['und'][0]['target_id']);
