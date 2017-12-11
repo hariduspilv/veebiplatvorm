@@ -71,8 +71,7 @@
 
       <?php if(!empty($subpage_images) || !empty($subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
         <figure>
-          <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
-          title="<?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?>" 
+          <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>"
           data-plugin="modal" data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>">
             <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
             alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
@@ -98,7 +97,6 @@
       <?php elseif(!empty($subpage_images[1])): $image = $subpage_images[1]; ?>
       <figure>
         <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
-        title="<?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?>" 
         data-plugin="modal" data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>">
           <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
           alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
