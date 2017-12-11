@@ -1,12 +1,19 @@
 <?php
 
 module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.theme');
+module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.views');
 
 function hitsa_content_page_menu() {
   $items['api/content'] = array(
     'title' => 'Articles API',
     'page callback' => 'hitsa_content_filter',
     'access arguments' => array('access content'),
+  );
+  
+  $items['admin/content/content-pages'] = array(
+    'title' => 'Sisuleheküljed',
+    'access arguments' => array('administer content'),
+    'type' => MENU_LOCAL_TASK,
   );
   
   return $items;
@@ -39,6 +46,16 @@ function content_page_form($node, $form_state) {
  */
 function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
   global $user;
+
+  if($form_id === 'views_exposed_form' && 
+  $form['#id'] === 'views-exposed-form-administration-content-pages-system-content-pages') {
+    if(!empty($form['cp_type_value'])) {
+      foreach($form['cp_type_value']['#options'] as $key => $option) {
+        if($key === 'All') continue;
+        $form['cp_type_value']['#options'][$key] = t($option);
+      }
+    }
+  }
   if($form_id === 'content_page_node_form') {
     if($user->uid !== '1') {
       $form['cp_display_style']['#access'] = FALSE;
