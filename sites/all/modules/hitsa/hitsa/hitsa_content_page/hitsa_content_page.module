@@ -12,7 +12,7 @@ function hitsa_content_page_menu() {
   
   $items['admin/content/content-pages'] = array(
     'title' => 'Sisuleheküljed',
-    'access arguments' => array('administer content'),
+    'access arguments' => array('administer nodes'),
     'type' => MENU_LOCAL_TASK,
   );
   
