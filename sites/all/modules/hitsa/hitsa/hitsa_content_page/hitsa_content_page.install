@@ -72,7 +72,7 @@ function _hitsa_content_page_fields() {
       'field_name' => 'cp_image',
       'label' => $t('Image'),
       'type' => 'image',
-      'cardinality' => 1,
+      'cardinality' => 2,
     ),
     'cp_subpages' => array(
       'field_name' => 'cp_subpages',

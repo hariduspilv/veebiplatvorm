@@ -43,7 +43,7 @@
         <?php endif; ?>
         
         <?php if(!empty($body[0]['safe_value'])): ?>
-          <?php print nl2br($body[0]['safe_value']); ?>
+          <?php print $body[0]['safe_value']; ?>
         <?php endif; ?>
         <?php endif; ?>
 

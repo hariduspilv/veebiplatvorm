@@ -90,6 +90,7 @@ function _hitsa_gallery_field_instances() {
         ),
       ),
     ),
+    'required' => 1,
   );
 }
 
