@@ -62,7 +62,7 @@
         <figure>
           <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
           title="<?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?>" 
-          data-plugin="modal" data-closebutton="<?php print t('Close'); ?>">
+          data-plugin="modal" data-heading="<?php print check_plain($article_types_list[$article_type[0]['value']]); ?>" data-closebutton="<?php print t('Close'); ?>">
             <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
             alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
           </a>
