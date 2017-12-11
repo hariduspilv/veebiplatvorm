@@ -33,6 +33,12 @@ function hitsa_articles_menu() {
     'access arguments' => array('access content'),
   );
   
+  $items['admin/content/articles'] = array(
+    'title' => 'Artiklid',
+    'access arguments' => array('administer content'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  
   return $items;
 }
 
