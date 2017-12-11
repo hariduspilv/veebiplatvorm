@@ -227,6 +227,7 @@ function hitsa_content_page_autocomplete($type) {
     $titles = $result->fetchCol();
     
     $autocomplete = (object) array(
+      'label' => t('No results found!'),
       'list' => array(),
     );
     

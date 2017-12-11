@@ -52,7 +52,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="Author" content="Wiseman Interactive Oü  www.wiseman.ee"/>
-
+  <meta name="format-detection" content="telephone=no">
   <?php
   
   ?>
