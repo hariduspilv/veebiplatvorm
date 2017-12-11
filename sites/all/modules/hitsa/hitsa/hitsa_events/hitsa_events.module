@@ -1017,77 +1017,124 @@ function hitsa_events_training_calendar()
     usort($periods, function ($a, $b) {
         return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
     });
+//    $field = field_info_field('field_event_type');
+    $allowed = list_allowed_values($field);
+    $taxonomy = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
+    $taxonomy_tree = taxonomy_get_tree($taxonomy->vid);
+    $allowed = array();
+//    foreach ($taxonomy_tree as $term) {
+//        $allowed[$term->tid] = $term->name;
+//    }
+    //TODO Koolituste filtrid korda teha.
     if (!isset($output)) {
         $output = '';
     }
     $output .= '
       
-      <div class="row">
-         <div class="col-12">
-            
+      
             <div class="block">';
     $output .= '<h2 class="block-title">' . t('Calendar') . '</h2>';
     $output .= '<div class="row">
                   <div class="col-12">
-                     <h3>Filtreeri sündmusi</h3>
+                     <h3>' . t('Filter events') . '</h3>
                   </div><!--/col-12-->
                </div><!--/row-->
                ';
-    $output .= '<form method="post" action="kalender.html">
+    $output .= '<form method="post" action="kalender.html" data-plugin="filters">
+						
                <div class="row">
-                  <div class="col-8">
+                  <div class="col-9 sm-12">
+                     <h4 data-show="hiddenFilter"></h4>
+                     <div data-show="hiddenFilter" class="row-spacer"></div>
                      
-                     <div class="btn-bar">
-                        <span class="btn-input">
-                           <input type="radio" name="category" value="0" checked />
-                           <span class="btn btn-xs btn-alternate">Kõik</span>
-                        </span><!--/btn-input-->
+                     <div class="btn-bar">';
+    if (!empty($allowed)) {
+        $output .= '     <span class="btn-input" > ';
+        $output .= ' <input type = "checkbox" name = "category" value = "all" checked />';
+        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . t('All') . '</span >';
+        $output .= '                   </span ><!--/btn - input-->';
+    }
+    foreach ($allowed as $allowed_key => $allowed_value) {
+        $output .= '     <span class="btn-input" > ';
+        $output .= ' <input type = "checkbox" name = "category" value = "' . $allowed_key . '"/>';
+        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value . '</span >';
+        $output .= '                   </span ><!--/btn - input-->';
+    }
+    $time_periods_tree = taxonomy_vocabulary_machine_name_load('time_periods');
+    $time_periods_tree = taxonomy_get_tree($time_periods_tree->vid);
+    $ime_periods = array();
+    foreach ($time_periods_tree as $time_term) {
+        if ($time_term->depth == 0) {
+            $time_periods[$time_term->tid] = $time_term->name;
+        }
+    }
 
-                        <span class="btn-input">
-                           <input type="radio" name="category" value="1" />
-                           <span class="btn btn-xs btn-alternate">Õppetöö</span>
-                        </span><!--/btn-input-->
-
-                        <span class="btn-input">
-                           <input type="radio" name="category" value="2" />
-                           <span class="btn btn-xs btn-alternate">Huvitegevus</span>
-                        </span><!--/btn-input-->
-
-                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
-                           <input type="radio" name="category" value="2" />
-                           <span class="btn btn-xs btn-alternate">Peidus valik 1</span>
-                        </span><!--/btn-input-->
-
-                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
-                           <input type="radio" name="category" value="2" />
-                           <span class="btn btn-xs btn-alternate">Peidus valik 2</span>
-                        </span><!--/btn-input-->
-
-                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
-                           <input type="radio" name="category" value="2" />
-                           <span class="btn btn-xs btn-alternate">Peidus valik 3</span>
-                        </span><!--/btn-input-->
-
-                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
-                           <input type="radio" name="category" value="2" />
-                           <span class="btn btn-xs btn-alternate">Peidus valik 4</span>
-                        </span><!--/btn-input-->
-
-                        <span class="btn-input" data-show="hiddenFilter | inlineBlock">
-                           <input type="radio" name="category" value="2" />
-                           <span class="btn btn-xs btn-alternate">Peidus valik 5</span>
-                        </span><!--/btn-input-->
-
-                     </div><!--/btn-bar-->
+    $output .= '      </div><!--/btn-bar-->
                      
-                  </div><!--/col-8-->
-                  <div class="col-4">
-                     <a href="javascript:void(0);" class="cta-link pull-right before-plus" data-toggle="hiddenFilter" data-class="\'active\' : hiddenFilter">Veel valikuid</a>
-                  </div><!--/col-4-->
+                  </div><!--/col-9-->
+                  <div class="col-3 sm-12">
+                     <a href="javascript:void(0);" class="cta-link pull-right before-plus sm-no-pull" data-toggle="hiddenFilter" data-class="\'active\' : hiddenFilter">' . t('More options') . '</a>
+                  </div><!--/col-3-->
+               </div><!--/row-->
+                  
+               <div class="row" data-show="hiddenFilter | flex">
+                  <div class="col-12">
+                     <div>
+                        <div class="row-spacer sm-hide"></div>';
+    if (!empty($time_periods)) {
+        $output .= '<h4>' . t('School years') . '</h4>
+                        <div class="row-spacer"></div>
+                        <div class="btn-bar">
+                            <span class="btn-input">
+                              <input type="checkbox" name="year" value="all" />
+                              <span class="btn btn-xs btn-alternate">' . t('All') . '</span>
+                           </span><!--/btn-input-->';
+        foreach ($time_periods as $time_key => $time_period) {
+            $time_period_value = str_replace('/', '-', $time_period);
+            $output .= '
+                                <span class="btn-input">
+                                  <input type="checkbox" name="year" value="' . $time_period_value . '" checked="checked" />
+                                  <span class="btn btn-xs btn-alternate"><span class="sm-hide">' . $time_period . '</span><span class="sm-show">' . $time_period . '</span></span>
+                               </span><!--/btn-input-->';
+
+        }
+        $output .= '</div><!--/btn-bar-->';
+    }
+    $output .= '
+                     </div><!--hiddenFilter-->
+                  </div><!--/col-12-->
+               </div><!--/row-->
+					
+               <div class="row-spacer-xs"></div>
+               <hr />
+               <div class="row-spacer"></div>
+               
+               <div class="row">
+                  <div class="col-12">
+                     <div class="form-item-row">
+                        
+                        <div class="form-item after-search form-item_rounded">
+                           <div class="form-item_title">Otsitav sündmus</div>
+                           <input type="text" name="event-title" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
+                        </div><!--/form-item-->
+
+                        <div class="form-item form-item_rounded after-calendar form-item-stretch">
+                           <div class="form-item_title">' . t('Date') . '</div>
+                           <input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="' . t('Choose date') . '" />
+                        </div><!--/form-item-->
+
+                        <div class="form-item">
+                           <div class="form-item_title">&nbsp;</div>
+                           <button class="btn btn-filled">Otsi</button>
+                        </div><!--/form-item-->
+                        
+                     </div><!--/form-item-row-->
+                  </div><!--/col-12-->
                </div><!--/row-->
                </form>';
+    $output .= '<div class="row-spacer"></div>';
     $output .= '<div class="row">';
-    $output .= '<div class="col-12" data-postURL="api/kalender-ajax.html" data-plugin="filterContents">';
+    $output .= '<div class="col-12" data-postURL="/api/events" data-plugin="filterContents">';
     $output .= '<div class="accordion" data-plugin="accordion">';
     foreach ($periods as $period) {
         $output .= '<div class="accordion-entry">';
