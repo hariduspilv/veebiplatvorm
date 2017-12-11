@@ -481,34 +481,33 @@ function hitsa_events_add_fields()
     }
 }
 
-function _hitsa_events_add_field_bases()
-{
+function _hitsa_events_add_field_bases(){
 
     $field_bases = array();
 
     // Exported field_base: 'body'.
-    $field_test = field_info_field('body');
-    if (!$field_test) {
-        $field_bases['body'] = array(
-            'active' => 1,
-            'cardinality' => 1,
-            'deleted' => 0,
-            'entity_types' => array(
-                0 => 'node',
+    $field_bases['body'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(
+            0 => 'node',
+        ),
+        'field_name' => 'body',
+        'indexes' => array(
+            'format' => array(
+                0 => 'format',
             ),
-            'field_name' => 'body',
-            'indexes' => array(
-                'format' => array(
-                    0 => 'format',
-                ),
-            ),
-            'locked' => 0,
-            'module' => 'text',
-            'settings' => array(),
-            'translatable' => 0,
-            'type' => 'text_with_summary',
-        );
-    }
+        ),
+        'locked' => 0,
+        'module' => 'text',
+        'settings' => array(
+            'entity_translation_sync' => FALSE,
+        ),
+        'translatable' => 0,
+        'type' => 'text_with_summary',
+    );
+
     // Exported field_base: 'event_date'.
     $field_bases['event_date'] = array(
         'active' => 1,
@@ -588,6 +587,7 @@ function _hitsa_events_add_field_bases()
                 'training' => 'Training',
             ),
             'allowed_values_function' => '',
+            'entity_translation_sync' => FALSE,
         ),
         'translatable' => 0,
         'type' => 'list_text',
@@ -608,6 +608,7 @@ function _hitsa_events_add_field_bases()
         'locked' => 0,
         'module' => 'entityreference',
         'settings' => array(
+            'entity_translation_sync' => FALSE,
             'handler' => 'base',
             'handler_settings' => array(
                 'behaviors' => array(
@@ -628,7 +629,55 @@ function _hitsa_events_add_field_bases()
         'type' => 'entityreference',
     );
 
-    // Exported field_base: 'field_taining_tags'.
+    // Exported field_base: 'field_time_period_dates'.
+    $field_bases['field_time_period_dates'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_time_period_dates',
+        'indexes' => array(),
+        'locked' => 0,
+        'module' => 'date',
+        'settings' => array(
+            'cache_count' => 4,
+            'cache_enabled' => 0,
+            'entity_translation_sync' => FALSE,
+            'granularity' => array(
+                'day' => 'day',
+                'hour' => 0,
+                'minute' => 0,
+                'month' => 'month',
+                'second' => 0,
+                'year' => 'year',
+            ),
+            'timezone_db' => '',
+            'todate' => 'optional',
+            'tz_handling' => 'none',
+        ),
+        'translatable' => 0,
+        'type' => 'datestamp',
+    );
+
+    // Exported field_base: 'field_training_cost'.
+    $field_bases['field_training_cost'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_training_cost',
+        'indexes' => array(),
+        'locked' => 0,
+        'module' => 'number',
+        'settings' => array(
+            'decimal_separator' => ',',
+            'entity_translation_sync' => FALSE,
+        ),
+        'translatable' => 0,
+        'type' => 'number_float',
+    );
+
+    // Exported field_base: 'field_training_tags'.
     $field_bases['field_training_tags'] = array(
         'active' => 1,
         'cardinality' => -1,
@@ -643,6 +692,7 @@ function _hitsa_events_add_field_bases()
         'locked' => 0,
         'module' => 'entityreference',
         'settings' => array(
+            'entity_translation_sync' => FALSE,
             'handler' => 'base',
             'handler_settings' => array(
                 'behaviors' => array(
@@ -661,53 +711,6 @@ function _hitsa_events_add_field_bases()
         ),
         'translatable' => 0,
         'type' => 'entityreference',
-    );
-
-    // Exported field_base: 'field_time_period_dates'.
-    // if(!field_info_field('field_time_period_dates')){
-    // $field_bases['field_time_period_dates'] = array(
-    //   'active' => 1,
-    //   'cardinality' => 1,
-    //   'deleted' => 0,
-    //   'entity_types' => array(),
-    //   'field_name' => 'field_time_period_dates',
-    //   'indexes' => array(),
-    //   'locked' => 0,
-    //   'module' => 'date',
-    //   'settings' => array(
-    //     'cache_count' => 4,
-    //     'cache_enabled' => 0,
-    //     'granularity' => array(
-    //       'day' => 'day',
-    //       'hour' => 0,
-    //       'minute' => 0,
-    //       'month' => 'month',
-    //       'second' => 0,
-    //       'year' => 'year',
-    //     ),
-    //     'timezone_db' => '',
-    //     'todate' => 'optional',
-    //     'tz_handling' => 'none',
-    //   ),
-    //   'translatable' => 0,
-    //   'type' => 'datestamp',
-    // );
-    // }
-    // Exported field_base: 'field_training_cost'.
-    $field_bases['field_training_cost'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_training_cost',
-        'indexes' => array(),
-        'locked' => 0,
-        'module' => 'number',
-        'settings' => array(
-            'decimal_separator' => ',',
-        ),
-        'translatable' => 0,
-        'type' => 'number_float',
     );
 
     // Exported field_base: 'locations'.
@@ -767,11 +770,10 @@ function _hitsa_events_add_field_bases()
     );
 
     return $field_bases;
-
 }
 
-function _hitsa_events_add_field_instances()
-{
+function _hitsa_events_add_field_instances(){
+
     $field_instances = array();
 
     // Exported field_instance: 'node-event-body'.
@@ -813,6 +815,7 @@ function _hitsa_events_add_field_instances()
         'required' => 0,
         'settings' => array(
             'display_summary' => TRUE,
+            'entity_translation_sync' => FALSE,
             'text_processing' => 1,
             'user_register_form' => FALSE,
         ),
@@ -969,6 +972,7 @@ function _hitsa_events_add_field_instances()
         'label' => 'Event type',
         'required' => 0,
         'settings' => array(
+            'entity_translation_sync' => FALSE,
             'user_register_form' => FALSE,
         ),
         'widget' => array(
@@ -1015,68 +1019,14 @@ function _hitsa_events_add_field_instances()
         'label' => 'Registration form',
         'required' => FALSE,
         'settings' => array(
+            'entity_translation_sync' => FALSE,
             'user_register_form' => FALSE,
         ),
         'widget' => array(
             'module' => 'options',
             'settings' => array(),
-            'type' => 'options_buttons',
+            'type' => 'options_select',
             'weight' => 9,
-        ),
-    );
-
-    // Exported field_instance: 'node-event-field_taining_tags'.
-    $field_instances['node-event-field_training_tags'] = array(
-        'bundle' => 'event',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'entityreference',
-                'settings' => array(
-                    'bypass_access' => FALSE,
-                    'link' => FALSE,
-                ),
-                'type' => 'entityreference_label',
-                'weight' => 7,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'field_training_tags',
-        'label' => 'Training tags',
-        'required' => 0,
-        'settings' => array(
-            'behaviors' => array(
-                'taxonomy-index' => array(
-                    'status' => TRUE,
-                ),
-            ),
-            'user_register_form' => FALSE,
-        ),
-        'widget' => array(
-            'active' => 1,
-            'module' => 'entityreference',
-            'settings' => array(
-                'match_operator' => 'CONTAINS',
-                'path' => '',
-                'size' => 60,
-            ),
-            'type' => 'entityreference_autocomplete_tags',
-            'weight' => 8,
         ),
     );
 
@@ -1117,6 +1067,7 @@ function _hitsa_events_add_field_instances()
         'label' => 'Training cost',
         'required' => 0,
         'settings' => array(
+            'entity_translation_sync' => FALSE,
             'max' => '',
             'min' => '',
             'prefix' => '',
@@ -1129,6 +1080,63 @@ function _hitsa_events_add_field_instances()
             'settings' => array(),
             'type' => 'number',
             'weight' => 7,
+        ),
+    );
+
+    // Exported field_instance: 'node-event-field_training_tags'.
+    $field_instances['node-event-field_training_tags'] = array(
+        'bundle' => 'event',
+        'default_value' => NULL,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'entityreference',
+                'settings' => array(
+                    'bypass_access' => FALSE,
+                    'link' => FALSE,
+                ),
+                'type' => 'entityreference_label',
+                'weight' => 7,
+            ),
+            'hitsa_event' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_training_tags',
+        'label' => 'Training tags',
+        'required' => 0,
+        'settings' => array(
+            'behaviors' => array(
+                'taxonomy-index' => array(
+                    'status' => TRUE,
+                ),
+            ),
+            'entity_translation_sync' => FALSE,
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'entityreference',
+            'settings' => array(
+                'entityreference_autocreate' => 0,
+                'match_operator' => 'CONTAINS',
+                'path' => '',
+                'size' => 60,
+            ),
+            'type' => 'entityreference_autocomplete_tags',
+            'weight' => 8,
         ),
     );
 
@@ -1228,51 +1236,52 @@ function _hitsa_events_add_field_instances()
 
     // Exported field_instance:
     // 'taxonomy_term-time_periods-field_time_period_dates'.
-    // $field_instances['taxonomy_term-time_periods-field_time_period_dates'] = array(
-    //   'bundle' => 'time_periods',
-    //   'deleted' => 0,
-    //   'description' => '',
-    //   'display' => array(
-    //     'default' => array(
-    //       'label' => 'above',
-    //       'module' => 'date',
-    //       'settings' => array(
-    //         'format_type' => 'long',
-    //         'fromto' => 'both',
-    //         'multiple_from' => '',
-    //         'multiple_number' => '',
-    //         'multiple_to' => '',
-    //         'show_remaining_days' => FALSE,
-    //       ),
-    //       'type' => 'date_default',
-    //       'weight' => 0,
-    //     ),
-    //   ),
-    //   'entity_type' => 'taxonomy_term',
-    //   'field_name' => 'field_time_period_dates',
-    //   'label' => 'Time period dates',
-    //   'required' => FALSE,
-    //   'settings' => array(
-    //     'default_value' => 'now',
-    //     'default_value2' => 'now',
-    //     'default_value_code' => '',
-    //     'default_value_code2' => '',
-    //     'user_register_form' => FALSE,
-    //   ),
-    //   'widget' => array(
-    //     'module' => 'date',
-    //     'settings' => array(
-    //       'increment' => 15,
-    //       'input_format' => 'm/d/Y - H:i:s',
-    //       'input_format_custom' => '',
-    //       'label_position' => 'above',
-    //       'text_parts' => array(),
-    //       'year_range' => '-3:+3',
-    //     ),
-    //     'type' => 'date_popup',
-    //     'weight' => 1,
-    //   ),
-    // );
+    $field_instances['taxonomy_term-time_periods-field_time_period_dates'] = array(
+        'bundle' => 'time_periods',
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'date',
+                'settings' => array(
+                    'format_type' => 'long',
+                    'fromto' => 'both',
+                    'multiple_from' => '',
+                    'multiple_number' => '',
+                    'multiple_to' => '',
+                    'show_remaining_days' => FALSE,
+                ),
+                'type' => 'date_default',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_time_period_dates',
+        'label' => 'Time period dates',
+        'required' => FALSE,
+        'settings' => array(
+            'default_value' => 'now',
+            'default_value2' => 'now',
+            'default_value_code' => '',
+            'default_value_code2' => '',
+            'entity_translation_sync' => FALSE,
+            'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+            'module' => 'date',
+            'settings' => array(
+                'increment' => 15,
+                'input_format' => 'm/d/Y - H:i:s',
+                'input_format_custom' => '',
+                'label_position' => 'above',
+                'text_parts' => array(),
+                'year_range' => '-3:+3',
+            ),
+            'type' => 'date_popup',
+            'weight' => 1,
+        ),
+    );
 
     // Translatables
     // Included for use with string extractors like potx.
@@ -1284,21 +1293,19 @@ function _hitsa_events_add_field_instances()
     t('Registration form');
     t('Siin määratakse ära, millisesse semestrisse aine kuulub');
     t('Sündmuse toimiumise asukoht');
-    t('Tag, millega saab sisule viidata. Terminid tuleb komaga Üksteisest eraldada');
     t('Tags');
-    t('Training tags');
     t('Time period dates');
     t('Time period when event takes place');
     t('Training cost');
+    t('Training tags');
 
     return $field_instances;
-
 }
 
 function hitsa_events_delete_custom_node_fields()
 {
     foreach (array_keys(_hitsa_events_add_field_bases()) as $field) {
-        field_delete_field($field);
+//        field_delete_field($field);
     }
     $instances = field_info_instances('node', 'event');
     foreach ($instances as $instance_name => $field_instance) {

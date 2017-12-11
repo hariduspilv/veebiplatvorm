@@ -1799,7 +1799,7 @@ function hitsa_events_mail($key, &$message, $params)
 
 function hitsa_events_generate_custom_form($form, &$form_state, $components, $nid)
 {
-
+//TODO Failide üleslaadimise osad teha
     if (!empty($components)) {
         $form = array(
             '#action' => 'training-calendar/registration',
