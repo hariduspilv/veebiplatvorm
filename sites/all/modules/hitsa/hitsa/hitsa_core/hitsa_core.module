@@ -143,7 +143,7 @@ function hitsa_core_render_sitemap()
  * Implements hook_form_alter().
  */
 function hitsa_core_form_alter(&$form, &$form_state, $form_id)
-{ 
+{
   if(!empty($form['body']) && $form['#node']->type !== 'curriculum') {
       $form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
       $form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
@@ -170,6 +170,12 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
         }
     
         //$form['#theme'] = 'main_menu_overview_form';
+    }
+    switch ($form_id){
+        case 'taxonomy_form_term':
+            dpm($form);
+            $form['description']['#access']=FALSE;
+            break;
     }
 }
 

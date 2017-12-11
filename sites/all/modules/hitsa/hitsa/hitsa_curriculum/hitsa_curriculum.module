@@ -857,8 +857,8 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         if (!empty($content->field_curriculum_length)) {
             $start = $content->field_curriculum_length['und'][0]['value'];
             $end = $content->field_curriculum_length['und'][0]['value2'];
-            $start = format_date($start, 'custom', 'd.F.Y', null, $language->language);
-            $end = format_date($end, 'custom', 'd.F.Y', null, $language->language);
+            $start = format_date($start, 'custom', 'd.n.Y', null, $language->language);
+            $end = format_date($end, 'custom', 'd.n.Y', null, $language->language);
             if ($curriculum_type=='preparatory-courses'||$curriculum_type=='e-course') {
 
                     $output_elements['date_length'] = '<p><b>' . t('Course duration') . ': </b>' . $start . ' - ' . $end . '</p>';
@@ -872,7 +872,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
 
         if (!empty($content->field_curriculum_start)) {
             $start = $content->field_curriculum_start['und'][0]['value'];
-            $start = format_date($start, 'custom', 'd.F.Y - G:i', null, $language->language);
+            $start = format_date($start, 'custom', 'd.n.Y - G:i', null, $language->language);
             $output_elements['date_start'] = '<p>' . $start . '</p>';
             if ($curriculum_type=='preparatory-courses'||$curriculum_type=='e-course') {
                 if ($curriculum_type=='preparatory-courses'){
