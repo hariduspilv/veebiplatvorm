@@ -371,7 +371,7 @@ function hitsa_curriculum_generate_table($table,$descriptions=NULL,$type=NULL)
     $output = '';
     if (!empty($table) && !empty($table['tabledata'])) {
 
-        $output .= '<div class="table_wrapper sm-table-block" data-plugin="responsiveTable">';
+        $output .= '<div class="table_wrapper" data-plugin="responsiveTable">';
         $output .= '<table>';
             $table_data = $table['tabledata'];
 
@@ -1345,12 +1345,7 @@ function hitsa_curriculum_fp_subject_fields()
                     $loaded_speciality = node_load($node_value->nid);
                 }
             }
-            $image_url = '';
-            if (!empty($loaded_speciality->field_pictures)) {
-                $picture = $loaded_speciality->field_pictures['und'][0];
-                $image_style = 'hc_pictures';
-                $image_url = image_style_url($image_style, $picture['uri']);
-            
+
                 $term = taxonomy_term_load($taxonomy_value->tid);
                 if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
                     $term = i18n_taxonomy_localize_terms($term); // The important part!
@@ -1371,7 +1366,7 @@ function hitsa_curriculum_fp_subject_fields()
                     </a><!--/block-->
                  </div><!--/col-3-->';
                     }
-                }
+
             }
         }
         
