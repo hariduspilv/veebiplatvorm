@@ -87,11 +87,12 @@
     <?php include('include/article-content.tpl.php'); ?>
 
     <?php if(!empty($more_articles)): ?>
-    <div class="block">
+    <div class="block no-print">
       
       <h1 class="block-title"><?php if(!empty($more_articles_title)) {print $more_articles_title;} ?></h1>
       
       <div class="row row-vertical-xl">
+
       <?php foreach($more_articles as $article) { print $article; } ?>
       </div><!--/row-->
       <div class="row">

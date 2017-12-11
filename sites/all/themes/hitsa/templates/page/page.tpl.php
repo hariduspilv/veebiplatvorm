@@ -122,7 +122,7 @@
     <?php endif;?>
     
       <?php if ($tabs && !empty($tabs_rendered = render($tabs))): ?>
-        <div class="row">
+        <div class="row no-print">
           <div class="col-12">
             <?php print $tabs_rendered; ?>
           </div><!--/col-12-->
