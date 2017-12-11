@@ -996,7 +996,6 @@ function hitsa_events_training_calendar()
                         $event_html = hitsa_events_event_html($event, $type = 'training');
                         $events_array[] = $event_html;
                         // $output.= $event_html['html'];
-                        dpm($event_html);
                         $periods[$event_html['periods']->tid] = $event_html['periods'];
                         $periods[$event_html['periods']->tid]->events[] = array('date' => $event_html['start_date'], 'html' => $event_html['html']);
                     } else {
@@ -1740,7 +1739,6 @@ function hitsa_events_cron()
 
 function hitsa_events_send_mail($file_link, $post, $event)
 {
-    krumo($post);
     if (!empty($post['email'])) {
         $attachment = file_load($file_link);
 
@@ -1949,7 +1947,6 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                     '#weight' => 100,
                 );
 
-                krumo($form);
                 return $form;
             }
         }
@@ -1964,7 +1961,6 @@ function hitsa_events_training_event_registration()
     if (!empty($_POST)){
         $form_validated = hitsa_events_registration_processing($_POST);
     }
-    dpm($form_validated);
     $markup = ' <div class="block" data-modal="true">
 
                <h1 class="block-title">' . t('Add to calendar') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
