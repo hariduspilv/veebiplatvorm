@@ -95,7 +95,12 @@
     <?php print $header?>
    <?php endif; ?>
   </header><!--/main-->
-  <?php if(!empty($page['hero'])):?>
+
+    <?php if(!empty($mobile_menu)): ?>
+        <?php print $mobile_menu; ?>
+    <?php endif; ?>
+
+    <?php if(!empty($page['hero'])):?>
   <?php print render($page['hero'])?>
   <?php endif;?>
   <div class="inline">

@@ -71,14 +71,26 @@ function hitsa_curriculum_block_info()
 
     $field = field_info_field('field_school_selections');
     $allowed = list_allowed_values($field);
+    $languages = language_list('enabled');
+    $t = get_t();
     foreach ($allowed as $allowed_key => $allowed_title) {
-        $pages = $allowed_key."\n".$allowed_key.'/*';
+        $pages = $allowed_key."\n".$allowed_key.'/*'."\n".'content/'.$allowed_key."\n".'content/'.$allowed_key.'/*';
+        if (!empty($languages[1])) {
+            $languages = $languages[1];
+            foreach ($languages as $lang_key => $language) {
+                if ($lang_key!='en') {
+                    $translated = $t($allowed_key, array(), array('langcode' => $lang_key));
+                    $pages .= "\n" . $translated . "\n" . $translated . '/*';
+                }
+            }
+        }
         $blocks[$allowed_key] = array(
             'info' => t($allowed_title . ' block'),
             'region' => 'content',
             'status' => 1,
             'visibility' => BLOCK_VISIBILITY_LISTED,
             'pages' => strval($pages),
+            'weight' => 100,
         );
     }
     $blocks['hitsa_hero_banner'] = array(
@@ -632,6 +644,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
     $menu_items = menu_get_item($current_path);
     $type = null;
     $active_id = null;
+    $bundle = null;
     if (!empty($menu_items)) {
         if (!empty($menu_items['page_arguments'])) {
             if (!empty($menu_items['page_arguments'][0])) {
@@ -645,6 +658,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 }
                 else{
                   $node = $menu_items['page_arguments'][0];
+                  $bundle = $node->type;
                   if (!empty($node->field_school_selections)){
                       $type = $node->field_school_selections['und'][0]['value'];
                   }
@@ -655,16 +669,19 @@ function hitsa_curriculum_custom_block($curriculum_type)
             }
         }
     }
+
     if (!empty($type)) {
-        $header_content = hitsa_core_get_content_by_type('node', 'content_page', $language->language, array('cur_type' => $type));
-        if (!empty($header_content)) {
-            $header_nids = array_keys($header_content['node']);
-            $header = entity_load('node', $header_nids);
-            foreach ($header as $header_key => $header_value) {
-                $header_content_html = hitsa_curriculum_generate_header($header_value);
-                break;
-            }
-        }
+       if ($bundle!='content_page') {
+           $header_content = hitsa_core_get_content_by_type('node', 'content_page', $language->language, array('cur_type' => $type));
+           if (!empty($header_content)) {
+               $header_nids = array_keys($header_content['node']);
+               $header = entity_load('node', $header_nids);
+               foreach ($header as $header_key => $header_value) {
+                   $header_content_html = hitsa_curriculum_generate_header($header_value);
+                   break;
+               }
+           }
+       }
     }
 
     $output = '';
@@ -675,22 +692,56 @@ function hitsa_curriculum_custom_block($curriculum_type)
     if (module_exists('hitsa_core')) {
         $content = hitsa_core_get_content_by_type('node', 'curriculum', $language->language, array('cur_type' => $type));
     }
-    
+    $content_count = 0;
     if (!empty($content)) {
         if (isset($content['node'])) {
+            if (is_array($content['node'])) {
+                $content_count = count($content['node']);
+            }
             $content_nids = array_keys($content['node']);
             $real_content = entity_load('node', $content_nids);
         }
     }
     if (!empty($real_content)) {
+
         if (empty($active_id)) {
             foreach ($real_content as $real_key => $real_value) {
                 $active_id = $real_key;
                 break;
             }
         }
-        $tabs = menu_local_tabs();
-        $tabs = drupal_render($tabs);
+        if (!empty($bundle)) {
+            if($bundle!='content_page') {
+                $tabs = menu_local_tabs();
+                $tabs = drupal_render($tabs);
+            }
+            else{
+                global $user;
+                if (!empty($user)){
+                    if ($user->uid>0){
+                        $content=null;
+                        if (!empty($real_content)) {
+                            if (!empty($real_content[is_object($active_id)?$active_id->nid:$active_id])) {
+                                $content = $real_content[is_object($active_id)?$active_id->nid:$active_id];
+                            }
+                        }
+                        if (empty($content)){
+                            foreach ($real_content as $real_content_key => $real_content_value) {
+                                $active_id = $real_content_key;
+                                break;
+                            }
+                        }
+                        $edit_url = url('node/'.$active_id.'/edit');
+                        $edit_links = '<ul class="tabs primary"><li><a href="'.$edit_url.'">'.t('Edit').'</a></li></ul>';
+                        $tabs = $edit_links;
+                    }
+                }
+            }
+        }
+        else{
+            $tabs = menu_local_tabs();
+            $tabs = drupal_render($tabs);
+        }
         global $user;
         if ($user->uid!=0) {
             if (!empty($tabs)) {
@@ -717,12 +768,21 @@ function hitsa_curriculum_custom_block($curriculum_type)
     if (!empty($left_side)||!empty($right_side)) {
         $output .= '<div class="block no-padding">';
         $output .= '<div class="row">';
-        $output .= '<div class="col-3 d-flex sm-hide">';
-        $output .= $left_side;
-        $output .= '</div><!--/col-3-->';
-        $output .= '<div class="col-9 sm-12">';
-        $output .= $right_side;
-        $output .= '</div><!--/col-9-->';
+        if ($content_count>1) {
+            $output .= '<div class="col-3 d-flex sm-hide">';
+            $output .= $left_side;
+            $output .= '</div><!--/col-3-->';
+        }
+        if ($content_count>1) {
+            $output .= '<div class="col-9 sm-12">';
+            $output .= $right_side;
+            $output .= '</div><!--/col-9-->';
+        }
+        else{
+            $output .= '<div class="col-12 sm-12">';
+            $output .= $right_side;
+            $output .= '</div><!--/col-9-->';
+        }
         $output .= '</div><!--/row-->';
         $output .= '</div><!--/block-->';
     }

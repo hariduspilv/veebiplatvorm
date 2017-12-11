@@ -32,7 +32,7 @@ function hitsa_catering_block_info()
     $blocks = array();
 
     // This example comes from node.module.
-    $pages = "catering\ncatering/*\ntoitlustamine\ntoitlustamine/*";
+    $pages = "catering\ncatering/*\ntoitlustamine\ntoitlustamine/*\ncontent/toitlustamine\ncontent/toitlustamine/*";
     $blocks['catering_block'] = array(
         'info' => t('Catering ' . ' block'),
         'region' => 'content',

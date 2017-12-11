@@ -137,7 +137,10 @@ function hitsa_curriculum_add_custom_paragraphs_fields()
 {
 
     foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field) {
-        field_create_field($field);
+        $field_test = field_info_field($field['field_name']);
+        if(empty($field_test)) {
+            field_create_field($field);
+        }
     }
 
     foreach (_hitsa_curriculum_installed_paragraphs_instances() as $field_instance) {
@@ -926,11 +929,16 @@ function _hitsa_curriculum_installed_node_fields(){
                 'elective-courses' => 'Elective courses',
                 'hobby-activity' => 'Hobby activity',
                 'e-course' => 'E-Course',
-                'scholarships' => 'Scholarships',
-                'accommodation' => 'Accommodation',
-                'ordered_trainings' => 'Ordered trainings',
-                'publications' => 'Publications',
                 'catering' => 'Catering',
+                'scholarships' => 'Scholarships',
+                'sport-facilities' => 'Sport facilities',
+                'accommodation' => 'Accommodation',
+                'ordered-trainings' => 'Ordered trainings',
+                'publications' => 'Publications',
+                'training-scholarships' => 'Training Scholarships',
+                'certification-exams' => 'Certification exams',
+                'cooperation-and-partners' => 'Cooperation and partners',
+                'vacancies' => 'Vacancies',
             ),
             'allowed_values_function' => '',
             'entity_translation_sync' => FALSE,
@@ -1082,7 +1090,6 @@ function _hitsa_curriculum_installed_node_fields(){
     );
 
     return $field_bases;
-
 }
 function _hitsa_curriculum_installed_node_instances(){
     $field_instances = array();
@@ -2474,7 +2481,6 @@ function hitsa_curriculum_make_fields_conditional()
     }
 }
 function _hitsa_curriculum_conditional_fields(){
-
     $items = array();
 
     $items["node:curriculum:0"] = array(
@@ -4034,6 +4040,10 @@ function _hitsa_curriculum_conditional_fields(){
                 4 => 'ordered_trainings',
                 5 => 'publications',
                 6 => 'catering',
+                7 => 'training-scholarshps',
+                8 => 'certification-exams',
+                9 => 'cooperation-and-partners',
+                10 => 'vacancies',
             ),
             'value' => array(),
         ),
