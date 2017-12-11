@@ -838,7 +838,8 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                 if (!empty($area_value->field_field)) {
                     $field_id = $area_value->field_field['und'][0]['target_id'];
                     $loaded_field = taxonomy_term_load($field_id);
-                    if (empty($fields[$field_id])&&is_object($loaded_field)) {
+                    dpm($loaded_field);
+                    if (empty($fields[$field_id])) {
                         $fields[$field_id] = array(
                             'name' => $loaded_field->name,
                             'tid' => $loaded_field->tid,
