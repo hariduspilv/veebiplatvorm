@@ -329,6 +329,9 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
             if (!empty($form['field_school_selections'])){
                 $options=$form['field_school_selections']['und']['#options'];
                 foreach ($options as $options_key => $options_value){
+                    if($options_key=='catering'){
+                        unset($form['field_school_selections']['und']['#options'][$options_key]);
+                    }
                     $form['field_school_selections']['und']['#options'][$options_key] = t($options_value);
                 }
             }

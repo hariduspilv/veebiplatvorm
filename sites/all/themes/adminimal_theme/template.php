@@ -459,3 +459,24 @@ function adminimal_table($variables) {
   $output .= "</div>\n";
   return $output;
 }
+function adminimal_select($variables) {
+    $element = $variables['element'];
+    if (!empty($element['#bundle'])) {
+        if ($element['#bundle'] == 'curriculum') {
+            if ($element['#name'] == 'field_school_selections[und]') {
+                if (isset($element['#options']['catering'])) {
+                    unset($element['#options']['catering']);
+                }
+            }
+        }
+    }
+    element_set_attributes($element, array(
+        'id',
+        'name',
+        'size',
+    ));
+    _form_set_class($element, array(
+        'form-select',
+    ));
+    return '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_options($element) . '</select>';
+}

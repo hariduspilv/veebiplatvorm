@@ -2564,8 +2564,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-
-    $items["node:curriculum:2"] = array(
+    $items["node:curriculum:1"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_curriculum_length',
@@ -2652,7 +2651,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:3"] = array(
+    $items["node:curriculum:2"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_curriculum_start',
@@ -2739,7 +2738,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:4"] = array(
+    $items["node:curriculum:3"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_days_place',
@@ -2826,7 +2825,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:5"] = array(
+    $items["node:curriculum:4"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_field',
@@ -2910,7 +2909,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:6"] = array(
+    $items["node:curriculum:5"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_instructor',
@@ -2997,7 +2996,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:7"] = array(
+    $items["node:curriculum:6"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_jobs',
@@ -3081,7 +3080,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:8"] = array(
+    $items["node:curriculum:7"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_jobs_pretext',
@@ -3165,7 +3164,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:10"] = array(
+    $items["node:curriculum:8"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_premise',
@@ -3252,7 +3251,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:11"] = array(
+    $items["node:curriculum:9"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_rating',
@@ -3339,7 +3338,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:12"] = array(
+    $items["node:curriculum:10"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_room',
@@ -3426,7 +3425,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:13"] = array(
+    $items["node:curriculum:11"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_short_description',
@@ -3520,7 +3519,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:14"] = array(
+    $items["node:curriculum:12"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_specialitiy_table',
@@ -3604,7 +3603,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:15"] = array(
+    $items["node:curriculum:13"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_subjects_table',
@@ -3688,7 +3687,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:16"] = array(
+    $items["node:curriculum:14"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_table_description',
@@ -3771,7 +3770,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:17"] = array(
+    $items["node:curriculum:15"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_table_descriptions',
@@ -3854,7 +3853,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:18"] = array(
+    $items["node:curriculum:16"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_target_group',
@@ -3941,7 +3940,7 @@ function _hitsa_curriculum_conditional_fields(){
         ),
     );
 
-    $items["node:curriculum:19"] = array(
+    $items["node:curriculum:17"] = array(
         'entity' => 'node',
         'bundle' => 'curriculum',
         'dependent' => 'field_textbooks',
@@ -3982,7 +3981,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                7 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                8 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -4008,7 +4014,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                7 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                8 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -4019,92 +4029,13 @@ function _hitsa_curriculum_conditional_fields(){
             'values' => array(
                 0 => 'subject-field',
                 1 => 'specialities',
+                2 => 'scholarships',
+                3 => 'accommodation',
+                4 => 'ordered_trainings',
+                5 => 'publications',
+                6 => 'catering',
             ),
             'value' => array(),
-        ),
-    );
-
-    $items["node:curriculum:20"] = array(
-        'entity' => 'node',
-        'bundle' => 'curriculum',
-        'dependent' => 'field_time_it_ends',
-        'dependee' => 'field_school_selections',
-        'options' => array(
-            'state' => 'visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'e-course',
-            'value' => array(
-                0 => array(
-                    'value' => 'e-course',
-                ),
-            ),
-            'values' => array(),
         ),
     );
 
