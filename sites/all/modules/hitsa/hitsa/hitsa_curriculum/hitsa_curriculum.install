@@ -5,6 +5,11 @@
  */
 function hitsa_curriculum_install()
 {
+    $school_type =  hitsa_core_get_school_type();
+    if (empty(variable_get('hitsa_school_type'))){
+        variable_set('hitsa_school_type',1);
+        $school_type=1;
+    }
     hitsa_curriculum_create_node();
 
     $types = node_type_get_types();
@@ -13,7 +18,7 @@ function hitsa_curriculum_install()
     hitsa_curriculum_add_custom_paragraphs_bundle();
 
     hitsa_curriculum_add_custom_paragraphs_fields();
-    hitsa_curriculum_add_custom_node_fields();
+    hitsa_curriculum_add_custom_node_fields($school_type);
     hitsa_curriculum_make_fields_conditional();
     // hitsa_curriculum_add_custom_field_groups();
 
@@ -527,9 +532,9 @@ function hitsa_curriculum_delete_custom_paragraphs_fields()
         field_delete_instance($field_instance);
     }
 }
-function hitsa_curriculum_add_custom_node_fields()
+function hitsa_curriculum_add_custom_node_fields($school_type)
 {
-    foreach (_hitsa_curriculum_installed_node_fields() as $field) {
+    foreach (_hitsa_curriculum_installed_node_fields($school_type) as $field) {
 
         $field_test = field_info_field($field['field_name']);
         if(empty($field_test)) {
@@ -541,11 +546,40 @@ function hitsa_curriculum_add_custom_node_fields()
         field_create_instance($field_instance);
     }
 }
-function _hitsa_curriculum_installed_node_fields(){
+function _hitsa_curriculum_installed_node_fields($school_type){
 
-    $field_bases = array();
 
+    if ($school_type==1){
+        $subtypes = array(
+            'specialities' => 'Speciality',
+            'elective-courses' => 'Elective courses',
+            'accommodation' => 'Accommodation',
+            'hobby-activity' => 'Hobby activity',
+            'sport-facilities' => 'Sport facilities',
+            'training-scholarships' => 'Training Scholarships',
+            'e-course' => 'E-Course',
+            'catering' => 'Catering',
+            'ordered-trainings' => 'Ordered trainings',
+            'certification-exams' => 'Certification exams',
+            'cooperation-and-partners' => 'Cooperation and partners',
+        );
+    }
+    elseif($school_type==2){
+        $subtypes = array(
+            'subject-field' => 'Subject field',
+            'boarding-school' => 'Boarding school',
+            'hobby-groups' => 'Hobby Groups',
+            'sport' => 'Sport',
+            'cooperation' => 'Cooperation',
+        );
+    }
+    $subtypes['vacancies'] = 'Vacancies';
+    $subtypes['publications'] = 'Publications';
+    $subtypes['preparatory-courses'] = 'Preparatory courses';
+    $subtypes['publications'] = 'Publications';
+    $subtypes['elective-subjects'] = 'Elective subjects';
     // Exported field_base: 'body'.
+    $field_bases = array();
     $field_bases['body'] = array(
         'active' => 1,
         'cardinality' => 1,
@@ -906,6 +940,7 @@ function _hitsa_curriculum_installed_node_fields(){
     );
 
     // Exported field_base: 'field_school_selections'.
+
     $field_bases['field_school_selections'] = array(
         'active' => 1,
         'cardinality' => 1,
@@ -920,26 +955,7 @@ function _hitsa_curriculum_installed_node_fields(){
         'locked' => 1,
         'module' => 'list',
         'settings' => array(
-            'allowed_values' => array(
-                'subject-field' => 'Subject field',
-                'preparatory-courses' => 'Preparatory courses',
-                'elective-subjects' => 'Elective subjects',
-                'hobby-groups' => 'Hobby Groups',
-                'specialities' => 'Speciality',
-                'elective-courses' => 'Elective courses',
-                'hobby-activity' => 'Hobby activity',
-                'e-course' => 'E-Course',
-                'catering' => 'Catering',
-                'scholarships' => 'Scholarships',
-                'sport-facilities' => 'Sport facilities',
-                'accommodation' => 'Accommodation',
-                'ordered-trainings' => 'Ordered trainings',
-                'publications' => 'Publications',
-                'training-scholarships' => 'Training Scholarships',
-                'certification-exams' => 'Certification exams',
-                'cooperation-and-partners' => 'Cooperation and partners',
-                'vacancies' => 'Vacancies',
-            ),
+            'allowed_values' => $subtypes,
             'allowed_values_function' => '',
             'entity_translation_sync' => FALSE,
         ),
@@ -4080,6 +4096,7 @@ function hitsa_curriculum_add_custom_taxonomy_fields_base()
     $field_bases = array();
   
     // Exported field_base: 'field_icon_choice'.
+
     $field_bases['field_icon_choice'] = array(
       'active' => 1,
       'cardinality' => 1,
