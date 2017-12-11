@@ -913,31 +913,43 @@ function hitsa_catering_front_page_block()
         }
         $results = $query->execute();
         foreach ($results as $catering_result) {
-//            dpm($catering_result);
+            ;
             $node = node_load($catering_result->nid);
             $lower_today = strtolower($today_day);
             $to_check = 'field_catering_' . $lower_today;
             if (!empty($node->$to_check)) {
-                foreach ($node->$to_check['und'] as $food) {
+                foreach ($node->$to_check[LANGUAGE_NONE] as $food) {
                     $id = $food['value'];
 
                     $food = entity_load_single('paragraphs_item', $id);
                     if (!empty($food->field_food_name)) {
-                        $food_name = $food->field_food_name['und'][0]['value'];
+                        $food_name = $food->field_food_name[LANGUAGE_NONE][0]['value'];
 //                        $foods[$food_name]['name'] = $food_name;
                         if (!empty($food->field_food_subcategory)) {
 
-                            $food_subcategory = $food->field_food_subcategory['und'][0]['target_id'];
+                            $food_subcategory = $food->field_food_subcategory[LANGUAGE_NONE][0]['target_id'];
                             $food_subcategory = taxonomy_term_load($food_subcategory);
-
                             if (!empty($food_subcategory->field_food_icon)) {
-                                $icon = 'before-' . $food_subcategory->field_food_icon['und'][0]['value'];
+                                $icon = 'before-' . $food_subcategory->field_food_icon[LANGUAGE_NONE][0]['value'];
                                 $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
                                 $foods[$sub_category_name][$food_name]['name'] = $food_name;
                                 $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
                                 $foods[$sub_category_name][$food_name]['icon'] = $icon;
+                            }
+                            else{
+                                $sub_category_name = $food_subcategory->name;
+//                                $foods[$food_name]['subcategory'] = $sub_category_name;
+//                                $foods[$food_name]['icon'] = $icon;
+                                $foods[$sub_category_name][$food_name]['name'] = $food_name;
+                                $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
+                                if($sub_category_name=='Dessert') {
+                                    $foods[$sub_category_name][$food_name]['icon'] = 'before-sweet';
+                                }
+                                else{
+                                    $foods[$sub_category_name][$food_name]['icon'] = 'before-dinner';
+                                }
                             }
                         }
                     }
@@ -987,6 +999,19 @@ function hitsa_catering_front_page_block()
                                     $foods_tomorrow[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
                                     $foods_tomorrow[$sub_category_name][$food_name]['icon'] = $icon;
                                 }
+                                else{
+                                    $sub_category_name = $food_subcategory->name;
+//                                $foods[$food_name]['subcategory'] = $sub_category_name;
+//                                $foods[$food_name]['icon'] = $icon;
+                                    $foods[$sub_category_name][$food_name]['name'] = $food_name;
+                                    $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
+                                    if($sub_category_name=='Dessert') {
+                                        $foods[$sub_category_name][$food_name]['icon'] = 'before-sweet';
+                                    }
+                                    else{
+                                        $foods[$sub_category_name][$food_name]['icon'] = 'before-dinner';
+                                    }
+                                }
                             }
                         }
                     }
@@ -1031,6 +1056,19 @@ function hitsa_catering_front_page_block()
                                     $foods_tomorrow[$sub_category_name][$food_name]['name'] = $food_name;
                                     $foods_tomorrow[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
                                     $foods_tomorrow[$sub_category_name][$food_name]['icon'] = $icon;
+                                }
+                                else{
+                                    $sub_category_name = $food_subcategory->name;
+//                                $foods[$food_name]['subcategory'] = $sub_category_name;
+//                                $foods[$food_name]['icon'] = $icon;
+                                    $foods[$sub_category_name][$food_name]['name'] = $food_name;
+                                    $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
+                                    if($sub_category_name=='Dessert') {
+                                        $foods[$sub_category_name][$food_name]['icon'] = 'before-sweet';
+                                    }
+                                    else{
+                                        $foods[$sub_category_name][$food_name]['icon'] = 'before-dinner';
+                                    }
                                 }
                             }
                         }
@@ -1083,7 +1121,7 @@ function hitsa_catering_front_page_block()
     if (!empty($foods_selected) || !empty($foods_selected_tomorrow)) {
         $output .= '<div class="col-6 sm-12">
                   
-                  <div class="block block-stretch" data-plugin="tabs">
+                  <div class="block block-stretch flex-grow" data-plugin="tabs">
                      <h2 class="block-title">' . t('Catering') . '</h2>
 
                      <div class="row pull-up">
