@@ -28,3 +28,7 @@ sites/default/settings.php
 \.idea/vcs\.xml
 
 \.idea/workspace\.xml
+
+\.idea/workspace\.xml___jb_tmp___
+
+\.idea/
