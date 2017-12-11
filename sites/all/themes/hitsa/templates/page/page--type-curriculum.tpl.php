@@ -87,14 +87,14 @@
 
 ?>
 <div class="wrapper">
-   
-  <header class="main">
-   <?php if(!empty($page['header'])): ?>
-    <?php print drupal_render($page['header']); ?>
-    <?php elseif(!empty($header)):?>
-    <?php print $header?>
-   <?php endif; ?>
-  </header><!--/main-->
+
+    <header class="main sm-hide">
+        <?php if(!empty($page['header'])): ?>
+            <?php print drupal_render($page['header']); ?>
+        <?php elseif(!empty($header)):?>
+            <?php print $header?>
+        <?php endif; ?>
+    </header><!--/main-->
 
     <?php if(!empty($mobile_menu)): ?>
         <?php print $mobile_menu; ?>
