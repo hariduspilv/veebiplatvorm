@@ -41,15 +41,14 @@ function hitsa_catering_block_info()
         'pages' => strval($pages),
         'weight' => 100,
     );
-    $blocks['catering_block_front_page'] = array(
-        'info' => t('Catering front page'),
-        'region' => 'content',
-        'status' => 1,
-        'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => '<front>',
-
-
-    );
+    $school_type = hitsa_core_get_school_type();
+            $blocks['catering_block_front_page'] = array(
+                'info' => t('Catering front page'),
+                'region' => 'content',
+                'status' => ($school_type==1)?0:1,
+                'visibility' => BLOCK_VISIBILITY_LISTED,
+                'pages' => '<front>',
+            );
     return $blocks;
 }
 
@@ -532,7 +531,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                             $food_type = taxonomy_term_load($meal->field_food_type['und'][0]['target_id']);
                             if (!empty($food_type)) {
                                 $meals_array[$food_type->name]['foods'][$subcategory->name] = $subcategory;
-                                
+
                             }
 
 
