@@ -27,6 +27,14 @@ function hitsa_gallery_theme() {
     'render element' => 'grid',
   );
   
+  $items['hitsa_gallery_fp'] = array(
+    'template' => 'hitsa-gallery-fp',
+    'path' => drupal_get_path('module', 'hitsa_gallery') . '/templates',
+    'variables' => array(
+      'nodes' => NULL,
+    ),
+  );
+  
   return $items;
 }
 
