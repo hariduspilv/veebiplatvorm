@@ -93,13 +93,13 @@
       </div>
     <?php endif; ?>
     
-    <?php if(!empty($more_articles)): ?>
+    <?php if(!empty($more_services)): ?>
     <div class="block">
       
-      <h1 class="block-title"><?php if(!empty($more_articles_title)) {print $more_articles_title;} ?></h1>
+      <h1 class="block-title"><?php if(!empty($more_services_title)) {print $more_services_title;} ?></h1>
       
       <div class="row row-vertical-xl">
-      <?php foreach($more_articles as $article) { print $article; } ?>
+      <?php foreach($more_services as $service) { print $service; } ?>
       </div><!--/row-->
       <div class="row">
         <div class="col-12">

@@ -17,7 +17,16 @@
   <div class="row">
     <?php if(!empty($content['cp_type']) && $content['cp_type']['#items'][0]['value'] === 'cp_contacts'): ?>
       <?php if(!empty($content['cp_contacts'])): ?>
-        <?php print render($content['cp_contacts']); ?>
+        <?php 
+        $i = 0;
+        while(!empty($content['cp_contacts']['#items'][$i])): ?>
+        <div class="col-12">
+        <?php print render($content['cp_contacts'][$i]); ?>
+        </div>
+        <?php if(!empty($content['cp_contacts'][$i+1])): ?>
+        <hr class="spacing-xl">
+        <?php endif; ?>
+        <?php $i++; endwhile; ?>
       <?php endif; ?>
     <?php else: ?>
     <div class="col-8 sm-12">

@@ -57,3 +57,54 @@ function hitsa_gallery_filter() {
 function hitsa_gallery_autocomplete() {
   hitsa_content_page_autocomplete('gallery');
 }
+
+function hitsa_gallery_block_info() {
+  $blocks['hitsa_gallery_fp'] = array(
+    'info' => t('HITSA Gallery'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'region' => 'content',
+    'status' => "1",
+  );
+  
+  return $blocks;
+}
+
+function hitsa_gallery_block_view($delta = '') {
+  $output = array();
+  switch($delta) {
+    case 'hitsa_gallery_fp' :
+      $content = hitsa_gallery_fp_block();
+      $output = array('subject' => NULL, 'content' => $content);
+  }
+  
+  return $output;
+}
+
+function hitsa_gallery_fp_block() {
+  $output = '';
+  
+  $query = array();
+  $query['range'] = array(0, 3);
+  $query['entity_type'] = 'node';
+  $query['bundle'] = 'gallery';
+  $query['status'] = NODE_PUBLISHED;
+  $query['order_by'] = array('parameter' => 'created', 'direction' => 'DESC');
+  
+  if($result = hitsa_content_page_query_content($query, TRUE)) {
+    $nids_array = !empty($result['content']) ? $result['content'] : NULL;
+    $nodes = node_load_multiple(array_keys($nids_array['node']));
+    $nodes_rendered = array();
+    
+    //dpm($nodes);
+    
+    foreach($nodes as $node) {
+      $nodes_rendered[] = node_view($node);
+    }
+    
+    $content = theme('hitsa_gallery_fp', array('nodes' => $nodes_rendered));
+    return $content;
+  }
+ //dpm($nodes_rendered);
+  return $output;
+}

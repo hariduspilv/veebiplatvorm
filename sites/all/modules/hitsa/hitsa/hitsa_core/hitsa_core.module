@@ -145,9 +145,9 @@ function hitsa_core_render_sitemap()
 function hitsa_core_form_alter(&$form, &$form_state, $form_id)
 {
   if(!empty($form['body']) && $form['#node']->type !== 'curriculum') {
-      $form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
-      $form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
-      $form['body'][LANGUAGE_NONE][0]['summary']['#description'] = ''; // Hide summary description
+      //$form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
+      //$form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
+      //$form['body'][LANGUAGE_NONE][0]['summary']['#description'] = ''; // Hide summary description
     }
     if (!empty($form['#node_edit_form']) && !empty($form['language'])) { // Set language as the topmost element, before title
         $form['#pre_render'][] = 'hitsa_core_reposition_node_form_fields';

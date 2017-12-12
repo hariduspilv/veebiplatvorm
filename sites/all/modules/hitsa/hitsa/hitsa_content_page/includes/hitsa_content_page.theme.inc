@@ -36,6 +36,14 @@ function hitsa_content_page_theme() {
     ),
   );
   
+  $items['hitsa_service_teaser'] = array(
+    'template' => 'hitsa-service-teaser',
+    'path' => drupal_get_path('module', 'hitsa_content_page') . '/templates',
+    'variables' => array(
+      'node' => NULL,
+    ),
+  );
+  
   $items['content_page_grid'] = array(
     'template' => 'hitsa-content-page',
     'path' => drupal_get_path('module', 'hitsa_content_page') . '/templates',
@@ -60,6 +68,15 @@ function hitsa_content_page_theme() {
 function hitsa_content_page_preprocess_node(&$variables) {
   if($variables['type'] === 'content_page') {
     if($variables['view_mode'] === 'full') {
+      if(!empty($variables['cp_type']) && $variables['cp_type'][0]['value'] === 'cp_service') {
+        $more_services = hitsa_content_page_get_more_services_block_nodes($variables);
+        $services_rendered = array();
+        foreach($more_services as $service) {
+          $services_rendered[] = theme('hitsa_service_teaser', array('node' => $service));
+        }
+        $variables['more_services'] = $services_rendered;
+        $variables['more_services_title'] = t('More services');
+      }
       // Add webform
       if(!empty($variables['cp_webform_ref'])) {
         $nid = $variables['cp_webform_ref'][0]['target_id'];
