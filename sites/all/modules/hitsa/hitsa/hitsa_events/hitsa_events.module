@@ -160,6 +160,7 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 
     switch ($form_id) {
         case 'event_node_form':
+            dpm($form);
             $form['language']['#weight'] = -2;
             $form['field_event_type']['#weight'] = -3;
             $form['period']['#access'] = false;
@@ -920,7 +921,7 @@ function hitsa_events_front_page_block()
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
-            $output .= '             <a href="' . $link . '" class="btn btn-filled">' . t($key . ' calendar') . '</a>';
+            $output .= '             <a href="' . $link . '" class="btn btn-filled">' . t(':key calendar',array(':key' => $key)) . '</a>';
             $output .= '          </div><!--/col-12-->';
             $output .= '       </div><!--/row-->';
             $output .= '</div><!--/data-tab-' . $j . '-->';
