@@ -297,6 +297,14 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
     );
   }
   
+  // CP type
+  if(!empty($query['cp_type'])) {
+    $parameters[] = array(
+     'type' => 'fieldCondition',
+     'arguments' => array('cp_type', 'value', $query['cp_type']),
+    );
+  }
+  
   // Entity type
   if(!empty($query['entity_type'])) {
     $parameters[] = array(
@@ -403,4 +411,31 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
   }
 
   return $parameters;
+}
+
+function hitsa_content_page_get_more_services_block_nodes($variables) {
+  $query = array();
+  
+  $query['entity_type'] = 'node';
+  $query['bundle'] = 'content_page';
+  
+  // Show services.
+  $query['cp_type'] = 'cp_service';
+  
+  // Exclude current node
+  $query['nids_not_in'] = array($variables['nid']);
+  
+  // Query up to 6 nodes
+  $query['range'] = array(0, 6);
+  $result = hitsa_content_page_query_content($query);
+  
+  if($result = hitsa_content_page_query_content($query)) {
+    $service_nids = !empty($result['content']) ? $result['content'] : NULL;
+  }
+  
+  if(!empty($service_nids['node'])) {
+    $services = node_load_multiple(array_keys($service_nids['node']));
+  }
+  
+  return !empty($services) ? $services : array();
 }
