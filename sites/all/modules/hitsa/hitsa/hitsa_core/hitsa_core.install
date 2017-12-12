@@ -394,3 +394,113 @@ function _hitsa_core_roles() {
     ),
   );
 }
+
+function hitsa_core_add_user_roles() {
+  foreach(_hitsa_core_user_roles() as $role => $permissions) {
+    $r = new stdClass();
+    $r->name = $role;
+    user_role_save($r);
+    if(!empty($r->rid)) {
+      user_role_grant_permissions($r->rid);
+    }
+    
+  }
+}
+
+function _hitsa_core_user_roles() {
+  $roles = array(
+    'hitsa editor' => array(
+      'access administration menu' => true,
+      'access administration pages' => true,
+      'access all views' => true,
+      'access all webform results' => true,
+      'access content overview' => true,
+      'access contextual links' => true,
+      'access draggableviews' => true,
+      'access media browser' => true,
+      'access own webform results' => true,
+      'access own webform submissions' => true,
+      'access site in maintenance mode' => true,
+      'administer content translations' => true,
+      'administer files' => true,
+      'administer nodes' => true,
+      'create article content' => true,
+      'create contact content' => true,
+      'create curriculum content' => true,
+      'create event content' => true,
+      'create files' => true,
+      'create gallery content' => true,
+      'create logo content' => true,
+      'create webform content' => true,
+      'delete own article content' => true,
+      'delete own contact content' => true,
+      'delete own curriculum content' => true,
+      'delete own event content' => true,
+      'delete own gallery content' => true,
+      'delete own logo content' => true,
+      'delete own webform content' => true,
+      'download own document files' => true,
+      'download own image files' => true,
+      'download own video files' => true,
+      'edit any content_page content' => true,
+      'edit own article content' => true,
+      'edit own contact content' => true,
+      'edit own content_page content' => true,
+      'edit own curriculum content' => true,
+      'edit own document files' => true,
+      'edit own event content' => true,
+      'edit own gallery content' => true,
+      'edit own image files' => true,
+      'edit own logo content' => true,
+      'edit own video files' => true,
+      'edit own webform content' => true,
+      'translate any entity' => true,
+      'translate content' => true,
+      'translate node entities' => true,
+      'use manualcrop' => true,
+      'view files' => true,
+      'view own files' => true,
+      'view own private files' => true,
+      'view own unpublished content' => true,
+      'view the administration theme' => true,
+    ),
+    'hitsa admin' => array(
+      'access administration menu' => true,
+      'access administration pages' => true,
+      'access all webform results' => true,
+      'access content overview' => true,
+      'access contextual links' => true,
+      'access draggableviews' => true,
+      'access media browser' => true,
+      'access own webform results' => true,
+      'access own webform submissions' => true,
+      'access site in maintenance mode' => true,
+      'access site reports' => true,
+      'access user profiles' => true,
+      'administer content translations' => true,
+      'administer files' => true,
+      'administer hitsa page settings' => true,
+      'administer menu' => true,
+      'administer nodes' => true,
+      'administer site configuration' => true,
+      'administer taxonomy' => true,
+      'administer users' => true,
+      'block IP addresses' => true,
+      'bypass file access' => true,
+      'bypass node access' => true,
+      'delete all webform submissions' => true,
+      'delete own webform submissions' => true,
+      'edit all webform submissions' => true,
+      'edit own webform submissions' => true,
+      'edit webform components' => true,
+      'flush caches' => true,
+      'translate any entity' => true,
+      'translate content' => true,
+      'translate node entities' => true,
+      'use manualcrop' => true,
+      'view the administration theme' => true,
+    ),
+  );
+  
+  return $roles;
+}

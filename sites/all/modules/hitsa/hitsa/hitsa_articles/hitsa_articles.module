@@ -34,8 +34,8 @@ function hitsa_articles_menu() {
   );
   
   $items['admin/content/articles'] = array(
-    'title' => 'Artiklid',
-    'access arguments' => array('administer content'),
+    'title' => 'Uudised',
+    'access arguments' => array('administer nodes'),
     'type' => MENU_LOCAL_TASK,
   );
   
@@ -72,7 +72,7 @@ function hitsa_articles_get_more_articles_block_nodes($variables) {
 function hitsa_articles_node_info() {
   return array(
     'article' => array(
-      'name' => t('Article'),
+      'name' => 'Uudis',
       'base' => 'article',
       'description' => t('Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.'),
       'has_title' => TRUE,
@@ -155,6 +155,14 @@ function article_form($node, $form_state) {
 }
 
 function hitsa_articles_form_alter(&$form, &$form_state, $form_id) {
+  if($form_id === 'views_exposed_form' && $form['#id'] === 'views-exposed-form-admin-views-articles-system-articles') {
+    if(!empty($form['article_type_value'])) {
+      foreach($form['article_type_value']['#options'] as $key => $option) {
+        if($key === 'All') continue;
+        $form['article_type_value']['#options'][$key] = t($option);
+      }
+    }
+  }
   if($form_id === 'article_node_form') {
   }
 }
