@@ -70,7 +70,6 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
           'visible' => array(
             ':input[name^="cp_type"]' => array(
               array('value' => 'cp_tabbed'),
-              array('value' => 'cp_service'),
             ),
           ),
         );
