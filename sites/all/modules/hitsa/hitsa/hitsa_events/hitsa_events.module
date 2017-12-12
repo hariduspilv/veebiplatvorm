@@ -62,7 +62,11 @@ function hitsa_events_block_info()
     // This example comes from node.module.
     $blocks['fornt_page_events'] = array(
         'info' => t('Front page calendar events'),
-        'cache' => DRUPAL_NO_CACHE
+        'cache' => DRUPAL_NO_CACHE,
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => '<front>',
+        'region' => 'content',
+        'status' => 1,
     );
     $blocks['fornt_page_training'] = array(
         'info' => t('Front training events'),

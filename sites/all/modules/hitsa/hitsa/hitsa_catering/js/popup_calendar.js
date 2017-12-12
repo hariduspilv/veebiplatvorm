@@ -38,7 +38,7 @@
         const [day, month, year] = dateStr.split("/");
         var newDate = new Date(year, month - 1, day);
         //add 6 days (friday)
-        newDate.setDate(newDate.getDate() + 6);
+        newDate.setDate(newDate.getDate() + 4);
         return newDate;
     }
 
