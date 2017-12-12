@@ -696,10 +696,11 @@ function hitsa_catering_provider_html($provider)
     if (!empty($provider->field_homepage)) {
 //        dpm($provider);
         $homepage = $provider->field_homepage['und'][0]['url'];
+        $title = $provider->field_homepage['und'][0]['title'];
         $homepage_out .= '<li>';
         $homepage_out .= '                      <div class="before-home"></div>';
         $homepage_out .= '                      <div class="list-details_text">';
-        $homepage_out .= '                         <p><a href="' . $homepage . '" target="_blank">' . $homepage . '</a></p>';
+        $homepage_out .= '                         <p><a href="' . $homepage . '" target="_blank">' . $title . '</a></p>';
         $homepage_out .= '                      </div><!--/list-details_text-->';
         $homepage_out .= '                   </li>';
 
