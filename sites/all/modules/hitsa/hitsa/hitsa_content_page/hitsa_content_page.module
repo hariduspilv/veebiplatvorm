@@ -245,7 +245,8 @@ function hitsa_content_page_autocomplete($type) {
     $autocomplete = (object) array(
       'label' => t('No results found!'),
       'list' => array(),
-    );
+    );LaiNai0l
+
     
     foreach($titles as $title) {
       $autocomplete->list[] = (object) array('title' => $title);
