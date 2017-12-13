@@ -975,14 +975,25 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         if (!empty($content->field_rating)) {
             $output_elements['rating'] = '<p><b>' . t('Rating') . ': </b>' . $content->field_rating['und'][0]['value'] . '</p>';
         }
-        if (!empty($content->field_textbooks)) {
-            $output_elements['textbooks'] = '<p><b>' . t('Textbooks') . ': </b>' . $content->field_textbooks['und'][0]['value'] . '</p>';
-        }
+
+
         if (!empty($content->field_time_it_ends) && $curriculum_type == 'e-course') {
             $output_elements['end_time'] = '<p><b>' . t('Course ends') . ': </b>' . date('d.m.Y - G:i', $content->field_time_it_ends['und'][0]['value']) . '</p>';
         }
     }
-
+    if (!empty($content->field_textbooks)) {
+        $output_elements['textbooks']='<p><b>'.t('Textbooks').': </b>';
+        foreach ($content->field_textbooks[LANGUAGE_NONE] as $textbook) {
+            if(!empty($textbook['title'])){
+                $text_title = $textbook['title'];
+            }
+            else{
+                $text_title = $textbook['url'];
+            }
+            $output_elements['textbooks'] .= '<a href="'.$textbook['url'].'">'.$text_title.'</a>';
+        }
+        $output_elements['textbooks'].='</p>';
+    }
     if (!empty($content->field_table)) {
         $table_id = $content->field_table['und'][0]['value'];
         $table = entity_load_single('paragraphs_item', $table_id);
