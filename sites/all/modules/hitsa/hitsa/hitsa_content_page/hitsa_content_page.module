@@ -63,7 +63,7 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   if($form_id === 'content_page_node_form') {
-    dpm($form);
+    
     if($user->uid !== '1') {
       $form['cp_display_style']['#access'] = FALSE;
       //$form['cp_type']['#access'] = FALSE;
