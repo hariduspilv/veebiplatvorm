@@ -928,7 +928,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     if (!empty($content->field_table_description)) {
         $output_elements['table_description'] = '<p>' . $content->field_table_description['und'][0]['value'] . '</p>';
     }
-    if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses' || $curriculum_type == 'hobby-groups' || $curriculum_type == 'hobby-activity' || $curriculum_type == 'e-course') {
+    if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses' || $curriculum_type == 'hobby-groups' || $curriculum_type == 'hobby-activity' || $curriculum_type == 'e-course' || $curriculum_type=='ordered-trainings') {
         if (!empty($content->field_curriculum_length)) {
             $start = $content->field_curriculum_length['und'][0]['value'];
             $end = $content->field_curriculum_length['und'][0]['value2'];
