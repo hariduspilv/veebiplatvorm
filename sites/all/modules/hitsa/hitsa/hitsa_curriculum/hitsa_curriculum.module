@@ -1,5 +1,6 @@
 <?php
 
+module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_curriculum_page.views');
 /**
  * Implements hook_menu().
  */
@@ -334,6 +335,7 @@ function hitsa_curriculum_node_presave($node)
 
 function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
 {
+
     switch ($form_id) {
         case 'curriculum_node_form':
 //            $form['field_header_information'] = array(
@@ -352,6 +354,15 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
                         unset($form['field_school_selections']['und']['#options'][$options_key]);
                     }
                     $form['field_school_selections']['und']['#options'][$options_key] = t($options_value);
+                }
+            }
+            return $form;
+            break;
+        case 'views_form_administration_tabbed_content_pages_system_tabbed_content_pages'&& 'views_exposed_form':
+            if(!empty($form['field_school_selections_value_i18n'])) {
+                foreach($form['field_school_selections_value_i18n']['#options'] as $key => $option) {
+                    if($key === 'All') continue;
+                    $form['field_school_selections_value_i18n']['#options'][$key] = t($option);
                 }
             }
             return $form;

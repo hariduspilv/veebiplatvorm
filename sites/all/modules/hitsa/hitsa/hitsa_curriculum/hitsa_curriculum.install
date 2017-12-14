@@ -41,10 +41,14 @@ function hitsa_curriculum_uninstall()
     foreach ($result as $row) {
         $node_ids[] = $row->nid;
     }
-    
+    $school_type =  hitsa_core_get_school_type();
+    if (empty(variable_get('hitsa_school_type'))){
+        variable_set('hitsa_school_type',1);
+        $school_type=1;
+    }
     
     // Delete fields and vocabularies
-    hitsa_curriculum_delete_custom_node_fields();
+    hitsa_curriculum_delete_custom_node_fields($school_type);
     hitsa_curriculum_delete_custom_paragraphs_fields();
     field_purge_batch(500);
     hitsa_curriculum_delete_custom_vocabularies();
@@ -546,7 +550,7 @@ function hitsa_curriculum_add_custom_node_fields($school_type)
         field_create_instance($field_instance);
     }
 }
-function _hitsa_curriculum_installed_node_fields($school_type){
+function _hitsa_curriculum_installed_node_fields($school_type=null){
 
 
     if ($school_type==1){
