@@ -70,6 +70,8 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
     }
     
     if(isset($form['cp_type'])) { // Set field conditions
+      $form['cp_type']['#weight'] = $form['title']['#weight'] - 2;
+    
       // Image is required
       $form['#validate'][] = 'hitsa_content_page_required_fields';
       if(!empty($form['cp_subpages'])) {

@@ -504,3 +504,10 @@ function _hitsa_core_user_roles() {
   
   return $roles;
 }
+
+function hitsa_core_disable_modules() {
+  if( module_exists('comment')) {
+    module_disable(array('comment'));
+    drupal_uninstall_modules(array('comment'));
+  }
+}
