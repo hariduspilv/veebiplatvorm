@@ -1006,15 +1006,21 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         }
     }
     if (!empty($content->field_textbooks)) {
-        $output_elements['textbooks']='<p><b>'.t('Textbooks').': </b>';
+        $output_elements['textbooks'] = '<p><b>' . t('Textbooks') . ': </b>';
+        $textbooks_count = count($content->field_textbooks[LANGUAGE_NONE]);
+        $k = 0;
+
         foreach ($content->field_textbooks[LANGUAGE_NONE] as $textbook) {
-            if(!empty($textbook['title'])){
+            if (!empty($textbook['title'])) {
                 $text_title = $textbook['title'];
-            }
-            else{
+            } else {
                 $text_title = $textbook['url'];
             }
-            $output_elements['textbooks'] .= '<a href="'.$textbook['url'].'">'.$text_title.'</a> ';
+            $output_elements['textbooks'] .= '<a href="' . $textbook['url'] . '">' . $text_title . '</a> ';
+            if ($k != $textbooks_count - 1) {
+                $output_elements['textbooks'] .= ', ';
+            }
+            $k++;
         }
         $output_elements['textbooks'].='</p>';
     }
