@@ -747,6 +747,13 @@ function hitsa_curriculum_custom_block($curriculum_type)
             $tabs = menu_local_tabs();
             $tabs = drupal_render($tabs);
         }
+        if (empty($tabs)){
+            if (!empty($active_id)) {
+                $edit_url = url('node/' . $active_id . '/edit');
+                $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
+                $tabs = $edit_links;
+            }
+        }
         global $user;
         if ($user->uid != 0) {
             if (!empty($tabs)) {
@@ -925,8 +932,8 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         if (!empty($content->field_curriculum_length)) {
             $start = $content->field_curriculum_length['und'][0]['value'];
             $end = $content->field_curriculum_length['und'][0]['value2'];
-            $start = format_date($start, 'custom', 'd.n.Y', null, $language->language);
-            $end = format_date($end, 'custom', 'd.n.Y', null, $language->language);
+            $start = format_date($start, 'custom', 'd.m.Y', null, $language->language);
+            $end = format_date($end, 'custom', 'd.m.Y', null, $language->language);
             if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'e-course') {
 
                 $output_elements['date_length'] = '<p><b>' . t('Course duration') . ': </b>' . $start . ' - ' . $end . '</p>';
@@ -940,7 +947,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
 
         if (!empty($content->field_curriculum_start)) {
             $start = $content->field_curriculum_start['und'][0]['value'];
-            $start = format_date($start, 'custom', 'd.n.Y - G:i', null, $language->language);
+            $start = format_date($start, 'custom', 'd.m.Y - G:i', null, $language->language);
             $output_elements['date_start'] = '<p>' . $start . '</p>';
             if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'e-course') {
                 if ($curriculum_type == 'preparatory-courses') {
@@ -975,14 +982,25 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         if (!empty($content->field_rating)) {
             $output_elements['rating'] = '<p><b>' . t('Rating') . ': </b>' . $content->field_rating['und'][0]['value'] . '</p>';
         }
-        if (!empty($content->field_textbooks)) {
-            $output_elements['textbooks'] = '<p><b>' . t('Textbooks') . ': </b>' . $content->field_textbooks['und'][0]['value'] . '</p>';
-        }
+
+
         if (!empty($content->field_time_it_ends) && $curriculum_type == 'e-course') {
             $output_elements['end_time'] = '<p><b>' . t('Course ends') . ': </b>' . date('d.m.Y - G:i', $content->field_time_it_ends['und'][0]['value']) . '</p>';
         }
     }
-
+    if (!empty($content->field_textbooks)) {
+        $output_elements['textbooks']='<p><b>'.t('Textbooks').': </b>';
+        foreach ($content->field_textbooks[LANGUAGE_NONE] as $textbook) {
+            if(!empty($textbook['title'])){
+                $text_title = $textbook['title'];
+            }
+            else{
+                $text_title = $textbook['url'];
+            }
+            $output_elements['textbooks'] .= '<a href="'.$textbook['url'].'">'.$text_title.'</a> ';
+        }
+        $output_elements['textbooks'].='</p>';
+    }
     if (!empty($content->field_table)) {
         $table_id = $content->field_table['und'][0]['value'];
         $table = entity_load_single('paragraphs_item', $table_id);
@@ -1173,7 +1191,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     }
                 } else {
 
-                    if (!empty($output_elements['body_element'])) {
+                    if (!empty($output_elements['body_element'])&&$curriculum_type!='preparatory-courses') {
                         $output .= $output_elements['body_element'];
                     }
                     if (!empty($output_elements['documents'])) {
