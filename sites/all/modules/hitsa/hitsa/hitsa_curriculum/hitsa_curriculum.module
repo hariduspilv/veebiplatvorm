@@ -912,7 +912,6 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
 
                     }
                 }
-                dpm($link);
                 $output .= '<li class="' . $class . '"><a href="' . $link . '#'.$area->title.'">' . $area->title . '</a></li>';
                 unset($class);
             }
