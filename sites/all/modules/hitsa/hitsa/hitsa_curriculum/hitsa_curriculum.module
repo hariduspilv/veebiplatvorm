@@ -950,6 +950,7 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
             usort($fields, function ($a, $b) {
                 return $a['weight'] - $b['weight'];
             });
+            dpm($fields);
             foreach ($fields as $fields_key => $fields_value) {
 
                 $class = ($fields_value['active']) ? 'active' : '';
