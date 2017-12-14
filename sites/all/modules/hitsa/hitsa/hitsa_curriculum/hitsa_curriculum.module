@@ -1101,7 +1101,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                 if (empty($output_elements['short_description']) && !empty($output_elements['mobile_sharing_buttons'])) {
 //                    $output.= $output_elements['mobile_sharing_buttons'];
                 }
-                if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses' || $curriculum_type == 'hobby-groups' || $curriculum_type == 'hobby-activity' || $curriculum_type == 'e-course') {
+                if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses' || $curriculum_type == 'hobby-groups' || $curriculum_type == 'hobby-activity' || $curriculum_type == 'e-course' || $curriculum_type=='ordered-trainings') {
                     if (!empty($output_elements['date_length'])) {
                         $output .= $output_elements['date_length'];
                     }
