@@ -1346,7 +1346,7 @@ function hitsa_curriculum_generate_header($header)
     if (!empty($edit_links)) {
         $output .= $edit_links;
     }
-    $output .= '<div class="block">
+    $output .= '<div class="block sm-hide">
     
     <h2 class="block-title">' . $header->title . '</h2>
     
