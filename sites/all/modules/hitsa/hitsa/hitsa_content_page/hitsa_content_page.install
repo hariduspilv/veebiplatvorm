@@ -62,9 +62,9 @@ function _hitsa_content_page_fields() {
       'locked' => 1,
       'settings' => array(
         'allowed_values' => array(
-          'service_public' => $t('Public'),
-          'service_internal' => $t('Internal'),
-          'service_entrepreneurial' => $t('Entrepreneurial'),
+          'service_public' => 'Avalik',
+          'service_internal' => 'Koolisisene',
+          'service_entrepreneurial' => 'Ettevõtjale',
         ),
       ),
     ),
@@ -74,6 +74,7 @@ function _hitsa_content_page_fields() {
       'type' => 'image',
       'cardinality' => 2,
     ),
+    /*
     'cp_subpages' => array(
       'field_name' => 'cp_subpages',
       'label' => $t('Subpages'),
@@ -110,6 +111,7 @@ function _hitsa_content_page_fields() {
       ),
     ),
     // Subpage Paragraph
+    /*
     'subpage_title' => array(
       'field_name' => 'subpage_title',
       'label' => $t('Title'),
@@ -123,6 +125,7 @@ function _hitsa_content_page_fields() {
       'label' => $t('Body'),
       'type' => 'text_long',
     ),
+    */
     'subpage_images' => array(
       'field_name' => 'subpage_images',
       'label' => $t('Images'),
@@ -259,6 +262,7 @@ function _hitsa_content_page_field_instances() {
       'widget' => array(
         'type' => 'options_select',
         'module' => 'options',
+        'weight' => -90,
       ),
       'display' => array(
         'default' => array(
@@ -301,6 +305,7 @@ function _hitsa_content_page_field_instances() {
       ),
     ),
     */
+    /*
     'cp_subpages' => array(
       'field_name' => 'cp_subpages',
       'bundle' => 'content_page',
@@ -326,6 +331,7 @@ function _hitsa_content_page_field_instances() {
         ),
       ),
     ),
+    */
     'cp_contacts' => array(
       'field_name' => 'cp_contacts',
       'bundle' => 'content_page',
@@ -346,6 +352,7 @@ function _hitsa_content_page_field_instances() {
       ),
     ),
     // Subpage Paragraph
+    /*
     'subpage_title' => array(
       'field_name' => 'subpage_title',
       'entity_type' => 'paragraphs_item',
@@ -374,6 +381,7 @@ function _hitsa_content_page_field_instances() {
         'text_processing' => 1,
       ),
     ),
+    
     'subpage_images' => array(
       'field_name' => 'subpage_images',
       'entity_type' => 'paragraphs_item',
@@ -391,12 +399,13 @@ function _hitsa_content_page_field_instances() {
         ),
       ),
     ),
+    */
     // Contact Information (Subpage)
     'cinfo_contact_person' => array(
       'field_name' => 'cinfo_contact_person',
-      'bundle' => 'subpage',
-      'entity_type' => 'paragraphs_item',
-      'label' => $t('Contact Person / Firm'),
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
+      'label' => 'Kontaktisik / Firma',
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
@@ -410,9 +419,9 @@ function _hitsa_content_page_field_instances() {
     ),
     'cinfo_homepage_url' => array(
       'field_name' => 'cinfo_homepage_url',
-      'bundle' => 'subpage',
-      'entity_type' => 'paragraphs_item',
-      'label' => $t('Homepage address'),
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
+      'label' => 'Kodulehekülg',
       'widget' => array(
         'type' => 'link_field',
         'module' => 'link',
@@ -429,8 +438,8 @@ function _hitsa_content_page_field_instances() {
     ),
     'cinfo_e_mail' => array(
       'field_name' => 'cinfo_e_mail',
-      'bundle' => 'subpage',
-      'entity_type' => 'paragraphs_item',
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
       'label' => $t('E-Mail'),
       'widget' => array(
         'type' => 'email_textfield',
@@ -445,8 +454,8 @@ function _hitsa_content_page_field_instances() {
     ),
     'cinfo_phone_nr' => array(
       'field_name' => 'cinfo_phone_nr',
-      'bundle' => 'subpage',
-      'entity_type' => 'paragraphs_item',
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
       'label' => $t('Phone Nr.'),
       'widget' => array(
         'type' => 'text_textfield',
@@ -461,8 +470,8 @@ function _hitsa_content_page_field_instances() {
     ),
     'cinfo_address' => array(
       'field_name' => 'cinfo_address',
-      'bundle' => 'subpage',
-      'entity_type' => 'paragraphs_item',
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
       'label' => $t('Address'),
       'widget' => array(
         'type' => 'text_textfield',
@@ -519,14 +528,14 @@ function _hitsa_content_page_field_groups() {
   $groups = array();
   
   $groups[] = (object) array(
-    'identifier' => 'group_ci|paragraphs_item|subpage|form',
+    'identifier' => 'group_ci|node|content_page|form',
     'group_name' => 'group_ci',
-    'entity_type' => 'paragraphs_item',
-    'bundle' => 'subpage',
+    'entity_type' => 'node',
+    'bundle' => 'content_page',
     'mode' => 'form',
     'parent_name' => '',
     'label' => 'Contact information',
-    'weight' => '3',
+    'weight' => '32',
     'children' => array(
       0 => 'cinfo_contact_person',
       1 => 'cinfo_homepage_url',

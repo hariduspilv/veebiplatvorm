@@ -103,7 +103,7 @@
       </div><!--/row-->
       <div class="row">
         <div class="col-12">
-          <?php if(!empty($more_articles_link)) {print $more_articles_link;} ?>
+          <?php if(!empty($more_services_link)) {print $more_services_link;} ?>
         </div><!--/col-12-->
       </div><!--/row-->
                

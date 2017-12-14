@@ -16,6 +16,12 @@ function hitsa_content_page_menu() {
     'type' => MENU_LOCAL_TASK,
   );
   
+  $items['services'] = array(
+    'title' => 'Teenused',
+    'page callback' => 'hitsa_content_page_service_page_view',
+    'access arguments' => array('access content'),
+  );
+  
   return $items;
 }
 
@@ -143,10 +149,19 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
         );
       }
       if(!empty($form['cp_service_type'])) {
+        // Remove the empty option
+        if(!empty($form['cp_service_type'][LANGUAGE_NONE]['#options']['_none'])) {
+          unset($form['cp_service_type'][LANGUAGE_NONE]['#options']['_none']);
+        }
         $form['cp_service_type']['#states'] = array(
           'visible' => array(
             ':input[name^="cp_type"]' => array(
               'value' => 'cp_service',
+            ),
+          ),
+          'required' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_specialities',
             ),
           ),
         );
@@ -154,13 +169,6 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
     }
     if(isset($form['body'])) {
       $form['body'][LANGUAGE_NONE][0]['summary']['#description'] = ''; // Hide summary description
-    }
-    // Add subpage titles outside
-    foreach($form['cp_subpages'][LANGUAGE_NONE] as &$subpage_fieldset) {
-      if(!empty($subpage_fieldset['#entity']->subpage_title[LANGUAGE_NONE][0]['safe_value'])) {
-        $subpage_title = $subpage_fieldset['#entity']->subpage_title[LANGUAGE_NONE][0]['safe_value'];
-        $subpage_fieldset['#prefix'] = '<b>' . check_plain($subpage_title) . '</b>';
-      }
     }
   }
 }
@@ -175,7 +183,6 @@ function hitsa_content_page_required_fields($form, &$form_state) {
     form_set_error('cp_image', 
   t('!name field is required.', array('!name' => $form['cp_image'][LANGUAGE_NONE][0]['#title'])));
   }
-  
 }
 
 /*

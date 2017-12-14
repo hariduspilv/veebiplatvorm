@@ -31,6 +31,10 @@
     <?php else: ?>
     <div class="col-8 sm-12">
       <article class="padding-right">
+        <div class="btn-bar align-right sm-show sm-pull_right">
+          <a href="" class="btn-circle before-share"></a>
+          <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+        </div>
         <?php if($node->type === 'article'): ?>
         <h1><?php print $title; ?>
           <span class="editor-info">
@@ -56,9 +60,53 @@
         <?php endif; ?>
         <?php endif; ?>
 
-        <?php if(!empty($elements['cp_contact_information'])): ?>
-          <?php print render($elements['cp_contact_information']); ?>
+        <?php if(!empty($cinfo_contact_person)): ?>
+          <p>
+            <b><?php print check_plain($cinfo_contact_person[0]['safe_value']); ?></b>
+          </p>
         <?php endif; ?>
+        <ul class="list-details">
+          <?php if(!empty($cinfo_homepage_url)): ?>
+          <li>
+             <div class="before-home"></div>
+             <div class="list-details_text">
+                <p>
+                  <a href="<?php print check_url($cinfo_homepage_url[0]['url']); ?>" target="_blank">
+                  <?php print preg_replace('/^https?:\/\//', '', check_url($cinfo_homepage_url[0]['url'])); ?>
+                  </a>
+                </p>
+             </div><!--/list-details_text-->
+          </li>
+          <?php endif; ?>
+          <?php if(!empty($cinfo_e_mail)): ?>
+          <li>
+             <div class="before-envelope"></div>
+             <div class="list-details_text">
+                <p>
+                  <a href="mailto:<?php print check_plain($cinfo_e_mail[0]['email']); ?>">
+                    <?php print check_plain($cinfo_e_mail[0]['email']); ?>
+                  </a>
+                </p>
+             </div><!--/list-details_text-->
+          </li>
+          <?php endif; ?>
+          <?php if(!empty($cinfo_phone_nr)): ?>
+          <li>
+             <div class="before-phone"></div>
+             <div class="list-details_text">
+                <p><?php print check_plain($cinfo_phone_nr[0]['safe_value']); ?></p>
+             </div><!--/list-details_text-->
+          </li>
+          <?php endif; ?>
+          <?php if(!empty($cinfo_address)): ?>
+          <li>
+             <div class="before-location"></div>
+             <div class="list-details_text">
+                <p><?php print check_plain($cinfo_address[0]['safe_value']); ?></p>
+             </div><!--/list-details_text-->
+          </li>
+          <?php endif; ?>
+        </ul>
         
         <?php if($node->type === 'article'): ?>
           <div class="row-spacer-xs"></div>
@@ -69,16 +117,10 @@
       </article>
     </div><!--/col-8-->
     <div class="col-4 sm-12 no-print">
-      <?php if($node->type === 'article' || $node->type === 'content_page'): ?>
-      <div class="btn-bar align-right">
-        <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
-        <a href="javascript:window.print();" class="btn-circle before-print"></a>
-      </div><!--/button-row-->
-      <?php endif; ?>
     
       <div class="row-spacer-xl"></div>
 
-      <?php if(!empty($subpage_images) || !empty($subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
+      <?php if(!empty($subpage_images) || (!empty($cp_image) && $subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
         <figure>
           <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>"
           data-plugin="modal" data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>">

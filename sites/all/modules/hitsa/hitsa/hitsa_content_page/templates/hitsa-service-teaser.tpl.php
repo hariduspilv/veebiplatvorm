@@ -17,7 +17,6 @@
       <span class="object-content">
         <span class="object-title"><?php print check_plain($node->title); ?></span>
         <span class="object-footer">
-          <span class="before-calendar"><?php print format_date($node->created, 'hitsa_date_month'); ?></span>
         </span><!--/object-footer-->
       </span><!--/object-content-->
     </span><!--/object-inner-->

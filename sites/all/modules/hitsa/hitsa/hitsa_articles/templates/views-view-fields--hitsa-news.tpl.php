@@ -24,8 +24,8 @@
  * @ingroup views_templates
  */
 ?>
-<?php //dpm($fields); ?>
-<div class="col-6">
+<?php //dpm($view->current_display); ?>
+<div class="col-6 sm-12">
   <a href="<?php print $fields['path']->content; ?>" class="object<?php if($view->current_display === 'news_block') {print ' object-horizontal';} ?>">
     <span class="object-inner">
       <?php if(!empty($fields['subpage_images']->content)): ?>
