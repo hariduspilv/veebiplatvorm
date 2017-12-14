@@ -28,13 +28,23 @@
  */
 ?>
   <?php if ($attachment_before): ?>
+  <div class="row">
     <?php print $attachment_before; ?>
+  </div>
   <?php endif; ?>
   
-  <div class="row-spacer"></div>
+  <div class="row-spacer sm-hide"></div>
   
-  <?php if ($rows): ?>
-    <?php print $rows; ?>
+  <?php if($view->current_display === 'news_block'): ?>
+    <?php if ($rows): ?>
+    <div class="row sm-hide">
+      <?php print $rows; ?>
+    </div>
+    <?php endif; ?>
+  <?php else: ?>
+    <?php if ($rows): ?>
+      <?php print $rows; ?>
+    <?php endif; ?>
   <?php endif; ?>
   
   <div class="row-spacer"></div>
@@ -42,7 +52,7 @@
   <?php if($view->current_display === 'news_block'): ?>
   <div class="row">
     <div class="col-12">
-       <a href="<?php print url('news'); ?>" class="btn"><?php print t('All news'); ?></a>
+       <a href="<?php print url('news'); ?>" class="btn sm-stretch"><?php print t('All news'); ?></a>
     </div><!--/col-12-->
   </div><!--/row-->
 <?php endif; ?>

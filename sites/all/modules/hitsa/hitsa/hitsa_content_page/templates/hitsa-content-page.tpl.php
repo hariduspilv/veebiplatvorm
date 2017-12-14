@@ -3,11 +3,11 @@
             
     <div class="block" id="all">
       <h1 class="block-title"><?php print drupal_get_title(); ?></h1>
-      
+      <?php if(!empty($academic_years)): ?>
       <form method="post" data-plugin="filters">
         <div class="row">
           <div class="col-12">
-             
+            
             <div class="btn-bar">
               <span class="btn-input">
                 <input type="checkbox" name="category" value="all" checked="">
@@ -27,11 +27,12 @@
             <?php endif; ?>
           </div><!--/col-9-->
           
-          <div class="col-3">
-          <?php if(count($academic_years) > 3): ?>
-             <a href="javascript:void(0);" class="cta-link pull-right before-plus" data-toggle="hiddenFilter" data-class="'active' : hiddenFilter"><?php print t('More choices'); ?></a>
-          <?php endif; ?>
-          </div><!--/col-3-->
+          
+            <div class="col-3">
+            <?php if(count($academic_years) > 3): ?>
+               <a href="javascript:void(0);" class="cta-link pull-right before-plus" data-toggle="hiddenFilter" data-class="'active' : hiddenFilter"><?php print t('More choices'); ?></a>
+            <?php endif; ?>
+            </div><!--/col-3-->
         </div><!--/row-->
         
         <div class="row-spacer-xs sm-hide"></div>
@@ -44,7 +45,7 @@
                 
                 <div class="form-item after-search form-item_rounded form-item-stretch">
                    <div class="form-item_title"><?php print t('Search by title'); ?></div>
-                   <input type="text" name="title" placeholder="<?php print t('Start typing'); ?>" data-plugin="autocomplete" data-url="<?php print url("api/$bundle-autocomplete"); ?>" data-onSubmit="true" />
+                   <input type="text" name="title" placeholder="<?php print $search_placeholder; ?>" data-plugin="autocomplete" data-url="<?php print url("api/$bundle-autocomplete"); ?>" data-onSubmit="true" />
                 </div><!--/form-item-->
                 
                 <div class="form-item form-item_rounded after-calendar form-item-stretch">
@@ -69,6 +70,7 @@
       <div class="row-spacer sm-hide"></div>
       <div class="row-spacer-xs sm-show"></div>
       <hr class="sm-show">
+      <?php endif; ?>
       <?php if($bundle === 'article'): ?>
       <div data-posturl="<?php print url('api/articles'); ?>" data-plugin="filterContents">
       <?php elseif($bundle === 'gallery'): ?>

@@ -1,0 +1,13 @@
+diff --git a/js/maxlength.js b/js/maxlength.js
+index af816cb..3f9105b 100644
+--- a/js/maxlength.js
++++ b/js/maxlength.js
+@@ -54,6 +54,7 @@
+    *    be passed with the number of characters.
+    */
+   ml.calculate = function(obj, options, count, wysiwyg, getter, setter) {
++    if (jQuery(obj['0']).hasClass('ckeditor-mod') && wysiwyg === undefined) {return;};
+     var counter = $('#' + obj.attr('id') + '-' + options.css);
+     var limit = parseInt(obj.attr('maxlength'));
+ 
+

@@ -1293,7 +1293,7 @@ function hitsa_status_messages($variables) {
       $output .= '<p>' . reset($messages) . '</p>';
     }
     $output .= '</div>';
-    $output .= '<div class="notification-close">' . t('Close') . '<span class="before-close"></span></div>';
+    $output .= '<div class="notification-close"><span class="notification-close-label">' . t('Close') . '</span><span class="before-close"></span></div>';
     $output .= "</div></div></div>";
   }
   return $output;

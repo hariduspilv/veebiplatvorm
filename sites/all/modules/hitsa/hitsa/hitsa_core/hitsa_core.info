@@ -15,6 +15,7 @@ dependencies[] = override_node_options
 dependencies[] = search_api_db
 dependencies[] = search_api_views
 dependencies[] = search_api_facetapi
+dependencies[] = maxlength
 core = 7.x
 package = HITSA
 version = "7.x-dev"
