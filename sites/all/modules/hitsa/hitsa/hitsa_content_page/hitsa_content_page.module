@@ -195,6 +195,7 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
         );
       }
       if(!empty($form['cp_service_type'])) {
+        $form['cp_service_type']['#weight'] = $form['title']['#weight'] - 1 ;
         // Remove the empty option
         if(!empty($form['cp_service_type'][LANGUAGE_NONE]['#options']['_none'])) {
           unset($form['cp_service_type'][LANGUAGE_NONE]['#options']['_none']);
