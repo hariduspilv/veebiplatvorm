@@ -478,7 +478,6 @@ function hitsa_curriculum_generate_table($table, $descriptions = NULL, $type = N
             } elseif ($type == 'specialities') {
                 $show_table = FALSE;
             }
-            dpm($block_titles);
             for ($i = 1; $i < $rows_count; $i++) {
                 $output .= '<tr>';
                 for ($j = 0; $j < $columns_count; $j++) {
@@ -927,6 +926,7 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                             'name' => $loaded_field->name,
                             'tid' => $loaded_field->tid,
                             'subpoints' => array($area_key => $area_value),
+                            'weight' => $loaded_field->weight,
                         );
                     } else {
                         $fields[$field_id]['subpoints'][$area_key] = $area_value;
@@ -946,6 +946,10 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
             }
             $output = '';
             $output .= '<ul class="side-menu" data-plugin="dropdownMenu">';
+
+            usort($fields, function ($a, $b) {
+                return $a['weight'] - $b['weight'];
+            });
             foreach ($fields as $fields_key => $fields_value) {
 
                 $class = ($fields_value['active']) ? 'active' : '';

@@ -60,6 +60,8 @@ function hitsa_events_install()
     field_bundle_settings('node', $cont_type, $settings);
     ///Lubame sisutüübi internalization tõlkimise
     variable_set('language_content_type_' . $cont_type, TRANSLATION_ENABLED);
+
+    variable_set('i18n_node_options_'.$cont_type, array('required'));
 }
 
 /**
