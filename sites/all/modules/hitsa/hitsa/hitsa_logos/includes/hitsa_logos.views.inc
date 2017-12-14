@@ -111,9 +111,9 @@ function hitsa_logos_views_default_views() {
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['defaults']['cache'] = FALSE;
   $handler->display->display_options['cache']['type'] = 'time';
-  $handler->display->display_options['cache']['results_lifespan'] = '3600';
+  $handler->display->display_options['cache']['results_lifespan'] = '300';
   $handler->display->display_options['cache']['results_lifespan_custom'] = '0';
-  $handler->display->display_options['cache']['output_lifespan'] = '3600';
+  $handler->display->display_options['cache']['output_lifespan'] = '300';
   $handler->display->display_options['cache']['output_lifespan_custom'] = '0';
   $handler->display->display_options['block_description'] = 'Partners';
   
@@ -123,9 +123,9 @@ function hitsa_logos_views_default_views() {
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['defaults']['cache'] = FALSE;
   $handler->display->display_options['cache']['type'] = 'time';
-  $handler->display->display_options['cache']['results_lifespan'] = '3600';
+  $handler->display->display_options['cache']['results_lifespan'] = '300';
   $handler->display->display_options['cache']['results_lifespan_custom'] = '0';
-  $handler->display->display_options['cache']['output_lifespan'] = '3600';
+  $handler->display->display_options['cache']['output_lifespan'] = '300';
   $handler->display->display_options['cache']['output_lifespan_custom'] = '0';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Lühike kriteerium: Draggableviews: Kaal */
@@ -162,7 +162,7 @@ function hitsa_logos_views_default_views() {
   /* Display: Partners - Sort */
   $handler = $view->new_display('page', 'Partners - Sort', 'partners_sort');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Logos - Sort';
+  $handler->display->display_options['title'] = 'Logod - Sorteeri';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -241,7 +241,7 @@ function hitsa_logos_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
   $handler->display->display_options['path'] = 'admin/logos/sort';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Logod - sorteeri';
+  $handler->display->display_options['menu']['title'] = 'Logod - Sorteeri';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'management';
   $handler->display->display_options['menu']['context'] = 0;
@@ -344,6 +344,7 @@ function hitsa_logos_views_default_views() {
   $handler->display->display_options['filters']['logo_type_value']['value'] = array(
     'award' => 'award',
   );
+
 
   $views[$view->name] = $view;
   return $views;

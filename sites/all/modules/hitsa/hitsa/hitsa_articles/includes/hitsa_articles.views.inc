@@ -26,16 +26,22 @@ function hitsa_articles_views_default_views() {
   
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'News';
+  $handler->display->display_options['title'] = 'Uudised';
   $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['use_more_text'] = 'veel';
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'time';
-  $handler->display->display_options['cache']['results_lifespan'] = '3600';
+  $handler->display->display_options['cache']['results_lifespan'] = '300';
   $handler->display->display_options['cache']['results_lifespan_custom'] = '0';
-  $handler->display->display_options['cache']['output_lifespan'] = '3600';
+  $handler->display->display_options['cache']['output_lifespan'] = '300';
   $handler->display->display_options['cache']['output_lifespan_custom'] = '0';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Rakenda';
+  $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Tühista';
+  $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sorteerimise alus';
+  $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Kasvav';
+  $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Kahanev';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '4';
   $handler->display->display_options['pager']['options']['offset'] = '2';
@@ -51,12 +57,12 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
-  /* Relationship: Content: Author */
+  /* Seos: Sisu: Autor */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['label'] = 'Author';
-  /* Field: Content: Title */
+  /* Väli: Sisu: Pealkiri */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -67,7 +73,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Post date */
+  /* Väli: Sisu: Postituse kuupäev */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
@@ -78,7 +84,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['created']['date_format'] = 'custom';
   $handler->display->display_options['fields']['created']['custom_date_format'] = 'd. F';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
-  /* Field: User: Name */
+  /* Väli: Kasutaja: Nimi */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
@@ -88,7 +94,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
-  /* Field: Content: Path */
+  /* Väli: Sisu: Tee */
   $handler->display->display_options['fields']['path']['id'] = 'path';
   $handler->display->display_options['fields']['path']['table'] = 'node';
   $handler->display->display_options['fields']['path']['field'] = 'path';
@@ -96,7 +102,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['path']['element_type'] = '0';
   $handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['path']['element_wrapper_type'] = '0';
-  /* Field: Field: Galerii */
+  /* Väli: Sisu: Pictures */
   $handler->display->display_options['fields']['subpage_images']['id'] = 'subpage_images';
   $handler->display->display_options['fields']['subpage_images']['table'] = 'field_data_subpage_images';
   $handler->display->display_options['fields']['subpage_images']['field'] = 'subpage_images';
@@ -114,33 +120,33 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['subpage_images']['delta_limit'] = '1';
   $handler->display->display_options['fields']['subpage_images']['delta_offset'] = '0';
   $handler->display->display_options['fields']['subpage_images']['separator'] = '';
-  /* Sort criterion: Content: Post date */
+  /* Lühike kriteerium: Sisu: Postituse kuupäev */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filter criterion: Content: Published */
+  /* Filtri kriteeriumid: Sisu: Avaldatud */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
+  /* Filtri kriteeriumid: Sisu: Liik */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'article' => 'article',
   );
-  /* Filter criterion: Content: Article type (article_type) */
+  /* Filtri kriteeriumid: Sisu: Article type (article_type) */
   $handler->display->display_options['filters']['article_type_value']['id'] = 'article_type_value';
   $handler->display->display_options['filters']['article_type_value']['table'] = 'field_data_article_type';
   $handler->display->display_options['filters']['article_type_value']['field'] = 'article_type_value';
   $handler->display->display_options['filters']['article_type_value']['value'] = array(
     'news' => 'news',
   );
-  /* Filter criterion: Content: Language */
+  /* Filtri kriteeriumid: Sisu: Keel */
   $handler->display->display_options['filters']['language']['id'] = 'language';
   $handler->display->display_options['filters']['language']['table'] = 'node';
   $handler->display->display_options['filters']['language']['field'] = 'language';
@@ -158,7 +164,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Title */
+  /* Väli: Sisu: Pealkiri */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -169,7 +175,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Post date */
+  /* Väli: Sisu: Postituse kuupäev */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
@@ -180,7 +186,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['created']['date_format'] = 'custom';
   $handler->display->display_options['fields']['created']['custom_date_format'] = 'd. F';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'long';
-  /* Field: User: Name */
+  /* Väli: Kasutaja: Nimi */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
@@ -190,7 +196,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['name']['element_wrapper_type'] = '0';
   $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
-  /* Field: Content: Path */
+  /* Väli: Sisu: Tee */
   $handler->display->display_options['fields']['path']['id'] = 'path';
   $handler->display->display_options['fields']['path']['table'] = 'node';
   $handler->display->display_options['fields']['path']['field'] = 'path';
@@ -198,7 +204,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['fields']['path']['element_type'] = '0';
   $handler->display->display_options['fields']['path']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['path']['element_wrapper_type'] = '0';
-  /* Field: Field: Galerii */
+  /* Väli: Sisu: Pictures */
   $handler->display->display_options['fields']['subpage_images']['id'] = 'subpage_images';
   $handler->display->display_options['fields']['subpage_images']['table'] = 'field_data_subpage_images';
   $handler->display->display_options['fields']['subpage_images']['field'] = 'subpage_images';
@@ -220,22 +226,7 @@ function hitsa_articles_views_default_views() {
     'news_block' => 'news_block',
     'default' => 0,
   );
-  $translatables['hitsa_news'] = array(
-    t('Master'),
-    t('News'),
-    t('more'),
-    t('Apply'),
-    t('Reset'),
-    t('Sort by'),
-    t('Asc'),
-    t('Desc'),
-    t('Author'),
-    t('News - Small'),
-    t('News - Latest Attachment'),
-  );
 
-  
-  $views[$view->name] = $view;
   $views['admin_views_articles'] = _hitsa_articles_admin_view();
   return $views;
 }

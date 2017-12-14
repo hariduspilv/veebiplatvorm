@@ -77,6 +77,7 @@ function hitsa_content_page_preprocess_node(&$variables) {
         }
         $variables['more_services'] = $services_rendered;
         $variables['more_services_title'] = t('More services');
+        $variables['more_services_link'] = '<a href="' . url('services') . '" class="btn sm-stretch">' . t('All services') . '</a>';
       }
       // Add webform
       if(!empty($variables['cp_webform_ref'])) {

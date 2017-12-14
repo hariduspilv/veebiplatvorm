@@ -405,7 +405,7 @@ function _hitsa_content_page_field_instances() {
       'field_name' => 'cinfo_contact_person',
       'bundle' => 'content_page',
       'entity_type' => 'node',
-      'label' => $t('Contact Person / Firm'),
+      'label' => 'Kontaktisik / Firma',
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
@@ -421,7 +421,7 @@ function _hitsa_content_page_field_instances() {
       'field_name' => 'cinfo_homepage_url',
       'bundle' => 'content_page',
       'entity_type' => 'node',
-      'label' => $t('Homepage address'),
+      'label' => 'Kodulehekülg',
       'widget' => array(
         'type' => 'link_field',
         'module' => 'link',

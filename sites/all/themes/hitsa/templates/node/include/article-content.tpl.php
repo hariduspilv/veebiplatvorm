@@ -72,7 +72,7 @@
              <div class="list-details_text">
                 <p>
                   <a href="<?php print check_url($cinfo_homepage_url[0]['url']); ?>" target="_blank">
-                  <?php print check_url($cinfo_homepage_url[0]['url']); ?>
+                  <?php print preg_replace('/^https?:\/\//', '', check_url($cinfo_homepage_url[0]['url'])); ?>
                   </a>
                 </p>
              </div><!--/list-details_text-->
