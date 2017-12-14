@@ -92,7 +92,6 @@ function hitsa_preprocess_views_view(&$vars)
 function hitsa_preprocess_views_view_unformatted(&$vars)
 {
     if ($vars['view']->name === 'hitsa_search') {
-        dpm($vars);
     }
 }
 
