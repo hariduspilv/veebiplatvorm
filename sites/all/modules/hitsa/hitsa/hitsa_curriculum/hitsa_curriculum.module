@@ -1,11 +1,18 @@
 <?php
 
+module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_curriculum_page.views');
 /**
  * Implements hook_menu().
  */
 function hitsa_curriculum_menu()
 {
     $items = array();
+
+    $items['admin/content/tabbed-content-pages'] = array(
+        'title' => 'Sakkidega sisulehed',
+        'access arguments' => array('administer nodes'),
+        'type' => MENU_LOCAL_TASK,
+    );
 
     $items['curriculum'] = array(
         'title' => t(''),
@@ -326,8 +333,9 @@ function hitsa_curriculum_node_presave($node)
     }
 }
 
-function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
+function hitsa_curriculum_form_alter(&$form, &$form_state, $form_id)
 {
+
     switch ($form_id) {
         case 'curriculum_node_form':
 //            $form['field_header_information'] = array(
@@ -346,6 +354,15 @@ function hitsa_curriculum_form_alter($form, &$form_state, $form_id)
                         unset($form['field_school_selections']['und']['#options'][$options_key]);
                     }
                     $form['field_school_selections']['und']['#options'][$options_key] = t($options_value);
+                }
+            }
+            return $form;
+            break;
+        case 'views_form_administration_tabbed_content_pages_system_tabbed_content_pages'&& 'views_exposed_form':
+            if(!empty($form['field_school_selections_value_i18n'])) {
+                foreach($form['field_school_selections_value_i18n']['#options'] as $key => $option) {
+                    if($key === 'All') continue;
+                    $form['field_school_selections_value_i18n']['#options'][$key] = t($option);
                 }
             }
             return $form;
@@ -928,7 +945,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     if (!empty($content->field_table_description)) {
         $output_elements['table_description'] = '<p>' . $content->field_table_description['und'][0]['value'] . '</p>';
     }
-    if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses' || $curriculum_type == 'hobby-groups' || $curriculum_type == 'hobby-activity' || $curriculum_type == 'e-course') {
+    if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses' || $curriculum_type == 'hobby-groups' || $curriculum_type == 'hobby-activity' || $curriculum_type == 'e-course' || $curriculum_type=='ordered-trainings') {
         if (!empty($content->field_curriculum_length)) {
             $start = $content->field_curriculum_length['und'][0]['value'];
             $end = $content->field_curriculum_length['und'][0]['value2'];
@@ -1101,7 +1118,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                 if (empty($output_elements['short_description']) && !empty($output_elements['mobile_sharing_buttons'])) {
 //                    $output.= $output_elements['mobile_sharing_buttons'];
                 }
-                if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses' || $curriculum_type == 'hobby-groups' || $curriculum_type == 'hobby-activity' || $curriculum_type == 'e-course') {
+                if ($curriculum_type == 'preparatory-courses' || $curriculum_type == 'elective-subjects' || $curriculum_type == 'elective-courses' || $curriculum_type == 'hobby-groups' || $curriculum_type == 'hobby-activity' || $curriculum_type == 'e-course' || $curriculum_type=='ordered-trainings') {
                     if (!empty($output_elements['date_length'])) {
                         $output .= $output_elements['date_length'];
                     }

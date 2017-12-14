@@ -41,10 +41,14 @@ function hitsa_curriculum_uninstall()
     foreach ($result as $row) {
         $node_ids[] = $row->nid;
     }
-    
+    $school_type =  hitsa_core_get_school_type();
+    if (empty(variable_get('hitsa_school_type'))){
+        variable_set('hitsa_school_type',1);
+        $school_type=1;
+    }
     
     // Delete fields and vocabularies
-    hitsa_curriculum_delete_custom_node_fields();
+    hitsa_curriculum_delete_custom_node_fields($school_type);
     hitsa_curriculum_delete_custom_paragraphs_fields();
     field_purge_batch(500);
     hitsa_curriculum_delete_custom_vocabularies();
@@ -546,7 +550,7 @@ function hitsa_curriculum_add_custom_node_fields($school_type)
         field_create_instance($field_instance);
     }
 }
-function _hitsa_curriculum_installed_node_fields($school_type){
+function _hitsa_curriculum_installed_node_fields($school_type=null){
 
 
     if ($school_type==1){
@@ -2497,6 +2501,7 @@ function hitsa_curriculum_make_fields_conditional()
     }
 }
 function _hitsa_curriculum_conditional_fields(){
+
     $items = array();
 
     $items["node:curriculum:0"] = array(
@@ -2540,7 +2545,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -2566,7 +2578,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -2580,7 +2596,8 @@ function _hitsa_curriculum_conditional_fields(){
                 2 => 'hobby-groups',
                 3 => 'e-course',
                 4 => 'hobby-activity',
-                5 => 'elective-courses',
+                5 => 'ordered-trainings',
+                6 => 'elective-courses',
             ),
             'value' => array(),
         ),
@@ -2627,7 +2644,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -2653,7 +2677,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -2665,9 +2693,10 @@ function _hitsa_curriculum_conditional_fields(){
                 0 => 'elective-subjects',
                 1 => 'preparatory-courses',
                 2 => 'hobby-groups',
-                3 => 'e-course',
-                4 => 'hobby-activity',
-                5 => 'elective-courses',
+                3 => 'ordered-trainings',
+                4 => 'e-course',
+                5 => 'hobby-activity',
+                6 => 'elective-courses',
             ),
             'value' => array(),
         ),
@@ -2714,7 +2743,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -2740,7 +2776,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -2751,10 +2791,11 @@ function _hitsa_curriculum_conditional_fields(){
             'values' => array(
                 0 => 'elective-subjects',
                 1 => 'preparatory-courses',
-                2 => 'hobby-groups',
-                3 => 'e-course',
-                4 => 'hobby-activity',
-                5 => 'elective-courses',
+                2 => 'ordered-trainings',
+                3 => 'hobby-groups',
+                4 => 'e-course',
+                5 => 'hobby-activity',
+                6 => 'elective-courses',
             ),
             'value' => array(),
         ),
@@ -2801,7 +2842,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -2827,7 +2875,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -2838,10 +2890,11 @@ function _hitsa_curriculum_conditional_fields(){
             'values' => array(
                 0 => 'elective-subjects',
                 1 => 'preparatory-courses',
-                2 => 'hobby-groups',
-                3 => 'e-course',
-                4 => 'hobby-activity',
-                5 => 'elective-courses',
+                2 => 'ordered-trainings',
+                3 => 'hobby-groups',
+                4 => 'e-course',
+                5 => 'hobby-activity',
+                6 => 'elective-courses',
             ),
             'value' => array(),
         ),
@@ -2972,7 +3025,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -2998,7 +3058,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -3011,8 +3075,9 @@ function _hitsa_curriculum_conditional_fields(){
                 1 => 'preparatory-courses',
                 2 => 'hobby-groups',
                 3 => 'e-course',
-                4 => 'hobby-activity',
-                5 => 'elective-courses',
+                4 => 'ordered-trainings',
+                5 => 'hobby-activity',
+                6 => 'elective-courses',
             ),
             'value' => array(),
         ),
@@ -3227,7 +3292,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -3253,7 +3325,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -3266,8 +3342,9 @@ function _hitsa_curriculum_conditional_fields(){
                 1 => 'preparatory-courses',
                 2 => 'hobby-groups',
                 3 => 'e-course',
-                4 => 'hobby-activity',
-                5 => 'elective-courses',
+                4 => 'ordered-trainings',
+                5 => 'hobby-activity',
+                6 => 'elective-courses',
             ),
             'value' => array(),
         ),
@@ -3314,7 +3391,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -3340,7 +3424,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -3355,6 +3443,7 @@ function _hitsa_curriculum_conditional_fields(){
                 3 => 'e-course',
                 4 => 'hobby-activity',
                 5 => 'elective-courses',
+                6 => 'ordered-trainings',
             ),
             'value' => array(),
         ),
@@ -3401,7 +3490,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -3427,7 +3523,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -3440,8 +3540,9 @@ function _hitsa_curriculum_conditional_fields(){
                 1 => 'preparatory-courses',
                 2 => 'hobby-groups',
                 3 => 'e-course',
-                4 => 'hobby-activity',
-                5 => 'elective-courses',
+                4 => 'ordered-trainings',
+                5 => 'hobby-activity',
+                6 => 'elective-courses',
             ),
             'value' => array(),
         ),
@@ -3916,7 +4017,14 @@ function _hitsa_curriculum_conditional_fields(){
                     3 => 0,
                     4 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    2 => 2,
+                    5 => 0,
+                    3 => 0,
+                    4 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     2 => 2,
                     5 => 0,
@@ -3942,7 +4050,11 @@ function _hitsa_curriculum_conditional_fields(){
                     1 => 1,
                     3 => 0,
                 ),
-                4 => array(
+                9 => array(
+                    1 => 1,
+                    3 => 0,
+                ),
+                10 => array(
                     1 => 1,
                     3 => 0,
                 ),
@@ -3954,118 +4066,17 @@ function _hitsa_curriculum_conditional_fields(){
                 0 => 'elective-subjects',
                 1 => 'preparatory-courses',
                 2 => 'hobby-groups',
-                3 => 'e-course',
-                4 => 'hobby-activity',
-                5 => 'elective-courses',
-            ),
-            'value' => array(),
-        ),
-    );
-
-    $items["node:curriculum:17"] = array(
-        'entity' => 'node',
-        'bundle' => 'curriculum',
-        'dependent' => 'field_textbooks',
-        'dependee' => 'field_school_selections',
-        'options' => array(
-            'state' => '!visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                7 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                8 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                7 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                8 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 3,
-            'value_form' => '_none',
-            'values' => array(
-                0 => 'subject-field',
-                1 => 'specialities',
-                2 => 'scholarships',
-                3 => 'accommodation',
-                4 => 'ordered_trainings',
-                5 => 'publications',
-                6 => 'catering',
-                7 => 'training-scholarshps',
-                8 => 'certification-exams',
-                9 => 'cooperation-and-partners',
-                10 => 'vacancies',
+                3 => 'ordered-trainings',
+                4 => 'e-course',
+                5 => 'hobby-activity',
+                6 => 'elective-courses',
             ),
             'value' => array(),
         ),
     );
 
     return $items;
+
 }
 function _hitsa_curriculum_get_field_ids($dependee, $dependent)
 {
