@@ -1016,7 +1016,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
             } else {
                 $text_title = $textbook['url'];
             }
-            $output_elements['textbooks'] .= '<a href="' . $textbook['url'] . '">' . $text_title . '</a> ';
+            $output_elements['textbooks'] .= '<a href="' . $textbook['url'] . '">' . $text_title . '</a>';
             if ($k != $textbooks_count - 1) {
                 $output_elements['textbooks'] .= ', ';
             }
