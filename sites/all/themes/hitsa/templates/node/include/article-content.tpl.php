@@ -83,9 +83,7 @@
              <div class="before-envelope"></div>
              <div class="list-details_text">
                 <p>
-                  <a href="mailto:<?php print check_plain($cinfo_e_mail[0]['email']); ?>">
-                    <?php print check_plain($cinfo_e_mail[0]['email']); ?>
-                  </a>
+                  <?php print spamspan(check_plain($cinfo_e_mail[0]['email'])); ?>
                 </p>
              </div><!--/list-details_text-->
           </li>

@@ -39,7 +39,7 @@
               <div class="before-envelope"></div>
               <div class="list-details_text">
                 <p>
-                  <a href="mailto:<?php print check_plain($location->e_mail[LANGUAGE_NONE][0]['email']); ?>"><?php print check_plain($location->e_mail[LANGUAGE_NONE][0]['email']); ?></a>
+                  <?php print spamspan(check_plain($location->e_mail[LANGUAGE_NONE][0]['email'])); ?>
                 </p>
               </div><!--/list-details_text-->
             </li>

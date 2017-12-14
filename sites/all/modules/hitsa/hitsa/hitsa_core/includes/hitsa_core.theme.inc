@@ -203,12 +203,11 @@ function hitsa_core_preprocess_hitsa_footer(&$variables) {
   $general_contact_phone_nr = variable_get_value('general_contact_phone_nr');
   $general_contact_email = variable_get_value('general_contact_email');
   $variables['footer_general_contact'] = sprintf(
-    '%s<br>%s<br>%s<br><a href="mailto:%s">%s</a>',
+    '%s<br>%s<br>%s<br>%s',
     check_plain($general_contact_name), 
     check_plain($general_contact_address), 
     check_plain($general_contact_phone_nr), 
-    check_plain($general_contact_email), 
-    check_plain($general_contact_email)
+    spamspan(check_plain($general_contact_email))
   );
   
   // Important contacts
