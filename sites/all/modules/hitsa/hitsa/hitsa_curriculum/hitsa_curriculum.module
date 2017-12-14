@@ -871,6 +871,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
             $output .= '</div><!--/col-9-->';
         }
         $output .= '</div><!--/row-->';
+        $output .= hitsa_curriculum_mobile_menu($real_content, $type, $active_id);
         $output .= '</div><!--/block-->';
     }
     return $output;
@@ -967,7 +968,7 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                         $subpoint_url = url($source);
                         $class = ($subpoint->active == true) ? 'active' : '';
                         $list_item .= '<li class="' . $class . '">';
-                        $list_item .= '<a href="' . $subpoint_url . '">' . $subpoint->title . '</a>';
+                        $list_item .= '<a href="' . $subpoint_url . '#'.$subpoint->title.'">' . $subpoint->title . '</a>';
                         $list_item .= '</li>';
                     }
                     $list_item .= '</ul>';
@@ -1669,4 +1670,27 @@ function hitsa_curriculum_image_default_styles()
     );
 
     return $styles;
+}
+function hitsa_curriculum_mobile_menu($areas, $type, $id=null){
+    dpm($areas);
+    dpm($type);
+    dpm('HERE');
+    $get_menu = hitsa_curriculum_generate_left_custom_titles($areas, $type, $id);
+    dpm($get_menu);
+    dpm($output);
+    $output='';
+    $output.='<div class="row sm-show">';
+	$output.='		<div class="col-12">';
+	$output.='			<div class="accordion" data-plugin="accordion" data-allClosed="true">';
+	$output.='				<div class="accordion-entry">';
+	$output.='					<div class="accordion-title">'.t('More').'</div>';
+	$output.='					<div class="accordion-content">';
+	$output.= $get_menu;
+	$output.='					</div><!--/accordion-content-->';
+	$output.='					';
+	$output.='				</div><!--/accordion-entry-->';
+	$output.='			</div><!--/accordion-->';
+	$output.='		</div><!--/col-12-->';
+	$output.='	</div><!--/row-->';
+	return $output;
 }

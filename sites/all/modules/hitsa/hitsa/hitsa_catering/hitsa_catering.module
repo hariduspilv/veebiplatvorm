@@ -797,7 +797,6 @@ function hitsa_catering_check_block_visibility($translated, $not_translated)
     $result = $query->execute();
     $source = $translated . '/*';
     while ($block = $result->fetchAssoc()) {
-        krumo($translated);
         if (strpos($block['pages'], $source) == FALSE) {
             $block['pages'] .= "\n" . $source;
             $update = db_update('block');
