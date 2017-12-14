@@ -1,4 +1,4 @@
-<script>Drupal.behaviors.spamspan.attach();</script>
+<script>/*global Drupal */ Drupal.behaviors.spamspan.attach();</script>
 <div class="accordion" data-plugin="accordion">
   <?php foreach($contact_departments as $contact_department): 
     if(empty($nodes[$contact_department->tid])) continue;

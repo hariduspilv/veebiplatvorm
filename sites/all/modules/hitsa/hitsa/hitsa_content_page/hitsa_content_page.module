@@ -222,6 +222,21 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
+function hitsa_content_page_field_group_pre_render(&$element, $group, &$form) {
+  if($group->group_name === 'group_ci') {
+    if(!empty($form['group_ci'])) {
+      $form['group_ci']['#id'] = 'group-ci-fieldset';
+      $form['group_ci']['#states'] = array(
+        'visible' => array(
+          ':input[name^="cp_type"]' => array(
+            array('value' => 'cp_service'),
+          ),
+        ),
+      );
+    }
+  }
+}
+
 function hitsa_content_page_required_fields($form, &$form_state) {
   // Specific CP type is set and image is not added.
   if(!empty($form_state['values']['cp_type']) 
