@@ -480,3 +480,38 @@ function adminimal_select($variables) {
     ));
     return '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_options($element) . '</select>';
 }
+function adminimal_textfield($variables){
+    $element = $variables['element'];
+    $element['#attributes']['type'] = 'text';
+    element_set_attributes($element, array(
+        'id',
+        'name',
+        'value',
+        'size',
+        'maxlength',
+    ));
+    _form_set_class($element, array(
+        'form-text',
+    ));
+    $extra = '';
+    if ($element['#autocomplete_path'] && !empty($element['#autocomplete_input'])) {
+        drupal_add_library('system', 'drupal.autocomplete');
+        $element['#attributes']['class'][] = 'form-autocomplete';
+        $attributes = array(
+
+        );
+        $attributes['type'] = 'hidden';
+        $attributes['id'] = $element['#autocomplete_input']['#id'];
+        $attributes['value'] = $element['#autocomplete_input']['#url_value'];
+        $attributes['disabled'] = 'disabled';
+        $attributes['class'][] = 'autocomplete';
+        $extra = '<input' . drupal_attributes($attributes) . ' />';
+    }
+
+    if ($element['#field_name']=='field_phone_number'){
+        $element['#attributes']['autocomplete']='off';
+    }
+    $output = '<input' . drupal_attributes($element['#attributes']) . ' />';
+
+    return $output . $extra;
+}

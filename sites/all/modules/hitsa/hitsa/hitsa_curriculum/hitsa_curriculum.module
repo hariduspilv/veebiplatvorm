@@ -335,7 +335,6 @@ function hitsa_curriculum_node_presave($node)
 
 function hitsa_curriculum_form_alter(&$form, &$form_state, $form_id)
 {
-
     switch ($form_id) {
         case 'curriculum_node_form':
 //            $form['field_header_information'] = array(

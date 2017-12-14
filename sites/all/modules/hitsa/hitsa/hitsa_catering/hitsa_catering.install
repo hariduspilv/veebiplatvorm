@@ -1472,7 +1472,7 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
         'bundle' => 'catering_provider',
         'default_value' => NULL,
         'deleted' => 0,
-        'description' => '',
+        'description' => '+372 000000',
         'display' => array(
             'default' => array(
                 'label' => 'above',
