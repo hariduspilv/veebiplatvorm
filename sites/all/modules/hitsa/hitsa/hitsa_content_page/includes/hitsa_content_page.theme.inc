@@ -189,7 +189,11 @@ function hitsa_services_page_view($query = array()) {
     
     $field = field_info_field('cp_service_type');
     $service_types = list_allowed_values($field);
-
+    
+    foreach($service_types as &$service_type) {
+      $service_type = t($service_type);
+    }
+    
     $services_output = '';
     foreach($services_grouped as $type => $service_group) {
       $service_type = $service_types[$type];
