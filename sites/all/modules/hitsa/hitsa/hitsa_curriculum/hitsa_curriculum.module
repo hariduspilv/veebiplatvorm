@@ -388,7 +388,6 @@ function hitsa_curriculum_page($type = null, $name = null)
 function hitsa_curriculum_generate_table($table, $descriptions = NULL, $type = NULL)
 {
     $output = '';
-    dpm($type);
     if (!empty($table) && !empty($table['tabledata'])) {
 
         $output .= '<div class="table_wrapper sm-table-block" data-plugin="responsiveTable">';
