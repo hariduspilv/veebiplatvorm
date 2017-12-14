@@ -7,6 +7,12 @@ function hitsa_curriculum_menu()
 {
     $items = array();
 
+    $items['admin/content/tabbed-content-pages'] = array(
+        'title' => 'Sakkidega sisulehed',
+        'access arguments' => array('administer nodes'),
+        'type' => MENU_LOCAL_TASK,
+    );
+
     $items['curriculum'] = array(
         'title' => t(''),
         'page callback' => 'hitsa_curriculum_page',
