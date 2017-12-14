@@ -388,9 +388,10 @@ function hitsa_curriculum_page($type = null, $name = null)
 function hitsa_curriculum_generate_table($table, $descriptions = NULL, $type = NULL)
 {
     $output = '';
+    dpm($type);
     if (!empty($table) && !empty($table['tabledata'])) {
 
-        $output .= '<div class="table_wrapper" data-plugin="responsiveTable">';
+        $output .= '<div class="table_wrapper sm-table-block" data-plugin="responsiveTable">';
         $output .= '<table>';
         $table_data = $table['tabledata'];
 
@@ -398,58 +399,119 @@ function hitsa_curriculum_generate_table($table, $descriptions = NULL, $type = N
         $columns_count = $table_data['rebuild']['count_cols'];
         $column_width = 100 / $columns_count;
         $table_descriptions = $descriptions;
-        if (!empty($table_data['tabledata']['row_0'])) {
-            $output .= '  <thead>';
-            $output .= '  <tr>';
-            for ($i = 0; $i < $columns_count; $i++) {
-                $output .= '<th style="width: ' . $column_width . '%;">';
-                $output .= $table_data['tabledata']['row_0']['col_' . $i];
-                if (!empty($table_descriptions[$i . '_0'])) {
-                    $output .= '<span class="before-question-circle" title="' . $table_descriptions[$i . '_0'] . '"></span>';
-                }
-                $output .= '</th>';
-            }
-            $output .= '  </tr>';
-            $output .= ' </thead>';
-        }
-        $output .= '<tbody>';
-        $show_table = TRUE;
-        if ($type == 'subject-field') {
-            $show_table = FALSE;
-        } elseif ($type == 'specialities') {
-            $show_table = FALSE;
-        }
-        for ($i = 1; $i < $rows_count; $i++) {
-            $output .= '<tr>';
-            for ($j = 0; $j < $columns_count; $j++) {
-                $output .= '<td>';
-                if ($type == 'subject-field' && $i == $rows_count - 1) {
-                    $output .= '<b>';
-                }
-                $output .= $table_data['tabledata']['row_' . $i]['col_' . $j];
-                if ($type == 'subject-field' && $i == $rows_count - 1) {
-                    $output .= '<b>';
-                }
-                if ($j >= 1) {
-                    if (!empty($table_data['tabledata']['row_' . $i]['col_' . $j])) {
-                        $show_table = TRUE;
+        if($type!='specialities') {
+            if (!empty($table_data['tabledata']['row_0'])) {
+                $output .= '  <thead>';
+                $output .= '  <tr>';
+                for ($i = 0; $i < $columns_count; $i++) {
+                    $output .= '<th style="width: ' . $column_width . '%;">';
+                    $output .= $table_data['tabledata']['row_0']['col_' . $i];
+                    if (!empty($table_descriptions[$i . '_0'])) {
+                        $output .= '<span class="before-question-circle" title="' . $table_descriptions[$i . '_0'] . '"></span>';
                     }
+                    $output .= '</th>';
                 }
-                if ($type == 'specialities') {
-                    if ($j >= 0) {
+                $output .= '  </tr>';
+                $output .= ' </thead>';
+            }
+            $output .= '<tbody>';
+            $show_table = TRUE;
+            if ($type == 'subject-field') {
+                $show_table = FALSE;
+            } elseif ($type == 'specialities') {
+                $show_table = FALSE;
+            }
+            for ($i = 1; $i < $rows_count; $i++) {
+                $output .= '<tr>';
+                for ($j = 0; $j < $columns_count; $j++) {
+                    $output .= '<td>';
+                    if ($type == 'subject-field' && $i == $rows_count - 1) {
+                        $output .= '<b>';
+                    }
+                    $output .= $table_data['tabledata']['row_' . $i]['col_' . $j];
+                    if ($type == 'subject-field' && $i == $rows_count - 1) {
+                        $output .= '<b>';
+                    }
+                    if ($j >= 1) {
                         if (!empty($table_data['tabledata']['row_' . $i]['col_' . $j])) {
                             $show_table = TRUE;
                         }
                     }
+                    if ($type == 'specialities') {
+                        if ($j >= 0) {
+                            if (!empty($table_data['tabledata']['row_' . $i]['col_' . $j])) {
+                                $show_table = TRUE;
+                            }
+                        }
+                    }
+                    if (!empty($table_descriptions[$j . '_' . $i])) {
+                        $output .= '    <span class="before-question-circle" title="' . $table_descriptions[$j . '_' . $i] . '"></span>';
+                    }
+                    $output .= '</td>';
                 }
-                if (!empty($table_descriptions[$j . '_' . $i])) {
-                    $output .= '    <span class="before-question-circle" title="' . $table_descriptions[$j . '_' . $i] . '"></span>';
-                }
-                $output .= '</td>';
+                $output .= '</tr>';
             }
-            $output .= '</tr>';
+            $output .= '</tbody>';
         }
-        $output .= '</tbody>';
+        else{
+
+            $block_titles=  array();
+            if (!empty($table_data['tabledata']['row_0'])) {
+                $output .= '  <thead class="sm-hide">';
+                $output .= '  <tr>';
+                for ($i = 0; $i < $columns_count; $i++) {
+                    $output .= '<th style="width: ' . $column_width . '%;">';
+                    $output .= $table_data['tabledata']['row_0']['col_' . $i];
+                    $block_titles[]=$table_data['tabledata']['row_0']['col_' . $i];
+                    if (!empty($table_descriptions[$i . '_0'])) {
+                        $output .= '<span class="before-question-circle" title="' . $table_descriptions[$i . '_0'] . '"></span>';
+                    }
+                    $output .= '</th>';
+                }
+                $output .= '  </tr>';
+                $output .= ' </thead>';
+            }
+
+            $output .= '<tbody>';
+            $show_table = TRUE;
+            if ($type == 'subject-field') {
+                $show_table = FALSE;
+            } elseif ($type == 'specialities') {
+                $show_table = FALSE;
+            }
+            dpm($block_titles);
+            for ($i = 1; $i < $rows_count; $i++) {
+                $output .= '<tr>';
+                for ($j = 0; $j < $columns_count; $j++) {
+                    $output .= '<td><span class="sm-show table-block-title">'.$block_titles[$j].'</span>';
+                    if ($type == 'subject-field' && $i == $rows_count - 1) {
+                        $output .= '<b>';
+                    }
+                    $output .= $table_data['tabledata']['row_' . $i]['col_' . $j];
+                    if ($type == 'subject-field' && $i == $rows_count - 1) {
+                        $output .= '<b>';
+                    }
+                    if ($j >= 1) {
+                        if (!empty($table_data['tabledata']['row_' . $i]['col_' . $j])) {
+                            $show_table = TRUE;
+                        }
+                    }
+                    if ($type == 'specialities') {
+                        if ($j >= 0) {
+                            if (!empty($table_data['tabledata']['row_' . $i]['col_' . $j])) {
+                                $show_table = TRUE;
+                            }
+                        }
+                    }
+                    if (!empty($table_descriptions[$j . '_' . $i])) {
+                        $output .= '    <span class="before-question-circle" title="' . $table_descriptions[$j . '_' . $i] . '"></span>';
+                    }
+                    $output .= '</td>';
+                }
+                $output .= '</tr>';
+            }
+            $output .= '</tbody>';
+        }
         $output .= '</table>';
         $output .= '</div><!--/table-wrapper-->';
         if ($show_table == FALSE) {
