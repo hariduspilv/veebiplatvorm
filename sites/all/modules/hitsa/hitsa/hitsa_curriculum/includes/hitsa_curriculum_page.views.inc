@@ -4,11 +4,10 @@
  */
 function hitsa_curriculum_views_api()
 {
-        return array(
-            "api" => "3.0",
-            'path' => drupal_get_path('module', 'hitsa_curriculum'),
-            );
-
+    return array(
+        "api" => "3.0",
+        'path' => drupal_get_path('module', 'hitsa_curriculum'),
+    );
 }
 
 /**
@@ -17,7 +16,6 @@ function hitsa_curriculum_views_api()
 function hitsa_curriculum_views_default_views()
 {
 
-    $export = array();
     $view = new view();
     $view->name = 'administration_tabbed_content_pages';
     $view->description = 'Manage your site\'s article outlines.';
@@ -219,7 +217,7 @@ function hitsa_curriculum_views_default_views()
     $handler->display->display_options['fields']['title']['field'] = 'title';
     $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
     $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-    /* Valdkond: Sisu: Tabbed content page type */
+    /* Valdkond: Sisu: Content Page Type */
     $handler->display->display_options['fields']['field_school_selections']['id'] = 'field_school_selections';
     $handler->display->display_options['fields']['field_school_selections']['table'] = 'field_data_field_school_selections';
     $handler->display->display_options['fields']['field_school_selections']['field'] = 'field_school_selections';
@@ -338,7 +336,7 @@ function hitsa_curriculum_views_default_views()
     $handler->display->display_options['filters']['type']['value'] = array(
         'curriculum' => 'curriculum',
     );
-    /* Filtri kriteeriumid: Sisu: Tabbed content page type (field_school_selections) (translated) */
+    /* Filtri kriteeriumid: Sisu: Content Page Type (field_school_selections) (translated) */
     $handler->display->display_options['filters']['field_school_selections_value_i18n']['id'] = 'field_school_selections_value_i18n';
     $handler->display->display_options['filters']['field_school_selections_value_i18n']['table'] = 'field_data_field_school_selections';
     $handler->display->display_options['filters']['field_school_selections_value_i18n']['field'] = 'field_school_selections_value_i18n';
@@ -364,7 +362,7 @@ function hitsa_curriculum_views_default_views()
 
 
 
-    $export[$view->name] = $view;
-    return $export;
+    $views[$view->name] = $view;
+    return $views;
 
 }

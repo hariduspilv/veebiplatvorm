@@ -507,9 +507,10 @@ function adminimal_textfield($variables){
         $attributes['class'][] = 'autocomplete';
         $extra = '<input' . drupal_attributes($attributes) . ' />';
     }
-
-    if ($element['#field_name']=='field_phone_number'){
-        $element['#attributes']['autocomplete']='off';
+    if(!empty($element['#field_name'])) {
+        if ($element['#field_name'] == 'field_phone_number') {
+            $element['#attributes']['autocomplete'] = 'off';
+        }
     }
     $output = '<input' . drupal_attributes($element['#attributes']) . ' />';
 

@@ -1,6 +1,6 @@
 <?php
 
-module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_curriculum_page.views');
+module_load_include('inc', 'hitsa_curriculum', 'includes/hitsa_curriculum_page.views');
 /**
  * Implements hook_menu().
  */
@@ -912,7 +912,8 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
 
                     }
                 }
-                $output .= '<li class="' . $class . '"><a href="' . $link . '">' . $area->title . '</a></li>';
+                dpm($link);
+                $output .= '<li class="' . $class . '"><a href="' . $link . '#'.$area->title.'">' . $area->title . '</a></li>';
                 unset($class);
             }
             $output .= '</ul>';
@@ -948,6 +949,7 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
             $output = '';
             $output .= '<ul class="side-menu" data-plugin="dropdownMenu">';
             foreach ($fields as $fields_key => $fields_value) {
+
                 $class = ($fields_value['active']) ? 'active' : '';
                 $list_item = '<li class="' . $class . '">';
                 if (!empty($fields_value['name'])) {
@@ -984,7 +986,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     variable_set('school_type', 'middle');
     $school_type = variable_get('school_type');
 
-    $output = '<article>';
+    $output = '<article   id="'.$content->title.'">';
     if (!empty($content->changed)) {
         $output_elements['changed_date'] = '<span class="article-date"><i>' . t('Last modified') . ':' . date('d.m.Y', $content->changed) . '</i></span>';
     }
