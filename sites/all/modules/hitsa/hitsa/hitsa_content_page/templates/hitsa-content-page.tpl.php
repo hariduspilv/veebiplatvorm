@@ -50,7 +50,7 @@
                 
                 <div class="form-item form-item_rounded after-calendar form-item-stretch">
                    <div class="form-item_title"><?php print t('Date'); ?></div>
-                   <input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="<?php print t('Pick date'); ?>" />
+                   <input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="<?php print t('Pick date (period)'); ?>" />
                 </div><!--/form-item-->
                 
                 <div class="row-spacer-xs sm-show"></div>

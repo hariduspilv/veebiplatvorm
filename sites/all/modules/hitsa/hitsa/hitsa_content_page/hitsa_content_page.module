@@ -63,12 +63,15 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   if($form_id === 'content_page_node_form') {
+    
     if($user->uid !== '1') {
       $form['cp_display_style']['#access'] = FALSE;
       //$form['cp_type']['#access'] = FALSE;
     }
     
     if(isset($form['cp_type'])) { // Set field conditions
+      $form['cp_type']['#weight'] = $form['title']['#weight'] - 2;
+    
       // Image is required
       $form['#validate'][] = 'hitsa_content_page_required_fields';
       if(!empty($form['cp_subpages'])) {
@@ -88,6 +91,51 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
             ),
           );
         }
+      }
+      if(!empty($form['cinfo_homepage_url'])) {
+        $form['cinfo_homepage_url']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_service',
+            ),
+          ),
+        );
+      }
+      if(!empty($form['cinfo_contact_person'])) {
+        $form['cinfo_contact_person']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_service',
+            ),
+          ),
+        );
+      }
+      if(!empty($form['cinfo_e_mail'])) {
+        $form['cinfo_e_mail']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_service',
+            ),
+          ),
+        );
+      }
+      if(!empty($form['cinfo_phone_nr'])) {
+        $form['cinfo_phone_nr']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_service',
+            ),
+          ),
+        );
+      }
+      if(!empty($form['cinfo_address'])) {
+        $form['cinfo_address']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_service',
+            ),
+          ),
+        );
       }
       if(!empty($form['cp_contacts'])) {
         $form['cp_contacts']['#states'] = array(
@@ -149,6 +197,7 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
         );
       }
       if(!empty($form['cp_service_type'])) {
+        $form['cp_service_type']['#weight'] = $form['title']['#weight'] - 1 ;
         // Remove the empty option
         if(!empty($form['cp_service_type'][LANGUAGE_NONE]['#options']['_none'])) {
           unset($form['cp_service_type'][LANGUAGE_NONE]['#options']['_none']);
@@ -434,7 +483,6 @@ function hitsa_content_page_get_more_services_block_nodes($variables) {
   
   // Query up to 6 nodes
   $query['range'] = array(0, 6);
-  $result = hitsa_content_page_query_content($query);
   
   if($result = hitsa_content_page_query_content($query)) {
     $service_nids = !empty($result['content']) ? $result['content'] : NULL;

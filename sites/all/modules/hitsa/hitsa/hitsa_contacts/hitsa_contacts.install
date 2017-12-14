@@ -636,8 +636,8 @@ function hitsa_contacts_add_contact_form() {
   
   // Attach the webform to the node.
   $node->webform = array(
-    'confirmation' => "Thank you! We've received your message.",
-    'confirmation_format' => NULL,
+    'confirmation' => "Aitäh! Me oleme su kirja kätte saanud.",
+    'confirmation_format' => 'plain_text',
     'redirect_url' => 'contact',
     'status' => '1',
     'block' => '0',

@@ -102,7 +102,6 @@
           <?php 
           $attachment_type = !empty($content['cv_attachment_type']) ? $content['cv_attachment_type']['#items'][0]['value'] : NULL;
           if(!empty($content[$attachment_type])): // Contact CV ?>
-          <?php //dpm($content[$attachment_type]); ?>
           <a target="_blank" href="<?php if($attachment_type === 'contact_cv') {print check_url($content[$attachment_type]['#items'][0]['url']);} else print file_create_url($content[$attachment_type]['#items'][0]['uri']); ?>">(CV)</a>
           <?php endif; ?>
           </b>
@@ -115,7 +114,7 @@
             <?php print check_plain($node->phone_nr[LANGUAGE_NONE][0]['safe_value']); ?><br />
           <?php endif; ?>
           <?php if(!empty($node->e_mail[LANGUAGE_NONE][0]['email'])): // E-mail ?>
-          <a href="mailto:<?php print check_plain($node->e_mail[LANGUAGE_NONE][0]['email']); ?>"><?php print check_plain($node->e_mail[LANGUAGE_NONE][0]['email']); ?></a>
+          <?php print spamspan(check_plain($node->e_mail[LANGUAGE_NONE][0]['email'])); ?>
           <?php endif; ?>
         </p>
       </div><!--/object-content_col-->
