@@ -1672,12 +1672,7 @@ function hitsa_curriculum_image_default_styles()
     return $styles;
 }
 function hitsa_curriculum_mobile_menu($areas, $type, $id=null){
-    dpm($areas);
-    dpm($type);
-    dpm('HERE');
     $get_menu = hitsa_curriculum_generate_left_custom_titles($areas, $type, $id);
-    dpm($get_menu);
-    dpm($output);
     $output='';
     $output.='<div class="row sm-show">';
 	$output.='		<div class="col-12">';
