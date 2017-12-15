@@ -1241,52 +1241,7 @@ function _hitsa_events_add_field_instances(){
 
     // Exported field_instance:
     // 'taxonomy_term-time_periods-field_time_period_dates'.
-    $field_instances['taxonomy_term-time_periods-field_time_period_dates'] = array(
-        'bundle' => 'time_periods',
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'date',
-                'settings' => array(
-                    'format_type' => 'long',
-                    'fromto' => 'both',
-                    'multiple_from' => '',
-                    'multiple_number' => '',
-                    'multiple_to' => '',
-                    'show_remaining_days' => FALSE,
-                ),
-                'type' => 'date_default',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'taxonomy_term',
-        'field_name' => 'field_time_period_dates',
-        'label' => 'Time period dates',
-        'required' => FALSE,
-        'settings' => array(
-            'default_value' => 'now',
-            'default_value2' => 'now',
-            'default_value_code' => '',
-            'default_value_code2' => '',
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
-        ),
-        'widget' => array(
-            'module' => 'date',
-            'settings' => array(
-                'increment' => 15,
-                'input_format' => 'm/d/Y - H:i:s',
-                'input_format_custom' => '',
-                'label_position' => 'above',
-                'text_parts' => array(),
-                'year_range' => '-3:+3',
-            ),
-            'type' => 'date_popup',
-            'weight' => 1,
-        ),
-    );
+
 
     // Translatables
     // Included for use with string extractors like potx.

@@ -164,10 +164,28 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 
     switch ($form_id) {
         case 'event_node_form':
-            $form['language']['#weight'] = -2;
-            $form['field_event_type']['#weight'] = -3;
+            krumo($form);
+            if (!empty($form['body'][LANGUAGE_NONE])){
+                $form['body']['und'][0]['summary']['#access']=FALSE;
+            }
             $form['period']['#access'] = false;
             hitsa_events_add_types(variable_get('school_type'));
+            if (!empty($form['event_tags'])){
+                $options = $form['event_tags']['und']['#options'];
+                if(isset($options['_none'])) {
+                    unset($options['_none']);
+                    $form['event_tags']['und']['#options'] = $options;
+                }
+
+            }
+            if (!empty($form['field_event_type'])){
+                $options = $form['field_event_type']['und']['#options'];
+                if(isset($options['_none'])) {
+                    unset($options['_none']);
+                    $form['field_event_type']['und']['#options'] = $options;
+                }
+
+            }
 
             break;
 

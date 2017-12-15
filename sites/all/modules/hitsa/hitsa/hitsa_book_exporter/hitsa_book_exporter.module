@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function hitsa_book_exporter_menu()
+{
+
+    $items['admin/hitsa/hitsa_exporter'] = array(
+        'title' => t('Books exporter'),
+        'position' => 'left',
+        'type' => MENU_LOCAL_TASK,
+        'weight' => -19,
+        'page callback' => 'hitsa_books_export_page',
+        'access arguments' => array('wiseadmin access'),
+        'file' => 'includes/hitsa_books_export.admin.inc',
+
+    );
+    return $items;
+}
+/**
+ * Implements hook_permission().
+ */
+function hitsa_book_exporter_permission()
+{
+    return array(
+        'wiseadmin access' => array(
+            'title' => t('Access book exporter page'),
+        )
+    );
+}
