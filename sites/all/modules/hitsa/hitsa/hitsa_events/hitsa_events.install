@@ -488,778 +488,836 @@ function hitsa_events_add_fields()
 
 function _hitsa_events_add_field_bases(){
 
-    $field_bases = array();
+  $field_bases = array();
 
-    // Exported field_base: 'body'.
-    $field_bases['body'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(
-            0 => 'node',
-        ),
-        'field_name' => 'body',
-        'indexes' => array(
-            'format' => array(
-                0 => 'format',
-            ),
-        ),
-        'locked' => 0,
-        'module' => 'text',
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-        ),
-        'translatable' => 0,
-        'type' => 'text_with_summary',
-    );
+  // Exported field_base: 'body'.
+  $field_bases['body'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(
+      0 => 'node',
+    ),
+    'field_name' => 'body',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'text_with_summary',
+  );
 
-    // Exported field_base: 'event_date'.
-    $field_bases['event_date'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'event_date',
-        'indexes' => array(),
-        'label' => 'Date',
-        'locked' => 0,
-        'module' => 'date',
-        'settings' => array(
-            'cache_count' => 4,
-            'cache_enabled' => 0,
-            'entity_translation_sync' => FALSE,
-            'granularity' => array(
-                'day' => 'day',
-                'hour' => 'hour',
-                'minute' => 'minute',
-                'month' => 'month',
-                'second' => 0,
-                'year' => 'year',
-            ),
-            'timezone_db' => '',
-            'todate' => 'optional',
-            'tz_handling' => 'none',
-        ),
-        'translatable' => 0,
-        'type' => 'datestamp',
-    );
+  // Exported field_base: 'event_date'.
+  $field_bases['event_date'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'event_date',
+    'indexes' => array(),
+    'label' => 'Date',
+    'locked' => 0,
+    'module' => 'date',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'cache_count' => 4,
+      'cache_enabled' => 0,
+      'entity_translation_sync' => FALSE,
+      'granularity' => array(
+        'day' => 'day',
+        'hour' => 'hour',
+        'minute' => 'minute',
+        'month' => 'month',
+        'second' => 0,
+        'year' => 'year',
+      ),
+      'timezone_db' => '',
+      'todate' => 'optional',
+      'tz_handling' => 'none',
+    ),
+    'translatable' => 0,
+    'type' => 'datestamp',
+  );
 
-    // Exported field_base: 'event_tags'.
-    $field_bases['event_tags'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'event_tags',
-        'indexes' => array(
-            'tid' => array(
-                0 => 'tid',
-            ),
+  // Exported field_base: 'event_tags'.
+  $field_bases['event_tags'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'event_tags',
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'taxonomy',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'hitsa_event_tags',
+          'parent' => 0,
         ),
-        'locked' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-            'allowed_values' => array(
-                0 => array(
-                    'vocabulary' => 'hitsa_event_tags',
-                    'parent' => 0,
-                ),
-            ),
-            'entity_translation_sync' => FALSE,
-            'options_list_callback' => 'i18n_taxonomy_allowed_values',
-        ),
-        'translatable' => 1,
-        'type' => 'taxonomy_term_reference',
-    );
+      ),
+      'entity_translation_sync' => FALSE,
+      'options_list_callback' => 'i18n_taxonomy_allowed_values',
+    ),
+    'translatable' => 1,
+    'type' => 'taxonomy_term_reference',
+  );
 
-    // Exported field_base: 'field_event_type'.
-    $field_bases['field_event_type'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_event_type',
-        'indexes' => array(
-            'value' => array(
-                0 => 'value',
-            ),
-        ),
-        'locked' => 0,
-        'module' => 'list',
-        'settings' => array(
-            'allowed_values' => array(
-                'event' => 'Event',
-                'training' => 'Training',
-            ),
-            'allowed_values_function' => '',
-            'entity_translation_sync' => FALSE,
-        ),
-        'translatable' => 0,
-        'type' => 'list_text',
-    );
+  // Exported field_base: 'field_event_type'.
+  $field_bases['field_event_type'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_event_type',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'event' => 'Event',
+        'training' => 'Training',
+      ),
+      'allowed_values_function' => '',
+      'allowed_values_no_localization' => 0,
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
 
-    // Exported field_base: 'field_registration_form'.
-    $field_bases['field_registration_form'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_registration_form',
-        'indexes' => array(
-            'target_id' => array(
-                0 => 'target_id',
-            ),
+  // Exported field_base: 'field_registration_form'.
+  $field_bases['field_registration_form'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_registration_form',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'entity_translation_sync' => FALSE,
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
         ),
-        'locked' => 0,
-        'module' => 'entityreference',
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'handler' => 'base',
-            'handler_settings' => array(
-                'behaviors' => array(
-                    'views-select-list' => array(
-                        'status' => 0,
-                    ),
-                ),
-                'sort' => array(
-                    'type' => 'none',
-                ),
-                'target_bundles' => array(
-                    'webform' => 'webform',
-                ),
-            ),
-            'target_type' => 'node',
+        'sort' => array(
+          'type' => 'none',
         ),
-        'translatable' => 0,
-        'type' => 'entityreference',
-    );
+        'target_bundles' => array(
+          'webform' => 'webform',
+        ),
+      ),
+      'target_type' => 'node',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
 
-    // Exported field_base: 'field_time_period_dates'.
-    $field_bases['field_time_period_dates'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_time_period_dates',
-        'indexes' => array(),
-        'locked' => 0,
-        'module' => 'date',
-        'settings' => array(
-            'cache_count' => 4,
-            'cache_enabled' => 0,
-            'entity_translation_sync' => FALSE,
-            'granularity' => array(
-                'day' => 'day',
-                'hour' => 0,
-                'minute' => 0,
-                'month' => 'month',
-                'second' => 0,
-                'year' => 'year',
-            ),
-            'timezone_db' => '',
-            'todate' => 'optional',
-            'tz_handling' => 'none',
-        ),
-        'translatable' => 0,
-        'type' => 'datestamp',
-    );
+  // Exported field_base: 'field_time_period_dates'.
+  $field_bases['field_time_period_dates'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_time_period_dates',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'date',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'cache_count' => 4,
+      'cache_enabled' => 0,
+      'entity_translation_sync' => FALSE,
+      'granularity' => array(
+        'day' => 'day',
+        'hour' => 0,
+        'minute' => 0,
+        'month' => 'month',
+        'second' => 0,
+        'year' => 'year',
+      ),
+      'timezone_db' => '',
+      'todate' => 'optional',
+      'tz_handling' => 'none',
+    ),
+    'translatable' => 0,
+    'type' => 'datestamp',
+  );
 
-    // Exported field_base: 'field_training_cost'.
-    $field_bases['field_training_cost'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_training_cost',
-        'indexes' => array(),
-        'locked' => 0,
-        'module' => 'number',
-        'settings' => array(
-            'decimal_separator' => ',',
-            'entity_translation_sync' => FALSE,
-        ),
-        'translatable' => 0,
-        'type' => 'number_float',
-    );
+  // Exported field_base: 'field_training_cost'.
+  $field_bases['field_training_cost'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_training_cost',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'decimal_separator' => ',',
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'number_float',
+  );
 
-    // Exported field_base: 'field_training_tags'.
-    $field_bases['field_training_tags'] = array(
-        'active' => 1,
-        'cardinality' => -1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_training_tags',
-        'indexes' => array(
-            'target_id' => array(
-                0 => 'target_id',
-            ),
+  // Exported field_base: 'field_training_tags'.
+  $field_bases['field_training_tags'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_training_tags',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'handler' => 'base',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 0,
+          ),
         ),
-        'locked' => 0,
-        'module' => 'entityreference',
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'handler' => 'base',
-            'handler_settings' => array(
-                'behaviors' => array(
-                    'views-select-list' => array(
-                        'status' => 0,
-                    ),
-                ),
-                'sort' => array(
-                    'type' => 'none',
-                ),
-                'target_bundles' => array(
-                    'training_tags' => 'training_tags',
-                ),
-            ),
-            'target_type' => 'taxonomy_term',
+        'sort' => array(
+          'type' => 'none',
         ),
-        'translatable' => 0,
-        'type' => 'entityreference',
-    );
+        'target_bundles' => array(
+          'training_tags' => 'training_tags',
+        ),
+      ),
+      'target_type' => 'taxonomy_term',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
 
-    // Exported field_base: 'locations'.
-    $field_bases['locations'] = array(
-        'active' => 1,
-        'cardinality' => -1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'locations',
-        'indexes' => array(
-            'tid' => array(
-                0 => 'tid',
-            ),
+  // Exported field_base: 'locations'.
+  $field_bases['locations'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'locations',
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'taxonomy',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'hitsa_locations',
+          'parent' => 0,
         ),
-        'locked' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-            'allowed_values' => array(
-                0 => array(
-                    'vocabulary' => 'hitsa_locations',
-                    'parent' => 0,
-                ),
-            ),
-            'entity_translation_sync' => FALSE,
-            'options_list_callback' => 'i18n_taxonomy_allowed_values',
-        ),
-        'translatable' => 1,
-        'type' => 'taxonomy_term_reference',
-    );
+      ),
+      'entity_translation_sync' => FALSE,
+      'options_list_callback' => 'i18n_taxonomy_allowed_values',
+    ),
+    'translatable' => 1,
+    'type' => 'taxonomy_term_reference',
+  );
 
-    // Exported field_base: 'period'.
-    $field_bases['period'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'period',
-        'indexes' => array(
-            'tid' => array(
-                0 => 'tid',
-            ),
+  // Exported field_base: 'period'.
+  $field_bases['period'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'period',
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'taxonomy',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'time_periods',
+          'parent' => 0,
         ),
-        'locked' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-            'allowed_values' => array(
-                0 => array(
-                    'vocabulary' => 'time_periods',
-                    'parent' => 0,
-                ),
-            ),
-            'entity_translation_sync' => FALSE,
-            'options_list_callback' => 'i18n_taxonomy_allowed_values',
-        ),
-        'translatable' => 1,
-        'type' => 'taxonomy_term_reference',
-    );
+      ),
+      'entity_translation_sync' => FALSE,
+      'options_list_callback' => 'i18n_taxonomy_allowed_values',
+    ),
+    'translatable' => 1,
+    'type' => 'taxonomy_term_reference',
+  );
 
-    return $field_bases;
+  return $field_bases;
+
 }
 
 function _hitsa_events_add_field_instances(){
 
-    $field_instances = array();
+  $field_instances = array();
 
-    // Exported field_instance: 'node-event-body'.
-    $field_instances['node-event-body'] = array(
-        'bundle' => 'event',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'hidden',
-                'module' => 'text',
-                'settings' => array(),
-                'type' => 'text_default',
-                'weight' => 8,
-            ),
-            'hitsa_event' => array(
-                'label' => 'hidden',
-                'module' => 'text',
-                'settings' => array(
-                    'trim_length' => 600,
-                ),
-                'type' => 'text_summary_or_trimmed',
-                'weight' => 1,
-            ),
-            'teaser' => array(
-                'label' => 'hidden',
-                'module' => 'text',
-                'settings' => array(
-                    'trim_length' => 600,
-                ),
-                'type' => 'text_summary_or_trimmed',
-                'weight' => 1,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'body',
-        'label' => 'Calendar event',
-        'required' => 0,
+  // Exported field_instance: 'node-event-body'.
+  $field_instances['node-event-body'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 8,
+      ),
+      'hitsa_event' => array(
+        'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(
-            'display_summary' => TRUE,
-            'entity_translation_sync' => FALSE,
-            'text_processing' => 1,
-            'user_register_form' => FALSE,
+          'trim_length' => 600,
         ),
-        'widget' => array(
-            'module' => 'text',
-            'settings' => array(
-                'rows' => 20,
-                'summary_rows' => 5,
-            ),
-            'type' => 'text_textarea_with_summary',
-            'weight' => 0,
-        ),
-    );
-
-    // Exported field_instance: 'node-event-event_date'.
-    $field_instances['node-event-event_date'] = array(
-        'bundle' => 'event',
-        'deleted' => 0,
-        'description' => 'Date period when event takes place',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'date',
-                'settings' => array(
-                    'format_type' => 'long',
-                    'fromto' => 'both',
-                    'multiple_from' => '',
-                    'multiple_number' => '',
-                    'multiple_to' => '',
-                    'show_remaining_days' => FALSE,
-                ),
-                'type' => 'date_default',
-                'weight' => 1,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'event_date',
-        'label' => 'Date',
-        'required' => 0,
+        'type' => 'text_summary_or_trimmed',
+        'weight' => 1,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'module' => 'text',
         'settings' => array(
-            'default_value' => 'now',
-            'default_value2' => 'sync',
-            'default_value_code' => '',
-            'default_value_code2' => '',
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+          'trim_length' => 600,
         ),
-        'widget' => array(
-            'active' => 1,
-            'module' => 'date',
-            'settings' => array(
-                'increment' => 15,
-                'input_format' => 'site-wide',
-                'input_format_custom' => '',
-                'label_position' => 'above',
-                'no_fieldset' => 0,
-                'text_parts' => array(),
-                'year_range' => '-3:+3',
-            ),
-            'type' => 'date_popup',
-            'weight' => 3,
-        ),
-    );
+        'type' => 'text_summary_or_trimmed',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'body',
+    'label' => 'Calendar event',
+    'required' => 0,
+    'settings' => array(
+      'display_summary' => 1,
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 20,
+        'summary_rows' => 5,
+      ),
+      'type' => 'text_textarea_with_summary',
+      'weight' => 4,
+    ),
+  );
 
-    // Exported field_instance: 'node-event-event_tags'.
-    $field_instances['node-event-event_tags'] = array(
-        'bundle' => 'event',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'i18n_taxonomy',
-                'settings' => array(),
-                'type' => 'i18n_taxonomy_term_reference_link',
-                'weight' => 10,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'event_tags',
-        'label' => 'Tags',
-        'required' => 0,
+  // Exported field_instance: 'node-event-event_date'.
+  $field_instances['node-event-event_date'] = array(
+    'bundle' => 'event',
+    'deleted' => 0,
+    'description' => 'Date period when event takes place',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
-        'widget' => array(
-            'active' => 1,
-            'module' => 'options',
-            'settings' => array(),
-            'type' => 'options_buttons',
-            'weight' => 1,
-        ),
-    );
+        'type' => 'date_default',
+        'weight' => 1,
+      ),
+      'hitsa_event' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'event_date',
+    'label' => 'Date',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'sync',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'd/m/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'no_fieldset' => 0,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 8,
+    ),
+  );
 
-    // Exported field_instance: 'node-event-field_event_type'.
-    $field_instances['node-event-field_event_type'] = array(
-        'bundle' => 'event',
-        'default_value' => array(
-            0 => array(
-                'value' => 'event',
-            ),
-        ),
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'list',
-                'settings' => array(),
-                'type' => 'list_default',
-                'weight' => 5,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'field_event_type',
-        'label' => 'Event type',
-        'required' => 0,
+  // Exported field_instance: 'node-event-event_tags'.
+  $field_instances['node-event-event_tags'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'i18n_taxonomy',
+        'settings' => array(),
+        'type' => 'i18n_taxonomy_term_reference_link',
+        'weight' => 10,
+      ),
+      'hitsa_event' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'event_tags',
+    'label' => 'Tags',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'node-event-field_event_type'.
+  $field_instances['node-event-field_event_type'] = array(
+    'bundle' => 'event',
+    'default_value' => array(
+      0 => array(
+        'value' => 'event',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 5,
+      ),
+      'hitsa_event' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_event_type',
+    'label' => 'Event type',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'node-event-field_registration_form'.
+  $field_instances['node-event-field_registration_form'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+          'bypass_access' => FALSE,
+          'link' => FALSE,
         ),
-        'widget' => array(
-            'active' => 1,
-            'module' => 'options',
-            'settings' => array(),
-            'type' => 'options_select',
-            'weight' => 1,
-        ),
-    );
+        'type' => 'entityreference_label',
+        'weight' => 12,
+      ),
+      'hitsa_event' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_registration_form',
+    'label' => 'Registration form',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'entityreference_autocreate' => 0,
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
+      'weight' => 11,
+    ),
+  );
 
-    // Exported field_instance: 'node-event-field_registration_form'.
-    $field_instances['node-event-field_registration_form'] = array(
-        'bundle' => 'event',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'entityreference',
-                'settings' => array(
-                    'bypass_access' => FALSE,
-                    'link' => FALSE,
-                ),
-                'type' => 'entityreference_label',
-                'weight' => 12,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'field_registration_form',
-        'label' => 'Registration form',
-        'required' => FALSE,
+  // Exported field_instance: 'node-event-field_training_cost'.
+  $field_instances['node-event-field_training_cost'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 2,
+          'thousand_separator' => '',
         ),
-        'widget' => array(
-            'module' => 'options',
-            'settings' => array(),
-            'type' => 'options_select',
-            'weight' => 9,
-        ),
-    );
+        'type' => 'number_decimal',
+        'weight' => 6,
+      ),
+      'hitsa_event' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_training_cost',
+    'label' => 'Training cost',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 9,
+    ),
+  );
 
-    // Exported field_instance: 'node-event-field_training_cost'.
-    $field_instances['node-event-field_training_cost'] = array(
-        'bundle' => 'event',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'number',
-                'settings' => array(
-                    'decimal_separator' => '.',
-                    'prefix_suffix' => TRUE,
-                    'scale' => 2,
-                    'thousand_separator' => '',
-                ),
-                'type' => 'number_decimal',
-                'weight' => 6,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'field_training_cost',
-        'label' => 'Training cost',
-        'required' => 0,
+  // Exported field_instance: 'node-event-field_training_tags'.
+  $field_instances['node-event-field_training_tags'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'entityreference',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'max' => '',
-            'min' => '',
-            'prefix' => '',
-            'suffix' => '',
-            'user_register_form' => FALSE,
+          'bypass_access' => FALSE,
+          'link' => FALSE,
         ),
-        'widget' => array(
-            'active' => 0,
-            'module' => 'number',
-            'settings' => array(),
-            'type' => 'number',
-            'weight' => 7,
+        'type' => 'entityreference_label',
+        'weight' => 7,
+      ),
+      'hitsa_event' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_training_tags',
+    'label' => 'Training tags',
+    'required' => 0,
+    'settings' => array(
+      'behaviors' => array(
+        'taxonomy-index' => array(
+          'status' => TRUE,
         ),
-    );
+      ),
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'entityreference',
+      'settings' => array(
+        'entityreference_autocreate' => 0,
+        'match_operator' => 'CONTAINS',
+        'path' => '',
+        'size' => 60,
+      ),
+      'type' => 'entityreference_autocomplete_tags',
+      'weight' => 10,
+    ),
+  );
 
-    // Exported field_instance: 'node-event-field_training_tags'.
-    $field_instances['node-event-field_training_tags'] = array(
-        'bundle' => 'event',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'entityreference',
-                'settings' => array(
-                    'bypass_access' => FALSE,
-                    'link' => FALSE,
-                ),
-                'type' => 'entityreference_label',
-                'weight' => 7,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'field_training_tags',
-        'label' => 'Training tags',
-        'required' => 0,
+  // Exported field_instance: 'node-event-locations'.
+  $field_instances['node-event-locations'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Sündmuse toimumise asukoht',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'i18n_taxonomy',
+        'settings' => array(),
+        'type' => 'i18n_taxonomy_term_reference_link',
+        'weight' => 11,
+      ),
+      'hitsa_event' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'locations',
+    'label' => 'Location',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'node-event-period'.
+  $field_instances['node-event-period'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Siin määratakse ära, millisesse semestrisse aine kuulub',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'i18n_taxonomy',
+        'settings' => array(),
+        'type' => 'i18n_taxonomy_term_reference_link',
+        'weight' => 9,
+      ),
+      'hitsa_event' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'period',
+    'label' => 'Time period when event takes place',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'taxonomy',
+      'settings' => array(
+        'autocomplete_path' => 'taxonomy/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'taxonomy_autocomplete',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'taxonomy_term-time_periods-field_time_period_dates'.
+  $field_instances['taxonomy_term-time_periods-field_time_period_dates'] = array(
+    'bundle' => 'time_periods',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
         'settings' => array(
-            'behaviors' => array(
-                'taxonomy-index' => array(
-                    'status' => TRUE,
-                ),
-            ),
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
         ),
-        'widget' => array(
-            'active' => 1,
-            'module' => 'entityreference',
-            'settings' => array(
-                'entityreference_autocreate' => 0,
-                'match_operator' => 'CONTAINS',
-                'path' => '',
-                'size' => 60,
-            ),
-            'type' => 'entityreference_autocomplete_tags',
-            'weight' => 8,
-        ),
-    );
+        'type' => 'date_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_time_period_dates',
+    'label' => 'Time period dates',
+    'required' => FALSE,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'now',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'm/d/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 1,
+    ),
+  );
 
-    // Exported field_instance: 'node-event-locations'.
-    $field_instances['node-event-locations'] = array(
-        'bundle' => 'event',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => 'Sündmuse toimiumise asukoht',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'i18n_taxonomy',
-                'settings' => array(),
-                'type' => 'i18n_taxonomy_term_reference_link',
-                'weight' => 11,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'locations',
-        'label' => 'Location',
-        'required' => 0,
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
-        ),
-        'widget' => array(
-            'active' => 0,
-            'module' => 'taxonomy',
-            'settings' => array(
-                'autocomplete_path' => 'taxonomy/autocomplete',
-                'size' => 60,
-            ),
-            'type' => 'taxonomy_autocomplete',
-            'weight' => 1,
-        ),
-    );
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Calendar event');
+  t('Date');
+  t('Date period when event takes place');
+  t('Event type');
+  t('Location');
+  t('Registration form');
+  t('Siin määratakse ära, millisesse semestrisse aine kuulub');
+  t('Sündmuse toimumise asukoht');
+  t('Tags');
+  t('Time period dates');
+  t('Time period when event takes place');
+  t('Training cost');
+  t('Training tags');
 
-    // Exported field_instance: 'node-event-period'.
-    $field_instances['node-event-period'] = array(
-        'bundle' => 'event',
-        'default_value' => NULL,
-        'deleted' => 0,
-        'description' => 'Siin määratakse ära, millisesse semestrisse aine kuulub',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'i18n_taxonomy',
-                'settings' => array(),
-                'type' => 'i18n_taxonomy_term_reference_link',
-                'weight' => 9,
-            ),
-            'hitsa_event' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-            'teaser' => array(
-                'label' => 'above',
-                'settings' => array(),
-                'type' => 'hidden',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'node',
-        'field_name' => 'period',
-        'label' => 'Time period when event takes place',
-        'required' => 0,
-        'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
-        ),
-        'widget' => array(
-            'active' => 0,
-            'module' => 'taxonomy',
-            'settings' => array(
-                'autocomplete_path' => 'taxonomy/autocomplete',
-                'size' => 60,
-            ),
-            'type' => 'taxonomy_autocomplete',
-            'weight' => 1,
-        ),
-    );
+  return $field_instances;
 
-    // Exported field_instance:
-    // 'taxonomy_term-time_periods-field_time_period_dates'.
-
-
-    // Translatables
-    // Included for use with string extractors like potx.
-    t('Calendar event');
-    t('Date');
-    t('Date period when event takes place');
-    t('Event type');
-    t('Location');
-    t('Registration form');
-    t('Siin määratakse ära, millisesse semestrisse aine kuulub');
-    t('Sündmuse toimiumise asukoht');
-    t('Tags');
-    t('Time period dates');
-    t('Time period when event takes place');
-    t('Training cost');
-    t('Training tags');
-
-    return $field_instances;
 }
 
 function hitsa_events_delete_custom_node_fields()
@@ -1283,303 +1341,231 @@ function hitsa_events_make_fields_conditional()
     }
 }
 
-function _hitsa_events_conditional_fields()
-{
-    $items = array();
+function _hitsa_events_conditional_fields(){
 
-    $items["node:event:0"] = array(
-        'entity' => 'node',
-        'bundle' => 'event',
-        'dependent' => 'event_tags',
-        'dependee' => 'field_event_type',
-        'options' => array(
-            'state' => 'visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'event',
-            'value' => array(
-                0 => array(
-                    'value' => 'event',
-                ),
-            ),
-            'values' => array(),
+  $items = array();
+
+  $items["node:event:0"] = array(
+    'entity' => 'node',
+    'bundle' => 'event',
+    'dependent' => 'event_tags',
+    'dependee' => 'field_event_type',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
         ),
-    );
-
-    $items["node:event:1"] = array(
-        'entity' => 'node',
-        'bundle' => 'event',
-        'dependent' => 'field_registration_form',
-        'dependee' => 'field_event_type',
-        'options' => array(
-            'state' => 'visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'training',
-            'value' => array(
-                0 => array(
-                    'value' => 'training',
-                ),
-            ),
-            'values' => array(),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
         ),
-    );
-
-    $items["node:event:2"] = array(
-        'entity' => 'node',
-        'bundle' => 'event',
-        'dependent' => 'field_training_tags',
-        'dependee' => 'field_event_type',
-        'options' => array(
-            'state' => 'visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'training',
-            'value' => array(
-                0 => array(
-                    'value' => 'training',
-                ),
-            ),
-            'values' => array(),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
         ),
-    );
-
-    $items["node:event:3"] = array(
-        'entity' => 'node',
-        'bundle' => 'event',
-        'dependent' => 'field_training_cost',
-        'dependee' => 'field_event_type',
-        'options' => array(
-            'state' => 'visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'training',
-            'value' => array(
-                0 => array(
-                    'value' => 'training',
-                ),
-            ),
-            'values' => array(),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
         ),
-    );
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 1,
+      'value_form' => 'event',
+      'value' => array(
+        0 => array(
+          'value' => 'event',
+        ),
+      ),
+      'values' => array(),
+    ),
+  );
 
-    return $items;
+  $items["node:event:1"] = array(
+    'entity' => 'node',
+    'bundle' => 'event',
+    'dependent' => 'field_training_cost',
+    'dependee' => 'field_event_type',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 1,
+      'value_form' => 'training',
+      'value' => array(
+        0 => array(
+          'value' => 'training',
+        ),
+      ),
+      'values' => array(),
+    ),
+  );
+
+  $items["node:event:2"] = array(
+    'entity' => 'node',
+    'bundle' => 'event',
+    'dependent' => 'field_training_tags',
+    'dependee' => 'field_event_type',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 1,
+      'value_form' => 'training',
+      'value' => array(
+        0 => array(
+          'value' => 'training',
+        ),
+      ),
+      'values' => array(),
+    ),
+  );
+
+  return $items;
+
 }
 
 function _hitsa_events_get_field_ids($dependee, $dependent)

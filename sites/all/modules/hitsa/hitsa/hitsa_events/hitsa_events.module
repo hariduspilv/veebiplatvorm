@@ -146,6 +146,7 @@ function hitsa_events_preprocess_node(&$variables)
             }
         }
     }
+
     /**
      * Sample code from the api example.
      *  // This example is from rdf_preprocess_image(). It adds an RDF attribute
@@ -164,22 +165,22 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 
     switch ($form_id) {
         case 'event_node_form':
-            if (!empty($form['body'][LANGUAGE_NONE])){
-                $form['body']['und'][0]['summary']['#access']=FALSE;
+            if (!empty($form['body'][LANGUAGE_NONE])) {
+                $form['body']['und'][0]['summary']['#access'] = FALSE;
             }
             $form['period']['#access'] = false;
             hitsa_events_add_types(variable_get('school_type'));
-            if (!empty($form['event_tags'])){
+            if (!empty($form['event_tags'])) {
                 $options = $form['event_tags']['und']['#options'];
-                if(isset($options['_none'])) {
+                if (isset($options['_none'])) {
                     unset($options['_none']);
                     $form['event_tags']['und']['#options'] = $options;
                 }
 
             }
-            if (!empty($form['field_event_type'])){
+            if (!empty($form['field_event_type'])) {
                 $options = $form['field_event_type']['und']['#options'];
-                if(isset($options['_none'])) {
+                if (isset($options['_none'])) {
                     unset($options['_none']);
                     $form['field_event_type']['und']['#options'] = $options;
                 }
@@ -347,7 +348,7 @@ function hitsa_events_calendar_page_html()
     }
     $time_periods_tree = taxonomy_vocabulary_machine_name_load('time_periods');
     $time_periods_tree = taxonomy_get_tree($time_periods_tree->vid);
-    $ime_periods = array();
+    $time_periods = array();
     foreach ($time_periods_tree as $time_term) {
         if ($time_term->depth == 0) {
             $time_periods[$time_term->tid] = $time_term->name;
@@ -416,6 +417,7 @@ function hitsa_events_calendar_page_html()
                      </div><!--/form-item-row-->
                   </div><!--/col-12-->
                </div><!--/row-->
+               <input type="hidden" name="type" value="event">
                </form>';
     $output .= '<div class="row-spacer"></div>';
     $output .= '<div class="row">';
@@ -448,6 +450,7 @@ function hitsa_events_endpoint($loaded_page = NULL)
     $search = NULL;
     $dates = NULL;
     $years = NULL;
+    $type = NULL;
     global $language;
     if (!empty($_REQUEST)) {
         $year = (!empty($_REQUEST['year'])) ? $_REQUEST['year'] : NULL;
@@ -455,6 +458,8 @@ function hitsa_events_endpoint($loaded_page = NULL)
         $search = (!empty($_REQUEST['event-title'])) ? ($_REQUEST['event-title']) : NULL;
         $years = (!empty($_REQUEST['year'])) ? explode(',', $_REQUEST['year']) : NULL;
         $dates = (!empty($_REQUEST['date'])) ? explode('-', $_REQUEST['date']) : NULL;
+        $type = (!empty($_REQUEST['type']))?$_REQUEST['type']:NULL;
+
     }
     $textured_nodes = '';
     $q = db_select('node', 'n');
@@ -500,11 +505,21 @@ function hitsa_events_endpoint($loaded_page = NULL)
         $q->condition($db_or);
         $q->fields('fdet');
     }
+    if(!empty($type)){
+        $q->join('field_data_field_event_type','fdfet','n.nid=fdfet.entity_id');
+        $q->condition('fdfet.field_event_type_value',$type,'=');
+    }
     if (!empty($dates)) {
         $start_date = strtotime(str_replace('/', '-', $dates[0]));
         $end_date = strtotime(str_replace('/', '-', $dates[1]));
         $q->join('field_data_event_date', 'fded', 'fded.entity_id=n.nid');
-        $q->condition('fded.event_date_value', array($start_date, $end_date), 'between');
+
+        $db_or = db_or();
+            $db_or->condition('fded.event_date_value', $start_date, '>=');
+            $db_or->condition('fded.event_date_value2', $start_date, '>=');
+
+        $q->condition($db_or);
+        $q->fields('fded');
 //        $q -> condition('fded.event_date_value2',$end_date,'<');
     }
     $r = $q->execute();
@@ -542,7 +557,7 @@ function hitsa_events_get_nodes_html($nodes)
             foreach ($nodes as $event) {
                 if (!empty($event->field_event_type)) {
                     if ($event->field_event_type['und'][0]['value'] == 'training') {
-                        continue;
+//                        continue;
                     }
                 } else {
                     continue;
@@ -562,6 +577,20 @@ function hitsa_events_get_nodes_html($nodes)
                         $numDays = abs($start_date - $end_date) / 60 / 60 / 24;
                         for ($i = 0; $i <= $numDays; $i++) {
                             $start_date_date = date('U', strtotime("+{$i} day", $start_date));
+                            if (!empty($_REQUEST)){
+                              if (!empty($_REQUEST['date'])){
+                                $two_dates = explode(' - ',$_REQUEST['date']);
+
+                                $two_dates[0] = strtotime(str_replace('/', '-', $two_dates[0]));
+                                $two_dates[1] = strtotime(str_replace('/', '-', $two_dates[1]));
+                                if($two_dates[0]>$start_date_date){
+                                  continue;
+                                }
+                                if ($two_dates[1]<$start_date_date){
+                                  continue;
+                                }
+                              }
+                            }
                             $event_html = hitsa_events_event_html($event, $type = 'event', $start_date_date, $i);
                             $events_array[] = $event_html;
                             if (is_object($event_html['periods'])) {
@@ -697,14 +726,14 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<div class="object-inner">';
         $output .= '<a href class="object-date">';
         $output .= '<span class="object-date_day">';
-        $output .= date('d', $start_date_date);
+        $output .= format_date($start_date_date,'custom','d',NULL,$language->language);
         $output .= '</span>';
         $output .= '<span class="object-date_month">';
-        $output .= strftime('%B', $start_date_date);
+        $output .= format_date($start_date_date,'custom','F',NULL,$language->language);
         $output .= '</span>';
         $output .= '</a><!--/object-date-->';
         $output .= '<span class="object-content">';
-        $output .= '<a href="" class="object-title">';
+        $output .= '<a href="" onclick="event.preventDefault();" class="object-title">';
         $output .= $event->title;
         $output .= '</a>';
         $output .= '<span class="object-footer">';
@@ -713,7 +742,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= ($type == 'training' && !empty($training_cost)) ? ' ' . $training_cost . ' ' : '';
         $output .= '<br />';
 //        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
-        if($start_date_date>time()) {
+        if ($start_date_date > time()) {
             $output .= ($type != 'training') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
             if (!empty($reg_form_id)) {
                 $output .= ($type == 'training') ? '<a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to training') . '</a>' : '';
@@ -734,7 +763,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
 
         $output .= '<a href="javascript:void(0);" class="btn" data-toggle="object-details_' . $details_number . '" data-hide="object-details_' . $details_number . '">' . t('Read more') . '</a>';
         $output .= '<div data-show="object-details_' . $details_number . '">';
-        $output .= '<a href="" class="btn-circle before-share"></a>';
+        $output .= '<a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
         $output .= '<a href="javascript:window.print();" class="btn-circle before-print"></a>';
         $output .= '<a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="btn btn-transparent after-close">' . t('Close') . '</a>';
         $output .= '</div><!--/object-details_' . $event->nid . '-->';
@@ -941,7 +970,7 @@ function hitsa_events_front_page_block()
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
-            $output .= '             <a href="' . $link . '" class="btn btn-filled">' . t(':key calendar',array(':key' => $key)) . '</a>';
+            $output .= '             <a href="' . $link . '" class="btn btn-filled">' . t(':key calendar', array(':key' => $key)) . '</a>';
             $output .= '          </div><!--/col-12-->';
             $output .= '       </div><!--/row-->';
             $output .= '</div><!--/data-tab-' . $j . '-->';
@@ -966,7 +995,7 @@ function hitsa_events_node_presave($node)
         $event_date = null;
         $time_period_tid = null;
         if (!empty($node->event_date)) {
-            $event_date = $node->event_date['und'][0]['value'];
+            $event_date = $node->event_date[LANGUAGE_NONE][0]['value'];
         }
         foreach ($time_periods as $time_period) {
             $loaded_period = taxonomy_term_load($time_period->tid);
@@ -1001,45 +1030,47 @@ function hitsa_events_node_presave($node)
 function hitsa_events_training_calendar()
 {
     global $language;
-    $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'training'));
+    if (empty($_REQUEST)) {
+        $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'training'));
 
-    if (isset($events['node'])) {
-        $event_nids = array_keys($events['node']);
-        $events = entity_load('node', $event_nids);
-    }
+        if (isset($events['node'])) {
+            $event_nids = array_keys($events['node']);
+            $events = entity_load('node', $event_nids);
+        }
 
-    $periods = array();
-    if (!empty($events)) {
-        $output = '';
-        $events_array = array();
-        if (is_array($events)) {
-            foreach ($events as $event) {
-                if (!empty($event->event_date)) {
-                    if ($event->event_date['und'][0]['value'] == $event->event_date['und'][0]['value2']) {
-                        $event_html = hitsa_events_event_html($event, $type = 'training');
-                        $events_array[] = $event_html;
-                        // $output.= $event_html['html'];
-                        $periods[$event_html['periods']->tid] = $event_html['periods'];
-                        $periods[$event_html['periods']->tid]->events[] = array('date' => $event_html['start_date'], 'html' => $event_html['html']);
-                    } else {
-                        $start_date = $event->event_date['und'][0]['value'];
-                        $end_date = $event->event_date['und'][0]['value2'];
-                        $numDays = abs($start_date - $end_date) / 60 / 60 / 24;
-                        for ($i = 0; $i <= $numDays; $i++) {
-                            $start_date_date = date('U', strtotime("+{$i} day", $start_date));
-                            $event_html = hitsa_events_event_html($event, $type = 'training', $start_date_date);
+        $periods = array();
+        if (!empty($events)) {
+            $output = '';
+            $events_array = array();
+            if (is_array($events)) {
+                foreach ($events as $event) {
+                    if (!empty($event->event_date)) {
+                        if ($event->event_date['und'][0]['value'] == $event->event_date['und'][0]['value2']) {
+                            $event_html = hitsa_events_event_html($event, $type = 'training');
                             $events_array[] = $event_html;
+                            // $output.= $event_html['html'];
                             $periods[$event_html['periods']->tid] = $event_html['periods'];
                             $periods[$event_html['periods']->tid]->events[] = array('date' => $event_html['start_date'], 'html' => $event_html['html']);
+                        } else {
+                            $start_date = $event->event_date['und'][0]['value'];
+                            $end_date = $event->event_date['und'][0]['value2'];
+                            $numDays = abs($start_date - $end_date) / 60 / 60 / 24;
+                            for ($i = 0; $i <= $numDays; $i++) {
+                                $start_date_date = date('U', strtotime("+{$i} day", $start_date));
+                                $event_html = hitsa_events_event_html($event, $type = 'training', $start_date_date);
+                                $events_array[] = $event_html;
+                                $periods[$event_html['periods']->tid] = $event_html['periods'];
+                                $periods[$event_html['periods']->tid]->events[] = array('date' => $event_html['start_date'], 'html' => $event_html['html']);
+                            }
                         }
                     }
                 }
             }
         }
+        usort($periods, function ($a, $b) {
+            return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
+        });
     }
-    usort($periods, function ($a, $b) {
-        return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
-    });
 //    $field = field_info_field('field_event_type');
     $allowed = list_allowed_values($field);
     $taxonomy = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
@@ -1085,7 +1116,7 @@ function hitsa_events_training_calendar()
     }
     $time_periods_tree = taxonomy_vocabulary_machine_name_load('time_periods');
     $time_periods_tree = taxonomy_get_tree($time_periods_tree->vid);
-    $ime_periods = array();
+    $time_periods = array();
     foreach ($time_periods_tree as $time_term) {
         if ($time_term->depth == 0) {
             $time_periods[$time_term->tid] = $time_term->name;
@@ -1109,14 +1140,14 @@ function hitsa_events_training_calendar()
                         <div class="row-spacer"></div>
                         <div class="btn-bar">
                             <span class="btn-input">
-                              <input type="checkbox" name="year" value="all" />
+                              <input type="checkbox" name="year" value="all" checked="checked"/>
                               <span class="btn btn-xs btn-alternate">' . t('All') . '</span>
                            </span><!--/btn-input-->';
         foreach ($time_periods as $time_key => $time_period) {
             $time_period_value = str_replace('/', '-', $time_period);
             $output .= '
                                 <span class="btn-input">
-                                  <input type="checkbox" name="year" value="' . $time_period_value . '" checked="checked" />
+                                  <input type="checkbox" name="year" value="' . $time_period_value . '"  />
                                   <span class="btn btn-xs btn-alternate"><span class="sm-hide">' . $time_period . '</span><span class="sm-show">' . $time_period . '</span></span>
                                </span><!--/btn-input-->';
 
@@ -1154,77 +1185,87 @@ function hitsa_events_training_calendar()
                      </div><!--/form-item-row-->
                   </div><!--/col-12-->
                </div><!--/row-->
+               
+                              <input type="hidden" name="type" value="training" />
                </form>';
     $output .= '<div class="row-spacer"></div>';
     $output .= '<div class="row">';
-    $output .= '<div class="col-12" data-postURL="/api/events" data-plugin="filterContents">';
-    $output .= '<div class="accordion" data-plugin="accordion">';
-    foreach ($periods as $period) {
-        $output .= '<div class="accordion-entry">';
-        $output .= '<div class="accordion-title">' . $period->name . '</div>';
-        $output .= '<div class="accordion-content">';
-        $events_count = count($period->events);
-        $i = 0;
+    $output .= '<div class="col-12" data-postURL="api/events" data-plugin="filterContents">';
+//    $output .= '<div class="accordion" data-plugin="accordion">';
+//    foreach ($periods as $period) {
+//        $output .= '<div class="accordion-entry">';
+//        $output .= '<div class="accordion-title">' . $period->name . '</div>';
+//        $output .= '<div class="accordion-content">';
+//        $events_count = count($period->events);
+//        $i = 0;
+//
+//        $time = strtotime('today midnight');
+//
+//        if (!empty($period->field_time_period_dates)) {
+//            if ($time >= $period->field_time_period_dates['und'][0]['value'] && $time <= $period->field_time_period_dates['und'][0]['value2']) {
+//                array_unshift($period->events, array(
+//                    'date' => (string)strtotime('today midnight'),
+//                    'html' => '<div class="object-dateseparator"><span>' . t('today') . ', ' . format_date($time, 'custom', 'd.F') . '</span></div>',
+//                    'today' => true,
+//                ));
+//            }
+//        }
+//        usort($period->events, function ($a, $b) {
+//            return $a['date'] - $b['date'];
+//        });
+//
+//        $new_counter = 2;
+//        foreach ($period->events as $key => $event_html) {
+//            $time = strtotime('today midnight');
+//            $date = date('dmY', $time);
+//            $date_out = '<div class="object-dateseparator"><span>' . t('today') . ', ' . strftime('%d. %B', $time) . '</span></div>';
+//            $tomorrow = false;
+//
+//            if (!empty($period->events[$key + 2])) {
+//                if ($time < $period->events[$key + 2]['date']) {
+//                    if ($event_html['date'] <= $time) {
+//                        $tomorrow = true;
+//                    }
+//                }
+//
+//                // code...
+//            }
+//            if (isset($event_html['today'])) {
+//                $today = true;
+//            }
+//            if ($key != 0) {
+//                if (isset($today)) {
+//                    if ($new_counter == 0) {
+//                        unset($today);
+//                    }
+//                    $new_counter--;
+//                }
+//                if (!isset($today)) {
+//                    $output .= '<hr />';
+//                }
+//                if ($new_counter == 0) {
+//                    $output .= '<hr />';
+//                }
+//            }
+//            if ($tomorrow) {
+//                // $output.= $date_out;
+//            }
+//            $output .= $event_html['html'];
+//
+//            $i++;
+//        }
+//        $output .= '</div><!--/accordion-content-->';
+//        $output .= '</div><!--/accordion-entry-->';
+//    }
 
-        $time = strtotime('today midnight');
-
-        if (!empty($period->field_time_period_dates)) {
-            if ($time >= $period->field_time_period_dates['und'][0]['value'] && $time <= $period->field_time_period_dates['und'][0]['value2']) {
-                array_unshift($period->events, array(
-                    'date' => (string)strtotime('today midnight'),
-                    'html' => '<div class="object-dateseparator"><span>' . t('today') . ', ' . format_date($time, 'custom', 'd.F') . '</span></div>',
-                    'today' => true,
-                ));
-            }
+    if (empty($_REQUEST)) {
+        if (!empty($periods)) {
+            $output .= hitsa_events_htmlize_periods($periods);
         }
-        usort($period->events, function ($a, $b) {
-            return $a['date'] - $b['date'];
-        });
-
-        $new_counter = 2;
-        foreach ($period->events as $key => $event_html) {
-            $time = strtotime('today midnight');
-            $date = date('dmY', $time);
-            $date_out = '<div class="object-dateseparator"><span>' . t('today') . ', ' . strftime('%d. %B', $time) . '</span></div>';
-            $tomorrow = false;
-
-            if (!empty($period->events[$key + 2])) {
-                if ($time < $period->events[$key + 2]['date']) {
-                    if ($event_html['date'] <= $time) {
-                        $tomorrow = true;
-                    }
-                }
-
-                // code...
-            }
-            if (isset($event_html['today'])) {
-                $today = true;
-            }
-            if ($key != 0) {
-                if (isset($today)) {
-                    if ($new_counter == 0) {
-                        unset($today);
-                    }
-                    $new_counter--;
-                }
-                if (!isset($today)) {
-                    $output .= '<hr />';
-                }
-                if ($new_counter == 0) {
-                    $output .= '<hr />';
-                }
-            }
-            if ($tomorrow) {
-                // $output.= $date_out;
-            }
-            $output .= $event_html['html'];
-
-            $i++;
-        }
-        $output .= '</div><!--/accordion-content-->';
-        $output .= '</div><!--/accordion-entry-->';
+    } else {
+        $output .= hitsa_events_endpoint('loaded_page');
     }
-    $output .= '</div><!--/accordion-->';
+//    $output .= '</div><!--/accordion-->';
     $output .= '</div><!--/col-12-->';
     $output .= '</div><!--/row-->';
     $output .= '
@@ -1331,9 +1372,10 @@ function hitsa_events_htmlize_periods($periods)
     $output .= '<div class="accordion" data-plugin="accordion">';
     foreach ($periods as $period) {
         $output .= '<div class="accordion-entry">';
-        $output .= '<div class="accordion-title">' . $period->name . '</div>';
-        $output .= '<div class="accordion-content">';
         $events_count = count($period->events);
+        $output .= '<div class="accordion-title">' . $period->name . '('.$events_count.')</div>';
+        $output .= '<div class="accordion-content">';
+
         $i = 0;
 
         $time = strtotime('today midnight');
@@ -1398,6 +1440,10 @@ function hitsa_events_autocomplete()
         if (!empty($_REQUEST['search'])) {
             $q->condition('n.title', '%' . $_REQUEST['search'] . '%', 'LIKE');
         }
+        if (!empty($_REQUEST['type'])) {
+            $q->join('field_data_field_event_type','fdfet','n.nid=fdfet.entity_id');
+            $q->condition('fdfet.field_event_type_value',$_REQUEST['type'],'=');
+        }
     }
     $q->fields('n');
 
@@ -1410,8 +1456,11 @@ function hitsa_events_autocomplete()
             'title' => $node->title,
         );
     }
-    $json = json_encode($data);
-    print ($json);
+    if (!empty($data['list'])){
+      $json = json_encode($data);
+      print ($json);
+    }
+
 
 }
 
@@ -2005,6 +2054,16 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
             }
 
             if (!empty($form)) {
+
+              $form['captcha'] = array(
+                '#prefix' => '<div class="col-12"><div class="form-item">
+								<div class="form-item_title">' . t($component['name']) . '*</div>',
+                '#suffix' => '</div></div>',
+                '#type' => 'captcha',
+                '#captcha_type' => 'captcha/Math',
+                '#weight' => 99,
+                '#name' => 'captcha'
+              );
                 $form['submit'] = array(
                     '#type' => 'submit',
                     '#buttontype' => 'button',
@@ -2028,36 +2087,38 @@ function hitsa_events_training_event_registration()
 {
     $build = array();
 
-    if (!empty($_POST)){
+    if (!empty($_POST)) {
         $form_validated = hitsa_events_registration_processing($_POST);
     }
     $markup = ' <div class="block" data-modal="true">
 
                <h1 class="block-title">' . t('Add to calendar') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
 
-					<div class="row-spacer-xs"></div>'.$form_validated.'</div>';
+					<div class="row-spacer-xs"></div>' . $form_validated . '</div>';
     $build['form'] = array(
         '#markup' => $markup,
     );
     return drupal_render($build);
 }
-function hitsa_events_registration_processing($post){
+
+function hitsa_events_registration_processing($post)
+{
     $validated = hitsa_events_registration_validation($post);
-    if ($validated['success']==TRUE){
+    if ($validated['success'] == TRUE) {
         $registration = hitsa_events_registration_submission($post);
-    }
-    elseif($validated['success']==FALSE){
+    } elseif ($validated['success'] == FALSE) {
         $form = $validated['form'];
         return $form;
     }
-    if($registration) {
+    if ($registration) {
         return 'Successfully registered';
-    }
-    else{
+    } else {
         return 'Something went wrong';
     }
 }
-function hitsa_events_registration_validation($post){
+
+function hitsa_events_registration_validation($post)
+{
     $errors = FALSE;
     $error = array();
     $data = array();
@@ -2077,7 +2138,9 @@ function hitsa_events_registration_validation($post){
         if (!empty($post['form_token'])) {
             unset($post['form_token']);
         }
+
         //TODO  Lisada erinevad valideerimised registreerimise vormile
+       //TODO Lisada ka captcha valideerumine
         //foreach ($post as $post_key => $fields) {
 
 //            if (strpos($post_key, 'email_') !== FALSE) {
@@ -2105,13 +2168,12 @@ function hitsa_events_registration_validation($post){
         //}
 
     }
-    if(!$errors) {
+    if (!$errors) {
         return array(
             'success' => TRUE,
         );
-    }
-    else{
-        $form = drupal_get_form('hitsa_events_generate_custom_form',$node->webform['components'],$node->webform['nid']);
+    } else {
+        $form = drupal_get_form('hitsa_events_generate_custom_form', $node->webform['components'], $node->webform['nid']);
         $form = drupal_render($form);
         return array(
             'success' => FALSE,
@@ -2121,9 +2183,11 @@ function hitsa_events_registration_validation($post){
         );
     }
 }
-function hitsa_events_registration_submission($post){
+
+function hitsa_events_registration_submission($post)
+{
     var_dump($post);
-    if (!empty($post['nid'])){
+    if (!empty($post['nid'])) {
         $data = array();
         $nid = $post['nid'];
         $node = node_load($nid);
@@ -2131,36 +2195,46 @@ function hitsa_events_registration_submission($post){
         $uid = $user->uid;
         $serial = _webform_submission_serial_next_value($nid);
         unset($post['nid']);
-        if (!empty($post['form_build_id'])){
+        if (!empty($post['form_build_id'])) {
             unset($post['form_build_id']);
         }
-        if (!empty($post['form_id'])){
+        if (!empty($post['form_id'])) {
             unset($post['form_id']);
         }
-        if (!empty($post['form_token'])){
+        if (!empty($post['form_token'])) {
             unset($post['form_token']);
         }
-        foreach ($post as $post_key => $fields){
+        dpm($post);
+        if (!empty($post['captcha_sid'])){
+          unset($post['captcha_sid']);
+        }
+        if (!empty($post['captcha_token'])){
+          unset($post['captcha_token']);
+        }
+        if (!empty($post['captcha_response'])){
+          unset($post['captcha_response']);
+        }
+
+        foreach ($post as $post_key => $fields) {
             $key = $post_key;
-            if(strpos($post_key,'email_')!==FALSE){
-                $key = str_replace('email_','',$post_key);
+            if (strpos($post_key, 'email_') !== FALSE) {
+                $key = str_replace('email_', '', $post_key);
             }
-            if(strpos($post_key,'number_')!==FALSE){
-                $key = str_replace('number_','',$post_key);
+            if (strpos($post_key, 'number_') !== FALSE) {
+                $key = str_replace('number_', '', $post_key);
             }
-            if(strpos($post_key,'form_element_id')!==FALSE){
-                $key = str_replace('form_element_id_','',$post_key);
+            if (strpos($post_key, 'form_element_id') !== FALSE) {
+                $key = str_replace('form_element_id_', '', $post_key);
             }
-            if (is_array($fields)){
-             foreach($fields as $checks_values){
-                 $data[$key][]=$checks_values;
-             }
-            }
-            else {
+            if (is_array($fields)) {
+                foreach ($fields as $checks_values) {
+                    $data[$key][] = $checks_values;
+                }
+            } else {
                 $data[$key][] = $fields;
             }
         }
-        $submission = (object) array(
+        $submission = (object)array(
             'nid' => $nid,
             'uid' => 0,
             'submitted' => REQUEST_TIME,
@@ -2170,14 +2244,13 @@ function hitsa_events_registration_submission($post){
             'data' => $data,
         );
         if (module_exists('webform')) {
-            module_load_include('inc', 'webform','includes/webform.submissions');
+            module_load_include('inc', 'webform', 'includes/webform.submissions');
             $sid = webform_submission_insert($node, $submission);
 
         }
-        if(!empty($sid)){
+        if (!empty($sid)) {
             return TRUE;
-        }
-        else{
+        } else {
             return FALSE;
         }
     }
