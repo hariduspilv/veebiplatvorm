@@ -146,6 +146,7 @@ function hitsa_events_preprocess_node(&$variables)
             }
         }
     }
+
     /**
      * Sample code from the api example.
      *  // This example is from rdf_preprocess_image(). It adds an RDF attribute
@@ -512,7 +513,13 @@ function hitsa_events_endpoint($loaded_page = NULL)
         $start_date = strtotime(str_replace('/', '-', $dates[0]));
         $end_date = strtotime(str_replace('/', '-', $dates[1]));
         $q->join('field_data_event_date', 'fded', 'fded.entity_id=n.nid');
-        $q->condition('fded.event_date_value', array($start_date, $end_date), 'between');
+
+        $db_or = db_or();
+            $db_or->condition('fded.event_date_value', $start_date, '>=');
+            $db_or->condition('fded.event_date_value2', $start_date, '>=');
+
+        $q->condition($db_or);
+        $q->fields('fded');
 //        $q -> condition('fded.event_date_value2',$end_date,'<');
     }
     $r = $q->execute();
@@ -570,6 +577,20 @@ function hitsa_events_get_nodes_html($nodes)
                         $numDays = abs($start_date - $end_date) / 60 / 60 / 24;
                         for ($i = 0; $i <= $numDays; $i++) {
                             $start_date_date = date('U', strtotime("+{$i} day", $start_date));
+                            if (!empty($_REQUEST)){
+                              if (!empty($_REQUEST['date'])){
+                                $two_dates = explode(' - ',$_REQUEST['date']);
+
+                                $two_dates[0] = strtotime(str_replace('/', '-', $two_dates[0]));
+                                $two_dates[1] = strtotime(str_replace('/', '-', $two_dates[1]));
+                                if($two_dates[0]>$start_date_date){
+                                  continue;
+                                }
+                                if ($two_dates[1]<$start_date_date){
+                                  continue;
+                                }
+                              }
+                            }
                             $event_html = hitsa_events_event_html($event, $type = 'event', $start_date_date, $i);
                             $events_array[] = $event_html;
                             if (is_object($event_html['periods'])) {
@@ -705,7 +726,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<div class="object-inner">';
         $output .= '<a href class="object-date">';
         $output .= '<span class="object-date_day">';
-        $output .= date('d', $start_date_date);
+        $output .= format_date($start_date_date,'custom','d');
         $output .= '</span>';
         $output .= '<span class="object-date_month">';
         $output .= strftime('%B', $start_date_date);
@@ -974,7 +995,7 @@ function hitsa_events_node_presave($node)
         $event_date = null;
         $time_period_tid = null;
         if (!empty($node->event_date)) {
-            $event_date = $node->event_date['und'][0]['value'];
+            $event_date = $node->event_date[LANGUAGE_NONE][0]['value'];
         }
         foreach ($time_periods as $time_period) {
             $loaded_period = taxonomy_term_load($time_period->tid);
@@ -1170,7 +1191,6 @@ function hitsa_events_training_calendar()
     $output .= '<div class="row-spacer"></div>';
     $output .= '<div class="row">';
     $output .= '<div class="col-12" data-postURL="api/events" data-plugin="filterContents">';
-    dpm($periods);
 //    $output .= '<div class="accordion" data-plugin="accordion">';
 //    foreach ($periods as $period) {
 //        $output .= '<div class="accordion-entry">';
