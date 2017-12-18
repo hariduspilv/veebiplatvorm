@@ -1372,9 +1372,10 @@ function hitsa_events_htmlize_periods($periods)
     $output .= '<div class="accordion" data-plugin="accordion">';
     foreach ($periods as $period) {
         $output .= '<div class="accordion-entry">';
-        $output .= '<div class="accordion-title">' . $period->name . '</div>';
-        $output .= '<div class="accordion-content">';
         $events_count = count($period->events);
+        $output .= '<div class="accordion-title">' . $period->name . '('.$events_count.')</div>';
+        $output .= '<div class="accordion-content">';
+
         $i = 0;
 
         $time = strtotime('today midnight');
@@ -2046,6 +2047,16 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
             }
 
             if (!empty($form)) {
+
+              $form['captcha'] = array(
+                '#prefix' => '<div class="col-12"><div class="form-item">
+								<div class="form-item_title">' . t($component['name']) . '*</div>',
+                '#suffix' => '</div></div>',
+                '#type' => 'captcha',
+                '#captcha_type' => 'captcha/Math',
+                '#weight' => 99,
+                '#name' => 'captcha'
+              );
                 $form['submit'] = array(
                     '#type' => 'submit',
                     '#buttontype' => 'button',
@@ -2120,6 +2131,7 @@ function hitsa_events_registration_validation($post)
         if (!empty($post['form_token'])) {
             unset($post['form_token']);
         }
+
         //TODO  Lisada erinevad valideerimised registreerimise vormile
         //foreach ($post as $post_key => $fields) {
 
