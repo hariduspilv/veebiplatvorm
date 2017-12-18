@@ -62,8 +62,29 @@ function hitsa_core_menu()
     'page callback' => 'hitsa_core_render_sitemap',
     'access callback' => true,
     );
+    
+    $items['search'] = array(
+    'title' => 'Search',
+    'page callback' => 'hitsa_core_search_page',
+    'access callback' => true,
+    );
+    
+    $items['api/search'] = array(
+    'title' => 'Search',
+    'page callback' => 'hitsa_core_search_page',
+    'page arguments' => array(TRUE),
+    'access callback' => true,
+    );
   
     return $items;
+}
+
+function hitsa_core_menu_alter(&$items) {
+  $items['search'] = array(
+    'title' => 'Search',
+    'page callback' => 'hitsa_core_search_page',
+    'access callback' => true,
+  );
 }
 
 function hitsa_core_cron()
@@ -396,6 +417,15 @@ function hitsa_core_default_search_api_index()
         'status' => array(
           'type' => 'integer',
         ),
+        'created' => array(
+          'type' => 'date',
+        ),
+        'event_date:value' => array(
+          'type' => 'date',
+        ),
+        'event_date:value2' => array(
+          'type' => 'date',
+        ),
       ),
     ),
     ));
@@ -434,4 +464,31 @@ function hitsa_core_get_school_type()
 function hitsa_core_js_alter(&$javascript) {
   // remove the JS that does the show/hide summary
   unset($javascript['modules/field/modules/text/text.js']);
+}
+
+function hitsa_core_search($q = NULL) {
+  $query = search_api_query('hitsa_search_index');
+  
+  if(!empty($q['query'])) {
+    $query->keys($q['query']);
+  }
+  
+  if(!empty($q['title'])) {
+    $query->condition('title', $q['title']);
+  }
+  if(!empty($q['category']) && $q['category'] !== 'all') {
+    $query->condition('type', $q['category']);
+  }
+  if(!empty($q['date']) && preg_match("/\d{2}\/\d{2}\/\d{4} - \d{2}\/\d{2}\/\d{4}/", $q['date']) === 1) {
+    $date_range = explode(" - ", $q['date']);
+    $date_from = date_create_from_format("d/m/Y H:i", $date_range[0] . ' 00:00');
+    $date_to = date_create_from_format("d/m/Y H:i", $date_range[1] . ' 23:59');
+    
+    $query->condition('created', $date_from->getTimestamp(), '>=');
+    $query->condition('created', $date_to->getTimestamp(), '<=');
+  }
+  
+  $data = $query->execute();
+  
+  return $data;
 }

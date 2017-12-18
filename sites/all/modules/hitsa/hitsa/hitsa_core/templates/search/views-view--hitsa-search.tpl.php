@@ -33,6 +33,66 @@
   <h2 class="block-title"><?php print t('Searching for'); ?> <i>"<?php print check_plain($search_query); ?>"</i> (<?php print $result_count; ?>)</h2>
   <?php endif; ?>
   
+  <div class="row">
+    <div class="col-12">
+       <h3><?php print t('Filter categories'); ?></h3>
+    </div><!--/col-12-->
+  </div>
+  
+  <form method="post" action="otsing.html" data-plugin="filters">
+    <div class="row">
+      <div class="col-12">
+				<div class="btn-bar">
+          <span class="btn-input">
+             <input type="checkbox" name="category" value="all" checked="">
+             <span class="btn btn-xs btn-alternate">Kõik</span>
+          </span><!--/btn-input-->
+          
+          <span class="btn-input">
+             <input type="checkbox" name="category" value="kontaktid">
+             <span class="btn btn-xs btn-alternate">Kontaktid</span>
+          </span><!--/btn-input-->
+          
+          <span class="btn-input">
+             <input type="checkbox" name="category" value="uudised">
+             <span class="btn btn-xs btn-alternate">Uudised</span>
+          </span><!--/btn-input-->
+					 
+					 <span class="btn-input">
+             <input type="checkbox" name="category" value="sundmused">
+             <span class="btn btn-xs btn-alternate">Sündmused</span>
+          </span><!--/btn-input-->
+        </div><!--/btn-bar-->
+                     
+      </div><!--/col-12-->
+    </div><!--/row-->
+    <div class="row-spacer-xs sm-hide"></div>
+    <hr>
+    <div class="row-spacer sm-hide"></div>
+    <div class="row">
+      <div class="col-12">
+        <div class="form-item-row">
+           
+          <div class="form-item after-search form-item_rounded form-item-stretch">
+             <div class="form-item_title">Otsi pealkirja järgi</div>
+             <input type="text" name="title" placeholder="Alusta trükkimist" data-plugin="autocomplete" data-url="api/autocomplete.json" data-onsubmit="true">
+          </div><!--/form-item-->
+          <div class="form-item form-item_rounded after-calendar form-item-stretch">
+             <div class="form-item_title">Kuupäev</div>
+             <input type="text" name="date" data-plugin="datepickerRange" data-onsubmit="true" placeholder="Vali kuupäev">
+          </div><!--/form-item-->
+          <div class="row-spacer-xs sm-show"></div>
+          <div class="form-item">
+             <div class="form-item_title sm-hide">&nbsp;</div>
+             <button class="btn btn-filled">Otsi</button>
+          </div><!--/form-item-->
+           
+        </div><!--/form-item-row-->
+      </div><!--/col-12-->
+    </div><!--/row-->
+    <div class="row-spacer sm-hide"></div>
+  </form>
+  
   <?php print render($title_prefix); ?>
   <?php if ($title): ?>
     <?php print $title; ?>
@@ -87,3 +147,6 @@
   <?php endif; ?>
 
 </div><?php /* class view */ ?>
+<script>
+  jQuery('hr.spacing-xl').last().remove();
+</script>

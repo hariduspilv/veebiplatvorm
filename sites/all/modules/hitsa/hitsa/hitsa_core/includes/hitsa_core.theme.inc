@@ -99,6 +99,31 @@ function hitsa_core_theme() {
     ),
   );
   
+  $items['hitsa_search_page'] = array(
+    'template' => 'hitsa-core-search-page',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates/search',
+    'variables' => array(
+      'result' => NULL,
+      'category_filter' => NULL,
+    ),
+  );
+  
+  $items['hitsa_search_result'] = array(
+    'template' => 'hitsa-core-search-result',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates/search',
+    'variables' => array(
+      'result_items' => NULL,
+    ),
+  );
+  
+  $items['hitsa_search_result_item'] = array(
+    'template' => 'hitsa-core-search-result-item',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates/search',
+    'variables' => array(
+      'result_item' => NULL,
+    ),
+  );
+  
   return $items;
 }
 
@@ -291,4 +316,40 @@ function hitsa_core_menu_overview_form($variables) {
   $output .= drupal_render_children($form);
   
   return $output;
+}
+
+function hitsa_core_search_page($filter = FALSE) {
+  $query = drupal_get_query_parameters();
+  if(!empty($query['query'])) {
+    $search = hitsa_core_search($query);
+    
+    $results = $search['results'];
+    $result_count = count($results);
+    $results_rendered = array();
+    $authors = array();
+    foreach($results as $result) {
+      $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
+      $authors[$result['entity']->uid] = $result['entity']->uid;
+    }
+    
+    $node_types = node_type_get_types();
+    $bundle_filter = array();
+    foreach($results_rendered as $bundle => $results) {
+      $bundle_filter[$bundle] = $node_types[$bundle]->name;
+    }
+    
+    $result_output = theme('hitsa_search_result', array('result_items' => $results_rendered, 'bundles' => $bundle_filter));
+    
+    if($filter) {
+      print $result_output;
+      exit;
+    }
+  }
+  return theme('hitsa_search_page', 
+  array(
+    'bundle_filter' => !empty($bundle_filter) ? $bundle_filter : NULL, 
+    'result_output' => !empty($result_output) ? $result_output : t('No results found!'), 
+    'search_query' => !empty($query['query']) ? $query['query'] : NULL,
+    'result_count' => !empty($result_count) ? $result_count : 0,
+  ));
 }

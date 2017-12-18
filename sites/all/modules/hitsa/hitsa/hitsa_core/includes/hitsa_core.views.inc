@@ -138,3 +138,7 @@ function hitsa_core_views_default_views() {
 
   return $views;
 }
+
+function hitsa_core_views_pre_render(&$view) {
+  //dpm($view);
+}
