@@ -726,10 +726,10 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<div class="object-inner">';
         $output .= '<a href class="object-date">';
         $output .= '<span class="object-date_day">';
-        $output .= format_date($start_date_date,'custom','d');
+        $output .= format_date($start_date_date,'custom','d',NULL,$language->language);
         $output .= '</span>';
         $output .= '<span class="object-date_month">';
-        $output .= strftime('%B', $start_date_date);
+        $output .= format_date($start_date_date,'custom','F',NULL,$language->language);
         $output .= '</span>';
         $output .= '</a><!--/object-date-->';
         $output .= '<span class="object-content">';
@@ -1440,6 +1440,10 @@ function hitsa_events_autocomplete()
         if (!empty($_REQUEST['search'])) {
             $q->condition('n.title', '%' . $_REQUEST['search'] . '%', 'LIKE');
         }
+        if (!empty($_REQUEST['type'])) {
+            $q->join('field_data_field_event_type','fdfet','n.nid=fdfet.entity_id');
+            $q->condition('fdfet.field_event_type_value',$_REQUEST['type'],'=');
+        }
     }
     $q->fields('n');
 
@@ -1452,8 +1456,11 @@ function hitsa_events_autocomplete()
             'title' => $node->title,
         );
     }
-    $json = json_encode($data);
-    print ($json);
+    if (!empty($data['list'])){
+      $json = json_encode($data);
+      print ($json);
+    }
+
 
 }
 
