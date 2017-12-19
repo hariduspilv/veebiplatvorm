@@ -1,5 +1,16 @@
 <?php
 
+function hitsa_process_html_tag(&$vars) {
+  $el = &$vars['element'];
+ 
+  // Remove type="..." and CDATA prefix/suffix.
+  unset($el['#attributes']['type'], $el['#value_prefix'], $el['#value_suffix']);
+ 
+  // Remove media="all" but leave others unaffected.
+  if (isset($el['#attributes']['media']) && $el['#attributes']['media'] === 'all') {
+    unset($el['#attributes']['media']);
+  }
+}
 function hitsa_preprocess_page(&$variables)
 {
     $google_api_key = !empty($key = variable_get_value('hitsa_google_api_key')) ? '&key=' . $key : '';

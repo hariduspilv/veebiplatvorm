@@ -73,8 +73,8 @@
 <div class="col-3">
   <h4><?php print check_plain($title); ?></h4>
   <?php if(!empty($content['gallery_images'])): ?>
-  <a href="<?php print $node_url; ?>"><img <?php if(!empty($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value'])) 
-  {print 'alt="' . check_plain($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']) . '"';} ?> 
+  <a href="<?php print $node_url; ?>"><img alt="<?php if(!empty($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value'])) 
+  {print check_plain($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']);} ?>" 
   src="<?php print image_style_url('hitsa_gallery_menu_teaser', $content['gallery_images']['#items'][0]['uri']); ?>"></a>
   <?php endif; ?>
   <a href="<?php print $node_url; ?>" class="btn"><?php print t('Check gallery'); ?></a>
