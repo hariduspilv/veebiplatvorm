@@ -6,11 +6,11 @@
   <?php elseif($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_service'): 
   $heading_title = t('Services');
   ?>
-  <h1 class="block-title"><?php print $heading_title; ?></h1>
+  <h2 class="block-title"><?php print $heading_title; ?></h2>
   <?php else: 
   $heading_title = $title;
   ?>
-    <h1 class="block-title"><?php print $heading_title; ?></h1>
+    <h2 class="block-title"><?php print $heading_title; ?></h2>
   <?php endif; ?>
 
   <div class="row-spacer-xs"></div>

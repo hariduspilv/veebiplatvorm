@@ -39,7 +39,7 @@
 								<div class="swiper-wrapper">
 									<div class="swiper-slide" data-image="?image?">
 										<div class="gallery-image">
-											<img src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-gallery.gif'; ?>">
+											<img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-gallery.gif'; ?>">
 										</div><!--/gallery-image-->
 										<div class="gallery-description">
 											<div class="gallery-title">?title?</div>

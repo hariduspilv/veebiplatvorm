@@ -368,11 +368,10 @@ function hitsa_menu_link__hitsa_sitemap__service(array $variables)
                 $output .= '<ul class="bullet-list_article">';
                 foreach ($service_subtype['#below'] as $service) {
                     if (!empty($service['#original_link'])) {
-                        $output .= '<li>' . render($service) . '</li>';
+                        $output .= render($service);
                     }
                 }
-
-                $output .= '</li></ul>';
+                $output .= '</ul></li>';
             }
         }
     }
