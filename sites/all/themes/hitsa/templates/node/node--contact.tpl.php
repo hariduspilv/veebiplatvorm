@@ -91,8 +91,8 @@
 <div class="object object-horizontal">
   <div class="object-inner">
     
-    <div class="object-image object-image-circle<?php if(empty($content['contact_image'])) print " object-no_image"; ?>">
-    <?php if(!empty($content['contact_image'])): ?>style="background-image:url(<?php print image_style_url('hitsa_contacts_page_image', $content['contact_image']['#items'][0]['uri']); ?>);<?php endif; ?>">
+    <div class="object-image object-image-circle<?php if(empty($content['contact_image'])) print " object-no_image"; ?>"
+    <?php if(!empty($content['contact_image'])) print ' style="background-image:url(' . image_style_url('hitsa_contacts_page_image', $content['contact_image']['#items'][0]['uri']) . ')"'; ?>>
       <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
     </div>
     <div class="object-content">
