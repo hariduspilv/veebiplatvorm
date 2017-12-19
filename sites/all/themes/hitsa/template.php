@@ -490,7 +490,11 @@ function hitsa_links__locale_block($variables)
 
         foreach ($links as $key => $link) {
             $class = array($key);
-
+            
+            if(!empty($link['attributes']['xml:lang'])) {
+                $link['attributes']['lang'] = $link['attributes']['xml:lang'];
+            }
+            
             // Add first, last and active classes to the list of links to help out
             // themers.
             if ($i == 1) {
@@ -562,7 +566,11 @@ function hitsa_links__mobile_locale_block($variables)
         $output .= '<div class="language-more">';
         foreach ($links as $key => $link) {
             $class = array($key);
-
+            
+            if(!empty($link['attributes']['xml:lang'])) {
+                $link['attributes']['lang'] = $link['attributes']['xml:lang'];
+            }
+            
             // Add first, last and active classes to the list of links to help out
             // themers.
             if ($i == 1) {
