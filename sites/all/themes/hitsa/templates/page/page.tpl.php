@@ -182,10 +182,12 @@
   </div> 
   <?php endif; ?>
   </div><!-- /.inline -->
-</div><!--/wrapper-->
+
 
 <footer class="main">
   <?php if(!empty($footer)): ?>
     <?php print $footer; ?>
   <?php endif; ?>
 </footer>
+
+</div><!--/wrapper-->

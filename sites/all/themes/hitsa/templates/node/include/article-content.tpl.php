@@ -2,7 +2,7 @@
   <?php if(!empty($article_type) && !empty($article_types_list[$article_type[0]['value']])): 
   $heading_title = check_plain($article_types_list[$article_type[0]['value']]);
   ?>
-  <h1 class="block-title"><?php print $heading_title; ?></h1>
+  <h2 class="block-title"><?php print $heading_title; ?></h2>
   <?php elseif($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_service'): 
   $heading_title = t('Services');
   ?>

@@ -89,7 +89,7 @@
     <?php if(!empty($more_articles)): ?>
     <div class="block no-print">
       
-      <h1 class="block-title"><?php if(!empty($more_articles_title)) {print $more_articles_title;} ?></h1>
+      <h2 class="block-title"><?php if(!empty($more_articles_title)) {print $more_articles_title;} ?></h2>
       
       <div class="row row-vertical-xl">
 
