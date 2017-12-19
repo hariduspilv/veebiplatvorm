@@ -1,0 +1,11 @@
+name = "Minify"
+description = "Provides a mechanism to minify HTML and JavaScript files."
+package = Performance and scalability
+core = 7.x
+configure = admin/config/development/performance/default
+; Information added by Drupal.org packaging script on 2017-11-16
+version = "7.x-1.5"
+core = "7.x"
+project = "minify"
+datestamp = "1510849088"
+
