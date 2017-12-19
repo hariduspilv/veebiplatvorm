@@ -103,6 +103,7 @@
   <?php if(!empty($page['hero'])):?>
   <?php print render($page['hero'])?>
   <?php endif;?>
+  
   <div class="inline">
     <?php if ($messages): ?>
       <div id="messages">
@@ -111,8 +112,10 @@
         </div>
       </div> <!-- /.section, /#messages -->
     <?php endif; ?>
+    
     <?php if ($breadcrumb): ?>
     <?php endif; ?>
+    
     <?php if(!empty($page['super_news'])):?>
       <div class="row">
          <div class="col-12">
@@ -121,21 +124,24 @@
       </div><!--/row-->
     <?php endif;?>
     
-      <?php if ($tabs && !empty($tabs_rendered = render($tabs))): ?>
-        <div class="row no-print">
-          <div class="col-12">
-            <?php print $tabs_rendered; ?>
-          </div><!--/col-12-->
-        </div><!--/row-->
-      <?php endif; ?>
+    <?php if ($tabs && !empty($tabs_rendered = render($tabs))): ?>
+      <div class="row no-print">
+        <div class="col-12">
+          <?php print $tabs_rendered; ?>
+        </div><!--/col-12-->
+      </div><!--/row-->
+    <?php endif; ?>
+      
   <div class="row">
+    
     <?php if(!empty($page['sidebar_right'])):?>
       <div class="col-9 sm-12">
     <?php else:?>
       <div class="col-12">
     <?php endif;?>
-    <?php print render($page['content']); ?>
+      <?php print render($page['content']); ?>
       </div><!--/col-x-->
+    
     <?php if(!empty($page['sidebar_right'])):?>
       <div class="col-3 sm-12">
       <?php print render($page['sidebar_right'])?>
@@ -155,7 +161,8 @@
       </div></div> <!-- /.section, /#sidebar-first -->
     <?php endif; ?>
 
-    <div id="content" class="column"><div class="section">
+    <div id="content" class="column">
+      <div class="section">
       <?php //if ($page['highlighted']): ?>
       <!--<div id="highlighted">-->
         <?php// print render($page['highlighted']); ?>
@@ -171,23 +178,23 @@
       <?php endif; ?>
       <?php print $feed_icons; ?>
 
-    </div></div> <!-- /.section, /#content -->
+      </div>
+    </div> <!-- /.section, /#content -->
 
     <?php if ($page['sidebar_second']): ?>
-      <div id="sidebar-second" class="column sidebar"><div class="section">
-      </div></div> <!-- /.section, /#sidebar-second -->
+      <div id="sidebar-second" class="column sidebar">
+        <div class="section"></div>
+      </div> <!-- /.section, /#sidebar-second -->
     <?php endif; ?>
 
   <?php endif; ?>
   </div> 
   <?php endif; ?>
-  </div><!-- /.inline -->
 
-
-<footer class="main">
-  <?php if(!empty($footer)): ?>
-    <?php print $footer; ?>
-  <?php endif; ?>
-</footer>
+  <footer class="main">
+    <?php if(!empty($footer)): ?>
+      <?php print $footer; ?>
+    <?php endif; ?>
+  </footer>
 
 </div><!--/wrapper-->

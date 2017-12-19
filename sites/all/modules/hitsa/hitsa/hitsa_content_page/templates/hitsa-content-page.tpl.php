@@ -75,8 +75,12 @@
       <div data-posturl="<?php print url('api/articles'); ?>" data-plugin="filterContents">
       <?php elseif($bundle === 'gallery'): ?>
       <div data-posturl="<?php print url('api/gallery'); ?>" data-plugin="filterContents">
+      <?php else: ?>
+      <div>
       <?php endif; ?>
-        <?php print $output; ?>
+      <?php print $output; ?>
+      </div>
     </div><!--/block-->
+    
   </div><!--/col-12-->
-</div>
+</div><!--/row-->
