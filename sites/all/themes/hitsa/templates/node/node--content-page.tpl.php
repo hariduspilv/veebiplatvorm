@@ -88,7 +88,7 @@
     
     <?php if(!empty($webform)): // Webform ?>
       <div class="block">
-        <h1 class="block-title"><?php print $webform['subject']; ?></h1>
+        <h2 class="block-title"><?php print $webform['subject']; ?></h2>
         <?php print $webform['content']; ?>
       </div>
     <?php endif; ?>
@@ -96,7 +96,7 @@
     <?php if(!empty($more_services)): ?>
     <div class="block">
       
-      <h1 class="block-title"><?php if(!empty($more_services_title)) {print $more_services_title;} ?></h1>
+      <h2 class="block-title"><?php if(!empty($more_services_title)) {print $more_services_title;} ?></h2>
       
       <div class="row row-vertical-xl">
       <?php foreach($more_services as $service) { print $service; } ?>
