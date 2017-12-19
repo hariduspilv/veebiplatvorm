@@ -791,6 +791,10 @@ function hitsa_form_element_label($variables)
 
         return '<span class="label-title">' . $title . '</span>';
     } else {
+        if(!empty($attributes['for'])) {
+            // Remove "for" attribute to pass HTML validation
+            unset($attributes['for']);
+        }
         // The leading whitespace helps visually separate fields from inline labels.
         return ' <div' . drupal_attributes($attributes) . '>' . $t('!title !required', array('!title' => $title, '!required' => $required)) . "</div>\n";
     }

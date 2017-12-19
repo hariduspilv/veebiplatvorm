@@ -89,13 +89,13 @@
 </div>
 <?php endif; ?>
 <div class="object object-horizontal">
-  <span class="object-inner">
+  <div class="object-inner">
     
-    <span class="object-image object-image-circle<?php if(empty($content['contact_image'])): ?> object-no_image<?php endif; ?>" 
+    <div class="object-image object-image-circle<?php if(empty($content['contact_image'])) print " object-no_image"; ?>">
     <?php if(!empty($content['contact_image'])): ?>style="background-image:url(<?php print image_style_url('hitsa_contacts_page_image', $content['contact_image']['#items'][0]['uri']); ?>);<?php endif; ?>">
       <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
-    </span>
-    <span class="object-content">
+    </div>
+    <div class="object-content">
       <div class="object-content_col">
         <p>
           <b><?php print check_plain($node->title); // Name ?> 
@@ -126,6 +126,6 @@
             <?php endforeach; ?>
         <?php endif; ?>
       </div><!--/object-content_col-->
-    </span><!--/object-content-->
-  </span><!--/object-inner-->
+    </div><!--/object-content-->
+  </div><!--/object-inner-->
 </div><!--/object-->
