@@ -179,8 +179,9 @@
     <?php endif; ?>
 
   <?php endif; ?>
-  </div> <!-- /.inline -->
+  </div> 
   <?php endif; ?>
+  </div><!-- /.inline -->
 </div><!--/wrapper-->
 
 <footer class="main">
