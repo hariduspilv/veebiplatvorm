@@ -770,9 +770,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '</div><!--/object-button-->';
         $output .= '</div><!--/object-inner-->';
         $output .= '<div class="object-details" data-show="object-details_' . $details_number . '">';
-        $output .= '<p>';
+        //$output .= '<p>';
         $output .= (!empty($event->body)) ? $event->body['und'][0]['value'] : '';
-        $output .= '</p>';
+        //$output .= '</p>';
         $output .= '</div>';
         $output .= '</div>';
     }
