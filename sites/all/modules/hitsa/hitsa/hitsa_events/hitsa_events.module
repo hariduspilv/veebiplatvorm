@@ -724,7 +724,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         }
         $output .= '<div class="object object-event ' . $object_class . '">';
         $output .= '<div class="object-inner">';
-        $output .= '<a href class="object-date">';
+        $output .= '<a href="#" onclick="event.preventDefault();" class="object-date">';
         $output .= '<span class="object-date_day">';
         $output .= format_date($start_date_date,'custom','d',NULL,$language->language);
         $output .= '</span>';
@@ -732,11 +732,11 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= format_date($start_date_date,'custom','F',NULL,$language->language);
         $output .= '</span>';
         $output .= '</a><!--/object-date-->';
-        $output .= '<span class="object-content">';
-        $output .= '<a href="" onclick="event.preventDefault();" class="object-title">';
+        $output .= '<div class="object-content">';
+        $output .= '<a href="#" onclick="event.preventDefault();" class="object-title">';
         $output .= $event->title;
         $output .= '</a>';
-        $output .= '<span class="object-footer">';
+        $output .= '<div class="object-footer">';
         $output .= (!empty($location_ready)) ? $location_ready . ', ' : '';
         $output .= (!empty($time_hours_minutes)) ? $time_hours_minutes . '' : '';
         $output .= ($type == 'training' && !empty($training_cost)) ? ' ' . $training_cost . ' ' : '';
@@ -754,9 +754,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= (!empty($training_tags) && $type == 'training') ? '<ul class="tags">' : '';
         $output .= (!empty($training_tags) && $type == 'training') ? $training_tags : '';
         $output .= (!empty($training_tags) && $type == 'training') ? '</ul><!--/tags-->' : '';
-        $output .= '</span><!--/object-footer-->';
-        $output .= '</span><!--/object-content-->';
-        $output .= '<span class="object-button">';
+        $output .= '</div><!--/object-footer-->';
+        $output .= '</div><!--/object-content-->';
+        $output .= '<div class="object-button">';
         $output .= '<!-- toggle muutuja on ID.. OBJEKTI ID -->';
         $details_number = $event->nid + $start_date_date;
         $details_number .= (!empty($number)) ? $number : '';
@@ -767,7 +767,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<a href="javascript:window.print();" class="btn-circle before-print"></a>';
         $output .= '<a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="btn btn-transparent after-close">' . t('Close') . '</a>';
         $output .= '</div><!--/object-details_' . $event->nid . '-->';
-        $output .= '</span><!--/object-button-->';
+        $output .= '</div><!--/object-button-->';
         $output .= '</div><!--/object-inner-->';
         $output .= '<div class="object-details" data-show="object-details_' . $details_number . '">';
         $output .= '<p>';
