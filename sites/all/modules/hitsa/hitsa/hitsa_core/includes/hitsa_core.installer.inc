@@ -7,10 +7,10 @@ function hitsa_core_installer($module, $type) {
       $installer_input = '_' . $module . '_' . $installer_type;
       if($type === 'install') {
         $installer_function = 'hitsa_core_add_' . $installer_type;
-        print_r('Adding: ' . $installer_type . "\n");
+        //print_r('Adding: ' . $installer_type . "\n");
       } else if($type === 'uninstall') {
         $installer_function = 'hitsa_core_delete_' . $installer_type;
-        print_r('Removing: ' . $installer_type . "\n");
+        //print_r('Removing: ' . $installer_type . "\n");
       } else {
         return;
       }
@@ -332,6 +332,7 @@ function hitsa_core_delete_image_styles($installed_image_styles = array(), $modu
  * User roles
  */
 function hitsa_core_add_roles($installed_roles = array(), $module = NULL) {
+  module_load_include('module', 'user');
   foreach($installed_roles as $name => $permissions) {
     $role = new stdClass();
     $role->name = $name;

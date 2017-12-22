@@ -3,10 +3,9 @@
 function hitsa_core_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_core', 'install');
-  hitsa_core_set_default_language(); // Set ET as default language.
-  hitsa_core_set_language_detection_rules();
+  //hitsa_core_set_default_language(); // Set ET as default language.
+  //hitsa_core_set_language_detection_rules();
   hitsa_core_search_server_add_index();
-  hitsa_core_add_user_roles();
 }
 
 function hitsa_core_uninstall() {
@@ -328,6 +327,8 @@ function hitsa_core_set_default_language() {
  * Set URL based interface language detection.
  */
 function hitsa_core_set_language_detection_rules() {
+  require_once DRUPAL_ROOT . '/includes/language.inc';
+  
   $weighted_provider_list = array(
     1 => LOCALE_LANGUAGE_NEGOTIATION_URL,
     10 => LANGUAGE_NEGOTIATION_DEFAULT,
