@@ -332,6 +332,7 @@ function hitsa_core_delete_image_styles($installed_image_styles = array(), $modu
  * User roles
  */
 function hitsa_core_add_roles($installed_roles = array(), $module = NULL) {
+  module_load_include('module', 'user');
   foreach($installed_roles as $name => $permissions) {
     $role = new stdClass();
     $role->name = $name;
