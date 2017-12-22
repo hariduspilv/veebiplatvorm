@@ -1,0 +1,19 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the standard installation profile.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function hitsa_vocational_install() {
+  variable_set('hitsa_school_type', 2);
+  
+  include_once DRUPAL_ROOT . '/profiles/hitsa_school/hitsa_school.install';
+  hitsa_install();
+}

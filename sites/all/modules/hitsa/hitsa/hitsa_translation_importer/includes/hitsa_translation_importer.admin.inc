@@ -45,13 +45,13 @@ function hitsa_translations_importer_settings_form_submit($form, &$form_state)
                 
                 
                 if (!empty($translate_value[1])) {
-                    dpm(t($translate_value[1]));
+                    //dpm(t($translate_value[1]));
                     $translatable_array[$translate_value[1]] = array(
                     'et' => (!empty($translate_value[0]))?$translate_value[0]:'',
                     'ru' => (!empty($translate_value[2]))?$translate_value[2]:'',
                     );
                     $lower_eng = (!empty($translate_value[1]))?mb_strtolower($translate_value[1]):'';
-                    dpm(t($lower_eng));
+                    //dpm(t($lower_eng));
                     $lower_est = (!empty($translate_value[0]))?mb_strtolower($translate_value[0]):'';
                     $lower_ru = (!empty($translate_value[2]))?mb_strtolower($translate_value[2]):'';
                     
@@ -61,7 +61,7 @@ function hitsa_translations_importer_settings_form_submit($form, &$form_state)
                         );
                     
                     $lower_eng = (!empty($lower_eng))?str_replace(' ','-',$lower_eng):'';
-                    dpm(t($lower_eng));
+                    //dpm(t($lower_eng));
                     $lower_est = (!empty($lower_est))?str_replace(' ','-',$lower_est):'';
                     $lower_ru = (!empty($lower_ru))?str_replace(' ','-',$lower_ru):'';
                     
@@ -71,7 +71,7 @@ function hitsa_translations_importer_settings_form_submit($form, &$form_state)
                         );
 
                     $first_eng = (!empty($translate_value[1]))?ucfirst(strtolower($translate_value[1])):'';
-                    dpm(($first_eng));
+                    //dpm(($first_eng));
                     $first_est = (!empty($translate_value[0]))?ucfirst($translate_value[0]):'';
                     $first_ru = (!empty($translate_value[2]))?ucfirst($translate_value[2]):'';
                     $translatable_array[$first_eng] = array(

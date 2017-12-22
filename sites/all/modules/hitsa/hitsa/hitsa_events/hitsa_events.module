@@ -2204,7 +2204,7 @@ function hitsa_events_registration_submission($post)
         if (!empty($post['form_token'])) {
             unset($post['form_token']);
         }
-        dpm($post);
+        //dpm($post);
         if (!empty($post['captcha_sid'])){
           unset($post['captcha_sid']);
         }

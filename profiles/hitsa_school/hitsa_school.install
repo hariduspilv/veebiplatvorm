@@ -11,7 +11,12 @@
  *
  * @see system_install()
  */
-function standard_install() {
+function hitsa_school_install() {
+  variable_set('hitsa_school_type', 1);
+  hitsa_install();
+}
+
+function hitsa_install() {
   // Add text formats.
   $filtered_html_format = array(
     'format' => 'filtered_html',

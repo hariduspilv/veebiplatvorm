@@ -1,0 +1,45 @@
+name = HITSA Kutsekoolid / Rakenduskõrgkoolid
+description = Install with commonly used features pre-configured.
+version = VERSION
+core = 7.x
+
+exclusive = true
+
+dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = dblog
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = toolbar
+dependencies[] = overlay
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = rdf
+dependencies[] = hitsa_core
+dependencies[] = hitsa_content_page
+dependencies[] = hitsa_articles
+dependencies[] = hitsa_gallery
+dependencies[] = hitsa_book_exporter
+dependencies[] = hitsa_catering
+dependencies[] = hitsa_content_information
+dependencies[] = hitsa_curriculum
+dependencies[] = hitsa_events
+dependencies[] = hitsa_logos
+dependencies[] = hitsa_translation_importer
+
+; Information added by Drupal.org packaging script on 2017-06-21
+version = "7.56"
+project = "drupal"
+datestamp = "1498069849"
+

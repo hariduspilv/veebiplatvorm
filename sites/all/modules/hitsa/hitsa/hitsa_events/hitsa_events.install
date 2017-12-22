@@ -1335,7 +1335,7 @@ function hitsa_events_make_fields_conditional()
 {
 
     foreach (_hitsa_events_conditional_fields() as $conditional) {
-        dpm($conditional);
+        //dpm($conditional);
         $ids = _hitsa_events_get_field_ids($conditional['dependee'], $conditional['dependent']);
         conditional_fields_dependency_insert($ids['dependee'], $ids['dependent'], $conditional['options']);
     }

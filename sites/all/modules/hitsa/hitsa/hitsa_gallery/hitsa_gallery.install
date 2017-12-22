@@ -89,8 +89,8 @@ function _hitsa_gallery_field_instances() {
           'type' => 'image',
         ),
       ),
+      'required' => 1,
     ),
-    'required' => 1,
   );
 }
 
