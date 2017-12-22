@@ -305,6 +305,7 @@ function _hitsa_core_image_styles() {
 }
 
 function hitsa_core_set_default_language() {
+  /*
   $langs = language_list(); // Note: No argument
   $langcode = 'et';
   variable_set('language_default', $langs[$langcode]);
@@ -316,8 +317,8 @@ function hitsa_core_set_default_language() {
       'weight' => -9,
     ))
     ->condition('language',  'en')
-    ->execute();
-  
+    ->execute();*/
+  locale_add_language('et', NULL, NULL, LANGUAGE_LTR, '', '', TRUE, TRUE);
   // Disable "Language None" option
   module_load_include('inc', 'entity_translation', 'entity_translation.admin');
   entity_translation_settings_init('node', array('exclude_language_none' => TRUE));

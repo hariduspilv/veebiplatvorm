@@ -864,7 +864,7 @@ function hitsa_form_element($variables)
     }
 
     if (!empty($element['#description'])) {
-        $output .= '<div class="description">' . $element['#description'] . "</div>\n";
+        $output .= '<div class="form-item_disclaimer">' . $element['#description'] . "</div>\n";
     }
 
     if ($element['#type'] === 'checkbox') {

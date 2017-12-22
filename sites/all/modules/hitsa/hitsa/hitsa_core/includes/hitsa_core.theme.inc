@@ -124,6 +124,23 @@ function hitsa_core_theme() {
     ),
   );
   
+  $items['hitsa_timetable'] = array(
+    'template' => 'timetable',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates',
+    'variables' => array(
+      'result_item' => NULL,
+    ),
+  );
+  
+  $items['hitsa_login'] = array(
+    'template' => 'login',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates',
+    'variables' => array(
+      'mobile_id_form' => NULL,
+      'id_form' => NULL,
+    ),
+  );
+  
   return $items;
 }
 
@@ -316,6 +333,12 @@ function hitsa_core_menu_overview_form($variables) {
   $output .= drupal_render_children($form);
   
   return $output;
+}
+
+function hitsa_core_login_page() {
+  $id_login_form = drupal_get_form('hitsa_core_id_login_form_card');
+  $mobile_id_login_form = drupal_get_form('hitsa_core_id_login_form_mobile');
+  return theme('hitsa_login', array('mobile_id_form' => $mobile_id_login_form, 'id_form' => $id_login_form));
 }
 
 function hitsa_core_search_page($filter = FALSE) {

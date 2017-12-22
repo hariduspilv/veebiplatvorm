@@ -75,6 +75,15 @@ function hitsa_core_menu()
     'page arguments' => array(TRUE),
     'access callback' => true,
     );
+    
+    $items['login'] = array(
+    'title' => 'Login',
+    'page callback' => 'hitsa_core_login_page',
+    'page arguments' => array(TRUE),
+    'access callback' => TRUE,
+    'file' => 'includes/hitsa_core.login.inc',	 // don't forget to add the file and path
+		'file path' => drupal_get_path('module', 'hitsa_core'),
+    );
   
     return $items;
 }
@@ -112,6 +121,15 @@ function hitsa_core_block_info()
       'region' => 'sidebar_right',
       'status' => "1",
     );
+    
+    $blocks['hitsa_timetable'] = array(
+      'info' => t('HITSA Timetable'),
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'region' => 'sidebar_right',
+      'status' => "1",
+      'weight' => -100,
+    );
     return $blocks;
 }
 
@@ -148,6 +166,12 @@ function hitsa_core_block_view($delta = '')
           return $block;
         }
       }
+      break;
+    case 'hitsa_timetable':
+      $block = array();
+      $block['content'] = theme('hitsa_timetable');
+      $block['subject'] = '';
+      return $block;
       break;
   }
   return $output;
