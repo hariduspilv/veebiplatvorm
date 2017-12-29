@@ -80,7 +80,23 @@ function hitsa_core_menu()
     'title' => 'Login',
     'page callback' => 'hitsa_core_login_page',
     'page arguments' => array(TRUE),
-    'access callback' => TRUE,
+    'access callback' => 'user_is_anonymous',
+    'file' => 'includes/hitsa_core.login.inc',	 // don't forget to add the file and path
+		'file path' => drupal_get_path('module', 'hitsa_core'),
+    );
+    
+    $items['login/status'] = array(
+    'title' => 'Login',
+    'page callback' => 'hitsa_core_check_id_status',
+    'access callback' => 'user_is_anonymous',
+    'file' => 'includes/hitsa_core.login.inc',	 // don't forget to add the file and path
+		'file path' => drupal_get_path('module', 'hitsa_core'),
+    );
+    
+    $items['id_card_login'] = array(
+    'title' => 'Login',
+    'page callback' => 'hitsa_core_id_card_login',
+    'access callback' => 'user_is_anonymous',
     'file' => 'includes/hitsa_core.login.inc',	 // don't forget to add the file and path
 		'file path' => drupal_get_path('module', 'hitsa_core'),
     );
@@ -94,6 +110,21 @@ function hitsa_core_menu_alter(&$items) {
     'page callback' => 'hitsa_core_search_page',
     'access callback' => true,
   );
+}
+
+function hitsa_core_forms($form_id, $args) {
+  $forms = array();
+  
+  if (strncmp($form_id, 'hitsa_core_id_login_form_', 25) === 0) {
+    $argument = str_replace('hitsa_core_id_login_form_', '', $form_id);
+    $forms[$form_id] = array(
+      'callback' => 'hitsa_core_id_login_form',
+      'callback arguments' => array(
+        $argument,
+      ),
+    );
+  }
+  return $forms;
 }
 
 function hitsa_core_cron()

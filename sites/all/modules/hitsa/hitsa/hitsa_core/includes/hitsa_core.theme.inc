@@ -141,6 +141,12 @@ function hitsa_core_theme() {
     ),
   );
   
+  $items['hitsa_login_mobile_id_form'] = array(
+    'render element' => 'form',
+    'template' => 'login-mobile-id-form',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates',
+  );
+  
   return $items;
 }
 
@@ -157,6 +163,10 @@ function hitsa_core_preprocess_page(&$variables) {
     if(module_exists('hitsa_articles')) {
       
     }
+  }
+  if(current_path() === 'login') {
+    // For Mobile ID login
+    drupal_add_js(drupal_get_path('module', 'hitsa_core') . '/includes/id/hitsa_core_check_status.js');
   }
 }
 
@@ -336,6 +346,7 @@ function hitsa_core_menu_overview_form($variables) {
 }
 
 function hitsa_core_login_page() {
+  drupal_page_is_cacheable(FALSE);
   $id_login_form = drupal_get_form('hitsa_core_id_login_form_card');
   $mobile_id_login_form = drupal_get_form('hitsa_core_id_login_form_mobile');
   return theme('hitsa_login', array('mobile_id_form' => $mobile_id_login_form, 'id_form' => $id_login_form));

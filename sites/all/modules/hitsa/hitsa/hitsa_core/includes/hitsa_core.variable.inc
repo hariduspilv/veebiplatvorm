@@ -15,6 +15,20 @@ function hitsa_core_variable_info($options) {
     'title' => t('Google API key'),
     'group' => 'general_variables',
   );
+  $variable['dds_endpoint_url'] = array(
+    'title' => t('DigiDocService (Mobile ID) Endpoint URL'),
+    'group' => 'general_variables',
+    'description' => 
+      'test-digidocservice - https://tsp.demo.sk.ee/' . '<br>' . 
+      'live-digidocservice (' . t('to get access, contact sales@sk.ee') . ') - https://digidocservice.sk.ee',
+    'default' => 'https://tsp.demo.sk.ee/',
+  );
+  $variable['dds_service_name'] = array(
+    'title' => t('DigiDocService (Mobile ID) Service Name'),
+    'group' => 'general_variables',
+    'description' => t('Will be displayed to users mobile phones screen during signing process'),
+    'default' => 'Testimine',
+  );
   $variable['period_title'] = array(
     'title' => t('Period title'),
     'localize' => TRUE,
