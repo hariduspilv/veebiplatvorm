@@ -89,8 +89,6 @@ function hitsa_core_id_card_login($username) {
 }
 
 function hitsa_core_id_dds(&$form_state) {
-  $dds = DigiDocService::Instance();
-  
   $username = !empty($form_state['values']['name']) ? $form_state['values']['name'] : NULL;
   if($account = user_load_by_name($username)) {
     $tel_no = !empty($account->field_phone_nr) ? $account->field_phone_nr[LANGUAGE_NONE][0]['value'] : NULL;
@@ -99,6 +97,8 @@ function hitsa_core_id_dds(&$form_state) {
   
   if(!empty($tel_no) && !empty($idcode)) {
     try{
+      $dds = DigiDocService::Instance();
+      
     	$params = array(
     		"IDCode" => $idcode,
     		"CountryCode" => "", 
@@ -122,6 +122,7 @@ function hitsa_core_id_dds(&$form_state) {
     	$code = $e->getCode();
     	$message = (!!$code ? $code . ': ' : '') . $e->getMessage();
     	watchdog('hitsa_core_id_login', $message);
+    	drupal_set_message(t('Authentication failed! Error: ') . $message, 'error');
     	$errormsg = $message;
     	$stage="error";
     }
