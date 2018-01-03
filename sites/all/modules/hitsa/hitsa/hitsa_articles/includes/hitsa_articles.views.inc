@@ -226,7 +226,8 @@ function hitsa_articles_views_default_views() {
     'news_block' => 'news_block',
     'default' => 0,
   );
-
+  
+  $views[$view->name] = $view;
   $views['admin_views_articles'] = _hitsa_articles_admin_view();
   return $views;
 }

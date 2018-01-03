@@ -50,12 +50,6 @@ function _hitsa_articles_fields() {
         ),
       ),
     ),
-    'article_video' => array(
-      'field_name' => 'article_video',
-      'label' => $t('Video'),
-      'type' => 'file',
-      'cardinality' => 1,
-    ),
   );
 }
 

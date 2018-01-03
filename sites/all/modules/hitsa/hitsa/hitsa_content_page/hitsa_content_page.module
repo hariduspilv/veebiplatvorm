@@ -152,6 +152,7 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
             ':input[name^="cp_type"]' => array(
               array('value' => 'cp_tabbed'),
               array('value' => 'cp_service'),
+              array('value' => 'cp_simple'),
               array('value' => 'cp_specialities'),
             ),
           ),
@@ -160,6 +161,15 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
               array('value' => 'cp_tabbed'),
               array('value' => 'cp_service'),
               array('value' => 'cp_specialities'),
+            ),
+          ),
+        );
+      }
+      if(!empty($form['article_video'])) {
+        $form['article_video']['#states'] = array(
+          'visible' => array(
+            ':input[name^="cp_type"]' => array(
+              array('value' => 'cp_simple'),
             ),
           ),
         );

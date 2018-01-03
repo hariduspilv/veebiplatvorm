@@ -93,18 +93,20 @@ function hitsa_gallery_fp_block() {
   
   if($result = hitsa_content_page_query_content($query, TRUE)) {
     $nids_array = !empty($result['content']) ? $result['content'] : NULL;
-    $nodes = node_load_multiple(array_keys($nids_array['node']));
-    $nodes_rendered = array();
     
-    //dpm($nodes);
-    
-    foreach($nodes as $node) {
-      $nodes_rendered[] = node_view($node);
+    if(!empty($nids_array)) {
+      $nodes = node_load_multiple(array_keys($nids_array['node']));
+      $nodes_rendered = array();
+      
+      //dpm($nodes);
+      
+      foreach($nodes as $node) {
+        $nodes_rendered[] = node_view($node);
+      }
+      
+      $content = theme('hitsa_gallery_fp', array('nodes' => $nodes_rendered));
+      return $content;
     }
-    
-    $content = theme('hitsa_gallery_fp', array('nodes' => $nodes_rendered));
-    return $content;
   }
- //dpm($nodes_rendered);
   return $output;
 }

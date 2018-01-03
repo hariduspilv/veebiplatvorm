@@ -5,6 +5,12 @@
     <?php if(!empty($nodes[0])): 
     $node = $nodes[0];
     ?>
+    <?php if((node_access("update", $node['#node'], $user) === TRUE)): ?>
+      <ul class="tabs primary">
+        <li><a href="<?php print url('node/' . $node['#node']->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
+        <li><a href="<?php print url('node/' . $node['#node']->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
+      </ul>
+    <?php endif; ?>
      <div class="col-12">
         <a href="<?php print url('node/' . $node['#node']->nid); ?>" class="object">
            <span class="object-inner">
@@ -28,6 +34,12 @@
     if($delta == 0) continue;
     ?>
     <div class="col-6 sm-12">
+        <?php if((node_access("update", $node['#node'], $user) === TRUE)): ?>
+          <ul class="tabs primary">
+            <li><a href="<?php print url('node/' . $node['#node']->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
+            <li><a href="<?php print url('node/' . $node['#node']->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
+          </ul>
+        <?php endif; ?>
         <a href="<?php print url('node/' . $node['#node']->nid); ?>" class="object">
            <span class="object-inner">
               <span class="object-image" style="background-image:url(<?php print image_style_url('hitsa_gallery_menu_teaser', $node['gallery_images'][0]['#item']['uri']); ?>);"><img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>"></span>

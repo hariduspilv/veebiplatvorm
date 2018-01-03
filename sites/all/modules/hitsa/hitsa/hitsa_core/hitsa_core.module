@@ -251,6 +251,7 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
     switch ($form_id){
         case 'taxonomy_form_term':
             $form['description']['#access']=FALSE;
+            $form['description']['#format'] = 'text_plain'; // Gets rid of translation text format warning.
             break;
     }
 }

@@ -74,6 +74,12 @@ function _hitsa_content_page_fields() {
       'type' => 'image',
       'cardinality' => 2,
     ),
+    'article_video' => array(
+      'field_name' => 'article_video',
+      'label' => $t('Video'),
+      'type' => 'file',
+      'cardinality' => 1,
+    ),
     /*
     'cp_subpages' => array(
       'field_name' => 'cp_subpages',
@@ -285,6 +291,29 @@ function _hitsa_content_page_field_instances() {
         'default' => array(
           'label' => 'above',
           'type' => 'image',
+        ),
+      ),
+    ),
+    'article_video' => array(
+      'field_name' => 'article_video',
+      'entity_type' => 'node',
+      'bundle' => 'content_page',
+      'type' => 'file',
+      'label' => $t('Video'),
+      'widget' => array(
+        'type' => 'media_generic',
+        'module' => 'media',
+        'settings' => array(
+          'allowed_types' => array(
+            'video' => 'video',
+          ),
+          'allowed_schemes' => array(
+            'vimeo' => 'vimeo',
+            'youtube' => 'youtube',
+          ),
+          'browser_plugins' => array(
+            'media_internet' => 'media_internet',
+          ),
         ),
       ),
     ),
