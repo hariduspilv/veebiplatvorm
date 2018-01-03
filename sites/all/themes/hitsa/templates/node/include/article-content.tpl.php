@@ -112,7 +112,7 @@
         
         <?php if($node->type === 'article'): ?>
           <div class="row-spacer-xs"></div>
-          <span class="article-date">
+          <span class="article-date sm-hide">
             <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
           </span>
         <?php endif; ?>
@@ -163,6 +163,13 @@
         <figcaption><?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?></figcaption>
       </figure>
       <?php endif; ?>
+      
+      <?php if($node->type === 'article'): ?>
+        <span class="article-date sm-show">
+          <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
+        </span>
+      <?php endif; ?>
+      
     </div><!--/col-4-->
     <?php endif; ?>
   </div><!--/row-->
