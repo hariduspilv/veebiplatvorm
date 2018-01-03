@@ -311,16 +311,24 @@ function hitsa_content_page_autocomplete($type) {
   $parameters = drupal_get_query_parameters();
 
   if(!empty($parameters['search'])) {
+    
+    $arguments = array(
+      ':type' => $type,
+      ':search' => '%' . db_like($parameters['search']) . '%',
+    );
+    
+    if(!empty($parameters['article_type'])) {
+      $arguments[':article_type'] = $parameters['article_type'];
+    }
+    
     $result = db_query('SELECT DISTINCT title FROM {node} n
       WHERE type = :type 
       AND status = 1
-      AND title LIKE :search',
-      array(
-        ':type' => $type,
-        ':search' => '%' . db_like($parameters['search']) . '%'
-      )
+      AND title LIKE :search'
+      . (!empty($parameters['article_type']) ? ' AND nid IN (SELECT entity_id FROM {field_data_article_type} WHERE article_type_value = :article_type)' : ''),
+      $arguments
     );
-    
+
     $titles = $result->fetchCol();
     
     $autocomplete = (object) array(
@@ -349,7 +357,7 @@ function hitsa_content_page_query_content($q = array(), $count = FALSE) {
   $output = array();
   
   $output['content'] = $query->execute();
-  
+
   if($count) {
     $output['count'] = $query->range(0, PHP_INT_MAX)->count()->execute();
   }
@@ -490,7 +498,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
       'arguments' => array('entity_id', $query['nids_not_in'], 'NOT IN'),
     );
   }
-
+  
   return $parameters;
 }
 

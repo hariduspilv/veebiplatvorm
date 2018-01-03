@@ -87,7 +87,11 @@ function hitsa_content_page_preprocess_node(&$variables) {
       if(!empty($variables['cp_subpages']) && !empty($variables['cp_display_style'])) {
         $variables['subpages'] = hitsa_content_page_prepare_subpage_block($variables['cp_subpages'], $variables['cp_display_style'][0]['value']);
       }
-      
+      if(!empty($variables['cp_type']) && $variables['cp_type'][0]['value'] === 'cp_contacts') {
+        if(module_exists('hitsa_contacts')) {
+          $variables['contact_filter'] = hitsa_contacts_filter_widget($variables['nid']);
+        }
+      }
     }
   }
 }
@@ -223,7 +227,7 @@ function hitsa_content_page_view($query = array(), $filter = FALSE, $type = NULL
   // Load academic years taxonomy
   $academic_years_vid = variable_get('hitsa_academic_years_vid');
   $academic_years = array_reverse(taxonomy_get_tree($academic_years_vid));
-  
+
   // Load nodes
   if($result = hitsa_content_page_query_content($query, TRUE)) {
     $nids_array = !empty($result['content']) ? $result['content'] : NULL;
@@ -301,7 +305,7 @@ function hitsa_content_page_view($query = array(), $filter = FALSE, $type = NULL
         'academic_years' => $academic_years,
         'output' => $output,
         'bundle' => !empty($query['bundle']) ? $query['bundle'] : NULL,
-        'content_type' => $type,
+        'content_type' => !empty($query['article_type']) ? $query['article_type'] : $type,
         'search_placeholder' => $search_placeholder,
       )
     );

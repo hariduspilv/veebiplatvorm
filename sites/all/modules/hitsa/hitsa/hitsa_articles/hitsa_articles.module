@@ -33,6 +33,20 @@ function hitsa_articles_menu() {
     'access arguments' => array('access content'),
   );
   
+  $items['api/article-autocomplete-news'] = array(
+    'title' => 'Articles API',
+    'page callback' => 'hitsa_articles_autocomplete',
+    'page arguments' => array('news'),
+    'access arguments' => array('access content'),
+  );
+  
+  $items['api/article-autocomplete-our_stories'] = array(
+    'title' => 'Articles API',
+    'page callback' => 'hitsa_articles_autocomplete',
+    'page arguments' => array('our_stories'),
+    'access arguments' => array('access content'),
+  );
+  
   $items['admin/content/articles'] = array(
     'title' => 'Uudised',
     'access arguments' => array('administer nodes'),
@@ -181,7 +195,8 @@ function hitsa_articles_filter() {
   exit;
 }
 
-function hitsa_articles_autocomplete() {
+function hitsa_articles_autocomplete($article_type) {
+  $_GET['article_type'] = $article_type;
   hitsa_content_page_autocomplete('article');
 }
 
