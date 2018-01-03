@@ -1,4 +1,10 @@
 <div class="col-4 sm-12">
+  <?php if((node_access("update", $node, $user) === TRUE)): ?>
+  <ul class="tabs primary">
+    <li><a href="<?php print url('node/' . $node->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
+    <li><a href="<?php print url('node/' . $node->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
+  </ul>          
+  <?php endif; ?>
   <a href="<?php print url('node/' . $node->nid); ?><?php if($node->type === 'gallery') print '?type=modal'; ?>" class="object"<?php if($node->type === 'gallery') print ' data-plugin="modal"'; ?>>
     <span class="object-inner">
       <?php 

@@ -4,6 +4,12 @@
     
     <?php foreach($nodes as $node): ?>
     <div class="col-12">
+      <?php if((node_access("update", $node, $user) === TRUE)): ?>
+      <ul class="tabs primary">
+        <li><a href="<?php print url('node/' . $node->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
+        <li><a href="<?php print url('node/' . $node->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
+      </ul>
+      <?php endif; ?>
       <a href="<?php print url('node/' . $node->nid); ?>" class="object object-small">
         <span class="object-inner">
           <?php if(!empty($node->subpage_images[LANGUAGE_NONE][0])): ?>

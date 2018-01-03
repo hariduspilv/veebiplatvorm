@@ -308,7 +308,6 @@ function _hitsa_content_page_field_instances() {
             'video' => 'video',
           ),
           'allowed_schemes' => array(
-            'vimeo' => 'vimeo',
             'youtube' => 'youtube',
           ),
           'browser_plugins' => array(
