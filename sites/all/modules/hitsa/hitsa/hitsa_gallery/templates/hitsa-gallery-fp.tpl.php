@@ -55,6 +55,8 @@
     <?php endforeach; ?>
   </div><!--/row-->
   
+  <div class="row-spacer-m"></div>
+  
   <div class="row">
      <div class="col-12">
         <a href="<?php print url('gallery'); ?>" class="btn sm-stretch"><?php print t('All galleries'); ?></a>

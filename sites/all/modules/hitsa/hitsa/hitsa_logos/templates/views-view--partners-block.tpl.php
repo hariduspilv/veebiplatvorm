@@ -27,7 +27,7 @@
  * @ingroup views_templates
  */
 ?>
-<div class="col-4">
+<div class="col-4 sm-hide">
   <h3><?php print t('Partners'); ?></h3>
   <?php if ($rows): ?>
     <?php print $rows; ?>

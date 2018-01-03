@@ -27,7 +27,7 @@
  * @ingroup views_templates
  */
 ?>
-<div class="block block-narrow">
+<div class="block block-narrow sm-hide">
   <h2 class="block-title"><?php print t('Awards'); ?></h2>
   <?php if ($rows): ?>
   <div class="row pull-up">
