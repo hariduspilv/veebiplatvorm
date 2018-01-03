@@ -36,7 +36,7 @@
     <div class="col-8 sm-12">
       <article class="padding-right">
         <div class="btn-bar align-right sm-show sm-pull_right">
-          <a href="" class="btn-circle before-share"></a>
+          <a href="" class="btn-circle before-share" data-plugin="share"></a>
           <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
         </div>
         <?php if($node->type === 'article'): ?>
@@ -119,7 +119,12 @@
       </article>
     </div><!--/col-8-->
     <div class="col-4 sm-12 no-print">
-    
+      
+      <div class="btn-bar align-right sm-hide">
+        <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+        <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+      </div>
+      
       <div class="row-spacer-xl"></div>
 
       <?php if(!empty($subpage_images) || (!empty($cp_image) && $subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
