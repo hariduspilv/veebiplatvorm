@@ -12,9 +12,13 @@
   ?>
     <h2 class="block-title"><?php print $heading_title; ?></h2>
   <?php endif; ?>
-
+  
+  <?php if(!empty($contact_filter)): ?>
+    <?php print $contact_filter; ?>
+  <?php endif; ?>
+  
   <div class="row-spacer-xs"></div>
-  <div class="row">
+  <div class="row"<?php if(!empty($contact_filter)) {print ' data-posturl="' . url('api/contact') . '" data-plugin="filterContents"';} ?>>
     <?php if(!empty($content['cp_type']) && $content['cp_type']['#items'][0]['value'] === 'cp_contacts'): ?>
       <?php if(!empty($content['cp_contacts'])): ?>
         <?php 
@@ -132,7 +136,8 @@
       <figure>
         <a href="<?php print file_create_url($article_video[0]['uri']); ?>" 
         title="<?php print check_plain($article_video[0]['filename']); ?>" 
-        data-plugin="modal" data-closebutton="<?php print t('Close'); ?>">
+        data-plugin="modal" data-closebutton="<?php print t('Close'); ?>"
+        data-heading="<?php print check_plain($article_video[0]['filename']); ?>">
           <?php if(!empty($video_thumbnail)): ?>
           <img src="<?php print $video_thumbnail; ?>" 
           alt="<?php print check_plain($article_video[0]['filename']); ?>">
