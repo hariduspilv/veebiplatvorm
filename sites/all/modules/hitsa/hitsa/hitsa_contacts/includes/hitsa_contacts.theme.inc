@@ -28,6 +28,17 @@ function hitsa_contacts_theme() {
     'path' => drupal_get_path('module', 'hitsa_contacts') . '/theme',
   );
   
+  $items['contact_filter'] = array(
+    'template' => 'hitsa-contacts-filter',
+    'path' => drupal_get_path('module', 'hitsa_contacts') . '/theme',
+    'variables' => array(
+      'contact_departments' => array(),
+      'job_positions' => array(),
+      'url' => NULL,
+      'autocomplete_url' => NULL,
+    ),
+  );
+  
   return $items;
 }
 

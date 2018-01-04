@@ -1,4 +1,4 @@
-<form method="post" action="<?php print $url; ?>" data-plugin="filters">
+<form method="post" action="<?php print url('contact'); ?>" data-plugin="filters">
   <div class="row">
     <div class="col-12">
        
@@ -30,7 +30,7 @@
       <div class="form-item-row">
         <div class="form-item after-search form-item_rounded form-item-stretch">
           <div class="form-item_title"><?php print t('Search for person'); ?></div>
-          <input type="text" name="person" placeholder="<?php print t('Search for person'); ?>" data-plugin="autocomplete" data-url="<?php print $autocomplete_url; ?>" data-onsubmit="true" autocomplete="off"/>
+          <input type="text" name="person" placeholder="<?php print t('Search for person'); ?>" data-plugin="autocomplete" data-url="<?php print url('api/contact-autocomplete/' . $contact_nid); ?>" data-onsubmit="true" autocomplete="off"/>
         </div><!--/form-item-->
         
         <div class="form-item form-item_rounded form-item-stretch">
@@ -50,5 +50,7 @@
       </div><!--/form-item-row-->
     </div><!--/col-12-->
   </div><!--/row-->
-               
+  <?php if(!empty($contact_nid)): ?>
+    <input type="hidden" name="nid" value="<?php print $contact_nid; ?>">
+  <?php endif; ?>
 </form>

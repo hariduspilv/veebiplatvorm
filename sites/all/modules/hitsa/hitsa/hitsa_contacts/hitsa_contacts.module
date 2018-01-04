@@ -28,6 +28,13 @@ function hitsa_contacts_menu() {
     'access arguments' => array('access content'),
   );
   
+  $items['api/contact-autocomplete/%node'] = array(
+    'title' => 'Contact API',
+    'page callback' => 'hitsa_contacts_filter_autocomplete',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+  );
+  
   $items['admin/hitsa/contacts/import'] = array(
     'title' => 'Contact Import',
     'page callback' => 'drupal_get_form',
@@ -133,19 +140,33 @@ function hitsa_contacts_page_view() {
   return $contact_page;
 }
 
-function hitsa_contacts_filter_autocomplete() {
+function hitsa_contacts_filter_autocomplete($node = NULL) {
   $parameters = drupal_get_query_parameters();
-  
+
   if(!empty($parameters['search'])) {
-    $result = db_query('SELECT DISTINCT title FROM {node} n
+    $query = 'SELECT DISTINCT title FROM {node} n
       WHERE type = :contact 
       AND status = 1
-      AND title LIKE :search',
-      array(
-        ':contact' => 'contact',
-        ':search' => '%' . db_like($parameters['search']) . '%'
-      )
+      AND title LIKE :search';
+    
+    $arguments = array(
+      ':contact' => 'contact',
+      ':search' => '%' . db_like($parameters['search']) . '%'
     );
+    
+    // Consultation time autocomplete
+    if(!empty($node)) {
+      if(!empty($node->cp_contacts)) {
+        $contact_nids = array();
+        foreach($node->cp_contacts[LANGUAGE_NONE] as $contact) {
+          $contact_nids[] = $contact['target_id'];
+        }
+        $arguments[':contact_nids'] = $contact_nids;
+        $query .= ' AND nid IN (:contact_nids)';
+      }
+    }
+    
+    $result = db_query($query, $arguments);
     
     $titles = $result->fetchCol();
     
@@ -167,31 +188,71 @@ function hitsa_contacts_filter() {
   $parameters = drupal_get_query_parameters();
 
   $nodes = hitsa_contacts_query_content($parameters);
-  
-  // Contact Departments
-  $department_vocab_vid = variable_get('hitsa_contacts_department_vid');
-  $contact_departments = i18n_taxonomy_localize_terms(taxonomy_get_tree($department_vocab_vid));
 
-  $nodes_grouped = _hitsa_contacts_group_by_department($nodes);
+  if(empty($parameters['nid'])) { // General contact search
+    // Contact Departments
+    $department_vocab_vid = variable_get('hitsa_contacts_department_vid');
+    $contact_departments = i18n_taxonomy_localize_terms(taxonomy_get_tree($department_vocab_vid));
   
-  if(!empty($parameters['category']) && $parameters['category'] !== 'all') {
-    // Filter out extra departments
-    $filter_departments = array_flip(explode(',', $parameters['category']));
+    $nodes_grouped = _hitsa_contacts_group_by_department($nodes);
     
-    foreach($nodes_grouped as $d_tid => $nodes) {
-      if(!isset($filter_departments[$d_tid])) {
-        unset($nodes_grouped[$d_tid]);
+    if(!empty($parameters['category']) && $parameters['category'] !== 'all') {
+      // Filter out extra departments
+      $filter_departments = array_flip(explode(',', $parameters['category']));
+      
+      foreach($nodes_grouped as $d_tid => $nodes) {
+        if(!isset($filter_departments[$d_tid])) {
+          unset($nodes_grouped[$d_tid]);
+        }
       }
     }
+  } else { // Consultation times search
+    $nids = array_keys($nodes['node']);
+    $node_array = node_load_multiple($nids);
+    
+    $nodes = array();
+    foreach($node_array as $n) {
+      $nodes[] = node_view($n);
+    }
   }
+  
   $contact_accordion = theme('contacts_page_accordion',
     array(
-      'nodes' => $nodes_grouped,
-      'contact_departments' => $contact_departments,
-      )
+      'nodes' => !empty($nodes_grouped) ? $nodes_grouped : $nodes,
+      'contact_departments' => !empty($contact_departments) ? $contact_departments : NULL,
+    )
   );
 
   print $contact_accordion;
+}
+
+function hitsa_contacts_filter_widget($nid = NULL) {
+  if(!empty($nid) && $node = node_load($nid)) {
+    $emw_node = entity_metadata_wrapper('node', $node);
+    
+    $filter_values = array('contact_nid' => $nid);
+    // Iterate over referenced contacts
+    foreach($emw_node->cp_contacts->getIterator() as $contact) {
+      // Get Job positions
+      if(!empty($contact->job_position)) {
+        $j = $contact->job_position->value();
+        $filter_values['job_positions'][$j->tid] = $j;
+      }
+      // Get departments
+      if(!empty($contact->contact_departments)) {
+        foreach($contact->contact_departments->getIterator() as $department) {
+          if(!empty($department->job_department)) {
+            $d = $department->job_department->value();
+            $filter_values['contact_departments'][$d->tid] = $d;
+          }
+        }
+      }
+    }
+    
+  } else {
+    
+  }
+  return theme('contact_filter', $filter_values);
 }
 
 function hitsa_contacts_query_content($q = array()) {
@@ -265,6 +326,27 @@ function _hitsa_contacts_set_query_parameters($query = array()) {
       );
     }
     
+  }
+
+  if(!empty($query['nid'])) { // Consultation times, node specifc search
+    $result = db_query('SELECT cp_contacts_target_id 
+      FROM {field_data_cp_contacts}
+      WHERE entity_id = :parent_nid',
+    array(':parent_nid' => $query['nid'])
+    );
+    
+    $child_nids = $result->fetchCol();
+    if(!empty($child_nids)) {
+      $parameters[] = array(
+        'type' => 'propertyCondition',
+        'arguments' => array('nid', $child_nids, 'IN'),
+      );
+    } else {
+      $parameters[] = array(
+        'type' => 'range',
+        'arguments' => array(0, 0),
+      );
+    }
   }
 
   return $parameters;
