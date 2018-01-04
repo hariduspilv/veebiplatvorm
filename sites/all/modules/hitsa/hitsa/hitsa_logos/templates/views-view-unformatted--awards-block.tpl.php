@@ -8,7 +8,7 @@
  */
 ?>
 <?php foreach ($rows as $id => $row): ?>
-  <div class="col-12">
+  <div title="<?php print check_plain($view->result[$id]->node_title); ?>" class="col-12">
     <?php print $row; ?>
   </div>
 <?php endforeach; ?>
