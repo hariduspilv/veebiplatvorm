@@ -37,7 +37,7 @@ function _hitsa_content_page_fields() {
       'settings' => array(
         'allowed_values' => array(
           'cp_simple' => 'Sisuleht lihtne',
-          'cp_tabbed' => 'Sakkidega sisuleht',
+          /*'cp_tabbed' => 'Sakkidega sisuleht',*/
           'cp_service' => 'Teenus',
           'cp_contacts' => 'Konsultatsiooniajad',
           'cp_specialities' => $t('Specialities'),
