@@ -53,7 +53,7 @@
 				  <div class="col-7 sm-12">
 				    
 				    <div class="btn-bar align-right sm-show sm-pull_right">
-              <a href="" class="btn-circle before-share" data-plugin="share"></a>
+              <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
               <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
             </div>
         
@@ -69,14 +69,33 @@
             <?php endif; ?>
             <?php endif; ?>
             
-            <?php if(!empty($cinfo_contact_person)): ?>
+            <?php if(!empty($cinfo_company)): ?>
               <p>
-                <b><?php print check_plain($cinfo_contact_person[0]['safe_value']); ?></b>
+                <b><?php print check_plain($cinfo_company[0]['safe_value']); ?></b>
               </p>
             <?php endif; ?>
-            
-            <?php if(!empty($cinfo_homepage_url) || !empty($cinfo_e_mail) || !empty($cinfo_phone_nr) || !empty($cinfo_address)): ?>
+
+            <?php if(!empty($cinfo_homepage_url) || !empty($cinfo_e_mail) 
+            || !empty($cinfo_phone_nr) || !empty($cinfo_address)
+            || !empty($cinfo_contact_person) || !empty($cinfo_contact_person_profession)
+            ): ?>
             <ul class="list-details">
+              <?php if(!empty($cinfo_contact_person)): ?>
+              <li>
+                 <div class="before-user"></div>
+                 <div class="list-details_text">
+                    <p><?php print check_plain($cinfo_contact_person[0]['safe_value']); ?></p>
+                 </div><!--/list-details_text-->
+              </li>
+              <?php endif; ?>
+              <?php if(!empty($cinfo_contact_person_profession)): ?>
+              <li>
+                 <div class="before-briefcase"></div>
+                 <div class="list-details_text">
+                    <p><?php print check_plain($cinfo_contact_person_profession[0]['safe_value']); ?></p>
+                 </div><!--/list-details_text-->
+              </li>
+              <?php endif; ?>
               <?php if(!empty($cinfo_homepage_url)): ?>
               <li>
                  <div class="before-home"></div>
@@ -130,7 +149,7 @@
 		      <div class="col-4 sm-12 no-print col-offset-1 sm-offset-0">
             
             <div class="btn-bar align-right sm-hide">
-              <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+              <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
               <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
             </div>
             

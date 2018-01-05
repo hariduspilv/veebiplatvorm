@@ -178,6 +178,24 @@ function _hitsa_content_page_fields() {
       ),
       'locked' => '1',
     ),
+    'cinfo_contact_person_profession' => array(
+      'field_name' => 'cinfo_contact_person_profession',
+      'label' => 'Amet',
+      'type' => 'text',
+      'settings' => array(
+        'max_length' => 50,
+      ),
+      'locked' => '1',
+    ),
+    'cinfo_company' => array(
+      'field_name' => 'cinfo_company',
+      'label' => 'Ettevõte',
+      'type' => 'text',
+      'settings' => array(
+        'max_length' => 50,
+      ),
+      'locked' => '1',
+    ),
     // Curriculum
     'field_school_selections' => array(
     'active' => 1,
@@ -429,11 +447,43 @@ function _hitsa_content_page_field_instances() {
     ),
     */
     // Contact Information (Subpage)
+    'cinfo_company' => array(
+      'field_name' => 'cinfo_company',
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
+      'label' => 'Ettevõte',
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'text_plain',
+        ),
+      ),
+    ),
     'cinfo_contact_person' => array(
       'field_name' => 'cinfo_contact_person',
       'bundle' => 'content_page',
       'entity_type' => 'node',
-      'label' => 'Kontaktisik / Firma',
+      'label' => 'Kontaktisiku nimi',
+      'widget' => array(
+        'type' => 'text_textfield',
+        'module' => 'text',
+      ),
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'type' => 'text_plain',
+        ),
+      ),
+    ),
+    'cinfo_contact_person_profession' => array(
+      'field_name' => 'cinfo_contact_person_profession',
+      'bundle' => 'content_page',
+      'entity_type' => 'node',
+      'label' => 'Ametikoht',
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
@@ -565,11 +615,13 @@ function _hitsa_content_page_field_groups() {
     'label' => 'Contact information',
     'weight' => '32',
     'children' => array(
-      0 => 'cinfo_contact_person',
-      1 => 'cinfo_homepage_url',
-      2 => 'cinfo_e_mail',
-      3 => 'cinfo_phone_nr',
-      4 => 'cinfo_address',
+      0 => 'cinfo_company',
+      1 => 'cinfo_contact_person',
+      2 => 'cinfo_contact_person_profession',
+      3 => 'cinfo_homepage_url',
+      4 => 'cinfo_e_mail',
+      5 => 'cinfo_phone_nr',
+      6 => 'cinfo_address',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
