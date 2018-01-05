@@ -16,7 +16,7 @@
 						<div class="btn-bar align-right">
 							<a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
 							<a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
-							<a href="" id="download-link" target="_blank" class="btn-circle before-download"></a>
+							<a href="" id="download-link" target="_blank" class="btn-circle before-download" download></a>
 						</div>
 					</div><!--/col-12-->
 				</div><!--/row-->

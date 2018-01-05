@@ -126,6 +126,7 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
     _hitsa_core_add_logo_upload_element($form, $form_state); // Site Logo
     _hitsa_core_add_fp_image_upload_element($form, $form_state); // FP Image
     
+    
     // General contact fieldset
     $form['general_contact'] = array(
       '#type' => 'fieldset', 
@@ -177,6 +178,9 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
     $form['hitsa_school_place_coords']['#attributes']['style'] = 'display:none;';
     $form['hitsa_school_place_coords']['#title_display'] = 'invisible';
     $form['hitsa_school_place_coords']['#theme_wrappers'] = array();
+  }
+  if($form['#variable_group_form'] === 'general_variables') {
+    _hitsa_core_add_favicon_upload_element($form, $form_state);
   }
 }
 
@@ -290,5 +294,58 @@ function hitsa_core_fp_image_submit($form, &$form_state) {
     $file->status = FILE_STATUS_PERMANENT;
     $file = file_save($file);
     variable_set_value('hitsa_fp_image_fid', $file->fid);
+  }
+}
+
+// Favicon upload
+function _hitsa_core_add_favicon_upload_element(&$form, &$form_state) {
+  $favicon_dir = drupal_get_path('theme', 'hitsa') . '/favicon.ico';
+  
+  $form_state['favicon_dir'] = $favicon_dir;
+  
+  $form['favicon'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Favicon'),
+    '#weight' => -1,
+  );
+  
+  if(file_exists($favicon_dir)) {
+    // FP Image preview
+    $form['favicon']['preview'] = array(
+      '#type' => 'item',
+      '#title' => t('Current'),
+      '#markup' => '<img src="' . file_create_url($favicon_dir) . '"></img>',
+      '#weight' => -98,
+    );
+  }
+  
+  // Favicon Image upload
+  $form['favicon']['upload'] = array(
+    '#name' => 'files[hitsa_favicon]',
+    '#title' => t('Upload new'),
+    '#type' => 'file',
+    '#weight' => -97,
+  );
+  
+  $form['#validate'][] = 'hitsa_core_favicon_validate';
+}
+
+function hitsa_core_favicon_validate($form, &$form_state) {
+  $validators = array(
+   'file_validate_extensions' => array('ico'),
+   'file_validate_size' => array(1024*10),
+  );
+  
+  // File uploaded
+  if(
+    !empty($_FILES['files']['name']['hitsa_favicon']) &&
+    $_FILES['files']['size']['hitsa_favicon'] <= 1024*10 &&
+    ($_FILES['files']['type']['hitsa_favicon'] === 'image/vnd.microsoft.icon' ||
+    $_FILES['files']['type']['hitsa_favicon'] === 'image/x-icon') &&
+    $_FILES['files']['error']['hitsa_favicon'] === UPLOAD_ERR_OK
+  ) {
+    $tmp_name = $_FILES["files"]["tmp_name"]['hitsa_favicon'];
+    $name = $form_state['favicon_dir'];
+    $file_moved = drupal_move_uploaded_file($tmp_name, $name);
   }
 }

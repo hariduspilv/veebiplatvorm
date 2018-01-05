@@ -112,6 +112,10 @@ function hitsa_core_menu_alter(&$items) {
   );
 }
 
+function hitsa_core_html_head_alter(&$head_elements) {
+  //dpm($head_elements);
+}
+
 function hitsa_core_forms($form_id, $args) {
   $forms = array();
   

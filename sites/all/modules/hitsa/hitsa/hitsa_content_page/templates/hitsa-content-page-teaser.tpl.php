@@ -5,7 +5,7 @@
     <li><a href="<?php print url('node/' . $node->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
   </ul>          
   <?php endif; ?>
-  <a href="<?php print url('node/' . $node->nid); ?><?php if($node->type === 'gallery') print '?type=modal'; ?>" class="object"<?php if($node->type === 'gallery') print ' data-plugin="modal"'; ?>>
+  <a href="<?php print url('node/' . $node->nid); ?><?php if($node->type === 'gallery') print '?type=modal'; ?>" class="object"<?php if($node->type === 'gallery') print ' data-plugin="modal" data-modal="gallery-' . $node->nid . '"'; ?>>
     <span class="object-inner">
       <?php 
       if($node->type === 'article') {
@@ -25,7 +25,7 @@
           <?php if(!empty($author->name && $node->type === 'article')): ?>
           <span class="before-user"><?php print $author->name; ?></span>
           <?php elseif($node->type === 'gallery' && !empty($node->gallery_author)): ?>
-          <span class="before-user"><?php print check_plain($node->gallery_author[LANGUAGE_NONE][0]['value']); ?></span>
+          <!--<span class="before-user"><?php //print check_plain($node->gallery_author[LANGUAGE_NONE][0]['value']); ?></span>-->
           <?php endif; ?>
         </span><!--/object-footer-->
       </span><!--/object-content-->

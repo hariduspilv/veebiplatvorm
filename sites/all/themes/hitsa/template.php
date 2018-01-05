@@ -660,10 +660,13 @@ function hitsa_menu_link__hitsa_footer_menu($variables)
 function hitsa_preprocess_menu_link(&$variables)
 {
     $hook = $variables['theme_hook_original'];
-
     switch ($hook) {
         case 'menu_link__hitsa_header_menu':
             if (isset($variables['element']['#attributes']['class'])) unset($variables['element']['#attributes']['class']);
+            break;
+        case 'menu_link__hitsa_quicklinks_menu':
+        case 'menu_link__hitsa_main_menu':
+            unset($variables['element']['#localized_options']['attributes']);
             break;
     }
 }
