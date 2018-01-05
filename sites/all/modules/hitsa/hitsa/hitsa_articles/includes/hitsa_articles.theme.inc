@@ -37,6 +37,7 @@ function hitsa_articles_theme() {
     'variables' => array(
       'node' => NULL,
       'author' => NULL,
+      'placeholder_image_url' => hitsa_core_get_placeholder_image(),
     ),
   );
   
