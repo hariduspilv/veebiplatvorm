@@ -18,7 +18,7 @@
               <span class="object-content">
                  <span class="object-title"><?php print $node['#node']->title; ?></span>
                  <span class="object-footer">
-                    <span class="before-calendar"><?php print date('d. F Y', $node['#node']->created); ?></span>
+                    <span class="before-calendar"><?php print format_date($node['#node']->created, 'custom', 'd. F Y'); ?></span>
                  </span><!--/object-footer-->
               </span><!--/object-content-->
            </span><!--/object-inner-->
@@ -46,7 +46,7 @@
               <span class="object-content">
                  <span class="object-title"><?php print $node['#node']->title; ?></span>
                  <span class="object-footer">
-                    <span class="before-calendar"><?php print date('d. F Y', $node['#node']->created); ?></span>
+                    <span class="before-calendar"><?php print format_date($node['#node']->created, 'custom', 'd. F Y'); ?></span>
                  </span><!--/object-footer-->
               </span><!--/object-content-->
            </span><!--/object-inner-->

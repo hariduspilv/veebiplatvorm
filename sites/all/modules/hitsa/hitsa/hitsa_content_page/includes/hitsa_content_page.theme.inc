@@ -33,6 +33,7 @@ function hitsa_content_page_theme() {
     'path' => drupal_get_path('module', 'hitsa_content_page') . '/templates',
     'variables' => array(
       'subpage' => NULL,
+      'placeholder_image_url' => hitsa_core_get_placeholder_image(),
     ),
   );
   

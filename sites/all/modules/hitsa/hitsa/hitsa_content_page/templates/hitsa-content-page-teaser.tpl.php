@@ -17,6 +17,13 @@
       <span class="object-image" style="background-image:url(<?php print image_style_url('hitsa_core_thumbnail', $image[LANGUAGE_NONE][0]['uri']); ?>);">
         <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>">
       </span>
+      <?php else: ?>
+      <span class="object-image">
+				<span class="object-placeholder">
+					<span><img src="<?php print $placeholder_image_url; ?>" /></span>
+				</span><!--/object-placeholder-->
+				<img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
+			</span><!--/object-image-->
       <?php endif; ?>
       <span class="object-content">
         <span class="object-title"><?php print check_plain($node->title); ?></span>

@@ -126,6 +126,12 @@ function hitsa_articles_preprocess_block(&$variables) {
   }
 }
 
+function hitsa_articles_preprocess_views_view_fields(&$vars) {
+  if($vars['view']->name === 'hitsa_news') {
+    $vars['placeholder_image_url'] = hitsa_core_get_placeholder_image();
+  }
+}
+
 function hitsa_articles_page_view($type, $filter = FALSE) {
   $query = drupal_get_query_parameters();
   $query['article_type'] = empty($query['article_type']) ? $type : $query['article_type'];
