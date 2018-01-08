@@ -37,6 +37,13 @@
       <span class="object-image" style="background-image:url(<?php print $fields['subpage_images']->content; ?>);">
         <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
       </span>
+      <?php else: ?>
+      <span class="object-image">
+				<span class="object-placeholder">
+					<span><img src="<?php print $placeholder_image_url; ?>" /></span>
+				</span><!--/object-placeholder-->
+				<img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
+			</span><!--/object-image-->
       <?php endif; ?>
       <span class="object-content">
         <span class="object-title"><?php print $fields['title']->content; ?></span>

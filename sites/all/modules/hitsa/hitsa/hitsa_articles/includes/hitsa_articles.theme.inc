@@ -37,6 +37,7 @@ function hitsa_articles_theme() {
     'variables' => array(
       'node' => NULL,
       'author' => NULL,
+      'placeholder_image_url' => hitsa_core_get_placeholder_image(),
     ),
   );
   
@@ -123,6 +124,12 @@ function hitsa_articles_preprocess_block(&$variables) {
     || $variables['block_html_id'] === 'block-hitsa-articles-hitsa-our-stories'
   ) {
     $variables['elements']['#theme_wrappers'] = array();
+  }
+}
+
+function hitsa_articles_preprocess_views_view_fields(&$vars) {
+  if($vars['view']->name === 'hitsa_news') {
+    $vars['placeholder_image_url'] = hitsa_core_get_placeholder_image();
   }
 }
 
