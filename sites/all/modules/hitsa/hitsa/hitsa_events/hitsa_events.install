@@ -782,7 +782,6 @@ function _hitsa_events_add_field_bases(){
   );
 
   return $field_bases;
-
 }
 
 function _hitsa_events_add_field_instances(){
