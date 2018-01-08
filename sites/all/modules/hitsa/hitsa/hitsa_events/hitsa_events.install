@@ -901,7 +901,7 @@ function _hitsa_events_add_field_instances(){
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 8,
+      'weight' => 6,
     ),
   );
 
@@ -1045,7 +1045,7 @@ function _hitsa_events_add_field_instances(){
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 11,
+      'weight' => 9,
     ),
   );
 
@@ -1098,7 +1098,7 @@ function _hitsa_events_add_field_instances(){
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 9,
+      'weight' => 7,
     ),
   );
 
@@ -1155,7 +1155,7 @@ function _hitsa_events_add_field_instances(){
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete_tags',
-      'weight' => 10,
+      'weight' => 8,
     ),
   );
 
@@ -1246,7 +1246,7 @@ function _hitsa_events_add_field_instances(){
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 6,
+      'weight' => 12,
     ),
   );
 

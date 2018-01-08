@@ -165,6 +165,7 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 
     switch ($form_id) {
         case 'event_node_form':
+            krumo($form);
             if (!empty($form['body'][LANGUAGE_NONE])) {
                 $form['body']['und'][0]['summary']['#access'] = FALSE;
             }
@@ -185,6 +186,9 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
                     $form['field_event_type']['und']['#options'] = $options;
                 }
 
+            }
+            if (!empty($form['field_time_period_dates'])) {
+                $form['field_time_period_dates']['#access']=FALSE;
             }
 
             break;
@@ -326,7 +330,7 @@ function hitsa_events_calendar_page_html()
                   </div><!--/col-12-->
                </div><!--/row-->
                ';
-    $output .= '<form method="post" action="kalender.html" data-plugin="filters">
+    $output .= '<form method="post" action="kalender.html" data-plugin="filters" class="no-print">
 						
                <div class="row">
                   <div class="col-9 sm-12">
@@ -1094,7 +1098,7 @@ function hitsa_events_training_calendar()
                   </div><!--/col-12-->
                </div><!--/row-->
                ';
-    $output .= '<form method="post" action="kalender.html" data-plugin="filters">
+    $output .= '<form method="post" action="kalender.html" data-plugin="filters" class="no-print">
 						
                <div class="row">
                   <div class="col-9 sm-12">
