@@ -443,6 +443,7 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
         $form['contact_id']['#access'] = FALSE;
       }
       $form['#validate'][] = 'hitsa_contacts_department_required';
+      $form['actions']['submit']['#submit'][] ='hitsa_contacts_submit_redirect';
       $form['contact_departments'][LANGUAGE_NONE]['#required'] = TRUE;
       
       if(!empty($form['phone_nr'])) {
@@ -546,4 +547,8 @@ function hitsa_contacts_validate_phone_number($form, &$form_state) {
         form_set_error('phone_nr', t('Entered phone number: ') . $phone_number . t(' is not valid'));
     }
   }
+}
+function hitsa_contacts_submit_redirect($form, &$form_state){
+  $form_state['redirect'] = 'contact';
+  
 }
