@@ -487,7 +487,6 @@ function hitsa_events_add_fields()
 }
 
 function _hitsa_events_add_field_bases(){
-
   $field_bases = array();
 
   // Exported field_base: 'body'.
@@ -577,7 +576,7 @@ function _hitsa_events_add_field_bases(){
   // Exported field_base: 'field_event_type'.
   $field_bases['field_event_type'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_event_type',
@@ -785,7 +784,6 @@ function _hitsa_events_add_field_bases(){
 }
 
 function _hitsa_events_add_field_instances(){
-
   $field_instances = array();
 
   // Exported field_instance: 'node-event-body'.
@@ -992,7 +990,7 @@ function _hitsa_events_add_field_instances(){
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_select',
+      'type' => 'options_buttons',
       'weight' => 2,
     ),
   );
@@ -1037,14 +1035,14 @@ function _hitsa_events_add_field_instances(){
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'entityreference',
+      'module' => 'options',
       'settings' => array(
         'entityreference_autocreate' => 0,
         'match_operator' => 'CONTAINS',
         'path' => '',
         'size' => 60,
       ),
-      'type' => 'entityreference_autocomplete_tags',
+      'type' => 'options_select',
       'weight' => 9,
     ),
   );
@@ -1316,7 +1314,6 @@ function _hitsa_events_add_field_instances(){
   t('Training tags');
 
   return $field_instances;
-
 }
 
 function hitsa_events_delete_custom_node_fields()
