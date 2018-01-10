@@ -765,9 +765,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<br />';
 //        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
         if ($start_date_date > time()) {
-            $output .= ($type != 'training') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
+            $output .= ($type == 'training') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
             if (!empty($reg_form_id)) {
-                $output .= ($type == 'training') ? '<a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to training') . '</a>' : '';
+                $output .= ($type == 'training') ? '<br><a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to training') . '</a>' : '';
             }
         }
         $output .= (!empty($tags_ready) && $type != 'training') ? '<ul class="tags">' : '';
