@@ -783,7 +783,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $details_number = $event->nid + $start_date_date;
         $details_number .= (!empty($number)) ? $number : '';
 
-        $output .= '<a href="javascript:void(0);" class="btn" data-toggle="object-details_' . $details_number . '" data-hide="object-details_' . $details_number . '">' . t('Read more') . '</a>';
+        $output .= '<a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_' . $details_number . '" data-hide="object-details_' . $details_number . '">' . t('Read more') . '</a>';
         $output .= '<div data-show="object-details_' . $details_number . '">';
         $output .= '<a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
         $output .= '<a href="javascript:window.print();" class="btn-circle before-print"></a>';
