@@ -787,7 +787,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<div data-show="object-details_' . $details_number . '">';
         $output .= '<a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
         $output .= '<a href="javascript:window.print();" class="btn-circle before-print"></a>';
-        $output .= '<a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="btn btn-transparent after-close">' . t('Close') . '</a>';
+        $output .= '<a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="sm-show btn btn-transparent after-close">' . t('Close') . '</a>';
         $output .= '</div><!--/object-details_' . $event->nid . '-->';
         $output .= '</div><!--/object-button-->';
         $output .= '</div><!--/object-inner-->';
