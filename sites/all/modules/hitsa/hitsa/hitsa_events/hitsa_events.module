@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Functional part for events
@@ -165,10 +166,9 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 
     switch ($form_id) {
         case 'event_node_form':
-            krumo($form);
             $school_type = hitsa_core_get_school_type();
             if (!empty($form['body'][LANGUAGE_NONE])) {
-                $form['body']['und'][0]['summary']['#access'] = FALSE;
+                $form['body']['und'][0]['summary']['#access'] = false;
             }
             $form['period']['#access'] = false;
             hitsa_events_add_types(variable_get('school_type'));
@@ -181,8 +181,8 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 
             }
             if (!empty($school_type)) {
-                if($school_type==1){
-                    $form['field_event_type']['#access']=FALSE;
+                if ($school_type == 1) {
+                    $form['field_event_type']['#access'] = false;
                 }
             }
             if (!empty($form['field_event_type'])) {
@@ -194,7 +194,7 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 
             }
             if (!empty($form['field_time_period_dates'])) {
-                $form['field_time_period_dates']['#access']=FALSE;
+                $form['field_time_period_dates']['#access'] = false;
             }
 
             break;
@@ -251,8 +251,8 @@ function hitsa_events_add_types($school_type)
 }
 
 function hitsa_events_calendar_page()
-{   
-    
+{
+
     $build = array();
     $build['events'] = array(
         '#markup' => hitsa_events_calendar_page_html(),
@@ -454,22 +454,22 @@ function hitsa_events_calendar_page_html()
     return ($output);
 }
 
-function hitsa_events_endpoint($loaded_page = NULL)
+function hitsa_events_endpoint($loaded_page = null)
 {
-    $year = NULL;
+    $year = null;
     $category = array();
-    $search = NULL;
-    $dates = NULL;
-    $years = NULL;
-    $type = NULL;
+    $search = null;
+    $dates = null;
+    $years = null;
+    $type = null;
     global $language;
     if (!empty($_REQUEST)) {
-        $year = (!empty($_REQUEST['year'])) ? $_REQUEST['year'] : NULL;
-        $category = (!empty($_REQUEST['category'])) ? explode(',', $_REQUEST['category']) : NULL;
-        $search = (!empty($_REQUEST['event-title'])) ? ($_REQUEST['event-title']) : NULL;
-        $years = (!empty($_REQUEST['year'])) ? explode(',', $_REQUEST['year']) : NULL;
-        $dates = (!empty($_REQUEST['date'])) ? explode('-', $_REQUEST['date']) : NULL;
-        $type = (!empty($_REQUEST['type']))?$_REQUEST['type']:NULL;
+        $year = (!empty($_REQUEST['year'])) ? $_REQUEST['year'] : null;
+        $category = (!empty($_REQUEST['category'])) ? explode(',', $_REQUEST['category']) : null;
+        $search = (!empty($_REQUEST['event-title'])) ? ($_REQUEST['event-title']) : null;
+        $years = (!empty($_REQUEST['year'])) ? explode(',', $_REQUEST['year']) : null;
+        $dates = (!empty($_REQUEST['date'])) ? explode('-', $_REQUEST['date']) : null;
+        $type = (!empty($_REQUEST['type'])) ? $_REQUEST['type'] : null;
 
     }
     $textured_nodes = '';
@@ -516,9 +516,9 @@ function hitsa_events_endpoint($loaded_page = NULL)
         $q->condition($db_or);
         $q->fields('fdet');
     }
-    if(!empty($type)){
-        $q->join('field_data_field_event_type','fdfet','n.nid=fdfet.entity_id');
-        $q->condition('fdfet.field_event_type_value',$type,'=');
+    if (!empty($type)) {
+        $q->join('field_data_field_event_type', 'fdfet', 'n.nid=fdfet.entity_id');
+        $q->condition('fdfet.field_event_type_value', $type, '=');
     }
     if (!empty($dates)) {
         $start_date = strtotime(str_replace('/', '-', $dates[0]));
@@ -526,8 +526,8 @@ function hitsa_events_endpoint($loaded_page = NULL)
         $q->join('field_data_event_date', 'fded', 'fded.entity_id=n.nid');
 
         $db_or = db_or();
-            $db_or->condition('fded.event_date_value', $start_date, '>=');
-            $db_or->condition('fded.event_date_value2', $start_date, '>=');
+        $db_or->condition('fded.event_date_value', $start_date, '>=');
+        $db_or->condition('fded.event_date_value2', $start_date, '>=');
 
         $q->condition($db_or);
         $q->fields('fded');
@@ -588,19 +588,19 @@ function hitsa_events_get_nodes_html($nodes)
                         $numDays = abs($start_date - $end_date) / 60 / 60 / 24;
                         for ($i = 0; $i <= $numDays; $i++) {
                             $start_date_date = date('U', strtotime("+{$i} day", $start_date));
-                            if (!empty($_REQUEST)){
-                              if (!empty($_REQUEST['date'])){
-                                $two_dates = explode(' - ',$_REQUEST['date']);
+                            if (!empty($_REQUEST)) {
+                                if (!empty($_REQUEST['date'])) {
+                                    $two_dates = explode(' - ', $_REQUEST['date']);
 
-                                $two_dates[0] = strtotime(str_replace('/', '-', $two_dates[0]));
-                                $two_dates[1] = strtotime(str_replace('/', '-', $two_dates[1]));
-                                if($two_dates[0]>$start_date_date){
-                                  continue;
+                                    $two_dates[0] = strtotime(str_replace('/', '-', $two_dates[0]));
+                                    $two_dates[1] = strtotime(str_replace('/', '-', $two_dates[1]));
+                                    if ($two_dates[0] > $start_date_date) {
+                                        continue;
+                                    }
+                                    if ($two_dates[1] < $start_date_date) {
+                                        continue;
+                                    }
                                 }
-                                if ($two_dates[1]<$start_date_date){
-                                  continue;
-                                }
-                              }
                             }
                             $event_html = hitsa_events_event_html($event, $type = 'event', $start_date_date, $i);
                             $events_array[] = $event_html;
@@ -627,10 +627,10 @@ function hitsa_events_get_nodes_html($nodes)
     }
 }
 
-function hitsa_events_event_html($event = null, $type = null, $start_date_date = null, $number = NULL)
+function hitsa_events_event_html($event = null, $type = null, $start_date_date = null, $number = null)
 {
     global $language;
-    $periood = NULL;
+    $periood = null;
     $time = time();
     $time = strtotime('today midnight');
     setlocale(LC_CTYPE, 'et_EE');
@@ -657,7 +657,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $start_date = !empty($event->event_date['und'][0]['value']) ? $event->event_date['und'][0]['value'] : null;
         $end_date = !empty($event->event_date['und'][0]['value2']) ? $event->event_date['und'][0]['value2'] : null;
 
-        $time_hours_minutes = (!empty($start_date)) ? t('Time: ') . date('G:i', $start_date) : null;
+        $time_hours_minutes_all = (!empty($start_date)) ? t('Time: ') . date('G:i', $start_date) : null;
 
         if ($type == 'training') {
             $time_hours_minutes = '<span class="before-calendar">' . date('j.m', $start_date) . ' - ' . date('j.m', $end_date) . '</span>';
@@ -673,14 +673,19 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         }
 
         $locations = array();
-        if (!empty($event->locations) and $type != 'training') {
+        if (!empty($event->locations)) {
             foreach ($event->locations[$language->language] as $location) {
                 $location = taxonomy_term_load($location['tid']);
                 $locations[$location->name] = $location->name;
             }
             $location_ready = '';
             foreach ($locations as $location) {
-                $location_ready = t('Location:') . ' ' . (empty($location_ready)) ? $location : $location_ready . ', ' . $location;
+                if (empty($location_ready)) {
+                    $location_ready = t('Location:') . ' ' . $location;
+                } else {
+                    $location_ready .= ', ' . $location;
+                }
+                // $location_ready = t('Location:') . (empty($location_ready)) ? $location : $location_ready . ', ' . $location;
             }
         }
         $tags = array();
@@ -737,10 +742,10 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<div class="object-inner">';
         $output .= '<a href="#" onclick="event.preventDefault();" class="object-date">';
         $output .= '<span class="object-date_day">';
-        $output .= format_date($start_date_date,'custom','d',NULL,$language->language);
+        $output .= format_date($start_date_date, 'custom', 'd', null, $language->language);
         $output .= '</span>';
         $output .= '<span class="object-date_month">';
-        $output .= format_date($start_date_date,'custom','F',NULL,$language->language);
+        $output .= format_date($start_date_date, 'custom', 'F', null, $language->language);
         $output .= '</span>';
         $output .= '</a><!--/object-date-->';
         $output .= '<div class="object-content">';
@@ -748,7 +753,13 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= $event->title;
         $output .= '</a>';
         $output .= '<div class="object-footer">';
-        $output .= (!empty($location_ready)) ? $location_ready . ', ' : '';
+        if ($type != 'training') {
+            $output .= (!empty($location_ready)) ? $location_ready . ', ' : '';
+        }
+        else{
+            $output .= (!empty($location_ready)) ? $location_ready . ', ' : '';
+        }
+        $output .= (!empty($time_hours_minutes_all)) ? $time_hours_minutes_all . ' ' : '';
         $output .= (!empty($time_hours_minutes)) ? $time_hours_minutes . '' : '';
         $output .= ($type == 'training' && !empty($training_cost)) ? ' ' . $training_cost . ' ' : '';
         $output .= '<br />';
@@ -1384,7 +1395,7 @@ function hitsa_events_htmlize_periods($periods)
     foreach ($periods as $period) {
         $output .= '<div class="accordion-entry">';
         $events_count = count($period->events);
-        $output .= '<div class="accordion-title">' . $period->name . '('.$events_count.')</div>';
+        $output .= '<div class="accordion-title">' . $period->name . '(' . $events_count . ')</div>';
         $output .= '<div class="accordion-content">';
 
         $i = 0;
@@ -1452,8 +1463,8 @@ function hitsa_events_autocomplete()
             $q->condition('n.title', '%' . $_REQUEST['search'] . '%', 'LIKE');
         }
         if (!empty($_REQUEST['type'])) {
-            $q->join('field_data_field_event_type','fdfet','n.nid=fdfet.entity_id');
-            $q->condition('fdfet.field_event_type_value',$_REQUEST['type'],'=');
+            $q->join('field_data_field_event_type', 'fdfet', 'n.nid=fdfet.entity_id');
+            $q->condition('fdfet.field_event_type_value', $_REQUEST['type'], '=');
         }
     }
     $q->fields('n');
@@ -1467,15 +1478,15 @@ function hitsa_events_autocomplete()
             'title' => $node->title,
         );
     }
-    if (!empty($data['list'])){
-      $json = json_encode($data);
-      print ($json);
+    if (!empty($data['list'])) {
+        $json = json_encode($data);
+        print($json);
     }
 
 
 }
 
-function hitsa_events_calendar_add($event_id = NULL, $date = NULL)
+function hitsa_events_calendar_add($event_id = null, $date = null)
 {
     $build = array();
     $build['calender_add_block'] = array(
@@ -1491,7 +1502,7 @@ function hitsa_events_calendar_add($event_id = NULL, $date = NULL)
     return $build;
 }
 
-function hitsa_events_calendar_add_block($event_id = NULL, $date = NULL)
+function hitsa_events_calendar_add_block($event_id = null, $date = null)
 {
     $form = drupal_get_form('hitsa_events_add_to_calendar_form', $event_id, $date);
     // $form['email_container']['submit']['#attached']['js'][0]['data']['ajax']['edit-submit']['prevent']= 'default';
@@ -1514,7 +1525,7 @@ function hitsa_events_calendar_add_block($event_id = NULL, $date = NULL)
     return $output;
 }
 
-function hitsa_events_add_to_calendar_form($form, &$form_state, $event_id = NULL, $date = NULL)
+function hitsa_events_add_to_calendar_form($form, &$form_state, $event_id = null, $date = null)
 {
     $form = array(
         '#id' => 'ajax-target-sending',
@@ -1697,7 +1708,7 @@ function hitsa_events_create_registration_form($node)
     // Attach the webform to the node.
     $node->webform = array(
         'confirmation' => '',
-        'confirmation_format' => NULL,
+        'confirmation_format' => null,
         'redirect_url' => '<confirmation>',
         'status' => '1',
         'block' => '0',
@@ -1710,7 +1721,7 @@ function hitsa_events_create_registration_form($node)
         'submit_interval' => '-1',
         'total_submit_limit' => '-1',
         'total_submit_interval' => '-1',
-        'record_exists' => TRUE,
+        'record_exists' => true,
         'roles' => array(
             0 => '1', // Anonymous user can submit this webform.
         ),
@@ -1815,7 +1826,7 @@ function hitsa_events_generate_ics($post)
             file_prepare_directory($calendar_location, $options = FILE_CREATE_DIRECTORY);
             $file = file_save_data($file_contents, $calendar_location . '/calendar_event_' . $post['date'] . '.ics', FILE_EXISTS_REPLACE);
             $file_link = file_create_url($file->uri);
-            $errors = FALSE;
+            $errors = false;
             $output = '';
             if (!empty($post['icaldownload'])) {
                 $output = '<a class="cta-link before-calendar" href="' . $file_link . '">' . t('To download calendar .ics file click here') . '</a>';
@@ -1830,7 +1841,7 @@ function hitsa_events_generate_ics($post)
                     $attributes = $form['selections']['email']['#attributes'];
                     $attributes['checked'] = '';
                     $form['selections']['email']['#attributes'] = $attributes;
-                    $errors = TRUE;
+                    $errors = true;
                     $output .= '<div class="notification notification-error">' . t('Entered e-mail is not correct') . '</div>';
                     $output .= drupal_render($form);
 
@@ -2066,15 +2077,15 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
 
             if (!empty($form)) {
 
-              $form['captcha'] = array(
-                '#prefix' => '<div class="col-12"><div class="form-item">
+                $form['captcha'] = array(
+                    '#prefix' => '<div class="col-12"><div class="form-item">
 								<div class="form-item_title">' . t('') . '</div>',
-                '#suffix' => '</div></div>',
-                '#type' => 'captcha',
-                '#captcha_type' => 'captcha/Math',
-                '#weight' => 99,
-                '#name' => 'captcha'
-              );
+                    '#suffix' => '</div></div>',
+                    '#type' => 'captcha',
+                    '#captcha_type' => 'captcha/Math',
+                    '#weight' => 99,
+                    '#name' => 'captcha'
+                );
                 $form['submit'] = array(
                     '#type' => 'submit',
                     '#buttontype' => 'button',
@@ -2091,7 +2102,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
             }
         }
     }
-    return FALSE;
+    return false;
 }
 
 function hitsa_events_training_event_registration()
@@ -2115,27 +2126,27 @@ function hitsa_events_training_event_registration()
 function hitsa_events_registration_processing($post)
 {
     $validated = hitsa_events_registration_validation($post);
-    if ($validated['success'] == TRUE) {
+    if ($validated['success'] == true) {
         $registration = hitsa_events_registration_submission($post);
-    } elseif ($validated['success'] == FALSE) {
+    } elseif ($validated['success'] == false) {
         $form = $validated['form'];
         $node = node_load($_REQUEST['nid']);
         $components = $node->webform['components'];
-        $form = drupal_get_form('hitsa_events_generate_custom_form',$components,$_REQUEST['nid']);
-        if(!empty($validated['errors'])){
-            if(isset($validated['errors']['captcha'])){
+        $form = drupal_get_form('hitsa_events_generate_custom_form', $components, $_REQUEST['nid']);
+        if (!empty($validated['errors'])) {
+            if (isset($validated['errors']['captcha'])) {
                 $form['captcha']['captcha_widgets']['captcha_response']['#attributes']['class'] = array(
                     0 => 'error',
                 );
 
-        $errors['errors'][] = array(
-            '#type' => 'markup',
-            '#markup' => '<div class="row">
+                $errors['errors'][] = array(
+                    '#type' => 'markup',
+                    '#markup' => '<div class="row">
 			<div class="col-12">
 				<div class="notification notification-danger" data-plugin="notification">
 					<div class="notification-sign"></div>
 					<div class="notification-text">
-						<p>'.$validated['errors']['captcha'].'</p>
+						<p>' . $validated['errors']['captcha'] . '</p>
 					</div><!--/notification-text-->
 					<div class="notification-close">
 						<span class="notification-close-label">Sulge</span> <span class="before-close"></span>
@@ -2144,10 +2155,10 @@ function hitsa_events_registration_processing($post)
 			</div><!--/col-12-->
         </div>
         ',
-        );
+                );
             }
         }
-        array_unshift($form,$errors);
+        array_unshift($form, $errors);
         $form = drupal_render($form);
         dpm($form);
         return $form;
@@ -2161,7 +2172,7 @@ function hitsa_events_registration_processing($post)
 
 function hitsa_events_registration_validation($post)
 {
-    $errors = FALSE;
+    $errors = false;
     $error = array();
     $data = array();
     if (!empty($post['nid'])) {
@@ -2180,17 +2191,17 @@ function hitsa_events_registration_validation($post)
         if (!empty($post['form_token'])) {
             unset($post['form_token']);
         }
-        if(!empty($post['captcha_sid'])){
-            $captcha_checker = db_select('captcha_sessions','cs');
-            $captcha_checker->condition('cs.csid',$post['captcha_sid'],'=');
+        if (!empty($post['captcha_sid'])) {
+            $captcha_checker = db_select('captcha_sessions', 'cs');
+            $captcha_checker->condition('cs.csid', $post['captcha_sid'], '=');
             $captcha_checker->fields('cs');
-            $captcha_checker->condition('cs.token',$post['captcha_token'],'=');
+            $captcha_checker->condition('cs.token', $post['captcha_token'], '=');
             $response = $captcha_checker->execute();
             foreach ($response as $key => $value) {
                 dpm($value);
-                if($value->solution!=$post['captcha_response']){
-                    $errors=TRUE;
-                    $error['captcha'] = t('Captcha solution was wrong'); 
+                if ($value->solution != $post['captcha_response']) {
+                    $errors = true;
+                    $error['captcha'] = t('Captcha solution was wrong');
                 }
             }
         }
@@ -2225,13 +2236,13 @@ function hitsa_events_registration_validation($post)
     }
     if (!$errors) {
         return array(
-            'success' => TRUE,
+            'success' => true,
         );
     } else {
         $form = drupal_get_form('hitsa_events_generate_custom_form', $node->webform['components'], $node->webform['nid']);
         $form = drupal_render($form);
         return array(
-            'success' => FALSE,
+            'success' => false,
             'errors' => $error,
             'form' => $form,
 
@@ -2260,25 +2271,25 @@ function hitsa_events_registration_submission($post)
             unset($post['form_token']);
         }
         //dpm($post);
-        if (!empty($post['captcha_sid'])){
-          unset($post['captcha_sid']);
+        if (!empty($post['captcha_sid'])) {
+            unset($post['captcha_sid']);
         }
-        if (!empty($post['captcha_token'])){
-          unset($post['captcha_token']);
+        if (!empty($post['captcha_token'])) {
+            unset($post['captcha_token']);
         }
-        if (!empty($post['captcha_response'])){
-          unset($post['captcha_response']);
+        if (!empty($post['captcha_response'])) {
+            unset($post['captcha_response']);
         }
 
         foreach ($post as $post_key => $fields) {
             $key = $post_key;
-            if (strpos($post_key, 'email_') !== FALSE) {
+            if (strpos($post_key, 'email_') !== false) {
                 $key = str_replace('email_', '', $post_key);
             }
-            if (strpos($post_key, 'number_') !== FALSE) {
+            if (strpos($post_key, 'number_') !== false) {
                 $key = str_replace('number_', '', $post_key);
             }
-            if (strpos($post_key, 'form_element_id') !== FALSE) {
+            if (strpos($post_key, 'form_element_id') !== false) {
                 $key = str_replace('form_element_id_', '', $post_key);
             }
             if (is_array($fields)) {
@@ -2294,7 +2305,7 @@ function hitsa_events_registration_submission($post)
             'uid' => 0,
             'submitted' => REQUEST_TIME,
             'remote_addr' => ip_address(),
-            'is_draft' => FALSE,
+            'is_draft' => false,
             'serial' => $serial,
             'data' => $data,
         );
@@ -2304,9 +2315,9 @@ function hitsa_events_registration_submission($post)
 
         }
         if (!empty($sid)) {
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 }
