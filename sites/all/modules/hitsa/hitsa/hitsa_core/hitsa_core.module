@@ -221,7 +221,6 @@ function hitsa_core_block_view($delta = '')
     case 'hitsa_front_mobile_links':
       $block = array();
       $links = menu_load_links('hitsa-header-menu');
-      dpm($links);
       $block['content'] = theme('hitsa_mobile_quicklinks',array('links'=>$links));
       $block['subject'] = '';
       return $block;
