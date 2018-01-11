@@ -175,7 +175,7 @@ function hitsa_core_block_info()
     'pages' => '<front>',
     'region' => 'super_news',
     'status' => "1",
-    'weight' => -100,
+    'weight' => 1,
   );
   if ($school_type == 1) {
     $blocks['hitsa_front_events_catering'] = array(
