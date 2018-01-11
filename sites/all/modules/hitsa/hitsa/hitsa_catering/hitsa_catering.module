@@ -45,7 +45,7 @@ function hitsa_catering_block_info()
             $blocks['catering_block_front_page'] = array(
                 'info' => t('Catering front page'),
                 'region' => 'content',
-                'status' => ($school_type==1)?0:1,
+                'status' => ($school_type==2)?0:1,
                 'visibility' => BLOCK_VISIBILITY_LISTED,
                 'pages' => '<front>',
             );
