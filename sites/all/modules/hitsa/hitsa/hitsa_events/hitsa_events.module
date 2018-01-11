@@ -1009,7 +1009,7 @@ function hitsa_events_front_page_block()
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
-            $output .= '             <a class="btn btn-filled sm-stretch" href="' . $link . '" class="btn btn-filled">' . t(':key calendar', array(':key' => $key)) . '</a>';
+            $output .= '             <a  href="' . $link . '" class="btn btn-filled sm-stretch">' . t(':key calendar', array(':key' => $key)) . '</a>';
             $output .= '          </div><!--/col-12-->';
             $output .= '       </div><!--/row-->';
             $output .= '</div><!--/data-tab-' . $j . '-->';
