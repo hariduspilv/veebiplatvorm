@@ -42,13 +42,13 @@ function hitsa_catering_block_info()
         'weight' => 100,
     );
     $school_type = hitsa_core_get_school_type();
-            $blocks['catering_block_front_page'] = array(
-                'info' => t('Catering front page'),
-                'region' => 'content',
-                'status' => ($school_type==2)?0:1,
-                'visibility' => BLOCK_VISIBILITY_LISTED,
-                'pages' => '<front>',
-            );
+            // $blocks['catering_block_front_page'] = array(
+            //     'info' => t('Catering front page'),
+            //     'region' => 'content',
+            //     'status' => ($school_type==2)?0:1,
+            //     'visibility' => BLOCK_VISIBILITY_LISTED,
+            //     'pages' => '<front>',
+            // );
     return $blocks;
 }
 
@@ -67,13 +67,13 @@ function hitsa_catering_block_view($delta = '')
                 '#markup' => $catering_table,
             );
             break;
-        case 'catering_block_front_page':
-            $block['subject'] = t('');
-            $block['content'] = array(
-                '#markup' => hitsa_catering_front_page_block(),
-            );
+        // case 'catering_block_front_page':
+        //     $block['subject'] = t('');
+        //     $block['content'] = array(
+        //         '#markup' => hitsa_catering_front_page_block(),
+        //     );
 
-            break;
+        //     break;
     }
     return $block;
 }
@@ -924,14 +924,12 @@ function hitsa_catering_front_page_block()
         }
         $results = $query->execute();
         foreach ($results as $catering_result) {
-            ;
             $node = node_load($catering_result->nid);
             $lower_today = strtolower($today_day);
             $to_check = 'field_catering_' . $lower_today;
             if (!empty($node->$to_check)) {
                 foreach ($node->$to_check[LANGUAGE_NONE] as $food) {
                     $id = $food['value'];
-
                     $food = entity_load_single('paragraphs_item', $id);
                     if (!empty($food->field_food_name)) {
                         $food_name = $food->field_food_name[LANGUAGE_NONE][0]['value'];
@@ -1130,7 +1128,7 @@ function hitsa_catering_front_page_block()
     $monday = date('d/m/Y', strtotime('this week monday', $today));
     $sunday = date('d/m/Y', strtotime('this week sunday', $today));
     if (!empty($foods_selected) || !empty($foods_selected_tomorrow)) {
-        $output .= '<div class="col-6 sm-12">
+        $output .= '
                   
                   <div class="block block-stretch flex-grow" data-plugin="tabs">
                      <h2 class="block-title">' . t('Catering') . '</h2>
@@ -1204,9 +1202,7 @@ function hitsa_catering_front_page_block()
                         </div><!--/row-->
                      </div><!--/tab-2-->
 
-                  </div><!--/block-->
-            
-               </div>';
+                  </div><!--/block-->';
     }
     return $output;
 

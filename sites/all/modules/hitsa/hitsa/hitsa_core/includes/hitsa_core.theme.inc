@@ -43,6 +43,16 @@ function hitsa_core_theme() {
     ),
   );
   
+  $items['hitsa_front_page_events_catering'] = array(
+    'render element' => 'hitsa_front_page_events_catering',
+    'template' => 'hitsa_front_page_events_catering',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/include',
+    'variables' => array(
+      'events' => NULL,
+      'catering' => NULL,
+    ),
+  );
+  
   $items['hitsa_header_mobile'] = array(
     'render element' => 'header',
     'template' => 'header-mobile',

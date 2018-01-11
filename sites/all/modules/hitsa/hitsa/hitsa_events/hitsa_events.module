@@ -61,14 +61,18 @@ function hitsa_events_menu()
 function hitsa_events_block_info()
 {
     // This example comes from node.module.
-    $blocks['fornt_page_events'] = array(
-        'info' => t('Front page calendar events'),
-        'cache' => DRUPAL_NO_CACHE,
-        'visibility' => BLOCK_VISIBILITY_LISTED,
-        'pages' => '<front>',
-        'region' => 'content',
-        'status' => 1,
-    );
+    if (hitsa_core_get_school_type() == 2) {
+
+        $blocks['fornt_page_events'] = array(
+            'info' => t('Front page calendar events'),
+            'cache' => DRUPAL_NO_CACHE,
+            'visibility' => BLOCK_VISIBILITY_LISTED,
+            'pages' => '<front>',
+            'region' => 'content',
+            'status' => 1,
+        );
+    }
+
     $blocks['fornt_page_training'] = array(
         'info' => t('Front training events'),
         'cache' => DRUPAL_NO_CACHE
@@ -92,10 +96,12 @@ function hitsa_events_block_view($delta = '')
     $block = array();
     switch ($delta) {
         case 'fornt_page_events':
-            $block['subject'] = t('');
-            $block['content'] = array(
-                '#markup' => hitsa_events_front_page_block(),
-            );
+            if (hitsa_core_get_school_type() == 2) {
+                $block['subject'] = t('');
+                $block['content'] = array(
+                    '#markup' => hitsa_events_front_page_block(),
+                );
+            }
             break;
         case 'fornt_page_training':
             $block['subject'] = t('');
@@ -755,8 +761,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<div class="object-footer">';
         if ($type != 'training') {
             $output .= (!empty($location_ready)) ? $location_ready . ', ' : '';
-        }
-        else{
+        } else {
             $output .= (!empty($location_ready)) ? $location_ready . ', ' : '';
         }
         $output .= (!empty($time_hours_minutes_all)) ? $time_hours_minutes_all . ' ' : '';
@@ -861,7 +866,7 @@ function hitsa_events_front_page_block()
 {
     global $language;
     $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'event'));
-
+    $school_type = hitsa_core_get_school_type();
     if (isset($events['node'])) {
         $event_nids = array_keys($events['node']);
         $events = entity_load('node', $event_nids);
@@ -950,7 +955,11 @@ function hitsa_events_front_page_block()
                     $start_readable_time = strftime('%H:%M', $start);
                     $end = $event->event_date['und'][0]['value2'];
                 }
-                $output .= '<div class="col-6">';
+                if ($school_type == 1) {
+                    $output .= '<div class="col-12">';
+                } else {
+                    $output .= '<div class="col-6">';
+                }
                 $output .= '                <div class="object object-event">';
                 $output .= '                   <div class="object-inner">';
                 $output .= '                      <a href="" class="object-date">';
@@ -976,10 +985,18 @@ function hitsa_events_front_page_block()
                     $output .= ' <hr />';
                     $output .= ' <div class="row-spacer-xs"></div>';
                 }
+                if ($school_type == 1 && $i == 0) {
+                    $output .= ' <hr />';
+                    $output .= ' <div class="row-spacer-xs"></div>';
+                }
                 if ($i == 3 || $i == $event_type_count - 1) {
                 }
                 $i++;
-
+                if ($school_type == 1) {
+                    if ($i == 2) {
+                        break;
+                    }
+                }
                 if ($i == 4) {
                     break;
                 }
