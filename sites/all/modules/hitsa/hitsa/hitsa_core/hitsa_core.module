@@ -170,7 +170,7 @@ function hitsa_core_block_info()
       'info' => t('HITSA mobile links'),
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => '<front>',
-      'region' => 'content',
+      'region' => 'super_news',
       'status' => "1",
       'weight' => -100,
     );
