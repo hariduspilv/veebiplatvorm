@@ -1234,12 +1234,12 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Attachments',
         'required' => 0,
         'settings' => array(
-            'description_field' => 0,
-            'entity_translation_sync' => FALSE,
-            'file_directory' => '',
-            'file_extensions' => 'txt pdf doc docx odt rtf wpd tex wps',
-            'max_filesize' => '',
-            'user_register_form' => FALSE,
+          'description_field' => 0,
+          'entity_translation_sync' => FALSE,
+          'file_directory' => '',
+          'file_extensions' => 'txt pdf doc docx odt rtf wpd tex wps',
+          'max_filesize' => '10 MB',
+          'user_register_form' => FALSE,
         ),
         'widget' => array(
             'active' => 1,

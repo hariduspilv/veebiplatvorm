@@ -962,7 +962,7 @@ function hitsa_events_front_page_block()
                 $output .= '                         <span class="object-footer">';
                 $output .= (!empty($location)) ? '                     ' . t('Location') . ': ' . $location : '';
                 $output .= '                             , ' . t('Time') . ' ' . $start_readable_time . '<br />';
-                $output .= '                            <a href="" class="before-tourism">' . t('Add to calendar') . '</a>';
+                $output .= '                            <a href="/events/calendar/api/add/' . $event->nid . '/' . $start . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>';
                 $output .= '                         </span><!--/object-footer-->';
                 $output .= '                      </span><!--/object-content-->';
                 $output .= '                   </div><!--/object-inner-->';

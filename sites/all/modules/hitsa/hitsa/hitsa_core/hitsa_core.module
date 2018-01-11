@@ -165,6 +165,15 @@ function hitsa_core_block_info()
       'status' => "1",
       'weight' => -100,
     );
+    
+    $blocks['hitsa_front_mobile_links'] = array(
+      'info' => t('HITSA mobile links'),
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'region' => 'content',
+      'status' => "1",
+      'weight' => -100,
+    );
     return $blocks;
 }
 
@@ -205,6 +214,15 @@ function hitsa_core_block_view($delta = '')
     case 'hitsa_timetable':
       $block = array();
       $block['content'] = theme('hitsa_timetable');
+      $block['subject'] = '';
+      return $block;
+      break;
+      break;
+    case 'hitsa_front_mobile_links':
+      $block = array();
+      $links = menu_load_links('hitsa-header-menu');
+      dpm($links);
+      $block['content'] = theme('hitsa_mobile_quicklinks',array('links'=>$links));
       $block['subject'] = '';
       return $block;
       break;

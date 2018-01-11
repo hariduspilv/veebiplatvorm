@@ -33,6 +33,16 @@ function hitsa_core_theme() {
     'path' => drupal_get_path('theme', 'hitsa') . '/templates/include',
   );
   
+  
+  $items['hitsa_mobile_quicklinks'] = array(
+    'render element' => 'mobile_header_links',
+    'template' => 'mobile_header_links',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/include',
+    'variables' => array(
+      'links' => NULL,
+    ),
+  );
+  
   $items['hitsa_header_mobile'] = array(
     'render element' => 'header',
     'template' => 'header-mobile',
