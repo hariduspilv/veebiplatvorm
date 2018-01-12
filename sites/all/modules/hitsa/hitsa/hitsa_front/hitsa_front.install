@@ -1,0 +1,318 @@
+<?php
+function hitsa_front_install()
+{
+
+    hitsa_front_add_custom_vocubularies();
+    hitsa_front_add_custom_taxonomy_fields();
+}
+/**
+ * Implements hook_uninstall().
+ */
+function hitsa_front_uninstall() {
+  hitsa_front_remove_taxonomies();
+}
+
+function hitsa_front_add_custom_vocubularies(){
+
+    // Create voca
+    foreach (_hitsa_front_vocabularies() as $v) {
+        taxonomy_vocabulary_save($v['vocabulary']);
+
+        $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+        if(!empty($v['terms']) && $vocab) {
+            // Add generic terms
+            foreach($v['terms'] as $term) {
+                $term->vid = $vocab->vid;
+                taxonomy_term_save($term);
+            }
+        }
+    }
+}
+function _hitsa_front_vocabularies(){
+
+    $vocabularies = array();
+
+    $vocabularies['hitsa_breaks'] = array(
+        'vocabulary' => (object) array(
+            'name' => t('School breaks'),
+            'machine_name' => 'hitsa_breaks',
+            'language' => 'und',
+            'i18n_mode' => 1,
+        ),
+    );
+
+    $vocabularies['hitsa_hour_times'] = array(
+        'vocabulary' => (object) array(
+            'name' => t('School hours and lunch breaks'),
+            'machine_name' => 'hitsa_hour_times',
+            'language' => 'und',
+            'i18n_mode' => 1,
+        ),
+    );
+    return $vocabularies;
+}
+function hitsa_front_add_custom_taxonomy_fields(){
+
+    foreach (hitsa_front_add_custom_taxonomy_field_base() as $field) {
+        $field_check = field_info_field($field['field_name']);
+        if (empty($field_check)) {
+            field_create_field($field);
+        }
+    }
+    foreach (hitsa_front_add_custom_taxonomy_field_instance() as $field_instance) {
+
+        field_create_instance($field_instance);
+    }
+}
+function hitsa_front_add_custom_taxonomy_field_base(){
+
+  $field_bases = array();
+
+  // Exported field_base: 'field_break_period'.
+  $field_bases['field_break_period'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_break_period',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'date',
+    'settings' => array(
+      'cache_count' => 4,
+      'cache_enabled' => 0,
+      'entity_translation_sync' => FALSE,
+      'granularity' => array(
+        'day' => 'day',
+        'hour' => 0,
+        'minute' => 0,
+        'month' => 'month',
+        'second' => 0,
+        'year' => 'year',
+      ),
+      'timezone_db' => '',
+      'todate' => 'required',
+      'tz_handling' => 'none',
+    ),
+    'translatable' => 0,
+    'type' => 'datestamp',
+  );
+
+  // Exported field_base: 'field_hours_times'.
+  $field_bases['field_hours_times'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_hours_times',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'date',
+    'settings' => array(
+      'cache_count' => 4,
+      'cache_enabled' => 0,
+      'entity_translation_sync' => FALSE,
+      'granularity' => array(
+        'day' => 0,
+        'hour' => 'hour',
+        'minute' => 'minute',
+        'month' => 0,
+        'second' => 0,
+        'year' => 0,
+      ),
+      'timezone_db' => 'UTC',
+      'todate' => 'required',
+      'tz_handling' => 'site',
+    ),
+    'translatable' => 0,
+    'type' => 'datetime',
+  );
+
+  // Exported field_base: 'field_time_type'.
+  $field_bases['field_time_type'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_time_type',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'lunch' => 'Lucnch',
+        'class' => 'Class',
+      ),
+      'allowed_values_function' => '',
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
+  return $field_bases;
+
+}
+
+function hitsa_front_add_custom_taxonomy_field_instance(){
+
+  $field_instances = array();
+
+  // Exported field_instance: 'taxonomy_term-hitsa_breaks-field_break_period'.
+  $field_instances['taxonomy_term-hitsa_breaks-field_break_period'] = array(
+    'bundle' => 'hitsa_breaks',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
+        ),
+        'type' => 'date_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_break_period',
+    'label' => 'Break period',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'd/m/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'no_fieldset' => 0,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 41,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'taxonomy_term-hitsa_hour_times-field_hours_times'.
+  $field_instances['taxonomy_term-hitsa_hour_times-field_hours_times'] = array(
+    'bundle' => 'hitsa_hour_times',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
+        ),
+        'type' => 'date_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_hours_times',
+    'label' => 'Hours',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 5,
+        'input_format' => 'd/m/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'no_fieldset' => 0,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_select',
+      'weight' => 42,
+    ),
+  );
+
+  // Exported field_instance: 'taxonomy_term-hitsa_hour_times-field_time_type'.
+  $field_instances['taxonomy_term-hitsa_hour_times-field_time_type'] = array(
+    'bundle' => 'hitsa_hour_times',
+    'default_value' => array(
+      0 => array(
+        'value' => 'class',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_time_type',
+    'label' => 'Hitsa time type',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 41,
+    ),
+  );
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Break period');
+  t('Hitsa time type');
+  t('Hours');
+
+  return $field_instances;
+
+}
+function hitsa_front_remove_taxonomies(){
+    foreach (_hitsa_front_vocabularies() as $v) {
+        if(!empty($v['vocabulary'])) {
+            $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+            taxonomy_vocabulary_delete($vocab->vid);
+        }
+    }
+}

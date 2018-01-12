@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ */
+function hitsa_front_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+      case 'taxonomy_form_term':
+
+          if ($form['vocabulary_machine_name']['#value']=='hitsa_breaks'||$form['vocabulary_machine_name']['#value']=='hitsa_hour_times') {
+              $form['#metatags']['#access']=FALSE;
+              $form['relations']['#access']=FALSE;
+          }
+          break;
+      
+      default:
+          # code...
+          break;
+  }
+  return $form;
+}
+/**
+ * Implements hook_block_info().
+ */
+function hitsa_front_block_info() {
+  if (hitsa_core_get_school_type()==1) {
+      
+  }
+}
