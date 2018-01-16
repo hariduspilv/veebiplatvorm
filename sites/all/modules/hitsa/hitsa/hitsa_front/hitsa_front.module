@@ -34,6 +34,7 @@ function hitsa_front_block_info()
       'pages' => '<front>',
       'region' => 'sidebar_right',
       'status' => "1",
+      'weight' => -100
     );
   }
   return $blocks;
