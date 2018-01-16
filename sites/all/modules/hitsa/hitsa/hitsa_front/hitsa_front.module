@@ -56,8 +56,10 @@ function hitsa_front_block_view($delta = '')
       $time_periods = hitsa_front_get_time_period($time_periods);
       $block = array();
       $block['title'] = t('');
-      $block['content'] = theme('hitsa_front_hours_breaks', array('hours' => $hours_tree, 'breaks' => $breaks,'period'=>$time_periods));
-      return $block;
+      $block['content'] = theme('hitsa_front_hours_breaks', array('hours' => $hours_tree, 'breaks' => $breaks, 'period' => $time_periods));
+      if (!empty($hours_tree && !empty($breaks))) {
+        return $block;
+      }
       break;
 
     default:
@@ -104,14 +106,14 @@ function hitsa_front_requried_information($terms, $type)
           $hours = date_format($hours_date, 'G.i');
           $list[$term->tid]['end'] = $hours;
           $term_type = $term->field_time_type[LANGUAGE_NONE][0]['value'];
-          $list[$term->tid]['hour_html'] = '<p><span class="before-clock"></span>'. $list[$term->tid]['start'].' - '. $list[$term->tid]['end'].'</p>';
+          $list[$term->tid]['hour_html'] = '<p><span class="before-clock"></span>' . $list[$term->tid]['start'] . ' - ' . $list[$term->tid]['end'] . '</p>';
           $list[$term->tid]['type'] = $term_type;
           break;
         case 'breaks':
           $start = $term->field_break_period[LANGUAGE_NONE][0]['value'];
-          $list[$term->tid]['start'] = date('d.m.Y',$start);
+          $list[$term->tid]['start'] = date('d.m.Y', $start);
           $end = $term->field_break_period[LANGUAGE_NONE][0]['value2'];
-          $list[$term->tid]['end'] = date('d.m.Y',$end);
+          $list[$term->tid]['end'] = date('d.m.Y', $end);
           break;
 
         default:
@@ -137,7 +139,8 @@ function hitsa_front_requried_information($terms, $type)
   return $list;
 }
 
-function hitsa_front_get_time_period($periods){
+function hitsa_front_get_time_period($periods)
+{
   if (!empty($periods)) {
     $period_chosen = array();
     foreach ($periods as $key => $period) {
@@ -147,7 +150,7 @@ function hitsa_front_get_time_period($periods){
         $period = i18n_taxonomy_localize_terms($period); // The important part!
       }
       $time = time();
-      if($time>=$start && $time<=$end){
+      if ($time >= $start && $time <= $end) {
         $period_chosen = array(
           'name' => $period->name,
         );
@@ -157,61 +160,63 @@ function hitsa_front_get_time_period($periods){
   return $period_chosen;
 }
 
-function hitsa_front_make_html_list($list){
-  $out=array();
-  $i=0;
-  $type = NULL;
+function hitsa_front_make_html_list($list)
+{
+  $out = array();
+  $i = 0;
+  $type = null;
   foreach ($list as $list_item) {
-    if(empty($type)){
-      $out[$i]['type'] = $list_item['type']; 
+    if (empty($type)) {
+      $out[$i]['type'] = $list_item['type'];
     }
-   $type = (empty($type))? $list_item['type']:$type;
-   if($type!=$list_item['type']){
-     $i++;
-     $out[$i]['type'] = $list_item['type']; 
-     $type = $list_item['type'];
-   }
-   $out[$i]['hours'][] = $list_item;
+    $type = (empty($type)) ? $list_item['type'] : $type;
+    if ($type != $list_item['type']) {
+      $i++;
+      $out[$i]['type'] = $list_item['type'];
+      $type = $list_item['type'];
+    }
+    $out[$i]['hours'][] = $list_item;
   }
-  $output=NULL;
-  $i=0;
+  $output = null;
+  $i = 0;
   $count_elements = count($out);
   foreach ($out as $part_key => $part) {
-    $type = $part['type']=='class'?t('Classes'):t('Lunch');
+    $type = $part['type'] == 'class' ? t('Classes') : t('Lunch');
     // $output.=!empty($output)?'<hr/>':'';
-    $output.='<div class="time-table">
-    <p><b>'.$type.'</b></p>';
+    $output .= '<div class="time-table">
+    <p><b>' . $type . '</b></p>';
     foreach ($part['hours'] as $key => $hour) {
-      $output.=$hour['hour_html'];
+      $output .= $hour['hour_html'];
     }
-    $output.='
+    $output .= '
     </div><!--/time-table-->';
-    if($i!=$count_elements-1){
-      $output.='<hr/>';
+    if ($i != $count_elements - 1) {
+      $output .= '<hr/>';
     }
     $i++;
   }
   return $output;
 }
 
-function hitsa_front_html_breaks($list){
-  $output='';
-  
+function hitsa_front_html_breaks($list)
+{
+  $output = '';
+
   if (!empty($list)) {
     $breaks = count($list);
-    $i=0;
+    $i = 0;
     foreach ($list as $key => $break) {
-      $output.='<div class="time-table">
-      <p><b>'.$break['name'].':</b></p>
-      <p><span class="before-calendar"></span> '.$break['start'].' - '.$break['end'].'</p>
+      $output .= '<div class="time-table">
+      <p><b>' . $break['name'] . ':</b></p>
+      <p><span class="before-calendar"></span> ' . $break['start'] . ' - ' . $break['end'] . '</p>
    </div><!--/time-table-->
 ';
-      if ($i!=$breaks-1) {
-        $output.='
+      if ($i != $breaks - 1) {
+        $output .= '
         <hr />';
       }
       $i++;
-      
+
     }
   }
   return $output;
