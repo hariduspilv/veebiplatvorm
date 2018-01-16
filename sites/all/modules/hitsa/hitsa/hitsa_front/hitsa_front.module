@@ -57,7 +57,7 @@ function hitsa_front_block_view($delta = '')
       $block = array();
       $block['title'] = t('');
       $block['content'] = theme('hitsa_front_hours_breaks', array('hours' => $hours_tree, 'breaks' => $breaks, 'period' => $time_periods));
-      if (!empty($hours_tree && !empty($breaks))) {
+      if (!empty($hours_tree || !empty($breaks))) {
         return $block;
       }
       break;
