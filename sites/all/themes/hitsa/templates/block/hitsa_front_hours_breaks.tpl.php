@@ -2,7 +2,7 @@
 <?php
 
 ?>
-            <div class="block block-narrow sm-hide" data-plugin="tabs">
+            <div class="block block-narrow <?php ($type=='desktop')?print 'sm-hide':print 'sm-show'?>" data-plugin="tabs">
                <h2 class="block-title"><?php print($period['name'])?></h2>
                
                <div class="row pull-up">

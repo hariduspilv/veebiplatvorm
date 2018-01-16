@@ -36,6 +36,14 @@ function hitsa_front_block_info()
       'status' => "1",
       'weight' => -100
     );
+    $blocks['hitsa_services_events_mobile'] = array(
+      'info' => t('HITSA breaks and hours for mobile'),
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'region' => 'content',
+      'status' => "1",
+      'weight' => -2
+    );
   }
   return $blocks;
 }
@@ -57,7 +65,24 @@ function hitsa_front_block_view($delta = '')
       $time_periods = hitsa_front_get_time_period($time_periods);
       $block = array();
       $block['title'] = t('');
-      $block['content'] = theme('hitsa_front_hours_breaks', array('hours' => $hours_tree, 'breaks' => $breaks, 'period' => $time_periods));
+      $block['content'] = theme('hitsa_front_hours_breaks', array('hours' => $hours_tree, 'breaks' => $breaks, 'period' => $time_periods,'type'=>'desktop'));
+      if (!empty($hours_tree || !empty($breaks))) {
+        return $block;
+      }
+      break;
+    case 'hitsa_services_events_mobile':
+      $hours = taxonomy_vocabulary_machine_name_load('hitsa_hour_times');
+      $hours_tree = taxonomy_get_tree($hours->vid, 0, null, true);
+      $hours_tree = hitsa_front_requried_information($hours_tree, 'hours');
+      $breaks = taxonomy_vocabulary_machine_name_load('hitsa_breaks');
+      $breaks = taxonomy_get_tree($breaks->vid, 0, null, true);
+      $breaks = hitsa_front_requried_information($breaks, 'breaks');
+      $time_periods = taxonomy_vocabulary_machine_name_load('time_period_info');
+      $time_periods = taxonomy_get_tree($time_periods->vid, 0, null, true);
+      $time_periods = hitsa_front_get_time_period($time_periods);
+      $block = array();
+      $block['title'] = t('');
+      $block['content'] = theme('hitsa_front_hours_breaks', array('hours' => $hours_tree, 'breaks' => $breaks, 'period' => $time_periods,'type'=>'mobile'));
       if (!empty($hours_tree || !empty($breaks))) {
         return $block;
       }
