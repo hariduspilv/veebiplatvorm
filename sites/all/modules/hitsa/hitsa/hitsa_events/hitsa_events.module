@@ -991,7 +991,7 @@ function hitsa_events_front_page_block()
                 if($school_type==2 && $i==0){
                     $output.= '<hr class="sm-show">';
                 }
-                if ($school_type == 1 && $i == 0) {
+                if ($school_type == 1 && $i == 0 &&$i!=$event_type_count-1) {
                     $output .= ' <hr />';
                     $output .= ' <div class="row-spacer-xs"></div>';
                 }
@@ -1015,7 +1015,9 @@ function hitsa_events_front_page_block()
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
+            $output .= '            <div class="align-center">';
             $output .= '             <a  href="' . $link . '" class="btn btn-filled sm-stretch">' . t(':key calendar', array(':key' => $key)) . '</a>';
+            $output .= '            </div><!--/col-12-->';
             $output .= '          </div><!--/col-12-->';
             $output .= '       </div><!--/row-->';
             $output .= '</div><!--/data-tab-' . $j . '-->';
