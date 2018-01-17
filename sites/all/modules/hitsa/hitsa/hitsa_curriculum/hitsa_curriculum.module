@@ -99,7 +99,7 @@ function hitsa_curriculum_block_info()
             'visibility' => BLOCK_VISIBILITY_LISTED,
             'pages' => strval($pages),
             'weight' => 100,
-            'cache' => DRUPAL_NO_CACHE,
+            'cache' => DRUPAL_CACHE_PER_PAGE,
         );
     }
     $blocks['hitsa_hero_banner'] = array(
@@ -108,7 +108,7 @@ function hitsa_curriculum_block_info()
         'pages' => '<front>',
         'region' => 'hero',
         'status' => "1",
-        'cache' => DRUPAL_NO_CACHE,
+        'cache' => DRUPAL_CACHE_PER_PAGE,
     );
     $blocks['hitsa_curriculum_fields_mobile'] = array(
         'info' => t('Hitsa mobile fields'),
@@ -117,7 +117,7 @@ function hitsa_curriculum_block_info()
         'region' => 'super_news',
         'status' => 1,
         'weight' => 2,
-        'cache' => DRUPAL_NO_CACHE,
+        'cache' => DRUPAL_CACHE_PER_PAGE,
 
     );
     return $blocks;
