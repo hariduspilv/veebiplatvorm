@@ -958,7 +958,7 @@ function hitsa_events_front_page_block()
                 if ($school_type == 1) {
                     $output .= '<div class="col-12">';
                 } else {
-                    $output .= '<div class="col-6">';
+                    $output .= '<div class="col-6 sm-12">';
                 }
                 $output .= '                <div class="object object-event">';
                 $output .= '                   <div class="object-inner">';
