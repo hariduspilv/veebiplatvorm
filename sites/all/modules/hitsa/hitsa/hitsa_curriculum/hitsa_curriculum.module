@@ -852,10 +852,15 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 break;
             }
         }
+        
         $right_side = hitsa_curriculum_generate_right_custom_side($content, $type);
     }
     if (!empty($left_side) || !empty($right_side)) {
-        $output .= '<div class="block no-padding">';
+        $id_block=null;
+        if(!empty($content)){
+            $id_block ='id="'.$content->title.'"';
+        }
+        $output .= '<div class="block no-padding" '.$id_block.'>';
         $output .= '<div class="row">';
         if ($content_count > 1) {
             $output .= '<div class="col-3 d-flex sm-hide">';
@@ -992,7 +997,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     variable_set('school_type', 'middle');
     $school_type = variable_get('school_type');
 
-    $output = '<article   id="'.$content->title.'">';
+    $output = '<article>';
     if (!empty($content->changed)) {
         $output_elements['changed_date'] = '<span class="article-date"><i>' . t('Last modified') . ':' . date('d.m.Y', $content->changed) . '</i></span>';
     }
