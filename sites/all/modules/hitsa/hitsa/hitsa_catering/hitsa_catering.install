@@ -2,9 +2,10 @@
 
 
 /*
-* Implements hook_install.
-*/
-function hitsa_catering_install(){
+ * Implements hook_install.
+ */
+function hitsa_catering_install()
+{
     node_types_rebuild();
     $types = node_type_get_types();
 
@@ -20,9 +21,10 @@ function hitsa_catering_install(){
 
 
 /*
-* Implements hook_uninstall.
-*/
-function hitsa_catering_uninstall(){
+ * Implements hook_uninstall.
+ */
+function hitsa_catering_uninstall()
+{
     $node_type = 'catering';
     $paragraphs_bundle = 'catering_food_by_day';
     $contact_types = array('contact');
@@ -48,13 +50,14 @@ function hitsa_catering_uninstall(){
 
 
 /*
-* HITSA catering vocabulary
-*/
-function _hitsa_catering_vocabularies(){
+ * HITSA catering vocabulary
+ */
+function _hitsa_catering_vocabularies()
+{
     $vocabularies = array();
 
     $vocabularies['catering_food_type'] = array(
-        'vocabulary' => (object) array(
+        'vocabulary' => (object)array(
             'name' => t('Catering food types'),
             'description' => t('Different catering food types'),
             'machine_name' => 'catering_food_type',
@@ -62,23 +65,23 @@ function _hitsa_catering_vocabularies(){
             'i18n_mode' => 1,
         ),
         'terms' => array(
-            (object) array(
+            (object)array(
                 'name' => t('School meals'),
                 'language' => 'en',
 
             ),
-            (object) array(
+            (object)array(
                 'name' => t('Vegetarian food'),
                 'language' => 'en',
             ),
-            (object) array(
+            (object)array(
                 'name' => t('Lactose free'),
                 'language' => 'en',
             ),
         ),
     );
     $vocabularies['catering_provider'] = array(
-        'vocabulary' => (object) array(
+        'vocabulary' => (object)array(
             'name' => t('Catering provider'),
             'description' => t('Catering company information'),
             'machine_name' => 'catering_provider',
@@ -131,11 +134,11 @@ function _hitsa_catering_vocabularies(){
             ),
         ),
         'terms' => array(
-            (object) array(
+            (object)array(
                 'name' => t('Main dish'),
                 'language' => 'en',
             ),
-            (object) array(
+            (object)array(
                 'name' => t('Dessert'),
                 'language' => 'en',
             ),
@@ -144,15 +147,16 @@ function _hitsa_catering_vocabularies(){
     return $vocabularies;
 }
 
-function hitsa_catering_add_custom_vocubularies(){
+function hitsa_catering_add_custom_vocubularies()
+{
     // Create vocabulary
     foreach (_hitsa_catering_vocabularies() as $v) {
         taxonomy_vocabulary_save($v['vocabulary']);
 
         $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-        if(!empty($v['terms']) && $vocab) {
+        if (!empty($v['terms']) && $vocab) {
             // Add generic terms
-            foreach($v['terms'] as $term) {
+            foreach ($v['terms'] as $term) {
                 $term->vid = $vocab->vid;
                 taxonomy_term_save($term);
             }
@@ -160,9 +164,10 @@ function hitsa_catering_add_custom_vocubularies(){
     }
 }
 
-function hitsa_catering_delete_custom_vocabularies() {
+function hitsa_catering_delete_custom_vocabularies()
+{
     foreach (_hitsa_catering_vocabularies() as $v) {
-        if(!empty($v['vocabulary'])) {
+        if (!empty($v['vocabulary'])) {
             $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
             taxonomy_vocabulary_delete($vocab->vid);
         }
@@ -171,9 +176,10 @@ function hitsa_catering_delete_custom_vocabularies() {
 
 
 /*
-* HITSA catering paragraph type
-*/
-function hitsa_catering_add_custom_paragraphs_bundle(){
+ * HITSA catering paragraph type
+ */
+function hitsa_catering_add_custom_paragraphs_bundle()
+{
     $bundle = new stdClass();
     $bundle->name = 'Food'; // user friendly label
     $bundle->bundle = 'catering_food_by_day'; // machine name
@@ -181,7 +187,8 @@ function hitsa_catering_add_custom_paragraphs_bundle(){
     $status = paragraphs_bundle_save($bundle);
 }
 
-function _hitsa_catering_installed_paragraphs_fields(){
+function _hitsa_catering_installed_paragraphs_fields()
+{
     $field_bases = array();
 
     $field_bases['field_food_name'] = array(
@@ -218,7 +225,7 @@ function _hitsa_catering_installed_paragraphs_fields(){
         'locked' => 0,
         'module' => 'entityreference',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'handler' => 'base',
             'handler_settings' => array(
                 'behaviors' => array(
@@ -276,12 +283,13 @@ function _hitsa_catering_installed_paragraphs_fields(){
     return $field_bases;
 }
 
-function _hitsa_catering_installed_paragraphs_instances(){
+function _hitsa_catering_installed_paragraphs_instances()
+{
     $field_instances = array();
 
     $field_instances['paragraphs_item-catering_food_by_day-field_food_name'] = array(
         'bundle' => 'catering_food_by_day',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -305,7 +313,7 @@ function _hitsa_catering_installed_paragraphs_instances(){
         'required' => 1,
         'settings' => array(
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -319,7 +327,7 @@ function _hitsa_catering_installed_paragraphs_instances(){
     );
     $field_instances['paragraphs_item-catering_food_by_day-field_food_subcategory'] = array(
         'bundle' => 'catering_food_by_day',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -327,8 +335,8 @@ function _hitsa_catering_installed_paragraphs_instances(){
                 'label' => 'above',
                 'module' => 'entityreference',
                 'settings' => array(
-                    'bypass_access' => FALSE,
-                    'link' => FALSE,
+                    'bypass_access' => false,
+                    'link' => false,
                 ),
                 'type' => 'entityreference_label',
                 'weight' => 3,
@@ -343,10 +351,10 @@ function _hitsa_catering_installed_paragraphs_instances(){
         'entity_type' => 'paragraphs_item',
         'field_name' => 'field_food_subcategory',
         'label' => 'Food subcategory',
-        'required' => TRUE,
+        'required' => true,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'module' => 'options',
@@ -357,7 +365,7 @@ function _hitsa_catering_installed_paragraphs_instances(){
     );
     $field_instances['paragraphs_item-catering_food_by_day-field_food_type'] = array(
         'bundle' => 'catering_food_by_day',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -365,8 +373,8 @@ function _hitsa_catering_installed_paragraphs_instances(){
                 'label' => 'above',
                 'module' => 'entityreference',
                 'settings' => array(
-                    'bypass_access' => FALSE,
-                    'link' => FALSE,
+                    'bypass_access' => false,
+                    'link' => false,
                 ),
                 'type' => 'entityreference_label',
                 'weight' => 1,
@@ -383,7 +391,7 @@ function _hitsa_catering_installed_paragraphs_instances(){
         'label' => 'Food type',
         'required' => 1,
         'settings' => array(
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -397,7 +405,8 @@ function _hitsa_catering_installed_paragraphs_instances(){
     return $field_instances;
 }
 
-function hitsa_catering_add_custom_paragraphs_fields(){
+function hitsa_catering_add_custom_paragraphs_fields()
+{
     foreach (_hitsa_catering_installed_paragraphs_fields() as $field) {
         field_create_field($field);
     }
@@ -408,7 +417,8 @@ function hitsa_catering_add_custom_paragraphs_fields(){
     }
 }
 
-function hitsa_catering_delete_custom_paragraphs_fields(){
+function hitsa_catering_delete_custom_paragraphs_fields()
+{
     foreach (array_keys(_hitsa_catering_installed_paragraphs_fields()) as $field) {
         //field_delete_field($field);
     }
@@ -420,9 +430,10 @@ function hitsa_catering_delete_custom_paragraphs_fields(){
 
 
 /*
-* HITSA catering node type
-*/
-function _hitsa_catering_installed_node_fields(){
+ * HITSA catering node type
+ */
+function _hitsa_catering_installed_node_fields()
+{
     $t = get_t();
     $field_bases = array();
 
@@ -559,7 +570,8 @@ function _hitsa_catering_installed_node_fields(){
     return $field_bases;
 }
 
-function _hitsa_catering_installed_node_instances(){
+function _hitsa_catering_installed_node_instances()
+{
     $t = get_t();
     $field_instances = array();
 
@@ -577,7 +589,7 @@ function _hitsa_catering_installed_node_instances(){
                     'multiple_from' => '',
                     'multiple_number' => '',
                     'multiple_to' => '',
-                    'show_remaining_days' => FALSE,
+                    'show_remaining_days' => false,
                 ),
                 'type' => 'date_default',
                 'weight' => 1,
@@ -598,7 +610,7 @@ function _hitsa_catering_installed_node_instances(){
             'default_value2' => 'same',
             'default_value_code' => '',
             'default_value_code2' => '',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -619,7 +631,7 @@ function _hitsa_catering_installed_node_instances(){
 
     $field_instances['node-catering-field_catering_monday'] = array(
         'bundle' => 'catering',
-        'default_value' => NULL,
+        'default_value' => null,
         'description' => '',
         'display' => array(
             'default' => array(
@@ -653,7 +665,7 @@ function _hitsa_catering_installed_node_instances(){
             'default_edit_mode' => 'open',
             'title' => 'Toit',
             'title_multiple' => 'Toitu',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 0,
@@ -666,7 +678,7 @@ function _hitsa_catering_installed_node_instances(){
 
     $field_instances['node-catering-field_catering_tuesday'] = array(
         'bundle' => 'catering',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -701,7 +713,7 @@ function _hitsa_catering_installed_node_instances(){
             'default_edit_mode' => 'open',
             'title' => 'Toit',
             'title_multiple' => 'Toitu',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 0,
@@ -714,7 +726,7 @@ function _hitsa_catering_installed_node_instances(){
 
     $field_instances['node-catering-field_catering_wednesday'] = array(
         'bundle' => 'catering',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -749,7 +761,7 @@ function _hitsa_catering_installed_node_instances(){
             'default_edit_mode' => 'open',
             'title' => 'Toit',
             'title_multiple' => 'Toitu',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 0,
@@ -762,7 +774,7 @@ function _hitsa_catering_installed_node_instances(){
 
     $field_instances['node-catering-field_catering_thursday'] = array(
         'bundle' => 'catering',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -797,7 +809,7 @@ function _hitsa_catering_installed_node_instances(){
             'default_edit_mode' => 'open',
             'title' => 'Toit',
             'title_multiple' => 'Toitu',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 0,
@@ -810,7 +822,7 @@ function _hitsa_catering_installed_node_instances(){
 
     $field_instances['node-catering-field_catering_friday'] = array(
         'bundle' => 'catering',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -845,7 +857,7 @@ function _hitsa_catering_installed_node_instances(){
             'default_edit_mode' => 'open',
             'title' => 'Toit',
             'title_multiple' => 'Toitu',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 0,
@@ -909,14 +921,14 @@ function _hitsa_catering_installed_node_instances(){
         'settings' => array(
             'alt_field' => 0,
             'default_image' => 0,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'file_directory' => '',
             'file_extensions' => 'png gif jpg jpeg',
             'max_filesize' => '',
             'max_resolution' => '',
             'min_resolution' => '',
             'title_field' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -948,7 +960,8 @@ function _hitsa_catering_installed_node_instances(){
     return $field_instances;
 }
 
-function hitsa_catering_add_custom_node_fields(){
+function hitsa_catering_add_custom_node_fields()
+{
     foreach (_hitsa_catering_installed_node_fields() as $field) {
         $field_check = field_info_field($field['field_name']);
         if (empty($field_check)) {
@@ -962,22 +975,21 @@ function hitsa_catering_add_custom_node_fields(){
     }
 }
 
-function hitsa_catering_delete_custom_node_fields() {
+function hitsa_catering_delete_custom_node_fields()
+{
     foreach (array_keys(_hitsa_catering_installed_node_fields()) as $field) {
         $field_check = field_info_field($field);
-        if (!empty($field_check)){
-            if (!empty($field_check['bundles'])){
-                if (!empty($field_check['bundles']['node'])){
-                    if (count($field_check['bundles']['node'])>1){
+        if (!empty($field_check)) {
+            if (!empty($field_check['bundles'])) {
+                if (!empty($field_check['bundles']['node'])) {
+                    if (count($field_check['bundles']['node']) > 1) {
 
-                    }
-                    elseif (count($field_check['bundles']['node'])==1){
+                    } elseif (count($field_check['bundles']['node']) == 1) {
 //                      field_delete_field($field_check['field_name']);
                     }
                 }
             }
-        }
-        else {
+        } else {
 //          field_delete_field($field);
         }
     }
@@ -987,10 +999,11 @@ function hitsa_catering_delete_custom_node_fields() {
     }
 }
 
-function _hitsa_catering_custom_field_groups(){
+function _hitsa_catering_custom_field_groups()
+{
     $field_groups = array();
 
-    $field_group = (object) array(
+    $field_group = (object)array(
         'identifier' => 'group_monday|node|toitlustus|form',
         'group_name' => 'group_monday',
         'entity_type' => 'node',
@@ -999,7 +1012,7 @@ function _hitsa_catering_custom_field_groups(){
         'parent_name' => '',
         'table' => 'field_group',
         'type' => 'Overridden',
-        'disabled' => FALSE,
+        'disabled' => false,
         'label' => 'Monday',
         'weight' => '4',
         'children' => array(
@@ -1017,7 +1030,7 @@ function _hitsa_catering_custom_field_groups(){
     );
     $field_groups[] = $field_group;
 
-    $field_group = (object) array(
+    $field_group = (object)array(
         'identifier' => 'group_tuesday|node|toitlustus|form',
         'group_name' => 'group_tuesday',
         'entity_type' => 'node',
@@ -1026,7 +1039,7 @@ function _hitsa_catering_custom_field_groups(){
         'parent_name' => '',
         'table' => 'field_group',
         'type' => 'Overridden',
-        'disabled' => FALSE,
+        'disabled' => false,
         'label' => 'Tuesday',
         'weight' => '5',
         'children' => array(
@@ -1044,7 +1057,7 @@ function _hitsa_catering_custom_field_groups(){
     );
     $field_groups[] = $field_group;
 
-    $field_group = (object) array(
+    $field_group = (object)array(
         'identifier' => 'group_wednesday|node|toitlustus|form',
         'group_name' => 'group_wednesday',
         'entity_type' => 'node',
@@ -1053,7 +1066,7 @@ function _hitsa_catering_custom_field_groups(){
         'parent_name' => '',
         'table' => 'field_group',
         'type' => 'Overridden',
-        'disabled' => FALSE,
+        'disabled' => false,
         'label' => 'Wednesday',
         'weight' => '6',
         'children' => array(
@@ -1071,7 +1084,7 @@ function _hitsa_catering_custom_field_groups(){
     );
     $field_groups[] = $field_group;
 
-    $field_group = (object) array(
+    $field_group = (object)array(
         'identifier' => 'group_thursday|node|toitlustus|form',
         'group_name' => 'group_thursday',
         'entity_type' => 'node',
@@ -1080,7 +1093,7 @@ function _hitsa_catering_custom_field_groups(){
         'parent_name' => '',
         'table' => 'field_group',
         'type' => 'Overridden',
-        'disabled' => FALSE,
+        'disabled' => false,
         'label' => 'Thursday',
         'weight' => '7',
         'children' => array(
@@ -1098,7 +1111,7 @@ function _hitsa_catering_custom_field_groups(){
     );
     $field_groups[] = $field_group;
 
-    $field_group = (object) array(
+    $field_group = (object)array(
         'identifier' => 'group_friday|node|toitlustus|form',
         'group_name' => 'group_friday',
         'entity_type' => 'node',
@@ -1107,7 +1120,7 @@ function _hitsa_catering_custom_field_groups(){
         'parent_name' => '',
         'table' => 'field_group',
         'type' => 'Overridden',
-        'disabled' => FALSE,
+        'disabled' => false,
         'label' => 'Friday',
         'weight' => '8',
         'children' => array(
@@ -1151,12 +1164,14 @@ function _hitsa_catering_custom_field_groups(){
     return $field_groups;
 }
 
-function hitsa_catering_add_custom_field_groups(){
-    foreach(_hitsa_catering_custom_field_groups() as $field_group){
+function hitsa_catering_add_custom_field_groups()
+{
+    foreach (_hitsa_catering_custom_field_groups() as $field_group) {
         field_group_group_save($field_group);
     }
 }
-function hitsa_catering_add_custom_taxonomy_fields(){
+function hitsa_catering_add_custom_taxonomy_fields()
+{
     foreach (hitsa_catering_add_custom_taxonomy_field_base() as $field) {
         $field_check = field_info_field($field['field_name']);
         if (empty($field_check)) {
@@ -1169,7 +1184,8 @@ function hitsa_catering_add_custom_taxonomy_fields(){
     }
 }
 
-function hitsa_catering_add_custom_taxonomy_field_base(){
+function hitsa_catering_add_custom_taxonomy_field_base()
+{
     $field_bases = array();
     // Exported field_base: 'field_catering_provider_big_name'.
     $field_bases['field_catering_provider_big_name'] = array(
@@ -1186,7 +1202,7 @@ function hitsa_catering_add_custom_taxonomy_field_base(){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -1245,7 +1261,7 @@ function hitsa_catering_add_custom_taxonomy_field_base(){
                 'user' => 'User',
             ),
             'allowed_values_function' => '',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'list_text',
@@ -1261,7 +1277,7 @@ function hitsa_catering_add_custom_taxonomy_field_base(){
         'locked' => 0,
         'module' => 'email',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'email',
@@ -1287,7 +1303,7 @@ function hitsa_catering_add_custom_taxonomy_field_base(){
                 'url_cutoff' => 80,
             ),
             'enable_tokens' => 1,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'title' => 'optional',
             'title_maxlength' => 128,
             'title_value' => '',
@@ -1312,7 +1328,7 @@ function hitsa_catering_add_custom_taxonomy_field_base(){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -1334,23 +1350,51 @@ function hitsa_catering_add_custom_taxonomy_field_base(){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
         'type' => 'text',
     );
 
+  // Exported field_base: 'field_show_on_front_page'.
+    $field_bases['field_show_on_front_page'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_show_on_front_page',
+        'indexes' => array(
+            'value' => array(
+                0 => 'value',
+            ),
+        ),
+        'locked' => 0,
+        'module' => 'list',
+        'settings' => array(
+            'allowed_values' => array(
+                0 => '',
+                1 => 'Nähtav esilehel',
+            ),
+            'allowed_values_function' => '',
+            'allowed_values_no_localization' => 0,
+            'entity_translation_sync' => false,
+        ),
+        'translatable' => 0,
+        'type' => 'list_boolean',
+    );
+
 
     return $field_bases;
 }
-function hitsa_catering_add_custom_taxonomy_field_instance(){
+function hitsa_catering_add_custom_taxonomy_field_instance()
+{
 
     $field_instances = array();
 
     $field_instances['taxonomy_term-catering_food_subcategory-field_food_icon'] = array(
         'bundle' => 'catering_food_subcategory',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1367,8 +1411,8 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
         'label' => 'Food icon',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1383,7 +1427,7 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
     // Exported field_instance: 'taxonomy_term-catering_provider-field_email'.
     $field_instances['taxonomy_term-catering_provider-field_email'] = array(
         'bundle' => 'catering_provider',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1400,8 +1444,8 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
         'label' => 'Email',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1417,7 +1461,7 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
     // Exported field_instance: 'taxonomy_term-catering_provider-field_homepage'.
     $field_instances['taxonomy_term-catering_provider-field_homepage'] = array(
         'bundle' => 'catering_provider',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1447,14 +1491,14 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
                 'url_cutoff' => 80,
             ),
             'enable_tokens' => 1,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'rel_remove' => 'default',
             'title' => 'optional',
             'title_label_use_field_label' => 0,
             'title_maxlength' => 128,
             'title_value' => '',
             'url' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
             'validate_url' => 1,
         ),
         'widget' => array(
@@ -1470,7 +1514,7 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
     // 'taxonomy_term-catering_provider-field_phone_number'.
     $field_instances['taxonomy_term-catering_provider-field_phone_number'] = array(
         'bundle' => 'catering_provider',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '+372 000000',
         'display' => array(
@@ -1487,9 +1531,9 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
         'label' => 'Phone number',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1506,7 +1550,7 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
     // 'taxonomy_term-catering_provider-field_provider_address'.
     $field_instances['taxonomy_term-catering_provider-field_provider_address'] = array(
         'bundle' => 'catering_provider',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1523,9 +1567,9 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
         'label' => 'Address',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1537,38 +1581,41 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
             'weight' => 4,
         ),
     );
-    // 'taxonomy_term-catering_provider-field_catering_provider_big_name'.
-    $field_instances['taxonomy_term-catering_provider-field_catering_provider_big_name'] = array(
+   // 'taxonomy_term-catering_provider-field_show_on_front_page'.
+    $field_instances['taxonomy_term-catering_provider-field_show_on_front_page'] = array(
         'bundle' => 'catering_provider',
-        'default_value' => NULL,
+        'default_value' => array(
+            0 => array(
+                'value' => 0,
+            ),
+        ),
         'deleted' => 0,
         'description' => '',
         'display' => array(
             'default' => array(
                 'label' => 'above',
-                'module' => 'text',
+                'module' => 'list',
                 'settings' => array(),
-                'type' => 'text_default',
-                'weight' => 4,
+                'type' => 'list_default',
+                'weight' => 5,
             ),
         ),
         'entity_type' => 'taxonomy_term',
-        'field_name' => 'field_catering_provider_big_name',
-        'label' => 'Catering provider big name',
+        'field_name' => 'field_show_on_front_page',
+        'label' => 'Show on front page',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
-            'module' => 'text',
+            'module' => 'options',
             'settings' => array(
-                'size' => 60,
+                'display_label' => 0,
             ),
-            'type' => 'text_textfield',
-            'weight' => 1,
+            'type' => 'options_onoff',
+            'weight' => 8,
         ),
     );
     // Translatables
@@ -1589,7 +1636,8 @@ function hitsa_catering_add_custom_taxonomy_field_instance(){
     return $field_instances;
 }
 
-function hitsa_catering_delete_vocabulary_fields(){
+function hitsa_catering_delete_vocabulary_fields()
+{
     foreach (array_keys(hitsa_catering_add_custom_taxonomy_field_base()) as $field) {
 //      field_delete_field($field);
     }

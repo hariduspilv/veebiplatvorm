@@ -946,6 +946,7 @@ function hitsa_catering_front_page_block()
             $to_check = 'field_catering_' . $lower_today;
             if (!empty($node->$to_check)) {
                 foreach ($node->$to_check[LANGUAGE_NONE] as $food) {
+                    
                     $id = $food['value'];
                     $food = entity_load_single('paragraphs_item', $id);
                     if (!empty($food->field_food_name)) {
@@ -1018,6 +1019,7 @@ function hitsa_catering_front_page_block()
                 }
                 $lower_tomorrow = strtolower($tomorrow_day);
                 $to_check = 'field_catering_' . $lower_tomorrow;
+                
                 if (!empty($node->$to_check)) {
 //                dpm($node);
                     foreach ($node->$to_check['und'] as $food) {
@@ -1045,13 +1047,13 @@ function hitsa_catering_front_page_block()
                                     $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
-                                    $foods[$sub_category_name][$food_name]['name'] = $food_name;
-                                    $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
+                                    $foods_tomorrow[$sub_category_name][$food_name]['name'] = $food_name;
+                                    $foods_tomorrow[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
                                     if($sub_category_name=='Dessert') {
-                                        $foods[$sub_category_name][$food_name]['icon'] = 'before-sweet';
+                                        $foods_tomorrow[$sub_category_name][$food_name]['icon'] = 'before-sweet';
                                     }
                                     else{
-                                        $foods[$sub_category_name][$food_name]['icon'] = 'before-dinner';
+                                        $foods_tomorrow[$sub_category_name][$food_name]['icon'] = 'before-dinner';
                                     }
                                 }
                             }
@@ -1138,7 +1140,11 @@ function hitsa_catering_front_page_block()
     }
     $foods_selected = array();
     if (!empty($foods)) {
+        $k=0;
         foreach ($foods as $food_key => $food) {
+            if($k==2){
+                break;
+            }
             $random_food = array_rand($food, 1);
             $foods_selected[] = '<div class="col-12">
                               <div class="object object-event">
@@ -1153,6 +1159,7 @@ function hitsa_catering_front_page_block()
                                  </div><!--/object-inner-->
                               </div><!--/object-->
                            </div><!--/col-12-->';
+            $k++;
         }
     }
     $foods_selected_tomorrow = array();
