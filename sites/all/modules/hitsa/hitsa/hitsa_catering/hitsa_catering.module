@@ -718,7 +718,7 @@ function hitsa_catering_provider_html($provider)
         $email_out .= '                         <li>';
         $email_out .= '                            <div class="before-envelope"></div>';
         $email_out .= '                            <div class="list-details_text">';
-        $email_out .= '                               <p><a href="mailto:' . $email . '">' . $email . '</a></p>';
+        $email_out .= '                               <p><a class="spamspan" href="mailto:' . $email . '">' . $email . '</a></p>';
         $email_out .= '                            </div><!--/list-details_text-->';
         $email_out .= '                         </li>';
     }
