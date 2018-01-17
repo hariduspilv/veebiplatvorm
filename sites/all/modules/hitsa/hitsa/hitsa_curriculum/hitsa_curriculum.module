@@ -852,7 +852,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 break;
             }
         }
-        
+        var_dump($content);
         $right_side = hitsa_curriculum_generate_right_custom_side($content, $type);
     }
     if (!empty($left_side) || !empty($right_side)) {
