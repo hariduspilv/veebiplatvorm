@@ -928,7 +928,6 @@ function hitsa_catering_front_page_block()
             $node = node_load($catering_result->nid);
             if (!empty($node->field_catering_provider)) {
                 $catering_provider_loaded = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
-                dpm($catering_provider_loaded);
                 if(!empty($catering_provider_loaded)){
                     if(!empty($catering_provider_loaded->field_show_on_front_page)){
                         if($catering_provider_loaded->field_show_on_front_page['und'][0]['value']==1){
@@ -937,6 +936,9 @@ function hitsa_catering_front_page_block()
                         else{
                             continue;
                         }
+                    }
+                    else{
+                        continue;
                     }
                 }
             }
@@ -1010,6 +1012,9 @@ function hitsa_catering_front_page_block()
                                 continue;
                             }
                         }
+                        else{
+                            continue;
+                        }
                     }
                 }
                 $lower_tomorrow = strtolower($tomorrow_day);
@@ -1075,7 +1080,6 @@ function hitsa_catering_front_page_block()
                 $node = node_load($catering_result->nid);
                 if (!empty($node->field_catering_provider)) {
                     $catering_provider_loaded = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
-                    dpm($catering_provider_loaded);
                     if(!empty($catering_provider_loaded)){
                         if(!empty($catering_provider_loaded->field_show_on_front_page)){
                             if($catering_provider_loaded->field_show_on_front_page['und'][0]['value']==1){
@@ -1084,6 +1088,9 @@ function hitsa_catering_front_page_block()
                             else{
                                 continue;
                             }
+                        }
+                        else{
+                            continue;
                         }
                     }
                 }
