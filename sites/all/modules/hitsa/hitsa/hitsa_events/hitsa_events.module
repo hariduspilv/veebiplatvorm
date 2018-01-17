@@ -985,6 +985,8 @@ function hitsa_events_front_page_block()
                     $output .= ' <hr />';
                     $output .= ' <div class="row-spacer-xs"></div>';
                 }
+                if($i==2){}
+                    $output.= '<hr class="sm-show">';
                 if ($school_type == 1 && $i == 0) {
                     $output .= ' <hr />';
                     $output .= ' <div class="row-spacer-xs"></div>';
