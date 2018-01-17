@@ -5,10 +5,10 @@
  */
 function hitsa_curriculum_install()
 {
-    $school_type =  hitsa_core_get_school_type();
-    if (empty(variable_get('hitsa_school_type'))){
-        variable_set('hitsa_school_type',1);
-        $school_type=1;
+    $school_type = hitsa_core_get_school_type();
+    if (empty(variable_get('hitsa_school_type'))) {
+        variable_set('hitsa_school_type', 1);
+        $school_type = 1;
     }
     hitsa_curriculum_create_node();
 
@@ -31,7 +31,7 @@ function hitsa_curriculum_uninstall()
 {
     $node_type = 'curriculum';
     $paragraphs_bundles = array(
-    'contacts', 'description', 'table','jobs'
+        'contacts', 'description', 'table', 'jobs'
     );
 
 
@@ -41,10 +41,10 @@ function hitsa_curriculum_uninstall()
     foreach ($result as $row) {
         $node_ids[] = $row->nid;
     }
-    $school_type =  hitsa_core_get_school_type();
-    if (empty(variable_get('hitsa_school_type'))){
-        variable_set('hitsa_school_type',1);
-        $school_type=1;
+    $school_type = hitsa_core_get_school_type();
+    if (empty(variable_get('hitsa_school_type'))) {
+        variable_set('hitsa_school_type', 1);
+        $school_type = 1;
     }
     
     // Delete fields and vocabularies
@@ -61,7 +61,7 @@ function hitsa_curriculum_uninstall()
 }
 function hitsa_curriculum_add_custom_vocabularies()
 {
-   
+
     foreach (_hitsa_curriculum_vocabularies() as $v) {
         taxonomy_vocabulary_save($v['vocabulary']);
 
@@ -81,31 +81,31 @@ function _hitsa_curriculum_vocabularies()
     $vocabularies = array();
 
     $vocabularies['fields'] = array(
-    'vocabulary' => (object)array(
-      'name' => t('Fields'),
-      'description' => t('Field for speciality'),
-      'machine_name' => 'fields',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-      'language' => 'und',
-      'i18n_mode' => 1,
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
+        'vocabulary' => (object)array(
+            'name' => t('Fields'),
+            'description' => t('Field for speciality'),
+            'machine_name' => 'fields',
+            'hierarchy' => 0,
+            'module' => 'taxonomy',
+            'weight' => 0,
+            'language' => 'und',
+            'i18n_mode' => 1,
+            'rdf_mapping' => array(
+                'rdftype' => array(
+                    0 => 'skos:ConceptScheme',
+                ),
+                'name' => array(
+                    'predicates' => array(
+                        0 => 'dc:title',
+                    ),
+                ),
+                'description' => array(
+                    'predicates' => array(
+                        0 => 'rdfs:comment',
+                    ),
+                ),
+            ),
         ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
-    ),
     );
     return $vocabularies;
 }
@@ -147,7 +147,7 @@ function hitsa_curriculum_add_custom_paragraphs_fields()
 
     foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field) {
         $field_test = field_info_field($field['field_name']);
-        if(empty($field_test)) {
+        if (empty($field_test)) {
             field_create_field($field);
         }
     }
@@ -156,7 +156,8 @@ function hitsa_curriculum_add_custom_paragraphs_fields()
         field_create_instance($field_instance);
     }
 }
-function _hitsa_curriculum_installed_paragraphs_fields(){
+function _hitsa_curriculum_installed_paragraphs_fields()
+{
 
     $field_bases = array();
 
@@ -175,7 +176,7 @@ function _hitsa_curriculum_installed_paragraphs_fields(){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -193,7 +194,7 @@ function _hitsa_curriculum_installed_paragraphs_fields(){
         'locked' => 0,
         'module' => 'email',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'email',
@@ -214,7 +215,7 @@ function _hitsa_curriculum_installed_paragraphs_fields(){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -237,7 +238,7 @@ function _hitsa_curriculum_installed_paragraphs_fields(){
         'module' => 'text',
         'settings' => array(
             'add_row_localization_source' => 'Add another item',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -264,7 +265,7 @@ function _hitsa_curriculum_installed_paragraphs_fields(){
                 'url_cutoff' => 80,
             ),
             'enable_tokens' => 1,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'title' => 'optional',
             'title_maxlength' => 128,
             'title_value' => '',
@@ -277,14 +278,15 @@ function _hitsa_curriculum_installed_paragraphs_fields(){
     return $field_bases;
 
 }
-function _hitsa_curriculum_installed_paragraphs_instances(){
+function _hitsa_curriculum_installed_paragraphs_instances()
+{
 
     $field_instances = array();
 
     // Exported field_instance: 'paragraphs_item-contacts-field_address'.
     $field_instances['paragraphs_item-contacts-field_address'] = array(
         'bundle' => 'contacts',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -307,9 +309,9 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
         'label' => 'Address',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -325,7 +327,7 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
     // Exported field_instance: 'paragraphs_item-contacts-field_contact_email'.
     $field_instances['paragraphs_item-contacts-field_contact_email'] = array(
         'bundle' => 'contacts',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -348,8 +350,8 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
         'label' => 'Email',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -365,7 +367,7 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
     // Exported field_instance: 'paragraphs_item-contacts-field_contact_title'.
     $field_instances['paragraphs_item-contacts-field_contact_title'] = array(
         'bundle' => 'contacts',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -388,9 +390,9 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
         'label' => 'Contact title',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -406,7 +408,7 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
     // Exported field_instance: 'paragraphs_item-contacts-field_phone_number'.
     $field_instances['paragraphs_item-contacts-field_phone_number'] = array(
         'bundle' => 'contacts',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '+372 000000',
         'display' => array(
@@ -429,9 +431,9 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
         'label' => 'Phone number',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -447,7 +449,7 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
     // Exported field_instance: 'paragraphs_item-contacts-field_website'.
     $field_instances['paragraphs_item-contacts-field_website'] = array(
         'bundle' => 'contacts',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => 'Lingi kiri, kui seda ei sisestata tuleb selle asemele lingi URL',
         'display' => array(
@@ -483,14 +485,14 @@ function _hitsa_curriculum_installed_paragraphs_instances(){
                 'url_cutoff' => 80,
             ),
             'enable_tokens' => 1,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'rel_remove' => 'default',
             'title' => 'optional',
             'title_label_use_field_label' => 0,
             'title_maxlength' => 128,
             'title_value' => '',
             'url' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
             'validate_url' => 1,
         ),
         'widget' => array(
@@ -541,7 +543,7 @@ function hitsa_curriculum_add_custom_node_fields($school_type)
     foreach (_hitsa_curriculum_installed_node_fields($school_type) as $field) {
 
         $field_test = field_info_field($field['field_name']);
-        if(empty($field_test)) {
+        if (empty($field_test)) {
             field_create_field($field);
         }
     }
@@ -550,10 +552,11 @@ function hitsa_curriculum_add_custom_node_fields($school_type)
         field_create_instance($field_instance);
     }
 }
-function _hitsa_curriculum_installed_node_fields($school_type=null){
+function _hitsa_curriculum_installed_node_fields($school_type = null)
+{
 
 
-    if ($school_type==1){
+    if ($school_type == 1) {
         $subtypes = array(
             'specialities' => 'Speciality',
             'elective-courses' => 'Elective courses',
@@ -567,8 +570,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
             'certification-exams' => 'Certification exams',
             'cooperation-and-partners' => 'Cooperation and partners',
         );
-    }
-    elseif($school_type==2){
+    } elseif ($school_type == 2) {
         $subtypes = array(
             'subject-field' => 'Subject field',
             'boarding-school' => 'Boarding school',
@@ -600,7 +602,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'text_with_summary',
@@ -621,7 +623,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -665,7 +667,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'paragraphs',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'paragraphs',
@@ -685,7 +687,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
             'add_row_localization_source' => 'Add another item',
             'cache_count' => 4,
             'cache_enabled' => 0,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'granularity' => array(
                 'day' => 'day',
                 'hour' => 0,
@@ -716,7 +718,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
             'add_row_localization_source' => 'Add another item',
             'cache_count' => 4,
             'cache_enabled' => 0,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'granularity' => array(
                 'day' => 'day',
                 'hour' => 'hour',
@@ -748,7 +750,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -770,7 +772,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'entityreference',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'handler' => 'base',
             'handler_settings' => array(
                 'behaviors' => array(
@@ -806,7 +808,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -824,7 +826,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'paragraphs',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'paragraphs',
@@ -845,7 +847,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'text_with_summary',
@@ -892,7 +894,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -914,7 +916,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -936,7 +938,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -961,7 +963,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'settings' => array(
             'allowed_values' => $subtypes,
             'allowed_values_function' => '',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'list_text',
@@ -983,7 +985,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'module' => 'text',
         'settings' => array(
             'add_row_localization_source' => 'Add another item',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -1002,7 +1004,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'module' => 'tablefield',
         'settings' => array(
             'add_row_localization_source' => 'Add another item',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'tablefield',
@@ -1020,7 +1022,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'module' => 'tablefield',
         'settings' => array(
             'add_row_localization_source' => 'Add another item',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'tablefield',
@@ -1042,7 +1044,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'module' => 'text',
         'settings' => array(
             'add_row_localization_source' => 'Add another item',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -1060,7 +1062,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'paragraphs',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'paragraphs',
@@ -1081,7 +1083,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'max_length' => 255,
         ),
         'translatable' => 0,
@@ -1108,7 +1110,7 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
                 'url_cutoff' => 80,
             ),
             'enable_tokens' => 1,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'title' => 'optional',
             'title_maxlength' => 128,
             'title_value' => '',
@@ -1119,13 +1121,14 @@ function _hitsa_curriculum_installed_node_fields($school_type=null){
     );
     return $field_bases;
 }
-function _hitsa_curriculum_installed_node_instances(){
+function _hitsa_curriculum_installed_node_instances()
+{
     $field_instances = array();
 
     // Exported field_instance: 'node-curriculum-body'.
     $field_instances['node-curriculum-body'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1152,9 +1155,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'required' => 1,
         'settings' => array(
             'display_summary' => 0,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 1,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1171,7 +1174,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_assessment'.
     $field_instances['node-curriculum-field_assessment'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1194,9 +1197,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Assessment',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1234,12 +1237,12 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Attachments',
         'required' => 0,
         'settings' => array(
-          'description_field' => 0,
-          'entity_translation_sync' => FALSE,
-          'file_directory' => '',
-          'file_extensions' => 'txt pdf doc docx odt rtf wpd tex wps',
-          'max_filesize' => '10 MB',
-          'user_register_form' => FALSE,
+            'description_field' => 0,
+            'entity_translation_sync' => false,
+            'file_directory' => '',
+            'file_extensions' => 'txt pdf doc docx odt rtf wpd tex wps',
+            'max_filesize' => '10 MB',
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1268,7 +1271,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_contacts'.
     $field_instances['node-curriculum-field_contacts'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1315,10 +1318,10 @@ function _hitsa_curriculum_installed_node_instances(){
                 'table' => 8,
             ),
             'default_edit_mode' => 'preview',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'title' => 'kontakt',
             'title_multiple' => 'kontakti',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 0,
@@ -1329,11 +1332,11 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
     );
 
-    // Exported field_instance: 'node-curriculum-field_curriculum_length'.
+     // Exported field_instance: 'node-curriculum-field_curriculum_length'.
     $field_instances['node-curriculum-field_curriculum_length'] = array(
         'bundle' => 'curriculum',
         'deleted' => 0,
-        'description' => '',
+        'description' => 'Kuupäeva vahemik, millal konkreetne sündmus toimub. Kui tegu ühepevase sündmusega, siis tuleb alguse ja lõpu kuupäevaks valida sama kuupäev.',
         'display' => array(
             'default' => array(
                 'label' => 'above',
@@ -1344,7 +1347,7 @@ function _hitsa_curriculum_installed_node_instances(){
                     'multiple_from' => '',
                     'multiple_number' => '',
                     'multiple_to' => '',
-                    'show_remaining_days' => FALSE,
+                    'show_remaining_days' => false,
                 ),
                 'type' => 'date_default',
                 'weight' => 11,
@@ -1365,8 +1368,8 @@ function _hitsa_curriculum_installed_node_instances(){
             'default_value2' => 'same',
             'default_value_code' => '',
             'default_value_code2' => '',
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1385,11 +1388,11 @@ function _hitsa_curriculum_installed_node_instances(){
         ),
     );
 
-    // Exported field_instance: 'node-curriculum-field_curriculum_start'.
+  // Exported field_instance: 'node-curriculum-field_curriculum_start'.
     $field_instances['node-curriculum-field_curriculum_start'] = array(
         'bundle' => 'curriculum',
         'deleted' => 0,
-        'description' => '',
+        'description' => 'Sündmuse algusaeg kellaajaliselt. Täita juhul, kui sündmusel on konkreetne alguse kellaaeg. Kui konkreetne alguse kellaaeg puudub, siis täita ei ole vaja.',
         'display' => array(
             'default' => array(
                 'label' => 'above',
@@ -1400,7 +1403,7 @@ function _hitsa_curriculum_installed_node_instances(){
                     'multiple_from' => '',
                     'multiple_number' => '',
                     'multiple_to' => '',
-                    'show_remaining_days' => FALSE,
+                    'show_remaining_days' => false,
                 ),
                 'type' => 'date_default',
                 'weight' => 12,
@@ -1421,8 +1424,8 @@ function _hitsa_curriculum_installed_node_instances(){
             'default_value2' => 'same',
             'default_value_code' => '',
             'default_value_code2' => '',
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1444,7 +1447,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_days_place'.
     $field_instances['node-curriculum-field_days_place'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1467,9 +1470,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Days it takes place',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1485,7 +1488,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_field'.
     $field_instances['node-curriculum-field_field'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1493,8 +1496,8 @@ function _hitsa_curriculum_installed_node_instances(){
                 'label' => 'above',
                 'module' => 'entityreference',
                 'settings' => array(
-                    'bypass_access' => FALSE,
-                    'link' => FALSE,
+                    'bypass_access' => false,
+                    'link' => false,
                 ),
                 'type' => 'entityreference_label',
                 'weight' => 1,
@@ -1513,11 +1516,11 @@ function _hitsa_curriculum_installed_node_instances(){
         'settings' => array(
             'behaviors' => array(
                 'taxonomy-index' => array(
-                    'status' => TRUE,
+                    'status' => true,
                 ),
             ),
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1531,7 +1534,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_instructor'.
     $field_instances['node-curriculum-field_instructor'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1554,9 +1557,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Instructor',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1572,7 +1575,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_jobs'.
     $field_instances['node-curriculum-field_jobs'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1619,10 +1622,10 @@ function _hitsa_curriculum_installed_node_instances(){
                 'table' => 8,
             ),
             'default_edit_mode' => 'open',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'title' => 'töökoht',
             'title_multiple' => 'töökohad',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 0,
@@ -1636,7 +1639,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_jobs_pretext'.
     $field_instances['node-curriculum-field_jobs_pretext'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1660,9 +1663,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'required' => 0,
         'settings' => array(
             'display_summary' => 0,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 1,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1706,14 +1709,14 @@ function _hitsa_curriculum_installed_node_instances(){
         'settings' => array(
             'alt_field' => 0,
             'default_image' => 0,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'file_directory' => 'curriculum_pictures',
             'file_extensions' => 'png gif jpg jpeg',
             'max_filesize' => '',
             'max_resolution' => '',
             'min_resolution' => '',
             'title_field' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1742,7 +1745,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_premise'.
     $field_instances['node-curriculum-field_premise'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1765,9 +1768,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Premise',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1783,7 +1786,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_rating'.
     $field_instances['node-curriculum-field_rating'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1806,9 +1809,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Rating',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1824,7 +1827,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_room'.
     $field_instances['node-curriculum-field_room'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1847,9 +1850,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Room',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1865,7 +1868,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_school_selections'.
     $field_instances['node-curriculum-field_school_selections'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1888,8 +1891,8 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Tabbed content page type',
         'required' => 1,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1903,7 +1906,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_short_description'.
     $field_instances['node-curriculum-field_short_description'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -1926,9 +1929,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Table title',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -1988,17 +1991,17 @@ function _hitsa_curriculum_installed_node_instances(){
                 'label' => 'above',
                 'module' => 'tablefield',
                 'settings' => array(
-                    'export_csv' => FALSE,
+                    'export_csv' => false,
                     'header_orientation' => 'Horizontal',
-                    'hide_cols_skip_head' => FALSE,
-                    'hide_empty_cols' => FALSE,
-                    'hide_empty_rows' => FALSE,
-                    'hide_header' => FALSE,
-                    'sortable' => FALSE,
-                    'sticky_header' => TRUE,
-                    'striping' => TRUE,
-                    'trim_trailing_cols' => FALSE,
-                    'trim_trailing_rows' => FALSE,
+                    'hide_cols_skip_head' => false,
+                    'hide_empty_cols' => false,
+                    'hide_empty_rows' => false,
+                    'hide_header' => false,
+                    'sortable' => false,
+                    'sticky_header' => true,
+                    'striping' => true,
+                    'trim_trailing_cols' => false,
+                    'trim_trailing_rows' => false,
                 ),
                 'type' => 'tablefield_default',
                 'weight' => 23,
@@ -2015,8 +2018,8 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Erialade tabel',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -2210,17 +2213,17 @@ function _hitsa_curriculum_installed_node_instances(){
                 'label' => 'above',
                 'module' => 'tablefield',
                 'settings' => array(
-                    'export_csv' => FALSE,
+                    'export_csv' => false,
                     'header_orientation' => 'Horizontal',
-                    'hide_cols_skip_head' => FALSE,
-                    'hide_empty_cols' => FALSE,
-                    'hide_empty_rows' => FALSE,
-                    'hide_header' => FALSE,
-                    'sortable' => FALSE,
-                    'sticky_header' => TRUE,
-                    'striping' => TRUE,
-                    'trim_trailing_cols' => FALSE,
-                    'trim_trailing_rows' => FALSE,
+                    'hide_cols_skip_head' => false,
+                    'hide_empty_cols' => false,
+                    'hide_empty_rows' => false,
+                    'hide_header' => false,
+                    'sortable' => false,
+                    'sticky_header' => true,
+                    'striping' => true,
+                    'trim_trailing_cols' => false,
+                    'trim_trailing_rows' => false,
                 ),
                 'type' => 'tablefield_default',
                 'weight' => 22,
@@ -2237,8 +2240,8 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Õppeainete tabel',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
-            'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -2262,7 +2265,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_table_description'.
     $field_instances['node-curriculum-field_table_description'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -2285,9 +2288,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Table description',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -2303,7 +2306,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_table_descriptions'.
     $field_instances['node-curriculum-field_table_descriptions'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -2350,10 +2353,10 @@ function _hitsa_curriculum_installed_node_instances(){
                 'table' => 8,
             ),
             'default_edit_mode' => 'preview',
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'title' => 'kirjeldus',
             'title_multiple' => 'kirjeldus',
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 0,
@@ -2367,7 +2370,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_target_group'.
     $field_instances['node-curriculum-field_target_group'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -2390,9 +2393,9 @@ function _hitsa_curriculum_installed_node_instances(){
         'label' => 'Target group',
         'required' => 0,
         'settings' => array(
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'text_processing' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
         ),
         'widget' => array(
             'active' => 1,
@@ -2408,7 +2411,7 @@ function _hitsa_curriculum_installed_node_instances(){
     // Exported field_instance: 'node-curriculum-field_textbooks'.
     $field_instances['node-curriculum-field_textbooks'] = array(
         'bundle' => 'curriculum',
-        'default_value' => NULL,
+        'default_value' => null,
         'deleted' => 0,
         'description' => '',
         'display' => array(
@@ -2444,14 +2447,14 @@ function _hitsa_curriculum_installed_node_instances(){
                 'url_cutoff' => 80,
             ),
             'enable_tokens' => 1,
-            'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
             'rel_remove' => 'default',
             'title' => 'optional',
             'title_label_use_field_label' => 0,
             'title_maxlength' => 128,
             'title_value' => '',
             'url' => 0,
-            'user_register_form' => FALSE,
+            'user_register_form' => false,
             'validate_url' => 1,
         ),
         'widget' => array(
@@ -2495,19 +2498,17 @@ function hitsa_curriculum_delete_custom_node_fields()
 {
     foreach (array_keys(_hitsa_curriculum_installed_node_fields()) as $field) {
         $fieldd = field_info_field($field);
-        if (!empty($fieldd)){
-            if (!empty($fieldd['bundles'])){
-                if (!empty($fieldd['bundles']['node'])){
-                    if (count($fieldd['bundles']['node'])>1){
+        if (!empty($fieldd)) {
+            if (!empty($fieldd['bundles'])) {
+                if (!empty($fieldd['bundles']['node'])) {
+                    if (count($fieldd['bundles']['node']) > 1) {
 
-                    }
-                    elseif (count($fieldd['bundles']['node'])==1){
+                    } elseif (count($fieldd['bundles']['node']) == 1) {
 //                        field_delete_field($fieldd['field_name']);
                     }
                 }
             }
-        }
-        else {
+        } else {
 //            field_delete_field($field);
         }
     }
@@ -2523,7 +2524,8 @@ function hitsa_curriculum_make_fields_conditional()
         conditional_fields_dependency_insert($ids['dependee'], $ids['dependent'], $conditional['options']);
     }
 }
-function _hitsa_curriculum_conditional_fields(){
+function _hitsa_curriculum_conditional_fields()
+{
 
     $items = array();
 
@@ -4307,8 +4309,8 @@ function _hitsa_curriculum_get_field_ids($dependee, $dependent)
     $field2 = field_info_instance('node', $dependent, 'curriculum');
 
     $ids = array(
-    'dependee' => $field['id'],
-    'dependent' => $field2['id'],
+        'dependee' => $field['id'],
+        'dependent' => $field2['id'],
     );
     return $ids;
 }
@@ -4330,59 +4332,59 @@ function hitsa_curriculum_add_custom_taxonomy_fields_base()
     // Exported field_base: 'field_icon_choice'.
 
     $field_bases['field_icon_choice'] = array(
-      'active' => 1,
-      'cardinality' => 1,
-      'deleted' => 0,
-      'entity_types' => array(),
-      'field_name' => 'field_icon_choice',
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_icon_choice',
+        'indexes' => array(
+            'value' => array(
+                0 => 'value',
+            ),
         ),
-      ),
-      'locked' => 0,
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-            'areas-aiandus'=>'Aiandus',
-            'areas-arhitektuur'=>'Arhitektuur',
-            'areas-ariteenindus'=>'Ariteenindus',
-            'areas-disain'=>'Disain',
-            'areas-ehitus'=>'Ehitus',
-            'areas-elektrienergia'=>'Elektrienergia',
-            'areas-iluteenindus'=>'Iluteenindus',
-            'areas-info'=>'Info',
-            'areas-kaevandamine'=>'Kaevandamine',
-            'areas-kalandus'=>'Kalandus',
-            'areas-kasitoo'=>'Kasitoo',
-            'areas-kaubandus'=>'Kaubandus',
-            'areas-keemiatehnoloogia'=>'Keemiatehnoloogia',
-            'areas-keskkonnakaitse'=>'Keskkonnakaitse',
-            'areas-laevandus'=>'Laevandus',
-            'areas-lastehoid'=>'Lastehoid',
-            'areas-materjalid'=>'Materjalid',
-            'areas-mehaanika'=>'Mehaanika',
-            'areas-metsandus'=>'Metsandus',
-            'areas-muusika'=>'Muusika',
-            'areas-pollumajandus'=>'Pollumajandus',
-            'areas-puitmaterjalid'=>'Puitmaterjalid',
-            'areas-sojandus'=>'Sojandus',
-            'areas-tekstiil'=>'Tekstiil',
-            'areas-tervishoid'=>'Tervishoid',
-            'areas-toiduained'=>'Toiduained',
-            'areas-transporditeenused'=>'Transporditeenused',
-            'areas-transporditehnika'=>'Transporditehnika',
-            'areas-turism'=>'Turism',
-            'areas-vara_isikukaitse'=>'Vara_isikukaitse',
-            'areas-veterinaaria'=>'Veterinaaria',
+        'locked' => 0,
+        'module' => 'list',
+        'settings' => array(
+            'allowed_values' => array(
+                'areas-aiandus' => 'Aiandus',
+                'areas-arhitektuur' => 'Arhitektuur',
+                'areas-ariteenindus' => 'Ariteenindus',
+                'areas-disain' => 'Disain',
+                'areas-ehitus' => 'Ehitus',
+                'areas-elektrienergia' => 'Elektrienergia',
+                'areas-iluteenindus' => 'Iluteenindus',
+                'areas-info' => 'Info',
+                'areas-kaevandamine' => 'Kaevandamine',
+                'areas-kalandus' => 'Kalandus',
+                'areas-kasitoo' => 'Kasitoo',
+                'areas-kaubandus' => 'Kaubandus',
+                'areas-keemiatehnoloogia' => 'Keemiatehnoloogia',
+                'areas-keskkonnakaitse' => 'Keskkonnakaitse',
+                'areas-laevandus' => 'Laevandus',
+                'areas-lastehoid' => 'Lastehoid',
+                'areas-materjalid' => 'Materjalid',
+                'areas-mehaanika' => 'Mehaanika',
+                'areas-metsandus' => 'Metsandus',
+                'areas-muusika' => 'Muusika',
+                'areas-pollumajandus' => 'Pollumajandus',
+                'areas-puitmaterjalid' => 'Puitmaterjalid',
+                'areas-sojandus' => 'Sojandus',
+                'areas-tekstiil' => 'Tekstiil',
+                'areas-tervishoid' => 'Tervishoid',
+                'areas-toiduained' => 'Toiduained',
+                'areas-transporditeenused' => 'Transporditeenused',
+                'areas-transporditehnika' => 'Transporditehnika',
+                'areas-turism' => 'Turism',
+                'areas-vara_isikukaitse' => 'Vara_isikukaitse',
+                'areas-veterinaaria' => 'Veterinaaria',
+            ),
+            'allowed_values_function' => '',
+            'entity_translation_sync' => false,
         ),
-        'allowed_values_function' => '',
-        'entity_translation_sync' => false,
-      ),
-      'translatable' => 0,
-      'type' => 'list_text',
+        'translatable' => 0,
+        'type' => 'list_text',
     );
-    
+
     return $field_bases;
 }
 function hitsa_curriculum_add_custom_taxonomy_fields_instances()
@@ -4391,40 +4393,40 @@ function hitsa_curriculum_add_custom_taxonomy_fields_instances()
   
     // Exported field_instance: 'taxonomy_term-fields-field_icon_choice'.
     $field_instances['taxonomy_term-fields-field_icon_choice'] = array(
-      'bundle' => 'fields',
-      'default_value' => null,
-      'deleted' => 0,
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 0,
+        'bundle' => 'fields',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'list',
+                'settings' => array(),
+                'type' => 'list_default',
+                'weight' => 0,
+            ),
         ),
-      ),
-      'entity_type' => 'taxonomy_term',
-      'field_name' => 'field_icon_choice',
-      'label' => 'Icon choice',
-      'required' => true,
-      'settings' => array(
-        'entity_translation_sync' => false,
-        'user_register_form' => false,
-      ),
-      'widget' => array(
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => 1,
-      ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_icon_choice',
+        'label' => 'Icon choice',
+        'required' => true,
+        'settings' => array(
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
+        ),
+        'widget' => array(
+            'module' => 'options',
+            'settings' => array(),
+            'type' => 'options_select',
+            'weight' => 1,
+        ),
     );
    
     // Translatables
     // Included for use with string extractors like potx.
     t('Field picture');
     t('Icon choice');
-  
-  
+
+
     return $field_instances;
 }

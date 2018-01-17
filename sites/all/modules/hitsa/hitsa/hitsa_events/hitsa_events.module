@@ -730,11 +730,14 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
                     $training_tags .= '<li><a href="">' . $tag . '</a></li>';
                 }
             }
+            
+           
+        }
+        if($type=='training'||$type=='event'){
             if (!empty($event->field_registration_form)) {
                 $reg_form_id = $event->field_registration_form['und'][0]['target_id'];
             }
         }
-
         if ($event->title == 'Fere') {
             if (!empty($event->field_registration_form)) {
                 $webform = $event->field_registration_form['und'][0]['target_id'];
@@ -770,9 +773,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<br />';
 //        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
         if ($start_date_date > time()) {
-            $output .= ($type == 'training') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
+            $output .= ($type == 'training' || $type=='event') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
             if (!empty($reg_form_id)) {
-                $output .= ($type == 'training') ? '<br><a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to training') . '</a>' : '';
+                $output .= ($type == 'training' || $type == 'event') ? '<br><a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to '.$type) . '</a>' : '';
             }
         }
         $output .= (!empty($tags_ready) && $type != 'training') ? '<ul class="tags">' : '';
@@ -972,6 +975,7 @@ function hitsa_events_front_page_block()
                 $output .= (!empty($location)) ? '                     ' . t('Location') . ': ' . $location : '';
                 $output .= '                             , ' . t('Time') . ' ' . $start_readable_time . '<br />';
                 $output .= '                            <a href="/events/calendar/api/add/' . $event->nid . '/' . $start . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>';
+                $output .= '';
                 $output .= '                         </span><!--/object-footer-->';
                 $output .= '                      </span><!--/object-content-->';
                 $output .= '                   </div><!--/object-inner-->';
