@@ -841,11 +841,12 @@ function _hitsa_events_add_field_instances(){
     ),
   );
 
-  // Exported field_instance: 'node-event-event_date'.
-  $field_instances['node-event-event_date'] = array(
+   // Exported field_instance: 'node-event-event_date'.
+   $field_instances['node-event-event_date'] = array(
     'bundle' => 'event',
     'deleted' => 0,
-    'description' => 'Date period when event takes place',
+    'description' => 'Date period when event takes place
+When user enter 01:15 then time will not appear in calendar',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -879,9 +880,9 @@ function _hitsa_events_add_field_instances(){
     'label' => 'Date',
     'required' => 0,
     'settings' => array(
-      'default_value' => 'now',
+      'default_value' => 'strtotime',
       'default_value2' => 'sync',
-      'default_value_code' => '',
+      'default_value_code' => 'Today 01:15',
       'default_value_code2' => '',
       'entity_translation_sync' => FALSE,
       'user_register_form' => FALSE,
@@ -902,6 +903,7 @@ function _hitsa_events_add_field_instances(){
       'weight' => 6,
     ),
   );
+
 
   // Exported field_instance: 'node-event-event_tags'.
   $field_instances['node-event-event_tags'] = array(
