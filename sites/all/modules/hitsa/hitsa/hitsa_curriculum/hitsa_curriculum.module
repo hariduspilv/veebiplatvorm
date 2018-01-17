@@ -1290,7 +1290,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     }
                 } else {
 
-                    if (!empty($output_elements['body_element'])&&$curriculum_type!='preparatory-courses') {
+                    if (!empty($output_elements['body_element'])&&$curriculum_type!='preparatory-courses'&&$curriculum_type!='hobby-activity')  {
                         $output .= $output_elements['body_element'];
                     }
                     if (!empty($output_elements['documents'])) {
