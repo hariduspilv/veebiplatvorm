@@ -856,7 +856,8 @@ function hitsa_curriculum_custom_block($curriculum_type)
         $right_side = hitsa_curriculum_generate_right_custom_side($content, $type);
     }
     if (!empty($left_side) || !empty($right_side)) {
-        $id_block=null;
+        $id_block='';
+        var_dump($right_side);
         if(!empty($content)){
             $id_block ='id="'.$content->title.'"';
         }
