@@ -1684,13 +1684,66 @@ function hitsa_curriculum_image_default_styles()
     return $styles;
 }
 function hitsa_curriculum_mobile_menu($areas, $type, $id=null){
+    $text = 'More';
+    if ($type=='subject-field') {
+        $text = 'More subject fields';
+    }
+    elseif($type=='preparatory-courses'){
+        $text = 'More preparatory courses';
+    }
+    elseif ($type=='elective-subjects') {
+        $text = 'More elective-subjects';
+    }
+    elseif ($type=='hobby-groups') {
+        $text = 'More hobby groups'; 
+    }
+    elseif  ($type=='specialities'){
+        $text = 'More specialities';
+    }
+    elseif  ($type=='elective-courses'){
+        $text = 'More elective courses';
+    }
+    elseif  ($type=='hobby-activity'){
+        $text = 'More hobby activities';
+    }
+    elseif  ($type=='e-course'){
+        $text = 'More e-courses';
+    }
+    elseif  ($type=='scholarships'){
+        $text = 'More scholarships';
+    }
+    elseif  ($type=='sport-facilities'){
+        $text = 'More sport facilities';
+    }
+    elseif  ($type=='accommodation'){
+        $text = 'More accommodations';
+    }
+    elseif  ($type=='ordered-trainings'){
+        $text = 'More ordered trainings';
+    }
+    elseif  ($type=='publications'){
+        $text = 'More publications';
+    }
+    elseif  ($type=='training-scholarships'){
+        $text = 'More training scholarships';
+    }
+    elseif  ($type=='certification-exams'){
+        $text = 'More certification exams';
+    }
+    elseif  ($type=='cooperation-and-partners'){
+        $text = 'More cooperation and partners';
+    }
+    elseif  ($type=='vacancies'){
+        $text = 'More vacancies';
+    }
+
     $get_menu = hitsa_curriculum_generate_left_custom_titles($areas, $type, $id);
     $output='';
     $output.='<div class="row sm-show">';
 	$output.='		<div class="col-12">';
 	$output.='			<div class="accordion" data-plugin="accordion" data-allClosed="true">';
 	$output.='				<div class="accordion-entry">';
-	$output.='					<div class="accordion-title">'.t('More').'</div>';
+	$output.='					<div class="accordion-title">'.t($text).'</div>';
 	$output.='					<div class="accordion-content">';
 	$output.= $get_menu;
 	$output.='					</div><!--/accordion-content-->';
