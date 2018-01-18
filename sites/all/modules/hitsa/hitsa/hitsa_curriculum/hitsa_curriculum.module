@@ -882,8 +882,9 @@ function hitsa_curriculum_custom_block($curriculum_type)
             $output .= '</div><!--/col-9-->';
         }
         $output .= '</div><!--/row-->';
-        $output .= hitsa_curriculum_mobile_menu($real_content, $type, $active_id);
+        
         $output .= '</div><!--/block-->';
+        $output .= hitsa_curriculum_mobile_menu($real_content, $type, $active_id);
     }
     return $output;
 }
