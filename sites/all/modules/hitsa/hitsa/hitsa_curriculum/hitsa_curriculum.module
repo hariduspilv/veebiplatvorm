@@ -393,8 +393,11 @@ function hitsa_curriculum_generate_table($table, $descriptions = NULL, $type = N
 {
     $output = '';
     if (!empty($table) && !empty($table['tabledata'])) {
-
-        $output .= '<div class="table_wrapper sm-table-block" data-plugin="responsiveTable">';
+        $sm_table_class=null;
+        if($type=='specialities'){
+            $sm_table_class='sm-table-block';
+        }
+        $output .= '<div class="table_wrapper '.$sm_table_class.'" data-plugin="responsiveTable">';
         $output .= '<table>';
         $table_data = $table['tabledata'];
 
