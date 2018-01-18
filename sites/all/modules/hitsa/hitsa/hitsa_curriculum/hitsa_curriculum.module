@@ -530,7 +530,7 @@ function hitsa_curriculum_jobs_part($content = null)
 {
     $output = '';
     $output .= '  <div class="row">';
-    $output .= ' <div class="col-12">';
+    $output .= ' <div class="col-12 d-flex d-wrap">';
     if (!empty($content)) {
         if (!empty($content->field_jobs_pretext)) {
 //            $output .= $content->field_jobs_pretext['und'][0]['value'];
@@ -1352,7 +1352,7 @@ function hitsa_curriculum_generate_header($header)
     if (!empty($user)) {
         if ($user->uid > 0) {
             $edit_url = url('node/' . $header->nid . '/edit');
-            $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
+            $edit_links = '<ul class="tabs primary sm-hide"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
         }
     }
     $output = '';

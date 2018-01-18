@@ -2722,6 +2722,7 @@ function _hitsa_curriculum_conditional_fields()
                 4 => 'e-course',
                 5 => 'hobby-activity',
                 6 => 'elective-courses',
+                7 => 'specialities'
             ),
             'value' => array(),
         ),
