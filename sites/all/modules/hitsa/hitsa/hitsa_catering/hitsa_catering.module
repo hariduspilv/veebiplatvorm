@@ -523,9 +523,11 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         if ($day != null) {
             foreach ($day as $meal) {
                 $meal = entity_load_single('paragraphs_item', $meal['value']);
+                dpm($meal);
                 if (!empty($meal->field_food_type)) {
                     if (!empty($meal->field_food_subcategory)) {
                         $subcategory = taxonomy_term_load($meal->field_food_subcategory['und'][0]['target_id']);
+                        dpm($subcategory);
                         $subcategory->dishes = array();
                         if (!empty($meal->field_food_type['und'][0]['entity'])) {
                             $meals_array[$meal->field_food_type['und'][0]['entity']->name]['foods'][$subcategory->name] = $subcategory;
@@ -583,7 +585,6 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         $thursday_date = date('d.m', strtotime('thursday midnight', $start_date));
         $friday_date = date('d.m', strtotime('friday midnight', $start_date));
     }
-    dpm($day_meals);
     if (!empty($meals_array)) {
         $output = '<div class="table_wrapper" data-plugin="responsiveTable">';
         $meals_correct_array = array();
