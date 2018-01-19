@@ -1,0 +1,5 @@
+name = HITSA Color
+description = Change theme color
+files[] = hitsa_color.module
+files[] = includes/hitsa_color.inc
+core = "7.x"
