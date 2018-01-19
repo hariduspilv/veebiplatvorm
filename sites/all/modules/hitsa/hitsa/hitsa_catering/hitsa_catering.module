@@ -644,6 +644,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         $output .= '</th>';
         $output .= '</tr>';
         $output .= '</thead>';
+        dpm($meals_correct_array);
         foreach ($meals_correct_array as $meal_key => $meal_days) {
             $output .= '<tbody>';
             $desserts_started = false;
