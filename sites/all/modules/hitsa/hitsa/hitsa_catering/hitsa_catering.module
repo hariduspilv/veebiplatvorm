@@ -583,6 +583,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         $thursday_date = date('d.m', strtotime('thursday midnight', $start_date));
         $friday_date = date('d.m', strtotime('friday midnight', $start_date));
     }
+    dpm($day_meals);
     if (!empty($meals_array)) {
         $output = '<div class="table_wrapper" data-plugin="responsiveTable">';
         $meals_correct_array = array();
