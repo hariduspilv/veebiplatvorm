@@ -649,7 +649,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
             $output .= '<tbody>';
             $desserts_started = false;
             for ($i = 0; $i < $meal_days['count']; $i++) {
-                if ($i == ($meal_days['dessert_location'])) {
+                if (isset($meal_days['dessert_location'])&&$i == ($meal_days['dessert_location'])) {
                     $desserts_started = true;
                     $output .= '<tr class = "dashed-border"> ';
                 } else {
