@@ -228,7 +228,7 @@ function hitsa_catering_get_all_catering_dates()
     return $dates;
 }
 
-function hitsa_catering_node_insert($node)
+function hitsa_catering_node_insert(&$node)
 {
     if ($node->type == 'catering') {
         if (!empty($node)) {
@@ -261,7 +261,7 @@ function hitsa_catering_node_insert($node)
 //            path_save($path_main);
 //        }
         $monday = date('d/m/Y', strtotime('this week monday', $start_date));
-        $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
+        $sunday = date('d/m/Y', strtotime('this week friday', $start_date));
         hitsa_catering_check_block_visibility(t('catering'), 'catering');
         $alias = t('catering') . '/' . $monday . '-' . $sunday;
         if (!empty($catering_provder_name)) {
@@ -276,7 +276,6 @@ function hitsa_catering_node_insert($node)
         );
 
 
-        return $node;
     }
 }
 
@@ -309,7 +308,7 @@ function hitsa_catering_node_presave($node)
                 }
             }
             $monday = date('d/m/Y', strtotime('this week monday', $start_date));
-            $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
+            $sunday = date('d/m/Y', strtotime('this week friday', $start_date));
             if (!empty($node->nid)) {
                 if (!empty($monday) && !empty($sunday)) {
                     $lookup_main = drupal_lookup_path('source', t('catering'), $node->language);
@@ -1346,7 +1345,7 @@ function hitsa_catering_catering_header($content)
     if (!empty($content->field_date)) {
         $date_start = $content->field_date['und'][0]['value'];
         $monday = format_date(strtotime('monday midnight', $date_start), 'custom', 'd.m');
-        $sunday = format_date(strtotime('sunday midnight', $date_start), 'custom', 'd.m');
+        $sunday = format_date(strtotime('friday midnight', $date_start), 'custom', 'd.m');
         $week_text = t('Menu week') . ' ' . $monday . '-' . $sunday;
     }
 

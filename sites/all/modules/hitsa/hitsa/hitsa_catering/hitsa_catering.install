@@ -1447,7 +1447,43 @@ function hitsa_catering_add_custom_taxonomy_field_instance()
             'weight' => 32,
         ),
     );
-
+        // 'taxonomy_term-catering_food_subcategory-field_dessert_section'.
+    $field_instances['taxonomy_term-catering_food_subcategory-field_dessert_section'] = array(
+        'bundle' => 'catering_food_subcategory',
+        'default_value' => array(
+        0 => array(
+            'value' => 0,
+        ),
+        ),
+        'deleted' => 0,
+        'description' => 'Selle kasti abil saab määrata, kas toit ilmub toitlustamise tabelis magustoitude juurde.',
+        'display' => array(
+        'default' => array(
+            'label' => 'above',
+            'module' => 'list',
+            'settings' => array(),
+            'type' => 'list_default',
+            'weight' => 1,
+        ),
+        ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_dessert_section',
+        'label' => 'Magustoidu valikus',
+        'required' => 0,
+        'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'user_register_form' => FALSE,
+        ),
+        'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+            'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => 4,
+        ),
+    );
 
     // Exported field_instance: 'taxonomy_term-catering_provider-field_email'.
     $field_instances['taxonomy_term-catering_provider-field_email'] = array(
