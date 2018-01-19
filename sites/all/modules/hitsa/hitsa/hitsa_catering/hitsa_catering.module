@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Implements hook_menu
  **/
@@ -84,7 +85,7 @@ function hitsa_catering_block_view($delta = '')
 function hitsa_catering_node_validate($node, $form, &$form_state)
 {
     if ($node->type == 'catering') {
-        $catering_provder_name = NULL;
+        $catering_provder_name = null;
         if (!empty($node->field_catering_provider)) {
             if (!empty($node->field_catering_provider['und'][0])) {
                 $catering_provider = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
@@ -162,7 +163,7 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
                 $catering_options = $form['field_catering_provider']['und']['#options'];
                 if (count($catering_options) == 0) {
                     if (isset($form['field_catering_provider']['und']['#options']['_none'])) {
-                        $form['field_catering_provider']['#access'] = FALSE;
+                        $form['field_catering_provider']['#access'] = false;
                     }
                 } else {
                     unset($form['field_catering_provider']['und']['#options']['_none']);
@@ -242,7 +243,7 @@ function hitsa_catering_node_insert($node)
         $language_list = language_list();
         $language = $node->language;
         $lookup_main = drupal_lookup_path('source', t('catering'), $node->language);
-        $catering_provder_name = NULL;
+        $catering_provder_name = null;
         if (!empty($node->field_catering_provider)) {
             if (!empty($node->field_catering_provider['und'][0])) {
                 $catering_provider = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
@@ -268,7 +269,7 @@ function hitsa_catering_node_insert($node)
         }
         $node->path = array(
             'alias' => $alias,
-            'pid' => (!empty($node->path['pid'])) ? $node->path['pid'] : NULL,
+            'pid' => (!empty($node->path['pid'])) ? $node->path['pid'] : null,
             'source' => 'node/' . $node->nid,
             'language' => $node->language,
             'pathauto' => 0,
@@ -330,7 +331,7 @@ function hitsa_catering_node_presave($node)
                     }
                     $node->path = array(
                         'alias' => $alias,
-                        'pid' => (!empty($node->path['pid'])) ? $node->path['pid'] : NULL,
+                        'pid' => (!empty($node->path['pid'])) ? $node->path['pid'] : null,
                         'source' => 'node/' . $node->nid,
                         'language' => $node->language,
                         'pathauto' => 0,
@@ -352,7 +353,7 @@ function hitsa_catering_week($start_date = null)
     $catering_provider = null;
     $current_path = current_path();
     $menu_items = menu_get_item($current_path);
-    $node_header_part = NULL;
+    $node_header_part = null;
     if (!empty($menu_items)) {
         if (!empty($menu_items['page_arguments'][0])) {
             if (is_object($menu_items['page_arguments'][0])) {
@@ -360,7 +361,7 @@ function hitsa_catering_week($start_date = null)
                 if ($node->type == 'catering') {
 
                     $lookup = drupal_lookup_path('source', t('catering'), $node->language);
-                    if (empty($lookup)){
+                    if (empty($lookup)) {
                         $lookup = drupal_lookup_path('source', t('content/catering'), $node->language);
                     }
                     $node_header = menu_get_object("node", 1, $lookup);
@@ -413,7 +414,8 @@ function hitsa_catering_week($start_date = null)
             if (!empty($loaded_menu->field_catering_provider)) {
                 $providers[] = array(
                     'provider' => taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']),
-                    'menu' => $menu);
+                    'menu' => $menu
+                );
             }
         }
     }
@@ -501,7 +503,8 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         'Tuesday' => $tuesday,
         'Wednesday' => $wednesday,
         'Thursday' => $thursday,
-        'Friday' => $friday);
+        'Friday' => $friday
+    );
 
     // dpm($loaded_menu);
     // dpm($monday);
@@ -524,10 +527,9 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                     if (!empty($meal->field_food_subcategory)) {
                         $subcategory = taxonomy_term_load($meal->field_food_subcategory['und'][0]['target_id']);
                         $subcategory->dishes = array();
-                        if(!empty($meal->field_food_type['und'][0]['entity'])) {
+                        if (!empty($meal->field_food_type['und'][0]['entity'])) {
                             $meals_array[$meal->field_food_type['und'][0]['entity']->name]['foods'][$subcategory->name] = $subcategory;
-                        }
-                        else{
+                        } else {
                             $food_type = taxonomy_term_load($meal->field_food_type['und'][0]['target_id']);
                             if (!empty($food_type)) {
                                 $meals_array[$food_type->name]['foods'][$subcategory->name] = $subcategory;
@@ -583,6 +585,33 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
     }
     if (!empty($meals_array)) {
         $output = '<div class="table_wrapper" data-plugin="responsiveTable">';
+        $meals_correct_array = array();
+        foreach ($day_meals as $day_key => $day_foods) {
+            if (!empty($day_foods)) {
+                foreach ($day_foods as $food_key => $food) {
+                    $meals_correct_array[$food_key][$day_key] = $food;
+                    $meals_correct_array[$food_key]['count'] = (count($food) > $meals_correct_array[$food_key]['count']) ? count($food) : $meals_correct_array[$food_key]['count'];
+                    $dessert_location = 0;
+                    $dessert_count = 0;
+                    foreach ($food as $food_item_key => $food_item) {
+                        if (is_array($food_item)) {
+                            if ($food_item['type'] == 'dessert') {
+                                $meals_correct_array[$food_key]['dessert_location'] = $meals_correct_array[$food_key]['dessert_location'] < $dessert_location ? $dessert_location : $meals_correct_array[$food_key]['dessert_location'];
+                                $dessert_count++;
+                                $meals_correct_array[$food_key]['des_count'] = $meals_correct_array[$food_key]['des_count'] < $dessert_count ? $dessert_count : $meals_correct_array[$food_key]['des_count'];
+                            }
+                        }
+
+                        $dessert_location++;
+                    }
+                    if ($meals_correct_array[$food_key]['des_count'] > 1) {
+                        if ($meals_correct_array[$food_key]['count'] - $meals_correct_array[$food_key]['dessert_location'] == 1) {
+                            $meals_correct_array[$food_key]['count'] = $meals_correct_array[$food_key]['count'] - 1 + $meals_correct_array[$food_key]['des_count'];
+                        }
+                    }
+                }
+            }
+        }
         $output .= '<table>';
         $output .= '<thead>';
         $output .= '<tr>';
@@ -615,65 +644,69 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         $output .= '</th>';
         $output .= '</tr>';
         $output .= '</thead>';
-        $dessert_started = FALSE;
-        foreach ($row_names as $row_name) {
-            $max_rows = 0;
-            foreach ($day_meals as $day => $meal_types) {
-                if (!empty($meal_types[$row_name->name])) {
-                    $meals_count = count($meal_types[$row_name->name]);
-                    if ($max_rows < $meals_count) {
-                        $max_rows = $meals_count;
-                    }
+        foreach ($meals_correct_array as $meal_key => $meal_days) {
+            $output .= '<tbody>';
+            $desserts_started = false;
+            for ($i = 0; $i < $meal_days['count']; $i++) {
+                if ($i == ($meal_days['dessert_location'])) {
+                    $desserts_started = true;
+                    $output .= '<tr class = "dashed-border"> ';
+                } else {
+                    $output .= '<tr> ';
                 }
-            }
-            $meal_days = '';
-
-            $dessert_started_start=1;
-            for ($i = 0; $i < $max_rows; $i++) {
-                $i > 0 ? $meal_days .= '<tr>' : '';
-                foreach ($day_meals as $day) {
-                    if ($day) {
-                        $meal_days .= '<td>';
-                        if (!empty($day[$row_name->name][$i])) {
-                            if (!is_array($day[$row_name->name][$i])){
-                                $meal_days .= $day[$row_name->name][$i];
-                            }
-                            else{
-                                if ($day[$row_name->name][$i]['type']=='dessert'){
-                                    $dessert_started = TRUE;
-                                    if ($dessert_started_start==1){
-                                        $dessert_started_start--;
-                                        $meal_days = str_replace('<tr>','<tr class="dashed-border">',$meal_days);
-                                    }
-                                    $meal_days .= $day[$row_name->name][$i]['name'];
+                if ($i == 0) {
+                    $output .= '<td rowspan="' . $meal_days['count'] . '">';
+                    $output .= '<b>' . $meal_key . '</b>';
+                    $output .= '</td>';
+                }
+                foreach ($days as $day_key => $ehh) {
+                    if (!empty($meal_days[$day_key])) {
+                        if (!empty($meal_days[$day_key][$i])) {
+                            if (!is_array($meal_days[$day_key][$i])) {
+                                $output .= '<td>' .$meal_days[$day_key][$i] . '</td>';
+                                unset($meal_days[$day_key][$i]);
+                            } else {
+                                if ($desserts_started == false) {
+                                    $output .= '<td></td>';
                                 }
                             }
+                        } else {
+                            if ($desserts_started == false) {
+                                $output .= '<td></td>';
+                            }
                         }
-                        $meal_days .= '</td>';
                     } else {
-                        $meal_days .= '<td></td>';
+                        if ($desserts_started == false) {
+                            $output .= '<td></td>';
+                        }
                     }
                 }
-                $i > 0 ? $meal_days .= '</tr>' : '';
-            }
-            $output .= '<tbody>';
-            $row_class='';
-            if ($dessert_started){
-                if ($dessert_started_start==1){
-                    $dessert_started_start--;
-                    $row_class = 'class="dashed-border"';
+                if ($desserts_started == true) {
+                    foreach ($days as $day_key => $ehh) {
+                        if (!empty($meal_days[$day_key])) {
+                            foreach ($meal_days[$day_key] as $dessert_key => $dessert) {
+                                if (is_array($dessert)) {
+                                    $output .= '<td>' . $dessert['name'] . '</td>';
+                                    unset($meal_days[$day_key][$dessert_key]);
+                                    break;
+                                }
+                                else{
+                                    $output.='<td></td>';
+                                }
+                            }
+                        } else {
+                            $output .= '<td></td>';
+                        }
+                    }
                 }
+                $output .= '</tr>';
             }
-            $output .= '<tr> ';
-            $output .= '<td rowspan="' . $max_rows . '">';
-            $output .= '<b>' . $row_name->name . '</b>';
-            $output .= '</td>';
-            $output .= $meal_days;
-            $output .= '</tr>';
+
             $output .= '</tbody>';
         }
-
         $output .= '</table>';
+
+        
         $output .= '</div><!--/table-wrapper-->';
         if (!empty($pictures)) {
             $output .= hitsa_catering_pictures_generator($pictures);
@@ -696,7 +729,7 @@ function hitsa_catering_provider_html($provider)
     if (!empty($provider->field_homepage)) {
 //        dpm($provider);
         $homepage = $provider->field_homepage['und'][0]['url'];
-        $title = (!empty($provider->field_homepage['und'][0]['title']))?$provider->field_homepage['und'][0]['title']:$homepage;
+        $title = (!empty($provider->field_homepage['und'][0]['title'])) ? $provider->field_homepage['und'][0]['title'] : $homepage;
         $homepage_out .= '<li>';
         $homepage_out .= '                      <div class="before-home"></div>';
         $homepage_out .= '                      <div class="list-details_text">';
@@ -797,29 +830,29 @@ function hitsa_catering_check_block_visibility($translated, $not_translated)
     $result = $query->execute();
     $source = $translated . '/*';
     while ($block = $result->fetchAssoc()) {
-        if (strpos($block['pages'], $source) == FALSE) {
+        if (strpos($block['pages'], $source) == false) {
             $block['pages'] .= "\n" . $source;
             $update = db_update('block');
             $update->condition('bid', $block['bid'], '=');
             $update->fields(array(
-                    'pages' => $block['pages'],)
-            );
+                'pages' => $block['pages'],
+            ));
             $update->execute();
         }
         $pages = explode("\n", $block["pages"]);
-        $translated_page = FALSE;
+        $translated_page = false;
         foreach ($pages as $page) {
             if ($page == $translated) {
-                $translated_page = TRUE;
+                $translated_page = true;
             }
         }
-        if ($translated_page == FALSE) {
+        if ($translated_page == false) {
             $block['pages'] .= "\n" . $translated;
             $update = db_update('block');
             $update->condition('bid', $block['bid'], '=');
             $update->fields(array(
-                    'pages' => $block['pages'],)
-            );
+                'pages' => $block['pages'],
+            ));
             $update->execute();
         }
 
@@ -904,9 +937,9 @@ function hitsa_catering_front_page_block()
     $today_iso = strtotime('midnight', $today);
     $tomorrow_iso = strtotime('midnight tomorrow');
     $tomorrow_day = date('l', $tomorrow_iso);
-    $next_week = FALSE;
+    $next_week = false;
     if ($today_day == 'Friday') {
-        $next_week = TRUE;
+        $next_week = true;
         $tomorrow_iso = strtotime('monday next week');
         $tomorrow_day = date('l', $tomorrow_iso);
     }
@@ -922,22 +955,20 @@ function hitsa_catering_front_page_block()
             $query->condition('fdfd.field_date_value', $today_iso, '<=');
             $query->condition('fdfd.field_date_value2', $today_iso, '>=');
         }
-        
+
         $results = $query->execute();
         foreach ($results as $catering_result) {
             $node = node_load($catering_result->nid);
             if (!empty($node->field_catering_provider)) {
                 $catering_provider_loaded = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
-                if(!empty($catering_provider_loaded)){
-                    if(!empty($catering_provider_loaded->field_show_on_front_page)){
-                        if($catering_provider_loaded->field_show_on_front_page['und'][0]['value']==1){
+                if (!empty($catering_provider_loaded)) {
+                    if (!empty($catering_provider_loaded->field_show_on_front_page)) {
+                        if ($catering_provider_loaded->field_show_on_front_page['und'][0]['value'] == 1) {
 
-                        }
-                        else{
+                        } else {
                             continue;
                         }
-                    }
-                    else{
+                    } else {
                         continue;
                     }
                 }
@@ -946,7 +977,7 @@ function hitsa_catering_front_page_block()
             $to_check = 'field_catering_' . $lower_today;
             if (!empty($node->$to_check)) {
                 foreach ($node->$to_check[LANGUAGE_NONE] as $food) {
-                    
+
                     $id = $food['value'];
                     $food = entity_load_single('paragraphs_item', $id);
                     if (!empty($food->field_food_name)) {
@@ -964,17 +995,15 @@ function hitsa_catering_front_page_block()
                                 $foods[$sub_category_name][$food_name]['name'] = $food_name;
                                 $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
                                 $foods[$sub_category_name][$food_name]['icon'] = $icon;
-                            }
-                            else{
+                            } else {
                                 $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
                                 $foods[$sub_category_name][$food_name]['name'] = $food_name;
                                 $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
-                                if($sub_category_name=='Dessert') {
+                                if ($sub_category_name == 'Dessert') {
                                     $foods[$sub_category_name][$food_name]['icon'] = 'before-sweet';
-                                }
-                                else{
+                                } else {
                                     $foods[$sub_category_name][$food_name]['icon'] = 'before-dinner';
                                 }
                             }
@@ -1003,23 +1032,21 @@ function hitsa_catering_front_page_block()
                 $node = node_load($catering_result->nid);
                 if (!empty($node->field_catering_provider)) {
                     $catering_provider_loaded = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
-                    if(!empty($catering_provider_loaded)){
-                        if(!empty($catering_provider_loaded->field_show_on_front_page)){
-                            if($catering_provider_loaded->field_show_on_front_page['und'][0]['value']==1){
-    
-                            }
-                            else{
+                    if (!empty($catering_provider_loaded)) {
+                        if (!empty($catering_provider_loaded->field_show_on_front_page)) {
+                            if ($catering_provider_loaded->field_show_on_front_page['und'][0]['value'] == 1) {
+
+                            } else {
                                 continue;
                             }
-                        }
-                        else{
+                        } else {
                             continue;
                         }
                     }
                 }
                 $lower_tomorrow = strtolower($tomorrow_day);
                 $to_check = 'field_catering_' . $lower_tomorrow;
-                
+
                 if (!empty($node->$to_check)) {
 //                dpm($node);
                     foreach ($node->$to_check['und'] as $food) {
@@ -1042,17 +1069,15 @@ function hitsa_catering_front_page_block()
                                     $foods_tomorrow[$sub_category_name][$food_name]['name'] = $food_name;
                                     $foods_tomorrow[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
                                     $foods_tomorrow[$sub_category_name][$food_name]['icon'] = $icon;
-                                }
-                                else{
+                                } else {
                                     $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
                                     $foods_tomorrow[$sub_category_name][$food_name]['name'] = $food_name;
                                     $foods_tomorrow[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
-                                    if($sub_category_name=='Dessert') {
+                                    if ($sub_category_name == 'Dessert') {
                                         $foods_tomorrow[$sub_category_name][$food_name]['icon'] = 'before-sweet';
-                                    }
-                                    else{
+                                    } else {
                                         $foods_tomorrow[$sub_category_name][$food_name]['icon'] = 'before-dinner';
                                     }
                                 }
@@ -1081,16 +1106,14 @@ function hitsa_catering_front_page_block()
                 $node = node_load($catering_result->nid);
                 if (!empty($node->field_catering_provider)) {
                     $catering_provider_loaded = taxonomy_term_load($node->field_catering_provider['und'][0]['target_id']);
-                    if(!empty($catering_provider_loaded)){
-                        if(!empty($catering_provider_loaded->field_show_on_front_page)){
-                            if($catering_provider_loaded->field_show_on_front_page['und'][0]['value']==1){
-    
-                            }
-                            else{
+                    if (!empty($catering_provider_loaded)) {
+                        if (!empty($catering_provider_loaded->field_show_on_front_page)) {
+                            if ($catering_provider_loaded->field_show_on_front_page['und'][0]['value'] == 1) {
+
+                            } else {
                                 continue;
                             }
-                        }
-                        else{
+                        } else {
                             continue;
                         }
                     }
@@ -1116,17 +1139,15 @@ function hitsa_catering_front_page_block()
                                     $foods_tomorrow[$sub_category_name][$food_name]['name'] = $food_name;
                                     $foods_tomorrow[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
                                     $foods_tomorrow[$sub_category_name][$food_name]['icon'] = $icon;
-                                }
-                                else{
+                                } else {
                                     $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
                                     $foods[$sub_category_name][$food_name]['name'] = $food_name;
                                     $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
-                                    if($sub_category_name=='Dessert') {
+                                    if ($sub_category_name == 'Dessert') {
                                         $foods[$sub_category_name][$food_name]['icon'] = 'before-sweet';
-                                    }
-                                    else{
+                                    } else {
                                         $foods[$sub_category_name][$food_name]['icon'] = 'before-dinner';
                                     }
                                 }
@@ -1140,9 +1161,9 @@ function hitsa_catering_front_page_block()
     }
     $foods_selected = array();
     if (!empty($foods)) {
-        $k=0;
+        $k = 0;
         foreach ($foods as $food_key => $food) {
-            if($k==2){
+            if ($k == 2) {
                 break;
             }
             $random_food = array_rand($food, 1);
