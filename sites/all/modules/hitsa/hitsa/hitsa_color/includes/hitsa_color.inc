@@ -69,11 +69,9 @@ function hitsa_color_change($form, &$form_state){
 	//$cmd .= 'grunt watch';
 	//var_dump(shell_exec($cmd));
 	
-	dpm($output);
 	$file =fopen('sites/all/themes/hitsa/static/dev/styles/site-theme.less', 'w');
 	fwrite($file, $output);
 	fclose($file);
-	dpm($_SERVER);
 	var_dump(shell_exec('cd '.$_SERVER['DOCUMENT_ROOT'].'/sites/all/themes/hitsa/static && grunt 2>&1'));
 	//$file = file_save_data($output, 'private://'. 'site-theme.less',FILE_EXISTS_REPLACE);
  return $file;
