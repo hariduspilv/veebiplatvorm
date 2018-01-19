@@ -523,11 +523,9 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         if ($day != null) {
             foreach ($day as $meal) {
                 $meal = entity_load_single('paragraphs_item', $meal['value']);
-                dpm($meal);
                 if (!empty($meal->field_food_type)) {
                     if (!empty($meal->field_food_subcategory)) {
                         $subcategory = taxonomy_term_load($meal->field_food_subcategory['und'][0]['target_id']);
-                        dpm($subcategory);
                         $subcategory->dishes = array();
                         if (!empty($meal->field_food_type['und'][0]['entity'])) {
                             $meals_array[$meal->field_food_type['und'][0]['entity']->name]['foods'][$subcategory->name] = $subcategory;
@@ -547,7 +545,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
 
                         $row_names[$food_type->name] = $food_type;
                         if (!empty($meal->field_food_name)) {
-                            if ($subcategory->name == 'Dessert') {
+                            if (!empty($subcategory->field_dessert_section)&&!empty($subcategory->field_dessert_section['und'][0]['value'])&&$subcategory->field_dessert_section['und'][0]['value']==1) {
                                 $day_meals[$day_key][$food_type->name]['Desserts'][] = $meal->field_food_name['und'][0]['value'];
                             } else {
                                 $day_meals[$day_key][$food_type->name][] = $meal->field_food_name['und'][0]['value'];
@@ -646,7 +644,6 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         $output .= '</th>';
         $output .= '</tr>';
         $output .= '</thead>';
-        dpm($meals_correct_array);
         foreach ($meals_correct_array as $meal_key => $meal_days) {
             $output .= '<tbody>';
             $desserts_started = false;
