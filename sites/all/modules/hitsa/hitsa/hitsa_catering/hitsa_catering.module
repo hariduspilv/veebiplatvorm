@@ -498,7 +498,6 @@ function hitsa_catering_week($start_date = null)
             $build['catering']['#prefix']=$catering_mobile.$build['catering']['#prefix'];
         }
     }
-    dpm($build);
     return $build;
 }
 
