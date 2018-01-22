@@ -346,7 +346,7 @@ function hitsa_events_calendar_page_html()
 						
                <div class="row">
                   <div class="col-9 sm-12">
-                     <h4 data-show="hiddenFilter"></h4>
+                     <h4 data-show="hiddenFilter">'.t('Event type').'</h4>
                      <div data-show="hiddenFilter" class="row-spacer"></div>
                      
                      <div class="btn-bar">';

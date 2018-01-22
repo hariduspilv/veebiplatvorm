@@ -568,7 +568,7 @@ function _hitsa_curriculum_installed_node_fields($school_type = null)
             'catering' => 'Catering',
             'ordered-trainings' => 'Ordered trainings',
             'certification-exams' => 'Certification exams',
-            'cooperation-and-partners' => 'Cooperation and partners',
+            'cooperation-and-partners' => 'Cooperation and projects',
         );
     } elseif ($school_type == 2) {
         $subtypes = array(

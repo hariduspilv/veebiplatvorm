@@ -938,11 +938,10 @@ function hitsa_catering_front_page_block()
     $tomorrow_day = date('l', $tomorrow_iso);
     $next_week = false;
     if ($today_day == 'Friday') {
-        $next_week = true;
+        $next_week = false;
         $tomorrow_iso = strtotime('monday next week');
         $tomorrow_day = date('l', $tomorrow_iso);
     }
-
     if (!empty($today_iso)) {
         $query = db_select('node', 'n');
         $query->condition('n.type', 'catering', '=');
@@ -954,7 +953,6 @@ function hitsa_catering_front_page_block()
             $query->condition('fdfd.field_date_value', $today_iso, '<=');
             $query->condition('fdfd.field_date_value2', $today_iso, '>=');
         }
-
         $results = $query->execute();
         foreach ($results as $catering_result) {
             $node = node_load($catering_result->nid);
@@ -1215,8 +1213,10 @@ function hitsa_catering_front_page_block()
         if ($next_week && !empty($foods_selected_tomorrow)) {
             $output .= '  <a href="javascript:void(0);" data-target="tab-2" class="link-tab">' . t('Next Monday') . '</a>';
         } else {
-            $output .= '
-                           <a href="javascript:void(0);" data-target="tab-2" class="link-tab">' . t('Tomorrow') . '</a>';
+            if (!empty($foods_selected_tomorrow)) {
+                $output .= '<a href="javascript:void(0);" data-target="tab-2" class="link-tab">' . t('Tomorrow') . '</a>';
+            }
+           
         }
         $output .= '
                            
