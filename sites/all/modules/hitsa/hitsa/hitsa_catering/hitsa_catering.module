@@ -183,6 +183,12 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
 
             break;
         case 'taxonomy_form_term':
+            if (!empty($form['#bundle']) && $form['#bundle'] == 'catering_provider') {
+
+                if (!empty($form['name'])) {
+                    $form['name']['#title'] = t('Business name');
+                }
+            }
             if (!empty($form['vocabulary_machine_name'])) {
                 if ($form['vocabulary_machine_name']['#value'] == 'catering_provider') {
                     $form['#validate'][] = 'hitsa_catering_taxonomy_term_validate';
@@ -432,13 +438,13 @@ function hitsa_catering_week($start_date = null)
 
         $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers);
 
-    $catering_mobile = hitsa_catering_provider_side_menu($providers);
-    $catering_mobile = '<div class="row sm-show no-print">
+        $catering_mobile = hitsa_catering_provider_side_menu($providers);
+        $catering_mobile = '<div class="row sm-show no-print">
     <div class="col-12">
         <div class="accordion" data-plugin="accordion" data-allClosed="true">
             <div class="accordion-entry">
-                <div class="accordion-title">'.t('More caterers').'</div>
-                <div class="accordion-content">'.$catering_mobile.'</div><!--/accordion-content-->
+                <div class="accordion-title">' . t('More caterers') . '</div>
+                <div class="accordion-content">' . $catering_mobile . '</div><!--/accordion-content-->
 						
                 </div><!--/accordion-entry-->
             </div><!--/accordion-->
@@ -495,7 +501,7 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['#theme_wrappers'] = array();
         $build['catering']['catering_table']['#markup'] = $catering_header . $catering_table . $catering_html;
         if (!empty($catering_mobile)) {
-            $build['catering']['#prefix']=$catering_mobile.$build['catering']['#prefix'];
+            $build['catering']['#prefix'] = $catering_mobile . $build['catering']['#prefix'];
         }
     }
     return $build;
@@ -560,7 +566,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
 
                         $row_names[$food_type->name] = $food_type;
                         if (!empty($meal->field_food_name)) {
-                            if (!empty($subcategory->field_dessert_section)&&!empty($subcategory->field_dessert_section['und'][0]['value'])&&$subcategory->field_dessert_section['und'][0]['value']==1) {
+                            if (!empty($subcategory->field_dessert_section) && !empty($subcategory->field_dessert_section['und'][0]['value']) && $subcategory->field_dessert_section['und'][0]['value'] == 1) {
                                 $day_meals[$day_key][$food_type->name]['Desserts'][] = $meal->field_food_name['und'][0]['value'];
                             } else {
                                 $day_meals[$day_key][$food_type->name][] = $meal->field_food_name['und'][0]['value'];
@@ -663,7 +669,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
             $output .= '<tbody>';
             $desserts_started = false;
             for ($i = 0; $i < $meal_days['count']; $i++) {
-                if (isset($meal_days['dessert_location'])&&$i == ($meal_days['dessert_location'])) {
+                if (isset($meal_days['dessert_location']) && $i == ($meal_days['dessert_location'])) {
                     $desserts_started = true;
                     $output .= '<tr class = "dashed-border"> ';
                 } else {
@@ -678,7 +684,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                     if (!empty($meal_days[$day_key])) {
                         if (!empty($meal_days[$day_key][$i])) {
                             if (!is_array($meal_days[$day_key][$i])) {
-                                $output .= '<td>' .$meal_days[$day_key][$i] . '</td>';
+                                $output .= '<td>' . $meal_days[$day_key][$i] . '</td>';
                                 unset($meal_days[$day_key][$i]);
                             } else {
                                 if ($desserts_started == false) {
@@ -704,9 +710,8 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                                     $output .= '<td>' . $dessert['name'] . '</td>';
                                     unset($meal_days[$day_key][$dessert_key]);
                                     break;
-                                }
-                                else{
-                                    $output.='<td></td>';
+                                } else {
+                                    $output .= '<td></td>';
                                 }
                             }
                         } else {
@@ -721,7 +726,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         }
         $output .= '</table>';
 
-        
+
         $output .= '</div><!--/table-wrapper-->';
         if (!empty($pictures)) {
             $output .= hitsa_catering_pictures_generator($pictures);
@@ -1232,7 +1237,7 @@ function hitsa_catering_front_page_block()
             if (!empty($foods_selected_tomorrow)) {
                 $output .= '<a href="javascript:void(0);" data-target="tab-2" class="link-tab">' . t('Tomorrow') . '</a>';
             }
-           
+
         }
         $output .= '
                            
@@ -1348,7 +1353,7 @@ function hitsa_catering_pictures_generator($pictures)
 }
 
 function hitsa_catering_catering_header($content)
-{   
+{
     $catering_provider_name = '';
     if (!empty($content)) {
         if (!empty($content->field_catering_provider)) {
@@ -1357,8 +1362,7 @@ function hitsa_catering_catering_header($content)
             if (!empty($catering_provider->field_catering_provider_big_name)) {
                 $catering_provider_name = $catering_provider->field_catering_provider_big_name['und'][0]['value'];
                 $catering_provider_name = check_plain($catering_provider_name);
-            }
-            else{
+            } else {
                 $catering_provider_name = '&nbsp;';
             }
 
