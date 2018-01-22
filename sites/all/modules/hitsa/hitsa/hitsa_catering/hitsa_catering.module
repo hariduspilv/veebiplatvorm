@@ -431,7 +431,20 @@ function hitsa_catering_week($start_date = null)
     if (!empty($providers) and count($providers) > 1) {
 
         $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers);
-        $build['catering']['catering_provider']['#prefix'] = '<div class="col-3 d-flex">';
+
+    $catering_mobile = hitsa_catering_provider_side_menu($providers);
+    $catering_mobile = '<div class="row sm-show no-print">
+    <div class="col-12">
+        <div class="accordion" data-plugin="accordion" data-allClosed="true">
+            <div class="accordion-entry">
+                <div class="accordion-title">'.t('More caterers').'</div>
+                <div class="accordion-content">'.$catering_mobile.'</div><!--/accordion-content-->
+						
+                </div><!--/accordion-entry-->
+            </div><!--/accordion-->
+        </div><!--/col-12-->
+    </div><!--/row-->';
+        $build['catering']['catering_provider']['#prefix'] = '<div class="col-3 sm-hide no-print d-flex">';
         $build['catering']['catering_provider']['#suffix'] = '</div>';
         $build['catering']['catering_provider']['#markup'] = $catering_providers_sidemenu;
         $build['catering']['catering_table']['#prefix'] = '<div class="col-9 sm-12"><article>';
@@ -481,6 +494,9 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['#type'] = 'container';
         $build['catering']['#theme_wrappers'] = array();
         $build['catering']['catering_table']['#markup'] = $catering_header . $catering_table . $catering_html;
+        if (!empty($catering_mobile)) {
+            $build['catering']['catering_table']['#suffix'].=$catering_mobile;
+        }
     }
     return $build;
 }
@@ -803,7 +819,7 @@ function hitsa_catering_provider_side_menu($providers)
     $class = '';
     $current_path = current_path();
     if (count($providers > 0)) {
-        $output .= '<ul class="side-menu">';
+        $output .= '<ul class="side-menu" data-plugin="dropdownMenu">';
         foreach ($providers as $provider) {
             if (!empty($provider['menu'])) {
                 $link = url('node/' . $provider['menu']->nid);
