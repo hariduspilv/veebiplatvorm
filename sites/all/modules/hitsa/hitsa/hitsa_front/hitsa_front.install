@@ -34,7 +34,7 @@ function _hitsa_front_vocabularies(){
 
     $vocabularies['hitsa_breaks'] = array(
         'vocabulary' => (object) array(
-            'name' => t('School breaks'),
+            'name' => t('Vaheajad'),
             'machine_name' => 'hitsa_breaks',
             'language' => 'und',
             'i18n_mode' => 1,
@@ -43,7 +43,7 @@ function _hitsa_front_vocabularies(){
 
     $vocabularies['hitsa_hour_times'] = array(
         'vocabulary' => (object) array(
-            'name' => t('School hours and lunch breaks'),
+            'name' => t('Tundide ajad ja lõunapausid'),
             'machine_name' => 'hitsa_hour_times',
             'language' => 'und',
             'i18n_mode' => 1,

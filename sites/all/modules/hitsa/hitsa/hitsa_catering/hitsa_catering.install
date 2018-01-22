@@ -887,7 +887,7 @@ function _hitsa_catering_installed_node_instances()
                 'autocomplete_path' => 'taxonomy/autocomplete',
                 'size' => 60,
             ),
-            'type' => 'options_buttons',
+            'type' => 'options_select',
             'weight' => 2,
         ),
     );
@@ -1384,31 +1384,31 @@ function hitsa_catering_add_custom_taxonomy_field_base()
         'type' => 'list_boolean',
     );
      // Exported field_base: 'field_dessert_section'.
-  $field_bases['field_dessert_section'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_dessert_section',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => '',
-        1 => 'In dessert selection',
-      ),
-      'allowed_values_function' => '',
-      'allowed_values_no_localization' => 0,
-      'entity_translation_sync' => FALSE,
-    ),
-    'translatable' => 0,
-    'type' => 'list_boolean',
-  );
+    $field_bases['field_dessert_section'] = array(
+        'active' => 1,
+        'cardinality' => 1,
+        'deleted' => 0,
+        'entity_types' => array(),
+        'field_name' => 'field_dessert_section',
+        'indexes' => array(
+            'value' => array(
+                0 => 'value',
+            ),
+        ),
+        'locked' => 0,
+        'module' => 'list',
+        'settings' => array(
+            'allowed_values' => array(
+                0 => '',
+                1 => 'In dessert selection',
+            ),
+            'allowed_values_function' => '',
+            'allowed_values_no_localization' => 0,
+            'entity_translation_sync' => false,
+        ),
+        'translatable' => 0,
+        'type' => 'list_boolean',
+    );
 
     return $field_bases;
 }
@@ -1416,7 +1416,40 @@ function hitsa_catering_add_custom_taxonomy_field_instance()
 {
 
     $field_instances = array();
-
+     // 'taxonomy_term-catering_provider-field_catering_provider_big_name'.
+    $field_instances['taxonomy_term-catering_provider-field_catering_provider_big_name'] = array(
+        'bundle' => 'catering_provider',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'text',
+                'settings' => array(),
+                'type' => 'text_default',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'taxonomy_term',
+        'field_name' => 'field_catering_provider_big_name',
+        'label' => 'Catering provider big name',
+        'required' => 0,
+        'settings' => array(
+            'entity_translation_sync' => false,
+            'text_processing' => 0,
+            'user_register_form' => false,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'text',
+            'settings' => array(
+                'size' => 60,
+            ),
+            'type' => 'text_textfield',
+            'weight' => 3,
+        ),
+    );
     $field_instances['taxonomy_term-catering_food_subcategory-field_food_icon'] = array(
         'bundle' => 'catering_food_subcategory',
         'default_value' => null,
@@ -1451,37 +1484,37 @@ function hitsa_catering_add_custom_taxonomy_field_instance()
     $field_instances['taxonomy_term-catering_food_subcategory-field_dessert_section'] = array(
         'bundle' => 'catering_food_subcategory',
         'default_value' => array(
-        0 => array(
-            'value' => 0,
-        ),
+            0 => array(
+                'value' => 0,
+            ),
         ),
         'deleted' => 0,
         'description' => 'Selle kasti abil saab määrata, kas toit ilmub toitlustamise tabelis magustoitude juurde.',
         'display' => array(
-        'default' => array(
-            'label' => 'above',
-            'module' => 'list',
-            'settings' => array(),
-            'type' => 'list_default',
-            'weight' => 1,
-        ),
+            'default' => array(
+                'label' => 'above',
+                'module' => 'list',
+                'settings' => array(),
+                'type' => 'list_default',
+                'weight' => 1,
+            ),
         ),
         'entity_type' => 'taxonomy_term',
         'field_name' => 'field_dessert_section',
         'label' => 'Magustoidu valikus',
         'required' => 0,
         'settings' => array(
-        'entity_translation_sync' => FALSE,
-        'user_register_form' => FALSE,
+            'entity_translation_sync' => false,
+            'user_register_form' => false,
         ),
         'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(
-            'display_label' => 0,
-        ),
-        'type' => 'options_onoff',
-        'weight' => 4,
+            'active' => 1,
+            'module' => 'options',
+            'settings' => array(
+                'display_label' => 0,
+            ),
+            'type' => 'options_onoff',
+            'weight' => 4,
         ),
     );
 
