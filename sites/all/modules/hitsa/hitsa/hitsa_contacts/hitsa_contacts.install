@@ -126,7 +126,7 @@ function _hitsa_contacts_fields() {
     ),
     'department_weight' => array(
       'field_name' => 'department_weight',
-      'label' => $t('Department weight'),
+      'label' => 'Töötaja järjestus osakonnas',
       'type' => 'number_integer',
     ),
     // Reception times (Paragraph)
@@ -398,7 +398,7 @@ function _hitsa_contacts_field_instances() {
       'field_name' => 'department_weight',
       'entity_type' => 'paragraphs_item',
       'bundle' => 'contacts_department',
-      'label' => $t('Department weight'),
+      'label' => 'Töötaja järjestus osakonnas',
       'required' => TRUE,
       'widget' => array(
         'type' => 'number',
@@ -410,6 +410,7 @@ function _hitsa_contacts_field_instances() {
           'type' => 'number_integer',
         ),
       ),
+      'default_value' => 0,
     ),
     // Reception times (Paragraph)
     /*
