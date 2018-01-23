@@ -664,7 +664,15 @@ function hitsa_preprocess_menu_link(&$variables)
     $hook = $variables['theme_hook_original'];
     switch ($hook) {
         case 'menu_link__hitsa_header_menu':
-            if (isset($variables['element']['#attributes']['class'])) unset($variables['element']['#attributes']['class']);
+         if (isset($variables['element']['#attributes']['class'])) unset($variables['element']['#attributes']['class']);
+            
+            if (!empty($variables['element']['#original_link']['options'])) {
+                if(!empty($variables['element']['original_link']['options']['attributes'])){
+                    if (!empty($variables['element']['#original_link']['options']['attributes']['title'])) {
+                        unset($variables['element']['#original_link']['options']['attributes']['title']);
+                    }
+                }
+            }
             break;
         case 'menu_link__hitsa_quicklinks_menu':
         case 'menu_link__hitsa_main_menu':
