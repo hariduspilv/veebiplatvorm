@@ -26,7 +26,7 @@
   <div class="row-spacer sm-hide"></div>
            
   <div class="row">
-    <div class="col-12">
+    <div class="col-8">
       <div class="form-item-row">
         <div class="form-item after-search form-item_rounded form-item-stretch">
           <div class="form-item_title"><?php print t('Search for person'); ?></div>
