@@ -1405,7 +1405,7 @@ function hitsa_events_for_services()
         }
         if (!empty($new_events)) {
             $output .= '<div class="col-12 col-margin">';
-            $output .= '                  <a href="' . url('training_calendar') . '" class="btn btn-filled btn-stretch">' . t('Training calendar') . '</a>';
+            $output .= '                  <a href="' . url('training-calendar') . '" class="btn btn-filled btn-stretch">' . t('Training calendar') . '</a>';
             $output .= '               </div><!--/col-12-->';
             $output .= '</div><!--/row-->';
             $output .= '         </div><!--/data-tab-->';
