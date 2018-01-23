@@ -666,9 +666,8 @@ function hitsa_preprocess_menu_link(&$variables)
         case 'menu_link__hitsa_header_menu':
          if (isset($variables['element']['#attributes']['class'])) unset($variables['element']['#attributes']['class']);
             
-         dpm($variables);
             if (!empty($variables['element']['#original_link']['options'])) {
-                if(!empty($variables['element']['original_link']['options']['attributes'])){
+                if(!empty($variables['element']['#original_link']['options']['attributes'])){
                     if (!empty($variables['element']['#original_link']['options']['attributes']['title'])) {
                         unset($variables['element']['#original_link']['options']['attributes']['title']);
                     }
