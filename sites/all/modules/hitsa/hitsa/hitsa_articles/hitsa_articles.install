@@ -103,7 +103,6 @@ function _hitsa_articles_field_instances() {
             'video' => 'video',
           ),
           'allowed_schemes' => array(
-            'vimeo' => 'vimeo',
             'youtube' => 'youtube',
           ),
           'browser_plugins' => array(
