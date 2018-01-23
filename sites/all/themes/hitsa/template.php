@@ -285,6 +285,7 @@ function hitsa_menu_tree__hitsa_sitemap($variables)
                 }
             }
         } else if (!empty($link['#theme'])) {
+
             $link['#theme'] = array('menu_link__hitsa_sitemap');
             //$menu_tree .= render($link);
             $menu_tree_array[] = render($link);
@@ -342,14 +343,15 @@ function hitsa_menu_link__hitsa_sitemap(array $variables)
     $element = $variables['element'];
     $sub_menu = '';
     $output = '';
-
     if (!empty($element['#below']) && $element['#original_link']['plid'] === '0') {
         $sub_menu = drupal_render($element['#below']);
         $output = '<h3>' . t($element['#title']) . '</h3>';
     } else if ($element['#original_link']['plid'] !== '0') {
         $output = l($element['#title'], $element['#href'], $element['#localized_options']);
     }
-
+    elseif($element['#original_link']['plid'] == '0' && $element['#href']=='contact'){
+        $output = '<h3 class="heading-link">'.l($element['#title'], $element['#href'], $element['#localized_options']).'</h3>';
+    }
     return $output . $sub_menu . "\n";
 }
 
