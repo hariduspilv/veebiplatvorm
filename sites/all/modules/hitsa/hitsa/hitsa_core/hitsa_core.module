@@ -117,14 +117,16 @@ function hitsa_core_menu_alter(&$items)
 /**
  * Implements hook_module_implements_alter().
  */
-function hitsa_core_module_implements_alter(&$implementations, $hook) {
-  if($hook == "menu_alter") {
+function hitsa_core_module_implements_alter(&$implementations, $hook)
+{
+  if ($hook == "menu_alter") {
     unset($implementations['hitsa_core']);
     $mymodule = array('hitsa_core' => false);
     $implementations = $implementations + $mymodule;
   }
 }
-function hitsa_core_redirect_front($content){
+function hitsa_core_redirect_front($content)
+{
   drupal_goto('<front>');
 }
 function hitsa_core_html_head_alter(&$head_elements)
@@ -174,7 +176,7 @@ function hitsa_core_block_info()
     'status' => "1",
   );
 
-  
+
   $blocks['hitsa_front_mobile_links'] = array(
     'info' => t('HITSA mobile links'),
     'visibility' => BLOCK_VISIBILITY_LISTED,
@@ -238,7 +240,7 @@ function hitsa_core_block_view($delta = '')
       break;
       break;
     case 'hitsa_front_events_catering':
-      if (module_exists('hitsa_events') and module_exists('hitsa_catering')&& $school_type==1) {
+      if (module_exists('hitsa_events') and module_exists('hitsa_catering') && $school_type == 1) {
         $events_block = (hitsa_events_front_page_block());
         $catering_block = hitsa_catering_front_page_block();
         $block = array();
@@ -266,7 +268,7 @@ function hitsa_core_render_sitemap()
  * Implements hook_form_alter().
  */
 function hitsa_core_form_alter(&$form, &$form_state, $form_id)
-{ 
+{
   if (!empty($form['body']) && $form['#node']->type !== 'curriculum') {
       //$form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
       //$form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
@@ -299,6 +301,17 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
       $form['description']['#access'] = false;
       $form['description']['#format'] = 'text_plain'; // Gets rid of translation text format warning.
       $form['#submit'][] = 'hitsa_core_redirect_after_submit';
+      break;
+    case 'menu_edit_item':
+      if (!empty($form['original_item'])) {
+        if (!empty($form['original_item']['#value'])) {
+          if (!empty($form['original_item']['#value']['menu_name'])) {
+            if ($form['original_item']['#value']['menu_name'] == 'hitsa-header-menu') {
+              $form['description']['#access'] = false;
+            }
+          }
+        }
+      }
       break;
   }
 }
@@ -612,7 +625,8 @@ function hitsa_core_get_placeholder_image()
   }
   return $placeholder_url;
 }
-function hitsa_core_redirect_after_submit($form,&$form_state){
+function hitsa_core_redirect_after_submit($form, &$form_state)
+{
 
-  $form_state['redirect'] = 'admin/structure/taxonomy/'.$form['#bundle'];
+  $form_state['redirect'] = 'admin/structure/taxonomy/' . $form['#bundle'];
 }
