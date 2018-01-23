@@ -697,7 +697,10 @@ function hitsa_form_alter(&$form, &$form_state, $form_id) {
 
 function hitsa_preprocess_webform_form(&$variables)
 {
-
+    if(!empty($variables['form']['my_captcha_element'])) { // Captcha formating
+        $variables['form']['my_captcha_element']['captcha_widgets']['#prefix'] = '<div class="col-12">';
+        $variables['form']['my_captcha_element']['captcha_widgets']['#suffix'] = '</div>';
+    }
     $contact_us_webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
     // "Contact Us" form
     if ($variables['nid'] === $contact_us_webform_nid) {
