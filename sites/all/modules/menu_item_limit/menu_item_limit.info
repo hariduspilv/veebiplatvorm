@@ -1,0 +1,12 @@
+name = Menu Item Limit
+description = Allows to control the amount of items per menu.
+core = 7.x
+
+dependencies[] = menu
+
+; Information added by drupal.org packaging script on 2013-10-15
+version = "7.x-1.0"
+core = "7.x"
+project = "menu_item_limit"
+datestamp = "1381860622"
+
