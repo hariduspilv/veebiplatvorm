@@ -346,7 +346,7 @@ function hitsa_events_calendar_page_html()
 						
                <div class="row">
                   <div class="col-9 sm-12">
-                     <h4 data-show="hiddenFilter">'.t('Event type').'</h4>
+                     <h4 data-show="hiddenFilter">' . t('Event type') . '</h4>
                      <div data-show="hiddenFilter" class="row-spacer"></div>
                      
                      <div class="btn-bar">';
@@ -662,8 +662,8 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $start_date = !empty($event->event_date['und'][0]['value']) ? $event->event_date['und'][0]['value'] : null;
         $end_date = !empty($event->event_date['und'][0]['value2']) ? $event->event_date['und'][0]['value2'] : null;
         $start_time_hours = date('H:i', $start_date);
-        $time_hours_minutes_all = (!empty($start_time_hours)&&$start_time_hours!='01:15') ? t('Time: ') . $start_time_hours: null;
-        
+        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '01:15') ? t('Time: ') . $start_time_hours : null;
+
         if ($type == 'training') {
             $time_hours_minutes = '<span class="before-calendar">' . date('j.m', $start_date) . ' - ' . date('j.m', $end_date) . '</span>';
         }
@@ -729,10 +729,10 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
                     $training_tags .= '<li><a href="">' . $tag . '</a></li>';
                 }
             }
-            
-           
+
+
         }
-        if($type=='training'||$type=='event'){
+        if ($type == 'training' || $type == 'event') {
             if (!empty($event->field_registration_form)) {
                 $reg_form_id = $event->field_registration_form['und'][0]['target_id'];
             }
@@ -772,9 +772,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<br />';
 //        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
         if ($start_date_date > time()) {
-            $output .= ($type == 'training' || $type=='event') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
+            $output .= ($type == 'training' || $type == 'event') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
             if (!empty($reg_form_id)) {
-                $output .= ($type == 'training' || $type == 'event') ? '<br><a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to '.$type) . '</a>' : '';
+                $output .= ($type == 'training' || $type == 'event') ? '<br><a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to ' . $type) . '</a>' : '';
             }
         }
         $output .= (!empty($tags_ready) && $type != 'training') ? '<ul class="tags">' : '';
@@ -988,10 +988,10 @@ function hitsa_events_front_page_block()
                     $output .= ' <hr />';
                     $output .= ' <div class="row-spacer-xs"></div>';
                 }
-                if($school_type==2 && $i==0){
-                    $output.= '<hr class="sm-show">';
+                if ($school_type == 2 && $i == 0) {
+                    $output .= '<hr class="sm-show">';
                 }
-                if ($school_type == 1 && $i == 0 &&$i!=$event_type_count-1) {
+                if ($school_type == 1 && $i == 0 && $i != $event_type_count - 1) {
                     $output .= ' <hr />';
                     $output .= ' <div class="row-spacer-xs"></div>';
                 }
@@ -1980,10 +1980,21 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                 );
             }
             foreach ($components as $cmp_key => $component) {
+                if (!empty($component['required'])) {
+                    if ($component['required'] == 1) {
+                        $component_name = t($component['name']) . '*';
+                    } else {
+                        $component_name = t($component['name']);
+                    }
+                } else {
+                    if (!empty($component['name'])) {
+                        $component_name = t($component['name']);
+                    }
+                }
                 if ($component['type'] == 'textfield' || $component['type'] == 'e-mail') {
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
-								<div class="form-item_title">' . t($component['name']) . '*</div>',
+								<div class="form-item_title">' . $component_name . '</div>',
                         '#suffix' => '</div></div>',
                         '#type' => ($component['type' != 'email']) ? $component['type'] : 'textfield',
                         '#name' => $cmp_key,
@@ -1995,7 +2006,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
 
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
-								<div class="form-item_title">' . t($component['name']) . '*</div>',
+								<div class="form-item_title">' . $component_name . '</div>',
                         '#suffix' => '</div></div>',
                         '#type' => ($component['type' != 'email']) ? $component['type'] : 'textfield',
                         '#name' => $cmp_key,
@@ -2007,7 +2018,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
 
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
-								<div class="form-item_title">' . t($component['name']) . '*</div>',
+								<div class="form-item_title">' . $component_name . '</div>',
                         '#suffix' => '</div></div>',
                         '#type' => ($component['type' != 'email']) ? $component['type'] : 'textfield',
                         '#name' => 'number_' . $cmp_key,
@@ -2019,7 +2030,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
 
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
-								<div class="form-item_title">' . t($component['name']) . '*</div>',
+								<div class="form-item_title">' . $component_name . '</div>',
                         '#suffix' => '</div></div>',
                         '#type' => ($component['type' != 'email']) ? $component['type'] : 'textfield',
                         '#name' => 'email_' . $cmp_key,
@@ -2040,7 +2051,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                             }
                             $form[$cmp_key] = array(
                                 '#prefix' => '<div class="col-12"><div class="form-item">
-								<div class="form-item_title">' . t($component['name']) . '*</div>',
+								<div class="form-item_title">' . $component_name . '</div>',
                                 '#suffix' => '</div></div>',
                                 '#theme_wrappers' => array(),
                                 '#type' => 'checkboxes',
@@ -2062,7 +2073,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                                 }
                                 $form[$cmp_key] = array(
                                     '#prefix' => '<div class="col-12"><div class="form-item">
-								<div class="form-item_title">' . t($component['name']) . '*</div>',
+								<div class="form-item_title">' . $component_name . '</div>',
                                     '#suffix' => '</div></div>',
                                     '#attributes' => array(
                                         'module' => 'hitsa_events'
@@ -2084,7 +2095,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                                 }
                                 $form[$cmp_key] = array(
                                     '#prefix' => '<div class="col-12"><div class="form-item">
-								<div class="form-item_title">' . t($component['name']) . '*</div>',
+								<div class="form-item_title">' . $component_name . '</div>',
                                     '#theme_wrappers' => array(),
                                     '#suffix' => '</div></div>',
                                     '#type' => 'select',
@@ -2093,9 +2104,19 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                                     '#required' => $component['required'],
                                     '#weight' => $component['weight'],
                                 );
+
                             }
 
                         }
+                    }
+                }
+                if (!empty($component['required'])) {
+                    if ($component['required'] == 1) {
+                        $form['required_parts'][$cmp_key . '_req'] = array(
+                            '#type' => 'hidden',
+                            '#value' => $component['type'] . ' ' . t($component['name']),
+                            '#name' => $cmp_key . '_req',
+                        );
                     }
                 }
             }
@@ -2159,19 +2180,20 @@ function hitsa_events_registration_processing($post)
         $components = $node->webform['components'];
         $form = drupal_get_form('hitsa_events_generate_custom_form', $components, $_REQUEST['nid']);
         if (!empty($validated['errors'])) {
-            if (isset($validated['errors']['captcha'])) {
-                $form['captcha']['captcha_widgets']['captcha_response']['#attributes']['class'] = array(
-                    0 => 'error',
-                );
+            foreach ($validated['errors'] as $error_key => $error_value) {
+                if ($error_key == 'captcha') {
+                    $form['captcha']['captcha_widgets']['captcha_response']['#attributes']['class'] = array(
+                        0 => 'error',
+                    );
 
-                $errors['errors'][] = array(
-                    '#type' => 'markup',
-                    '#markup' => '<div class="row">
+                    $errors['errors'][] = array(
+                        '#type' => 'markup',
+                        '#markup' => '<div class="row">
 			<div class="col-12">
 				<div class="notification notification-danger" data-plugin="notification">
 					<div class="notification-sign"></div>
 					<div class="notification-text">
-						<p>' . $validated['errors']['captcha'] . '</p>
+						<p>' . $error_value . '</p>
 					</div><!--/notification-text-->
 					<div class="notification-close">
 						<span class="notification-close-label">Sulge</span> <span class="before-close"></span>
@@ -2180,7 +2202,27 @@ function hitsa_events_registration_processing($post)
 			</div><!--/col-12-->
         </div>
         ',
-                );
+                    );
+                } else {
+                    $form[$error_key]['#attributes']['class'][] = 'error';
+                    $errors['errors'][] = array(
+                        '#type' => 'markup',
+                        '#markup' => '<div class="row">
+			<div class="col-12">
+				<div class="notification notification-danger" data-plugin="notification">
+					<div class="notification-sign"></div>
+					<div class="notification-text">
+						<p>' . $error_value . '</p>
+					</div><!--/notification-text-->
+					<div class="notification-close">
+						<span class="notification-close-label">Sulge</span> <span class="before-close"></span>
+					</div>
+				</div><!--/notification-->
+			</div><!--/col-12-->
+        </div>
+        ',
+                    );
+                }
             }
         }
         array_unshift($form, $errors);
@@ -2216,6 +2258,39 @@ function hitsa_events_registration_validation($post)
         if (!empty($post['form_token'])) {
             unset($post['form_token']);
         }
+        foreach ($post as $post_key => $post_value) {
+            if (strpos($post_key, '_req') == true) {
+                $key_error = str_replace('_req', '', $post_key);
+                $space_location = strpos($post_value, ' ');
+                $post_type = substr($post_value, 0, $space_location);
+                $post_length = strlen($post_value);
+                $post_value_value = substr($post_value, $space_location, $post_length);
+                if (empty($post[$key_error]) || !isset($post[$key_error])) {
+                    $errors = true;
+                    if ($post_type == 'textfield' || $post_type == 'textarea' || $post_type == 'email') {
+                        if ($post_type == 'email') {
+                            if (!empty($post['email_' . $key_error])) {
+                                if (filter_var($post['email_' . $key_error], FILTER_VALIDATE_EMAIL)) {
+                                } else {
+                                    $error[$key_error] = t('Entered email is not valid');
+                                }
+                            } else {
+                                $error[$key_error] = t('Field !field_name must be filled', array('!field_name' => strtolower(substr($post_value_value, 1))));
+                            }
+                        } else {
+                            $error[$key_error] = t('Field !field_name must be filled', array('!field_name' => strtolower(substr($post_value_value, 1))));
+                        }
+                    } elseif ($post_type == 'select') {
+                        if (empty($post[$key_error])||!isset($post[$key_error])) {
+                            $error[$key_error] = t('You must select atleast one from !field_name', array('!field_name' => strtolower(substr($post_value_value, 1))));
+                        }
+                    }
+
+                }
+
+            }
+            unset($post[$post_key]);
+        }
         if (!empty($post['captcha_sid'])) {
             $captcha_checker = db_select('captcha_sessions', 'cs');
             $captcha_checker->condition('cs.csid', $post['captcha_sid'], '=');
@@ -2223,7 +2298,6 @@ function hitsa_events_registration_validation($post)
             $captcha_checker->condition('cs.token', $post['captcha_token'], '=');
             $response = $captcha_checker->execute();
             foreach ($response as $key => $value) {
-                dpm($value);
                 if ($value->solution != $post['captcha_response']) {
                     $errors = true;
                     $error['captcha'] = t('Captcha solution was wrong');
@@ -2307,6 +2381,9 @@ function hitsa_events_registration_submission($post)
         }
 
         foreach ($post as $post_key => $fields) {
+            if (strpos($post_key, '_req') == true) {
+                continue;
+            }
             $key = $post_key;
             if (strpos($post_key, 'email_') !== false) {
                 $key = str_replace('email_', '', $post_key);
