@@ -676,6 +676,13 @@ function hitsa_preprocess_menu_link(&$variables)
                     }
                 }
             }
+            if (!empty($variables['element']['#localized_options'])) {
+                if (!empty($variables['element']['#localized_options']['attributes'])) {
+                    if(!empty($variables['element']['#localized_options']['attributes']['title'])){
+                        unset($variables['element']['#localized_options']['attributes']['title']);
+                    }
+                }
+            }
             break;
         case 'menu_link__hitsa_quicklinks_menu':
         case 'menu_link__hitsa_main_menu':
