@@ -111,6 +111,7 @@ function hitsa_core_menu_alter(&$items)
     'page callback' => 'hitsa_core_search_page',
     'access callback' => true,
   );
+  dpm($items);
 }
 
 function hitsa_core_html_head_alter(&$head_elements)
