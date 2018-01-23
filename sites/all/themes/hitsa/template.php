@@ -686,6 +686,15 @@ function hitsa_form($variables)
     return '<form' . drupal_attributes($element['#attributes']) . '><div class="row">' . $element['#children'] . '</div></form>';
 }
 
+function hitsa_form_alter(&$form, &$form_state, $form_id) {
+    if (strstr($form_id, 'webform_client_form')) {
+	    $form['my_captcha_element'] = array(
+	    	'#type' => 'captcha',
+	    	'#captcha_type' => 'default',
+	    );
+	}
+}
+
 function hitsa_preprocess_webform_form(&$variables)
 {
 
