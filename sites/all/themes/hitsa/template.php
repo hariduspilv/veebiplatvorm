@@ -670,6 +670,7 @@ function hitsa_preprocess_menu_link(&$variables)
                 if(!empty($variables['element']['original_link']['options']['attributes'])){
                     if (!empty($variables['element']['#original_link']['options']['attributes']['title'])) {
                         unset($variables['element']['#original_link']['options']['attributes']['title']);
+                        dpm($variables);
                     }
                 }
             }
