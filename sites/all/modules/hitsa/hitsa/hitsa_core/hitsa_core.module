@@ -252,7 +252,7 @@ function hitsa_core_render_sitemap()
  * Implements hook_form_alter().
  */
 function hitsa_core_form_alter(&$form, &$form_state, $form_id)
-{
+{ 
   if (!empty($form['body']) && $form['#node']->type !== 'curriculum') {
       //$form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
       //$form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
@@ -284,6 +284,7 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
     case 'taxonomy_form_term':
       $form['description']['#access'] = false;
       $form['description']['#format'] = 'text_plain'; // Gets rid of translation text format warning.
+      $form['#submit'][] = 'hitsa_core_redirect_after_submit';
       break;
   }
 }
@@ -596,4 +597,8 @@ function hitsa_core_get_placeholder_image()
     }
   }
   return $placeholder_url;
+}
+function hitsa_core_redirect_after_submit($form,&$form_state){
+
+  $form_state['redirect'] = 'admin/structure/taxonomy/'.$form['#bundle'];
 }
