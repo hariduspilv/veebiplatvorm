@@ -6,6 +6,7 @@ function hitsa_core_install() {
   //hitsa_core_set_default_language(); // Set ET as default language.
   //hitsa_core_set_language_detection_rules();
   hitsa_core_search_server_add_index();
+  hitsa_core_set_default_variables();
 }
 
 function hitsa_core_uninstall() {
@@ -534,4 +535,31 @@ function hitsa_core_disable_modules() {
     module_disable(array('comment'));
     drupal_uninstall_modules(array('comment'));
   }
+}
+
+function _hitsa_core_metatag_configs() {
+  return array(
+    array (
+      'disabled' => false,
+      'api_version' => 1,
+      'instance' => 'node:article',
+      'config' => 
+      array (
+        'og:image' => 
+        array (
+          'value' => '[node:subpage_images]',
+        ),
+      ),
+    ),
+  );
+}
+
+function hitsa_core_install_metatag_config($configs) {
+  foreach($configs as $config) {
+    
+  }
+}
+
+function hitsa_core_set_default_variables() {
+  variable_set('captcha_default_challenge', 'image_captcha/Image');
 }
