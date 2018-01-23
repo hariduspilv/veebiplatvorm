@@ -793,8 +793,8 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_' . $details_number . '" data-hide="object-details_' . $details_number . '">' . t('Read more') . '</a>';
         $output .= '<div data-show="object-details_' . $details_number . '">';
         $output .= '<a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
-        $output .= '<a href="javascript:window.print();" class="btn-circle before-print"></a>';
-        $output .= '<a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="sm-show btn btn-transparent after-close">' . t('Close') . '</a>';
+        $output .= '<a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>';
+        $output .= '<a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="sm-hide btn btn-transparent after-close">' . t('Close') . '</a>';
         $output .= '</div><!--/object-details_' . $event->nid . '-->';
         $output .= '</div><!--/object-button-->';
         $output .= '</div><!--/object-inner-->';
@@ -802,6 +802,8 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         //$output .= '<p>';
         $output .= (!empty($event->body)) ? $event->body['und'][0]['value'] : '';
         //$output .= '</p>';
+        $output .= '<div class="row-spacer-xs sm-show"></div>
+        <a href="javascript:void(0);" data-toggle="object-details_'.$details_number.'" class="sm-show btn btn-transparent after-close">'.t('Close').'</a>';
         $output .= '</div>';
         $output .= '</div>';
     }
@@ -1991,7 +1993,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                         $component_name = t($component['name']);
                     }
                 }
-                if ($component['type'] == 'textfield' || $component['type'] == 'e-mail') {
+                if ($component['type'] == 'textfield'||$component['type']=='e-mail') {
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
 								<div class="form-item_title">' . $component_name . '</div>',
@@ -2002,7 +2004,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                         '#weight' => $component['weight'],
 
                     );
-                } elseif ($component['type'] == 'textarea') {
+                }elseif ($component['type'] == 'textarea') {
 
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
@@ -2266,30 +2268,35 @@ function hitsa_events_registration_validation($post)
                 $post_length = strlen($post_value);
                 $post_value_value = substr($post_value, $space_location, $post_length);
                 if (empty($post[$key_error]) || !isset($post[$key_error])) {
-                    $errors = true;
+                   
                     if ($post_type == 'textfield' || $post_type == 'textarea' || $post_type == 'email') {
                         if ($post_type == 'email') {
                             if (!empty($post['email_' . $key_error])) {
+
                                 if (filter_var($post['email_' . $key_error], FILTER_VALIDATE_EMAIL)) {
                                 } else {
                                     $error[$key_error] = t('Entered email is not valid');
+                                    $errors = true;
                                 }
                             } else {
                                 $error[$key_error] = t('Field !field_name must be filled', array('!field_name' => strtolower(substr($post_value_value, 1))));
+                                $errors = true;
                             }
                         } else {
                             $error[$key_error] = t('Field !field_name must be filled', array('!field_name' => strtolower(substr($post_value_value, 1))));
+                            $errors = true;
                         }
                     } elseif ($post_type == 'select') {
-                        if (empty($post[$key_error])||!isset($post[$key_error])) {
+                        if (empty($post[$key_error]) || !isset($post[$key_error])) {
                             $error[$key_error] = t('You must select atleast one from !field_name', array('!field_name' => strtolower(substr($post_value_value, 1))));
+                            $errors = true;
                         }
                     }
 
                 }
 
+                unset($post[$post_key]);
             }
-            unset($post[$post_key]);
         }
         if (!empty($post['captcha_sid'])) {
             $captcha_checker = db_select('captcha_sessions', 'cs');
@@ -2351,7 +2358,6 @@ function hitsa_events_registration_validation($post)
 
 function hitsa_events_registration_submission($post)
 {
-    var_dump($post);
     if (!empty($post['nid'])) {
         $data = array();
         $nid = $post['nid'];
