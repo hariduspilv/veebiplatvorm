@@ -111,9 +111,22 @@ function hitsa_core_menu_alter(&$items)
     'page callback' => 'hitsa_core_search_page',
     'access callback' => true,
   );
-  dpm($items);
+  $items['taxonomy/term/%taxonomy_term']['page callback'] = 'hitsa_core_redirect_front';
+  // dpm($items);
 }
-
+/**
+ * Implements hook_module_implements_alter().
+ */
+function hitsa_core_module_implements_alter(&$implementations, $hook) {
+  if($hook == "menu_alter") {
+    unset($implementations['hitsa_core']);
+    $mymodule = array('hitsa_core' => false);
+    $implementations = $implementations + $mymodule;
+  }
+}
+function hitsa_core_redirect_front($content){
+  drupal_goto('<front>');
+}
 function hitsa_core_html_head_alter(&$head_elements)
 {
   //dpm($head_elements);
