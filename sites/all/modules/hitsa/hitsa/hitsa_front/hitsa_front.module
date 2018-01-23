@@ -102,7 +102,7 @@ function hitsa_front_theme()
   $items['hitsa_front_hours_breaks'] = array(
     'render element' => 'hitsa_front_hours_breaks',
     'template' => 'hitsa_front_hours_breaks',
-    'path' => drupal_get_path('theme', 'hitsa') . '/templates/include',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/block',
     'variables' => array(
       'hours' => null,
       'breaks' => null,
