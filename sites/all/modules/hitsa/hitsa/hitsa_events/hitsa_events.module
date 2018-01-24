@@ -931,7 +931,6 @@ function hitsa_events_front_page_block()
         $j = 0;
 
         foreach ($events_array as $key => $event_type) {
-            
             $i = 0;
             $output .= '<div data-tab="tab-' . $j . '">';
 
@@ -940,13 +939,7 @@ function hitsa_events_front_page_block()
             });
             $event_type_count = count($event_type);
             $location = '';
-            $category=0;
-            foreach ($event_type as $event_key =>  $event) {
-                
-                if($event_key== 'category'){
-                    $category = $event;
-                    continue;
-                }
+            foreach ($event_type as $event) {
                 if (!empty($event->locations)) {
                     if (!empty($event->locations[$language->language][0])) {
                         $location = taxonomy_term_load($event->locations[$language->language][0]['tid']);
@@ -1026,8 +1019,8 @@ function hitsa_events_front_page_block()
                 $link = url('calendar');
             }
 
-            if(!empty($category)){
-                $link = url('calendar',array('query'=> array('category'=>$category)));
+            if(!empty($event->taxonomy_category)){
+                $link = url('calendar',array('query'=> array('category'=>$event->taxonomy_category)));
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
