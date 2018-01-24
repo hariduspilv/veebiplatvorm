@@ -1283,9 +1283,9 @@ function hitsa_gallery_grid($variables)
 
 function hitsa_css_alter(&$css)
 {   
-    dpm($css);
+    // dpm($css);
     global $base_path;
-    dpm($base_path);
+    // dpm($base_path);
     $exclude = array(
         'modules/system/system.theme.css' => false,
     );
