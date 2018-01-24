@@ -61,13 +61,13 @@
       <div class="accordion-entry">
         <div class="accordion-title"><?php print t('Map'); ?></div>
         <div class="accordion-content">
-          <div class="map-wrapper">
+          <a href="http://maps.google.com" class="map-wrapper">
 						<div class="map" data-plugin="googleMaps" data-coords="<?php 
 						print sprintf('%s,%s', $location->location_coordinates[LANGUAGE_NONE][0]['lat'], 
 						$location->location_coordinates[LANGUAGE_NONE][0]['lng']); ?>" 
 						data-icon="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/mapIcon.png'; ?>" data-zoom="15"></div>
 						<img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>">
-					</div>
+					</a>
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php endif; ?>

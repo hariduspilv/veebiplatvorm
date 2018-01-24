@@ -58,7 +58,8 @@ function _hitsa_gallery_field_instances() {
           'label' => 'above',
           'type' => 'text_default',
         )
-      )
+      ),
+      'required' => TRUE,
     ),
     'academic_year' => array(
       'field_name' => 'academic_year',
