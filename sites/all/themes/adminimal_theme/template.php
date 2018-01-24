@@ -8,7 +8,8 @@
 /**
  * Override or insert variables into the maintenance page template.
  */
-function adminimal_preprocess_maintenance_page(&$vars) {
+function adminimal_preprocess_maintenance_page(&$vars)
+{
   // While markup for normal pages is split into page.tpl.php and html.tpl.php,
   // the markup for the maintenance page is all in the single
   // maintenance-page.tpl.php template. So, to have what's done in
@@ -20,7 +21,8 @@ function adminimal_preprocess_maintenance_page(&$vars) {
 /**
  * Override or insert variables into the html template.
  */
-function adminimal_preprocess_html(&$vars) {
+function adminimal_preprocess_html(&$vars)
+{
 
   // Get adminimal folder path.
   $adminimal_path = drupal_get_path('theme', 'adminimal');
@@ -30,13 +32,13 @@ function adminimal_preprocess_html(&$vars) {
   drupal_add_css($adminimal_path . '/css/style.css', array('group' => CSS_THEME, 'media' => 'all', 'weight' => 1));
 
   // Add conditional CSS for IE8 and below.
-  drupal_add_css($adminimal_path . '/css/ie.css', array('group' => CSS_THEME, 'browsers' => array('IE' => 'lte IE 8', '!IE' => FALSE), 'weight' => 999, 'preprocess' => TRUE));
+  drupal_add_css($adminimal_path . '/css/ie.css', array('group' => CSS_THEME, 'browsers' => array('IE' => 'lte IE 8', '!IE' => false), 'weight' => 999, 'preprocess' => true));
 
   // Add conditional CSS for IE7 and below.
-  drupal_add_css($adminimal_path . '/css/ie7.css', array('group' => CSS_THEME, 'browsers' => array('IE' => 'lte IE 7', '!IE' => FALSE), 'weight' => 999, 'preprocess' => TRUE));
+  drupal_add_css($adminimal_path . '/css/ie7.css', array('group' => CSS_THEME, 'browsers' => array('IE' => 'lte IE 7', '!IE' => false), 'weight' => 999, 'preprocess' => true));
 
   // Add conditional CSS for IE6.
-  drupal_add_css($adminimal_path . '/css/ie6.css', array('group' => CSS_THEME, 'browsers' => array('IE' => 'lte IE 6', '!IE' => FALSE), 'weight' => 999, 'preprocess' => TRUE));
+  drupal_add_css($adminimal_path . '/css/ie6.css', array('group' => CSS_THEME, 'browsers' => array('IE' => 'lte IE 6', '!IE' => false), 'weight' => 999, 'preprocess' => true));
 
   //Add Homebox module support
   if (module_exists('homebox')) {
@@ -63,12 +65,12 @@ function adminimal_preprocess_html(&$vars) {
 
   // Add icons to the admin configuration page.
   if (theme_get_setting('display_icons_config')) {
-    drupal_add_css($adminimal_path . '/css/icons-config.css', array('group' => CSS_THEME, 'weight' => 10, 'preprocess' => TRUE));
+    drupal_add_css($adminimal_path . '/css/icons-config.css', array('group' => CSS_THEME, 'weight' => 10, 'preprocess' => true));
   }
 
   // Add icons to the admin configuration page.
   if (theme_get_setting('avoid_custom_font')) {
-    drupal_add_css($adminimal_path . '/css/avoid_custom_font.css', array('group' => CSS_THEME, 'weight' => 9000, 'preprocess' => TRUE));
+    drupal_add_css($adminimal_path . '/css/avoid_custom_font.css', array('group' => CSS_THEME, 'weight' => 9000, 'preprocess' => true));
   }
 
   // Load CKEditor styles if enabled in settings.
@@ -89,18 +91,17 @@ function adminimal_preprocess_html(&$vars) {
   // Load custom Adminimal skin.
   $adminimal_skin = theme_get_setting('adminimal_theme_skin');
   if ((!is_null($adminimal_skin))) {
-    drupal_add_css($adminimal_path . '/skins/' . $adminimal_skin . '/' . $adminimal_skin . '.css', array('group' => CSS_THEME, 'weight' => 900, 'preprocess' => TRUE));
+    drupal_add_css($adminimal_path . '/skins/' . $adminimal_skin . '/' . $adminimal_skin . '.css', array('group' => CSS_THEME, 'weight' => 900, 'preprocess' => true));
     // Add conditional CSS for Mac OS X.
-    drupal_add_css($adminimal_path . '/skins/' . $adminimal_skin . '/mac_os_x.css', array('group' => CSS_THEME, 'weight' => 950, 'preprocess' => TRUE));
+    drupal_add_css($adminimal_path . '/skins/' . $adminimal_skin . '/mac_os_x.css', array('group' => CSS_THEME, 'weight' => 950, 'preprocess' => true));
     drupal_add_js($adminimal_path . '/skins/' . $adminimal_skin . '/' . $adminimal_skin . '.js');
-    $vars['classes_array'][] = 'adminimal-skin-' . $adminimal_skin ;
-  }
-  else {
-    drupal_add_css($adminimal_path . '/skins/default/default.css', array('group' => CSS_THEME, 'weight' => 900, 'preprocess' => TRUE));
+    $vars['classes_array'][] = 'adminimal-skin-' . $adminimal_skin;
+  } else {
+    drupal_add_css($adminimal_path . '/skins/default/default.css', array('group' => CSS_THEME, 'weight' => 900, 'preprocess' => true));
     // Add conditional CSS for Mac OS X.
-    drupal_add_css($adminimal_path . '/skins/default/mac_os_x.css', array('group' => CSS_THEME, 'weight' => 950, 'preprocess' => TRUE));
+    drupal_add_css($adminimal_path . '/skins/default/mac_os_x.css', array('group' => CSS_THEME, 'weight' => 950, 'preprocess' => true));
     drupal_add_js($adminimal_path . '/skins/default/default.js');
-    $vars['classes_array'][] = 'adminimal-skin-default' ;
+    $vars['classes_array'][] = 'adminimal-skin-default';
   }
 
   // Add responsive styles.
@@ -110,16 +111,16 @@ function adminimal_preprocess_html(&$vars) {
   // Add custom CSS.
   $custom_css_path = 'public://adminimal-custom.css';
   if (theme_get_setting('custom_css') && file_exists($custom_css_path)) {
-    drupal_add_css($custom_css_path, array('group' => CSS_THEME, 'weight' => 9999, 'preprocess' => TRUE));
+    drupal_add_css($custom_css_path, array('group' => CSS_THEME, 'weight' => 9999, 'preprocess' => true));
   }
 
   // Fix the viewport and zooming in mobile devices.
   $viewport = array(
-   '#tag' => 'meta',
-   '#attributes' => array(
-     'name' => 'viewport',
-     'content' => 'width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no, initial-scale=1',
-   ),
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'name' => 'viewport',
+      'content' => 'width=device-width, maximum-scale=1, minimum-scale=1, user-scalable=no, initial-scale=1',
+    ),
   );
   drupal_add_html_head($viewport, 'viewport');
 
@@ -127,20 +128,17 @@ function adminimal_preprocess_html(&$vars) {
   // the sidebar regions are called sidebar_first and sidebar_second, which
   // is not the case in this theme.
   $key = array_search('no-sidebars', $vars['classes_array']);
-  if ($key !== FALSE) {
+  if ($key !== false) {
     unset($vars['classes_array'][$key]);
   }
   // Add information about the number of sidebars.
   if (!empty($vars['page']['sidebar_left']) && !empty($vars['page']['sidebar_right'])) {
     $vars['classes_array'][] = 'two-sidebars';
-  }
-  elseif (!empty($vars['page']['sidebar_left'])) {
+  } elseif (!empty($vars['page']['sidebar_left'])) {
     $vars['classes_array'][] = 'one-sidebar sidebar-left';
-  }
-  elseif (!empty($vars['page']['sidebar_right'])) {
+  } elseif (!empty($vars['page']['sidebar_right'])) {
     $vars['classes_array'][] = 'one-sidebar sidebar-right';
-  }
-  else {
+  } else {
     $vars['classes_array'][] = 'no-sidebars';
   }
 }
@@ -148,7 +146,8 @@ function adminimal_preprocess_html(&$vars) {
 /**
  * Override or insert variables into the page template.
  */
-function adminimal_preprocess_page(&$vars) {
+function adminimal_preprocess_page(&$vars)
+{
   $vars['primary_local_tasks'] = $vars['tabs'];
   unset($vars['primary_local_tasks']['#secondary']);
   $vars['secondary_local_tasks'] = array(
@@ -161,7 +160,8 @@ function adminimal_preprocess_page(&$vars) {
 /**
  * Display the list of available node types for node creation.
  */
-function adminimal_node_add_list($variables) {
+function adminimal_node_add_list($variables)
+{
   $content = $variables['content'];
   $output = '';
   if ($content) {
@@ -173,8 +173,7 @@ function adminimal_node_add_list($variables) {
       $output .= '</li>';
     }
     $output .= '</ul>';
-  }
-  else {
+  } else {
     $output = '<p>' . t('You have not created any content types yet. Go to the <a href="@create-content">content type creation page</a> to add a new content type.', array('@create-content' => url('admin/structure/types/add'))) . '</p>';
   }
   return $output;
@@ -185,7 +184,8 @@ function adminimal_node_add_list($variables) {
  *
  * Use unordered list markup in both compact and extended mode.
  */
-function adminimal_adminimal_block_content($variables) {
+function adminimal_adminimal_block_content($variables)
+{
   $content = $variables['content'];
   $output = '';
   if (!empty($content)) {
@@ -208,13 +208,13 @@ function adminimal_adminimal_block_content($variables) {
  *
  * Use our own image versions, so they show up as black and not gray on gray.
  */
-function adminimal_tablesort_indicator($variables) {
+function adminimal_tablesort_indicator($variables)
+{
   $style = $variables['style'];
   $theme_path = drupal_get_path('theme', 'adminimal');
   if ($style == 'asc') {
     return theme('image', array('path' => $theme_path . '/images/arrow-asc.png', 'alt' => t('sort ascending'), 'width' => 13, 'height' => 13, 'title' => t('sort ascending')));
-  }
-  else {
+  } else {
     return theme('image', array('path' => $theme_path . '/images/arrow-desc.png', 'alt' => t('sort descending'), 'width' => 13, 'height' => 13, 'title' => t('sort descending')));
   }
 }
@@ -222,7 +222,8 @@ function adminimal_tablesort_indicator($variables) {
 /**
  * Implements hook_css_alter().
  */
-function adminimal_css_alter(&$css) {
+function adminimal_css_alter(&$css)
+{
   // Use Seven's vertical tabs style instead of the default one.
   if (isset($css['misc/vertical-tabs.css'])) {
     $css['misc/vertical-tabs.css']['data'] = drupal_get_path('theme', 'adminimal') . '/css/vertical-tabs.css';
@@ -239,10 +240,11 @@ function adminimal_css_alter(&$css) {
 /**
  * Implements hook_js_alter().
  */
-function adminimal_js_alter(&$javascript) {
+function adminimal_js_alter(&$javascript)
+{
   // Fix module filter available updates page.
-  if (isset($javascript[drupal_get_path('module','module_filter').'/js/update_status.js'])) {
-    $javascript[drupal_get_path('module','module_filter').'/js/update_status.js']['data'] = drupal_get_path('theme', 'adminimal') . '/js/update_status.js';
+  if (isset($javascript[drupal_get_path('module', 'module_filter') . '/js/update_status.js'])) {
+    $javascript[drupal_get_path('module', 'module_filter') . '/js/update_status.js']['data'] = drupal_get_path('theme', 'adminimal') . '/js/update_status.js';
   }
 }
 
@@ -250,7 +252,8 @@ function adminimal_js_alter(&$javascript) {
  * Implements theme_admin_block().
  * Adding classes to the administration blocks see issue #1869690.
  */
-function adminimal_admin_block($variables) {
+function adminimal_admin_block($variables)
+{
   $block = $variables['block'];
   $output = '';
 
@@ -261,11 +264,9 @@ function adminimal_admin_block($variables) {
 
   if (!empty($block['path'])) {
     $output .= '<div class="admin-panel ' . check_plain(str_replace("/", " ", $block['path'])) . ' ">';
-  }
-  elseif (!empty($block['title'])) {
+  } elseif (!empty($block['title'])) {
     $output .= '<div class="admin-panel ' . check_plain(strtolower($block['title'])) . '">';
-  }
-  else {
+  } else {
     $output .= '<div class="admin-panel">';
   }
 
@@ -275,8 +276,7 @@ function adminimal_admin_block($variables) {
 
   if (!empty($block['content'])) {
     $output .= '<div class="body">' . $block['content'] . '</div>';
-  }
-  else {
+  } else {
     $output .= '<div class="description">' . $block['description'] . '</div>';
   }
 
@@ -289,7 +289,8 @@ function adminimal_admin_block($variables) {
  * Implements theme_admin_block_content().
  * Adding classes to the administration blocks see issue #1869690.
  */
-function adminimal_admin_block_content($variables) {
+function adminimal_admin_block_content($variables)
+{
   $content = $variables['content'];
   $output = '';
 
@@ -301,7 +302,7 @@ function adminimal_admin_block_content($variables) {
     $output .= '<dl class="' . $class . '">';
     foreach ($content as $item) {
       if (!isset($item['path'])) {
-          $item['path']='';
+        $item['path'] = '';
       }
       $output .= '<div class="admin-block-item ' . check_plain(str_replace("/", "-", $item['path'])) . '"><dt>' . l($item['title'], $item['href'], $item['localized_options']) . '</dt>';
       if (!$compact && isset($item['description'])) {
@@ -317,7 +318,8 @@ function adminimal_admin_block_content($variables) {
 /**
  * Implements theme_table().
  */
-function adminimal_table($variables) {
+function adminimal_table($variables)
+{
   $header = $variables['header'];
   $rows = $variables['rows'];
   $attributes = $variables['attributes'];
@@ -351,13 +353,11 @@ function adminimal_table($variables) {
         foreach ($colgroup as $key => $value) {
           if ($key == 'data') {
             $cols = $value;
-          }
-          else {
+          } else {
             $attributes[$key] = $value;
           }
         }
-      }
-      else {
+      } else {
         $cols = $colgroup;
       }
 
@@ -369,8 +369,7 @@ function adminimal_table($variables) {
           $output .= ' <col' . drupal_attributes($col) . ' />';
         }
         $output .= " </colgroup>\n";
-      }
-      else {
+      } else {
         $output .= ' <colgroup' . drupal_attributes($attributes) . " />\n";
       }
     }
@@ -382,8 +381,7 @@ function adminimal_table($variables) {
     foreach ($header as $header_cell) {
       if (is_array($header_cell)) {
         $header_count += isset($header_cell['colspan']) ? $header_cell['colspan'] : 1;
-      }
-      else {
+      } else {
         ++$header_count;
       }
     }
@@ -402,12 +400,11 @@ function adminimal_table($variables) {
     $output .= (count($rows) ? ' <thead><tr>' : ' <tr>');
     foreach ($header as $cell) {
       $cell = tablesort_header($cell, $header, $ts);
-      $output .= _theme_table_cell($cell, TRUE);
+      $output .= _theme_table_cell($cell, true);
     }
     // Using ternary operator to close the tags based on whether or not there are rows
     $output .= (count($rows) ? " </tr></thead>\n" : "</tr>\n");
-  }
-  else {
+  } else {
     $ts = array();
   }
 
@@ -420,20 +417,28 @@ function adminimal_table($variables) {
     );
     $class = 'even';
     foreach ($rows as $number => $row) {
+      if (!empty($row)) {
+        if (!empty($row[1])) {
+          if (!empty($row[1]['data'])) {
+            if (strpos($row[1]['data'], 'admin/structure/menu/manage/main-menu') == true) {
+              continue;
+            }
+          }
+        }
+      }
       // Check if we're dealing with a simple or complex row
       if (isset($row['data'])) {
         $cells = $row['data'];
-        $no_striping = isset($row['no_striping']) ? $row['no_striping'] : FALSE;
+        $no_striping = isset($row['no_striping']) ? $row['no_striping'] : false;
 
         // Set the attributes array and exclude 'data' and 'no_striping'.
         $attributes = $row;
         unset($attributes['data']);
         unset($attributes['no_striping']);
-      }
-      else {
+      } else {
         $cells = $row;
         $attributes = array();
-        $no_striping = FALSE;
+        $no_striping = false;
       }
       if (count($cells)) {
         // Add odd/even class
@@ -459,60 +464,60 @@ function adminimal_table($variables) {
   $output .= "</div>\n";
   return $output;
 }
-function adminimal_select($variables) {
-    $element = $variables['element'];
-    if (!empty($element['#bundle'])) {
-        if ($element['#bundle'] == 'curriculum') {
-            if ($element['#name'] == 'field_school_selections[und]') {
-                if (isset($element['#options']['catering'])) {
-                    unset($element['#options']['catering']);
-                }
-            }
+function adminimal_select($variables)
+{
+  $element = $variables['element'];
+  if (!empty($element['#bundle'])) {
+    if ($element['#bundle'] == 'curriculum') {
+      if ($element['#name'] == 'field_school_selections[und]') {
+        if (isset($element['#options']['catering'])) {
+          unset($element['#options']['catering']);
         }
+      }
     }
-    element_set_attributes($element, array(
-        'id',
-        'name',
-        'size',
-    ));
-    _form_set_class($element, array(
-        'form-select',
-    ));
-    return '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_options($element) . '</select>';
+  }
+  element_set_attributes($element, array(
+    'id',
+    'name',
+    'size',
+  ));
+  _form_set_class($element, array(
+    'form-select',
+  ));
+  return '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_options($element) . '</select>';
 }
-function adminimal_textfield($variables){
-    $element = $variables['element'];
-    $element['#attributes']['type'] = 'text';
-    element_set_attributes($element, array(
-        'id',
-        'name',
-        'value',
-        'size',
-        'maxlength',
-    ));
-    _form_set_class($element, array(
-        'form-text',
-    ));
-    $extra = '';
-    if ($element['#autocomplete_path'] && !empty($element['#autocomplete_input'])) {
-        drupal_add_library('system', 'drupal.autocomplete');
-        $element['#attributes']['class'][] = 'form-autocomplete';
-        $attributes = array(
-
-        );
-        $attributes['type'] = 'hidden';
-        $attributes['id'] = $element['#autocomplete_input']['#id'];
-        $attributes['value'] = $element['#autocomplete_input']['#url_value'];
-        $attributes['disabled'] = 'disabled';
-        $attributes['class'][] = 'autocomplete';
-        $extra = '<input' . drupal_attributes($attributes) . ' />';
+function adminimal_textfield($variables)
+{
+  $element = $variables['element'];
+  $element['#attributes']['type'] = 'text';
+  element_set_attributes($element, array(
+    'id',
+    'name',
+    'value',
+    'size',
+    'maxlength',
+  ));
+  _form_set_class($element, array(
+    'form-text',
+  ));
+  $extra = '';
+  if ($element['#autocomplete_path'] && !empty($element['#autocomplete_input'])) {
+    drupal_add_library('system', 'drupal.autocomplete');
+    $element['#attributes']['class'][] = 'form-autocomplete';
+    $attributes = array();
+    $attributes['type'] = 'hidden';
+    $attributes['id'] = $element['#autocomplete_input']['#id'];
+    $attributes['value'] = $element['#autocomplete_input']['#url_value'];
+    $attributes['disabled'] = 'disabled';
+    $attributes['class'][] = 'autocomplete';
+    $extra = '<input' . drupal_attributes($attributes) . ' />';
+  }
+  if (!empty($element['#field_name'])) {
+    if ($element['#field_name'] == 'field_phone_number') {
+      $element['#attributes']['autocomplete'] = 'off';
     }
-    if(!empty($element['#field_name'])) {
-        if ($element['#field_name'] == 'field_phone_number') {
-            $element['#attributes']['autocomplete'] = 'off';
-        }
-    }
-    $output = '<input' . drupal_attributes($element['#attributes']) . ' />';
+  }
+  $output = '<input' . drupal_attributes($element['#attributes']) . ' />';
 
-    return $output . $extra;
+  return $output . $extra;
 }
