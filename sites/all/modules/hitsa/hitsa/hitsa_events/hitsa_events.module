@@ -662,7 +662,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $start_date = !empty($event->event_date['und'][0]['value']) ? $event->event_date['und'][0]['value'] : null;
         $end_date = !empty($event->event_date['und'][0]['value2']) ? $event->event_date['und'][0]['value2'] : null;
         $start_time_hours = date('H:i', $start_date);
-        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '01:15') ? t('Time') .': '. $start_time_hours : null;
+        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '01:15') ?'<span>'. t('Time') .': '. $start_time_hours.',</span>' : null;
 
         if ($type == 'training') {
             $time_hours_minutes = '<span class="before-calendar">' . date('j.m', $start_date) . ' - ' . date('j.m', $end_date) . '</span>';
@@ -686,7 +686,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
             $location_ready = '';
             foreach ($locations as $location) {
                 if (empty($location_ready)) {
-                    $location_ready = t('Location') . ': ' . $location;
+                    $location_ready = '<span>'.t('Location') . ': ' . $location.',</span>';
                 } else {
                     $location_ready .= ', ' . $location;
                 }
@@ -762,9 +762,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '</a>';
         $output .= '<div class="object-footer">';
         if ($type != 'training') {
-            $output .= (!empty($location_ready)) ? $location_ready . ', ' : '';
+            $output .= (!empty($location_ready)) ? $location_ready . ' ' : '';
         } else {
-            $output .= (!empty($location_ready)) ? $location_ready . ', ' : '';
+            $output .= (!empty($location_ready)) ? $location_ready . ' ' : '';
         }
         $output .= (!empty($time_hours_minutes_all)) ? $time_hours_minutes_all . ' ' : '';
         $output .= (!empty($time_hours_minutes)) ? $time_hours_minutes . '' : '';
