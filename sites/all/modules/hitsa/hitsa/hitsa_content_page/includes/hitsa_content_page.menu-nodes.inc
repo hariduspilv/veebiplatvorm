@@ -29,8 +29,8 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
         'weight' => 0,
       ),
       // Madis
-      */
     ),
+      */
     array(
       'title' => array('et' => 'Vastuvõtu tingimused ja kord', 'ru' => 'Условия и порядок приема', 'en' => 'Admission terms and procedure'),
       'menu' => array(
@@ -63,8 +63,9 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
         'weight' => 4,
       ),
       // Madis
-      */
     ),
+
+      */
     array(
       'title' => array('et' => 'Vastuvõtu ajakava', 'ru' => 'График приема', 'en' => 'Admission schedule'),
       'menu' => array(
@@ -107,8 +108,9 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
         'weight' => 3,
       ),
       // Madis
-      */
+      
     ),
+    */
     array(
       'title' => array('et' => 'Konsultatsiooniajad', 'ru' => 'Время консультаций', 'en' => 'Consultation times'),
       'menu' => array(
@@ -469,8 +471,8 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'weight' => 0,
       ),
       // Madis
-    */
-    ),
+   
+    ), */
     array(
       'title' => array('et' => 'Tunniplaan', 'ru' => 'Расписание', 'en' => 'Timetable'),
       'menu' => array(
@@ -535,8 +537,9 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'weight' => 8,
       ),
       // Madis
-      */
+      
     ),
+    */
     // Koolielu
     array(
       'title' => array('et' => 'Kodukord', 'ru' => 'Внутренний распорядок', 'en' => 'Rules of Procedure'),
@@ -656,8 +659,9 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'weight' => 4,
       ),
       'cp_type' => 'cp_tabbed',
-      */
+      
     ),
+    */
     // Teenused
     /* Added through custom code */
     // Meie koolist

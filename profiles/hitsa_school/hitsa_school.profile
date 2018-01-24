@@ -36,6 +36,7 @@ function hitsa_school_install_tasks() {
 }
 
 function school_type_form($form, &$form_state) {
+  $form = array();
   $form['school_type'] = array(
     '#type' => 'radios',
     '#title' => st('School type'),
