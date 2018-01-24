@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * See moodul loob sündmuste sisutüübi ja selle väljad
@@ -7,47 +8,46 @@
 function hitsa_events_install()
 {
     //Defineerime ära nimed, sisutüüp/sõnastik
-    $site_default_language = language_default();
-    $voc_machine_name = 'hitsa_event_tags'; //Sõnastiku masina nimi
-    $voc_machine_name_locations = 'hitsa_locations'; //Sündmuse toimumise asukoht masina nimi
-    $voc_name = st('Hitsa events tags'); //Sõnastiku masina nimi
-    $voc_name_locations = st('Hitsa event locations'); //Sündmuse toimumise asukoht kuvatav nimi
-    $cont_name = st('Calendar event'); //Sisutüübi välja kuvatav nimi
-    $cont_type = 'event'; //Sisutüübi masinnimi
-    variable_set('school_type', 'college');
-    $school_type = variable_get('school_type');
-    variable_set('school_type_label', 'Semestrid');
-    $school_type_label = variable_get('school_type_label');
-    $time_period_type = 'time_periods';
-    $time_period_type_label = 'Õpperperiood';
+  $site_default_language = language_default();
+  $voc_machine_name = 'hitsa_event_tags'; //Sõnastiku masina nimi
+  $voc_machine_name_locations = 'hitsa_locations'; //Sündmuse toimumise asukoht masina nimi
+  $voc_name = st('Hitsa events tags'); //Sõnastiku masina nimi
+  $voc_name_locations = st('Hitsa event locations'); //Sündmuse toimumise asukoht kuvatav nimi
+  $cont_name = st('Calendar event'); //Sisutüübi välja kuvatav nimi
+  $cont_type = 'event'; //Sisutüübi masinnimi
+  $school_type = variable_get('hitsa_school_type');
+  $school_type_label = variable_get('school_type_label');
+  $time_period_type = 'time_periods';
+  $time_period_type_label = 'Õpperperiood';
     //Loome vastava sisutüübi
-    $types = array(
-        array(
-            'type' => $cont_type,
-            'name' => $cont_name,
-            'base' => 'node_content',
-            'description' => st("One calendar event"),
-            'default_language' => $site_default_language->language,
-            'custom' => 1,
-            'modified' => 1,
-            'locked' => 0,
-        ),
-    );
+  $types = array(
+    array(
+      'type' => $cont_type,
+      'name' => $cont_name,
+      'base' => 'node_content',
+      'description' => st("One calendar event"),
+      'default_language' => $site_default_language->language,
+      'custom' => 1,
+      'modified' => 1,
+      'locked' => 0,
+    ),
+  );
 
-    foreach ($types as $type) {
-        $type = node_type_set_defaults($type);
-        node_type_save($type);
-    }
+  foreach ($types as $type) {
+    $type = node_type_set_defaults($type);
+    node_type_save($type);
+  }
 
-    hitsa_events_add_custom_vocabularies();
-    hitsa_events_add_taxonomy_fields();
-    hitsa_events_add_fields();
-    hitsa_events_make_fields_conditional();
+  hitsa_events_add_custom_vocabularies();
+  hitsa_events_add_taxonomy_fields();
+  hitsa_events_add_fields();
+  hitsa_events_make_fields_conditional();
+  hitsa_events_create_menu_links($school_type);
     //  The machine name of the field can contain only lowercase alphanumeric characters and underscores.
 
-    /**
-     * Loome enne väljade loomist vastavad taksonoomiad
-     */
+  /**
+   * Loome enne väljade loomist vastavad taksonoomiad
+   */
 
 
     //Kirjutame sõnastikku vastavad terminid
@@ -55,13 +55,13 @@ function hitsa_events_install()
 // Loome vastavad väljad sisutüübile.
     // $hitsa_events_create_fields = hitsa_events_create_fields($cont_type);
 // Lisame kalendrielementidele kindla vaate
-    $settings = field_bundle_settings('node', $cont_type);
-    $settings['view_modes']['hitsa_event']['custom_settings'] = TRUE;
-    field_bundle_settings('node', $cont_type, $settings);
+  $settings = field_bundle_settings('node', $cont_type);
+  $settings['view_modes']['hitsa_event']['custom_settings'] = true;
+  field_bundle_settings('node', $cont_type, $settings);
     ///Lubame sisutüübi internalization tõlkimise
-    variable_set('language_content_type_' . $cont_type, TRANSLATION_ENABLED);
+  variable_set('language_content_type_' . $cont_type, TRANSLATION_ENABLED);
 
-    variable_set('i18n_node_options_'.$cont_type, array('required'));
+  variable_set('i18n_node_options_' . $cont_type, array('required'));
 }
 
 /**
@@ -69,28 +69,28 @@ function hitsa_events_install()
  */
 function hitsa_events_uninstall()
 {
-    $content_type = 'event';
-    $sql = db_select('node', 'n');
-    $sql->condition('n.type', $content_type, '=');
-    $sql->fields('n');
-    $result = $sql->execute();
-    $nids = array();
-    foreach ($result as $row) {
-        $nids[] = $row->nid;
-    }
-    if (!empty($nids)) {
-        node_delete_multiple($nids);
-    }
+  $content_type = 'event';
+  $sql = db_select('node', 'n');
+  $sql->condition('n.type', $content_type, '=');
+  $sql->fields('n');
+  $result = $sql->execute();
+  $nids = array();
+  foreach ($result as $row) {
+    $nids[] = $row->nid;
+  }
+  if (!empty($nids)) {
+    node_delete_multiple($nids);
+  }
     //Kontrollime enne sisutyybu kustutamist, kas eksisteerib.
-    if (node_type_load($content_type)) {
-        node_type_delete($content_type);
-    }
+  if (node_type_load($content_type)) {
+    node_type_delete($content_type);
+  }
 
-    hitsa_events_delete_custom_node_fields();
+  hitsa_events_delete_custom_node_fields();
     //Kustutame tolke voimaluse
-    variable_del('language_content_type_' . $cont_type);
-    hitsa_events_delete_custom_vocabularies();
-    hitsa_events_delete_vocabulary_fields();
+  variable_del('language_content_type_' . $cont_type);
+  hitsa_events_delete_custom_vocabularies();
+  hitsa_events_delete_vocabulary_fields();
 }
 
 /**
@@ -100,393 +100,394 @@ function hitsa_events_disable()
 {
 
     // Disable content type MyContentType
-    hitsa_events_disable_content_type('event');
+  hitsa_events_disable_content_type('event');
 
 
     //Activation message
-    drupal_set_message(t('Events are now disabled.'));
+  drupal_set_message(t('Events are now disabled.'));
 }
 
-function hitsa_events_add_taxonomy_fields($name = NULL)
+function hitsa_events_add_taxonomy_fields($name = null)
 {
 
-    foreach (hitsa_events_add_custom_taxonomy_field_base($name) as $field) {
-        field_create_field($field);
-    }
-    foreach (hitsa_events_add_custom_taxonomy_field_instance($name) as $field_instance) {
-        field_create_instance($field_instance);
-    }
+  foreach (hitsa_events_add_custom_taxonomy_field_base($name) as $field) {
+    field_create_field($field);
+  }
+  foreach (hitsa_events_add_custom_taxonomy_field_instance($name) as $field_instance) {
+    field_create_instance($field_instance);
+  }
 
 }
 
-function hitsa_events_add_custom_taxonomy_field_base($name = NULL)
+function hitsa_events_add_custom_taxonomy_field_base($name = null)
 {
-    $field_bases = array();
+  $field_bases = array();
 
     // Exported field_base: 'field_time_period_dates'.
-    $field_bases['field_time_period_dates'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_time_period_dates',
-        'indexes' => array(),
-        'locked' => 0,
-        'module' => 'date',
-        'settings' => array(
-            'cache_count' => 4,
-            'cache_enabled' => 0,
-            'granularity' => array(
-                'day' => 'day',
-                'hour' => 0,
-                'minute' => 0,
-                'month' => 'month',
-                'second' => 0,
-                'year' => 'year',
-            ),
-            'timezone_db' => '',
-            'todate' => 'optional',
-            'tz_handling' => 'none',
-        ),
-        'translatable' => 0,
-        'type' => 'datestamp',
-    );
-    $field_bases['field_time_period_dates_info'] = array(
-        'active' => 1,
-        'cardinality' => 1,
-        'deleted' => 0,
-        'entity_types' => array(),
-        'field_name' => 'field_time_period_dates_info',
-        'indexes' => array(),
-        'locked' => 0,
-        'module' => 'date',
-        'settings' => array(
-            'cache_count' => 4,
-            'cache_enabled' => 0,
-            'granularity' => array(
-                'day' => 'day',
-                'hour' => 0,
-                'minute' => 0,
-                'month' => 'month',
-                'second' => 0,
-                'year' => 'year',
-            ),
-            'timezone_db' => '',
-            'todate' => 'optional',
-            'tz_handling' => 'none',
-        ),
-        'translatable' => 0,
-        'type' => 'datestamp',
-    );
+  $field_bases['field_time_period_dates'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_time_period_dates',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'date',
+    'settings' => array(
+      'cache_count' => 4,
+      'cache_enabled' => 0,
+      'granularity' => array(
+        'day' => 'day',
+        'hour' => 0,
+        'minute' => 0,
+        'month' => 'month',
+        'second' => 0,
+        'year' => 'year',
+      ),
+      'timezone_db' => '',
+      'todate' => 'optional',
+      'tz_handling' => 'none',
+    ),
+    'translatable' => 0,
+    'type' => 'datestamp',
+  );
+  $field_bases['field_time_period_dates_info'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_time_period_dates_info',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'date',
+    'settings' => array(
+      'cache_count' => 4,
+      'cache_enabled' => 0,
+      'granularity' => array(
+        'day' => 'day',
+        'hour' => 0,
+        'minute' => 0,
+        'month' => 'month',
+        'second' => 0,
+        'year' => 'year',
+      ),
+      'timezone_db' => '',
+      'todate' => 'optional',
+      'tz_handling' => 'none',
+    ),
+    'translatable' => 0,
+    'type' => 'datestamp',
+  );
 
-    return $field_bases;
+  return $field_bases;
 }
 
 function hitsa_events_add_custom_taxonomy_field_instance($name)
 {
-    $field_instances = array();
+  $field_instances = array();
 
     // Exported field_instance:
     // 'taxonomy_term-time_periods-field_time_period_dates'.
-    $field_instances['taxonomy_term-time_periods-field_time_period_dates'] = array(
-        'bundle' => 'time_periods',
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'date',
-                'settings' => array(
-                    'format_type' => 'long',
-                    'fromto' => 'both',
-                    'multiple_from' => '',
-                    'multiple_number' => '',
-                    'multiple_to' => '',
-                    'show_remaining_days' => FALSE,
-                ),
-                'type' => 'date_default',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'taxonomy_term',
-        'field_name' => 'field_time_period_dates',
-        'label' => 'Time period dates',
-        'required' => FALSE,
+  $field_instances['taxonomy_term-time_periods-field_time_period_dates'] = array(
+    'bundle' => 'time_periods',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
         'settings' => array(
-            'default_value' => 'now',
-            'default_value2' => 'now',
-            'default_value_code' => '',
-            'default_value_code2' => '',
-            'user_register_form' => FALSE,
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => false,
         ),
-        'widget' => array(
-            'module' => 'date',
-            'settings' => array(
-                'increment' => 15,
-                'input_format' => 'm/d/Y - H:i:s',
-                'input_format_custom' => '',
-                'label_position' => 'above',
-                'text_parts' => array(),
-                'year_range' => '-3:+3',
-            ),
-            'type' => 'date_popup',
-            'weight' => 1,
-        ),
-    );
+        'type' => 'date_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_time_period_dates',
+    'label' => 'Time period dates',
+    'required' => false,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'now',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'm/d/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 1,
+    ),
+  );
 
-    $field_instances['taxonomy_term-time_periods-field_time_period_dates_info'] = array(
-        'bundle' => 'time_period_info',
-        'deleted' => 0,
-        'description' => '',
-        'display' => array(
-            'default' => array(
-                'label' => 'above',
-                'module' => 'date',
-                'settings' => array(
-                    'format_type' => 'long',
-                    'fromto' => 'both',
-                    'multiple_from' => '',
-                    'multiple_number' => '',
-                    'multiple_to' => '',
-                    'show_remaining_days' => FALSE,
-                ),
-                'type' => 'date_default',
-                'weight' => 0,
-            ),
-        ),
-        'entity_type' => 'taxonomy_term',
-        'field_name' => 'field_time_period_dates_info',
-        'label' => 'Time period dates',
-        'required' => FALSE,
+  $field_instances['taxonomy_term-time_periods-field_time_period_dates_info'] = array(
+    'bundle' => 'time_period_info',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
         'settings' => array(
-            'default_value' => 'now',
-            'default_value2' => '',
-            'default_value_code' => '',
-            'default_value_code2' => '',
-            'user_register_form' => FALSE,
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => false,
         ),
-        'widget' => array(
-            'module' => 'date',
-            'settings' => array(
-                'increment' => 15,
-                'input_format' => 'm/d/Y - H:i:s',
-                'input_format_custom' => '',
-                'label_position' => 'above',
-                'text_parts' => array(),
-                'year_range' => '-3:+3',
-            ),
-            'type' => 'date_popup',
-            'weight' => 1,
-        ),
-    );
+        'type' => 'date_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_time_period_dates_info',
+    'label' => 'Time period dates',
+    'required' => false,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => '',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => false,
+    ),
+    'widget' => array(
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'm/d/Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 1,
+    ),
+  );
 
     // Translatables
     // Included for use with string extractors like potx.
-    t('Time period dates');
+  t('Time period dates');
 
-    return $field_instances;
+  return $field_instances;
 }
 
 function hitsa_events_delete_custom_vocabularies()
 {
-    foreach (_hitsa_events_vocabularies() as $v) {
-        if (!empty($v['vocabulary'])) {
-            $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-            if (!empty($vocab)) {
-                if (!empty($vocab->vid)) {
-                    taxonomy_vocabulary_delete($vocab->vid);
-                }
-            }
+  foreach (_hitsa_events_vocabularies() as $v) {
+    if (!empty($v['vocabulary'])) {
+      $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+      if (!empty($vocab)) {
+        if (!empty($vocab->vid)) {
+          taxonomy_vocabulary_delete($vocab->vid);
         }
+      }
     }
+  }
 }
 
 function _hitsa_events_vocabularies()
 {
 
-    $vocabularies = array();
+  $vocabularies = array();
 
-    $vocabularies['hitsa_event_tags'] = array(
-        'vocabulary' => (object)array(
-            'name' => st('Hitsa event tags'),
-            'description' => st('Here are tags that are on events'),
-            'machine_name' => 'hitsa_event_tags',
-            'language' => 'und',
-            'i18n_mode' => 1,
-            'rdf_mapping' => array(
-                'rdftype' => array(
-                    0 => 'skos:ConceptScheme',
-                ),
-                'name' => array(
-                    'predicates' => array(
-                        0 => 'dc:title',
-                    ),
-                ),
-                'description' => array(
-                    'predicates' => array(
-                        0 => 'rdfs:comment',
-                    ),
-                ),
-            ),
+  $vocabularies['hitsa_event_tags'] = array(
+    'vocabulary' => (object)array(
+      'name' => st('Hitsa event tags'),
+      'description' => st('Here are tags that are on events'),
+      'machine_name' => 'hitsa_event_tags',
+      'language' => 'und',
+      'i18n_mode' => 1,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
         ),
-        'terms' => array(
-            (object)array(
-                'name' => t('Studies'),
-            ),
-            (object)array(
-                'name' => t('Hobby activity'),
-            ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
         ),
-    );
-    $vocabularies['time_periods'] = array(
-        'vocabulary' => (object)array(
-            'name' => st('Time periods'),
-            'description' => st('Time periods what is attached to events'),
-            'machine_name' => 'time_periods',
-            'language' => 'und',
-            'i18n_mode' => 1,
-            'rdf_mapping' => array(
-                'rdftype' => array(
-                    0 => 'skos:ConceptScheme',
-                ),
-                'name' => array(
-                    'predicates' => array(
-                        0 => 'dc:title',
-                    ),
-                ),
-                'description' => array(
-                    'predicates' => array(
-                        0 => 'rdfs:comment',
-                    ),
-                ),
-            ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
         ),
-    );
-    $vocabularies['hitsa_locations'] = array(
-        'vocabulary' => (object)array(
-            'name' => st('Event locations'),
-            'description' => st('Here users can enter places to use on page'),
-            'machine_name' => 'hitsa_locations',
-            'language' => 'und',
-            'i18n_mode' => 1,
-            'rdf_mapping' => array(
-                'rdftype' => array(
-                    0 => 'skos:ConceptScheme',
-                ),
-                'name' => array(
-                    'predicates' => array(
-                        0 => 'dc:title',
-                    ),
-                ),
-                'description' => array(
-                    'predicates' => array(
-                        0 => 'rdfs:comment',
-                    ),
-                ),
-            ),
+      ),
+    ),
+    'terms' => array(
+      (object)array(
+        'name' => t('Studies'),
+      ),
+      (object)array(
+        'name' => t('Hobby activity'),
+      ),
+    ),
+  );
+  $vocabularies['time_periods'] = array(
+    'vocabulary' => (object)array(
+      'name' => st('Time periods'),
+      'description' => st('Time periods what is attached to events'),
+      'machine_name' => 'time_periods',
+      'language' => 'und',
+      'i18n_mode' => 1,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
         ),
-    );
-    $vocabularies['time_period_info'] = array(
-        'vocabulary' => (object)array(
-            'name' => st('Time period info'),
-            'description' => st('Time period info that appears over the page'),
-            'machine_name' => 'time_period_info',
-            'language' => 'und',
-            'i18n_mode' => 1,
-            'rdf_mapping' => array(
-                'rdftype' => array(
-                    0 => 'skos:ConceptScheme',
-                ),
-                'name' => array(
-                    'predicates' => array(
-                        0 => 'dc:title',
-                    ),
-                ),
-                'description' => array(
-                    'predicates' => array(
-                        0 => 'rdfs:comment',
-                    ),
-                ),
-            ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
         ),
-    );
-    $vocabularies['training_tags'] = array(
-        'vocabulary' => (object)array(
-            'name' => 'Training tags',
-            'machine_name' => 'training_tags',
-            'description' => '',
-            'hierarchy' => 0,
-            'module' => 'taxonomy',
-            'weight' => 0,
-            'language' => 'und',
-            'i18n_mode' => 1,
-            'rdf_mapping' => array(
-                'rdftype' => array(
-                    0 => 'skos:ConceptScheme',
-                ),
-                'name' => array(
-                    'predicates' => array(
-                        0 => 'dc:title',
-                    ),
-                ),
-                'description' => array(
-                    'predicates' => array(
-                        0 => 'rdfs:comment',
-                    ),
-                ),
-            ),
-        )
-    );
-    return $vocabularies;
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
+    ),
+  );
+  $vocabularies['hitsa_locations'] = array(
+    'vocabulary' => (object)array(
+      'name' => st('Event locations'),
+      'description' => st('Here users can enter places to use on page'),
+      'machine_name' => 'hitsa_locations',
+      'language' => 'und',
+      'i18n_mode' => 1,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
+    ),
+  );
+  $vocabularies['time_period_info'] = array(
+    'vocabulary' => (object)array(
+      'name' => st('Time period info'),
+      'description' => st('Time period info that appears over the page'),
+      'machine_name' => 'time_period_info',
+      'language' => 'und',
+      'i18n_mode' => 1,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
+    ),
+  );
+  $vocabularies['training_tags'] = array(
+    'vocabulary' => (object)array(
+      'name' => 'Training tags',
+      'machine_name' => 'training_tags',
+      'description' => '',
+      'hierarchy' => 0,
+      'module' => 'taxonomy',
+      'weight' => 0,
+      'language' => 'und',
+      'i18n_mode' => 1,
+      'rdf_mapping' => array(
+        'rdftype' => array(
+          0 => 'skos:ConceptScheme',
+        ),
+        'name' => array(
+          'predicates' => array(
+            0 => 'dc:title',
+          ),
+        ),
+        'description' => array(
+          'predicates' => array(
+            0 => 'rdfs:comment',
+          ),
+        ),
+      ),
+    )
+  );
+  return $vocabularies;
 
 }
 
 function hitsa_events_add_custom_vocabularies()
 {
     // Create vocabulary
-    foreach (_hitsa_events_vocabularies() as $v) {
-        taxonomy_vocabulary_save($v['vocabulary']);
+  foreach (_hitsa_events_vocabularies() as $v) {
+    taxonomy_vocabulary_save($v['vocabulary']);
 
-        $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
-        if (!empty($v['terms']) && $vocab) {
+    $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
+    if (!empty($v['terms']) && $vocab) {
             // Add generic terms
-            foreach ($v['terms'] as $term) {
-                $term->vid = $vocab->vid;
-                taxonomy_term_save($term);
-            }
-        }
+      foreach ($v['terms'] as $term) {
+        $term->vid = $vocab->vid;
+        taxonomy_term_save($term);
+      }
     }
+  }
 
 }
 
 
 function hitsa_events_delete_vocabulary_fields()
 {
-    foreach (array_keys(hitsa_events_add_custom_taxonomy_field_base()) as $field) {
+  foreach (array_keys(hitsa_events_add_custom_taxonomy_field_base()) as $field) {
        // field_delete_field($field);
-    }
-    $instances = field_info_instances('taxonomy_term', 'catering_provider');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
+  }
+  $instances = field_info_instances('taxonomy_term', 'catering_provider');
+  foreach ($instances as $instance_name => $field_instance) {
+    field_delete_instance($field_instance);
+  }
 }
 
 function hitsa_events_add_fields()
 {
-    foreach (_hitsa_events_add_field_bases() as $field) {
-        $field_check = field_info_field($field['field_name']);
-        if (empty($field_check)) {
-            field_create_field($field);
-        }
+  foreach (_hitsa_events_add_field_bases() as $field) {
+    $field_check = field_info_field($field['field_name']);
+    if (empty($field_check)) {
+      field_create_field($field);
     }
-    foreach (_hitsa_events_add_field_instances() as $field_instance) {
-        $field_instance['entity_type'] = 'node';
-        $field_instance['bundle'] = 'event';
-        field_create_instance($field_instance);
-    }
+  }
+  foreach (_hitsa_events_add_field_instances() as $field_instance) {
+    $field_instance['entity_type'] = 'node';
+    $field_instance['bundle'] = 'event';
+    field_create_instance($field_instance);
+  }
 }
 
-function _hitsa_events_add_field_bases(){
+function _hitsa_events_add_field_bases()
+{
   $field_bases = array();
 
   // Exported field_base: 'body'.
@@ -506,7 +507,7 @@ function _hitsa_events_add_field_bases(){
     'locked' => 0,
     'module' => 'text',
     'settings' => array(
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
     ),
     'translatable' => 0,
     'type' => 'text_with_summary',
@@ -527,7 +528,7 @@ function _hitsa_events_add_field_bases(){
       'add_row_localization_source' => 'Add another item',
       'cache_count' => 4,
       'cache_enabled' => 0,
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'granularity' => array(
         'day' => 'day',
         'hour' => 'hour',
@@ -566,7 +567,7 @@ function _hitsa_events_add_field_bases(){
           'parent' => 0,
         ),
       ),
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'options_list_callback' => 'i18n_taxonomy_allowed_values',
     ),
     'translatable' => 1,
@@ -594,7 +595,7 @@ function _hitsa_events_add_field_bases(){
       ),
       'allowed_values_function' => '',
       'allowed_values_no_localization' => 0,
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
     ),
     'translatable' => 0,
     'type' => 'list_text',
@@ -616,7 +617,7 @@ function _hitsa_events_add_field_bases(){
     'module' => 'entityreference',
     'settings' => array(
       'add_row_localization_source' => 'Add another item',
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'handler' => 'base',
       'handler_settings' => array(
         'behaviors' => array(
@@ -651,7 +652,7 @@ function _hitsa_events_add_field_bases(){
       'add_row_localization_source' => 'Add another item',
       'cache_count' => 4,
       'cache_enabled' => 0,
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'granularity' => array(
         'day' => 'day',
         'hour' => 0,
@@ -681,7 +682,7 @@ function _hitsa_events_add_field_bases(){
     'settings' => array(
       'add_row_localization_source' => 'Add another item',
       'decimal_separator' => ',',
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
     ),
     'translatable' => 0,
     'type' => 'number_float',
@@ -702,7 +703,7 @@ function _hitsa_events_add_field_bases(){
     'locked' => 0,
     'module' => 'entityreference',
     'settings' => array(
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'handler' => 'base',
       'handler_settings' => array(
         'behaviors' => array(
@@ -745,7 +746,7 @@ function _hitsa_events_add_field_bases(){
           'parent' => 0,
         ),
       ),
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'options_list_callback' => 'i18n_taxonomy_allowed_values',
     ),
     'translatable' => 1,
@@ -773,7 +774,7 @@ function _hitsa_events_add_field_bases(){
           'parent' => 0,
         ),
       ),
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'options_list_callback' => 'i18n_taxonomy_allowed_values',
     ),
     'translatable' => 1,
@@ -783,13 +784,14 @@ function _hitsa_events_add_field_bases(){
   return $field_bases;
 }
 
-function _hitsa_events_add_field_instances(){
+function _hitsa_events_add_field_instances()
+{
   $field_instances = array();
 
   // Exported field_instance: 'node-event-body'.
   $field_instances['node-event-body'] = array(
     'bundle' => 'event',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -825,9 +827,9 @@ function _hitsa_events_add_field_instances(){
     'required' => 0,
     'settings' => array(
       'display_summary' => 1,
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'text_processing' => 1,
-      'user_register_form' => FALSE,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 1,
@@ -842,7 +844,7 @@ function _hitsa_events_add_field_instances(){
   );
 
    // Exported field_instance: 'node-event-event_date'.
-   $field_instances['node-event-event_date'] = array(
+  $field_instances['node-event-event_date'] = array(
     'bundle' => 'event',
     'deleted' => 0,
     'description' => 'Date period when event takes place
@@ -857,7 +859,7 @@ When user enter 01:15 then time will not appear in calendar',
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
-          'show_remaining_days' => FALSE,
+          'show_remaining_days' => false,
         ),
         'type' => 'date_default',
         'weight' => 1,
@@ -884,8 +886,8 @@ When user enter 01:15 then time will not appear in calendar',
       'default_value2' => 'sync',
       'default_value_code' => 'Today 01:15',
       'default_value_code2' => '',
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 1,
@@ -904,11 +906,10 @@ When user enter 01:15 then time will not appear in calendar',
     ),
   );
 
-
   // Exported field_instance: 'node-event-event_tags'.
   $field_instances['node-event-event_tags'] = array(
     'bundle' => 'event',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -937,8 +938,8 @@ When user enter 01:15 then time will not appear in calendar',
     'label' => 'Tags',
     'required' => 0,
     'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 1,
@@ -985,8 +986,8 @@ When user enter 01:15 then time will not appear in calendar',
     'label' => 'Event type',
     'required' => 0,
     'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 1,
@@ -1000,7 +1001,7 @@ When user enter 01:15 then time will not appear in calendar',
   // Exported field_instance: 'node-event-field_registration_form'.
   $field_instances['node-event-field_registration_form'] = array(
     'bundle' => 'event',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1008,8 +1009,8 @@ When user enter 01:15 then time will not appear in calendar',
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
+          'bypass_access' => false,
+          'link' => false,
         ),
         'type' => 'entityreference_label',
         'weight' => 12,
@@ -1032,8 +1033,8 @@ When user enter 01:15 then time will not appear in calendar',
     'label' => 'Registration form',
     'required' => 0,
     'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 1,
@@ -1052,7 +1053,7 @@ When user enter 01:15 then time will not appear in calendar',
   // Exported field_instance: 'node-event-field_training_cost'.
   $field_instances['node-event-field_training_cost'] = array(
     'bundle' => 'event',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1061,7 +1062,7 @@ When user enter 01:15 then time will not appear in calendar',
         'module' => 'number',
         'settings' => array(
           'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
+          'prefix_suffix' => true,
           'scale' => 2,
           'thousand_separator' => '',
         ),
@@ -1086,12 +1087,12 @@ When user enter 01:15 then time will not appear in calendar',
     'label' => 'Training cost',
     'required' => 0,
     'settings' => array(
-      'entity_translation_sync' => FALSE,
+      'entity_translation_sync' => false,
       'max' => '',
       'min' => '',
       'prefix' => '',
       'suffix' => '',
-      'user_register_form' => FALSE,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 0,
@@ -1105,7 +1106,7 @@ When user enter 01:15 then time will not appear in calendar',
   // Exported field_instance: 'node-event-field_training_tags'.
   $field_instances['node-event-field_training_tags'] = array(
     'bundle' => 'event',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1113,8 +1114,8 @@ When user enter 01:15 then time will not appear in calendar',
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
+          'bypass_access' => false,
+          'link' => false,
         ),
         'type' => 'entityreference_label',
         'weight' => 7,
@@ -1139,11 +1140,11 @@ When user enter 01:15 then time will not appear in calendar',
     'settings' => array(
       'behaviors' => array(
         'taxonomy-index' => array(
-          'status' => TRUE,
+          'status' => true,
         ),
       ),
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 1,
@@ -1162,7 +1163,7 @@ When user enter 01:15 then time will not appear in calendar',
   // Exported field_instance: 'node-event-locations'.
   $field_instances['node-event-locations'] = array(
     'bundle' => 'event',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => 'Sündmuse toimumise asukoht',
     'display' => array(
@@ -1191,8 +1192,8 @@ When user enter 01:15 then time will not appear in calendar',
     'label' => 'Location',
     'required' => 0,
     'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 1,
@@ -1206,7 +1207,7 @@ When user enter 01:15 then time will not appear in calendar',
   // Exported field_instance: 'node-event-period'.
   $field_instances['node-event-period'] = array(
     'bundle' => 'event',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => 'Siin määratakse ära, millisesse semestrisse aine kuulub',
     'display' => array(
@@ -1235,8 +1236,8 @@ When user enter 01:15 then time will not appear in calendar',
     'label' => 'Time period when event takes place',
     'required' => 0,
     'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 0,
@@ -1266,7 +1267,7 @@ When user enter 01:15 then time will not appear in calendar',
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
-          'show_remaining_days' => FALSE,
+          'show_remaining_days' => false,
         ),
         'type' => 'date_default',
         'weight' => 0,
@@ -1275,14 +1276,14 @@ When user enter 01:15 then time will not appear in calendar',
     'entity_type' => 'taxonomy_term',
     'field_name' => 'field_time_period_dates',
     'label' => 'Time period dates',
-    'required' => FALSE,
+    'required' => false,
     'settings' => array(
       'default_value' => 'now',
       'default_value2' => 'now',
       'default_value_code' => '',
       'default_value_code2' => '',
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'module' => 'date',
@@ -1320,26 +1321,27 @@ When user enter 01:15 then time will not appear in calendar',
 
 function hitsa_events_delete_custom_node_fields()
 {
-    foreach (array_keys(_hitsa_events_add_field_bases()) as $field) {
+  foreach (array_keys(_hitsa_events_add_field_bases()) as $field) {
 //        field_delete_field($field);
-    }
-    $instances = field_info_instances('node', 'event');
-    foreach ($instances as $instance_name => $field_instance) {
-        field_delete_instance($field_instance);
-    }
+  }
+  $instances = field_info_instances('node', 'event');
+  foreach ($instances as $instance_name => $field_instance) {
+    field_delete_instance($field_instance);
+  }
 }
 
 function hitsa_events_make_fields_conditional()
 {
 
-    foreach (_hitsa_events_conditional_fields() as $conditional) {
+  foreach (_hitsa_events_conditional_fields() as $conditional) {
         //dpm($conditional);
-        $ids = _hitsa_events_get_field_ids($conditional['dependee'], $conditional['dependent']);
-        conditional_fields_dependency_insert($ids['dependee'], $ids['dependent'], $conditional['options']);
-    }
+    $ids = _hitsa_events_get_field_ids($conditional['dependee'], $conditional['dependent']);
+    conditional_fields_dependency_insert($ids['dependee'], $ids['dependent'], $conditional['options']);
+  }
 }
 
-function _hitsa_events_conditional_fields(){
+function _hitsa_events_conditional_fields()
+{
 
   $items = array();
 
@@ -1568,14 +1570,52 @@ function _hitsa_events_conditional_fields(){
 
 function _hitsa_events_get_field_ids($dependee, $dependent)
 {
-    $ids = array();
-    $field = field_info_instance('node', $dependee, 'event');
+  $ids = array();
+  $field = field_info_instance('node', $dependee, 'event');
 
-    $field2 = field_info_instance('node', $dependent, 'event');
+  $field2 = field_info_instance('node', $dependent, 'event');
 
-    $ids = array(
-        'dependee' => $field['id'],
-        'dependent' => $field2['id'],
+  $ids = array(
+    'dependee' => $field['id'],
+    'dependent' => $field2['id'],
+  );
+  return $ids;
+}
+function hitsa_events_create_menu_links($school_type = null)
+{
+
+  $menu_links = array();
+  if ($school_type == 2) {
+    $menu_links[] = array(
+      'link_path' => 'calendar',
+      'link_title' => 'Calendar',
+      'menu_name' => 'hitsa_main_menu',
     );
-    return $ids;
+    $menu_links[] = array(
+      'link_path' => 'training-calendar',
+      'link_title' => 'Training calendar',
+      'menu_name' => 'hitsa_main_menu',
+    );
+  }
+  $menu_links_old = menu_load_links('hitsa-main-menu');
+  foreach ($menu_links as $menu_link) {
+    if ($menu_link['link_title'] == 'Training calendar') {
+      foreach ($menu_links_old as $key => $menu_old_link) {
+        if ($menu_old_link['link_title'] == 'Student Life') {
+          $menu_link['plid'] = $menu_old_link['mlid'];
+          break;
+        }
+      }
+    }
+    elseif($menu_link['link_title'] == 'Calendar'){
+      foreach ($menu_links_old as $key => $menu_old_link) {
+        if ($menu_old_link['link_title'] == 'Studies') {
+          $menu_link['plid'] = $menu_old_link['mlid'];
+          break;
+        }
+      }
+    }
+    menu_link_save($menu_link);
+  }
+  return true;
 }

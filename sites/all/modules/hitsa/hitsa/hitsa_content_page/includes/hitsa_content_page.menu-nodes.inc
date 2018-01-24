@@ -404,6 +404,15 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       // Madis
     ),
     */
+
+    array(
+      'title' => array('et' => 'Erialad', 'ru' => 'Специальности', 'en' => 'Curriculum'),
+      'menu' => array(
+        'plid' => $main_menu_links['Admission'],
+        'weight' => 0,
+      ),
+      'cp_type' => 'cp_tabbed',
+    ),
     array(
       'title' => array('et' => 'Vastuvõtt', 'ru' => 'Прием', 'en' => 'Admission'),
       'menu' => array(
@@ -419,6 +428,15 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'weight' => 2,
       ),
       'cp_type' => 'cp_simple',
+    ),
+
+    array(
+      'title' => array('et' => 'Ettevalmistuskursused', 'ru' => 'Подготовительные курсы', 'en' => 'Preparatory courses'),
+      'menu' => array(
+        'plid' => $main_menu_links['Admission'],
+        'weight' => 3,
+      ),
+      'cp_type' => 'cp_tabbed',
     ),
     /*
     array(
@@ -521,6 +539,25 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_simple',
     ),
+    array(
+      'title' => array('et' => 'Vabaained', 'ru' => 'Факультативные предметы', 'en' => 'Elective courses'),
+      'menu' => array(
+        'plid' => $main_menu_links['Studies'],
+        'weight' => 7,
+      ),
+      'cp_type' => 'cp_tabbed',
+      // Madis
+    ),
+    array(
+      'title' => array('et' => 'Valikained', 'ru' => 'Предмет на выбор', 'en' => 'Elective subjects'),
+      'menu' => array(
+        'plid' => $main_menu_links['Studies'],
+        'weight' => 8,
+      ),
+      'cp_type' => 'cp_tabbed',
+      // Madis
+      
+    ),
     /*
     array(
       'title' => array('et' => 'Vabaained', 'ru' => 'Факультативные предметы', 'en' => 'Elective courses'),
@@ -550,6 +587,8 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       'cp_type' => 'cp_simple',
     ),
     /*
+    */
+
     array(
       'title' => array('et' => 'Majutus', 'ru' => 'Проживание', 'en' => 'Accommodation'),
       'menu' => array(
@@ -566,7 +605,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       // Madis
     ),
-    */
     array(
       'title' => array('et' => 'Raamatukogu', 'ru' => 'Библиотека', 'en' => 'Library'),
       'menu' => array(
@@ -602,6 +640,23 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       'cp_type' => 'cp_tabbed',
     ),
     */
+
+    array(
+      'title' => array('et' => 'Huvitegevused', 'ru' => 'Деятельность по интересам', 'en' => 'Hobby activities'),
+      'menu' => array(
+        'plid' => $main_menu_links['Student Life'],
+        'weight' => 5,
+      ),
+      'cp_type' => 'cp_tabbed',
+    ),
+    array(
+      'title' => array('et' => 'Sportimisvõimalused', 'ru' => 'Возможности для занятий спортом', 'en' => 'Sport facilities'),
+      'menu' => array(
+        'plid' => $main_menu_links['Student Life'],
+        'weight' => 6,
+      ),
+      'cp_type' => 'cp_tabbed',
+    ),
     array(
       'title' => array('et' => 'Nõustamine', 'ru' => 'Консультирование', 'en' => 'Counselling'),
       'menu' => array(
@@ -619,7 +674,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       // Madis
     ),
-    /*
+    
     array(
       'title' => array('et' => 'Toetused', 'ru' => 'Пособия', 'en' => 'Scholarships'),
       'menu' => array(
@@ -670,11 +725,9 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       'cp_type' => 'cp_tabbed',
       
     ),
-    */
     // Teenused
     /* Added through custom code */
     // Meie koolist
-    /*
     array(
       'title' => array('et' => 'Kooli väljaanded', 'ru' => 'Школьные издания', 'en' => 'Publications'),
       'menu' => array(
@@ -683,7 +736,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_tabbed',
     ),
-    */
     array(
       'title' => array('et' => 'Virtuaaltuur', 'ru' => 'Виртуальный тур', 'en' => 'Virtual tour'),
       'menu' => array(
@@ -756,7 +808,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_simple',
     ),
-    /*
     array(
       'title' => array('et' => 'Koostöö ja projektid', 'ru' => 'Сотрудничество', 'en' => 'Collaboration and projects'),
       'menu' => array(
@@ -765,7 +816,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_tabbed',
     ),
-    */
     array(
       'title' => array('et' => 'Vilistlased', 'ru' => 'Выпускники', 'en' => 'Graduates'),
       'menu' => array(
@@ -774,7 +824,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_simple',
     ),
-    /*
     array(
       'title' => array('et' => 'Tööpakkumised', 'ru' => 'Предложения работы', 'en' => 'Vacancies'),
       'menu' => array(
@@ -783,7 +832,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_tabbed',
     ),
-    */
     array(
       'title' => array('et' => 'Arengukava', 'ru' => 'План развития', 'en' => 'Development plan'),
       'menu' => array(

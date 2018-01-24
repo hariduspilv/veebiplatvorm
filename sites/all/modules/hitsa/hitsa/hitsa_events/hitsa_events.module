@@ -662,7 +662,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $start_date = !empty($event->event_date['und'][0]['value']) ? $event->event_date['und'][0]['value'] : null;
         $end_date = !empty($event->event_date['und'][0]['value2']) ? $event->event_date['und'][0]['value2'] : null;
         $start_time_hours = date('H:i', $start_date);
-        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '01:15') ? t('Time: ') . $start_time_hours : null;
+        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '01:15') ? t('Time') .': '. $start_time_hours : null;
 
         if ($type == 'training') {
             $time_hours_minutes = '<span class="before-calendar">' . date('j.m', $start_date) . ' - ' . date('j.m', $end_date) . '</span>';
@@ -686,7 +686,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
             $location_ready = '';
             foreach ($locations as $location) {
                 if (empty($location_ready)) {
-                    $location_ready = t('Location:') . ' ' . $location;
+                    $location_ready = t('Location') . ': ' . $location;
                 } else {
                     $location_ready .= ', ' . $location;
                 }
@@ -903,12 +903,15 @@ function hitsa_events_front_page_block()
         $event_tags = taxonomy_get_tree($event_tags->vid);
 
         $events_array = array();
+        $category_tid=null;
         foreach ($events as $key => $event) {
             if (!empty($event->event_tags)) {
                 foreach ($event->event_tags[$language->language] as $tags) {
                     $loaded_tag = taxonomy_term_load($tags['tid']);
                     $loaded_tag = i18n_taxonomy_localize_terms($loaded_tag);
+                    $event->taxonomy_category = $loaded_tag->tid;
                     $events_array[$loaded_tag->name][] = $event;
+                    $category_tid = $loaded_tag->tid;
                 }
             }
         }
@@ -1013,7 +1016,11 @@ function hitsa_events_front_page_block()
                 $link = url('calendar');
             }
             if ($j == 1) {
-                $link = url('training_calendar');
+                $link = url('calendar');
+            }
+
+            if(!empty($event->taxonomy_category)){
+                $link = url('calendar',array('query'=> array('category'=>$event->taxonomy_category)));
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
@@ -1120,8 +1127,9 @@ function hitsa_events_training_calendar()
             return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
         });
     }
-//    $field = field_info_field('field_event_type');
+    $field = field_info_field('field_event_type');
     $allowed = list_allowed_values($field);
+
     $taxonomy = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
     $taxonomy_tree = taxonomy_get_tree($taxonomy->vid);
     $allowed = array();
