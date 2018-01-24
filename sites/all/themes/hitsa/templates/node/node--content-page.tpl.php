@@ -94,7 +94,7 @@
     <?php endif; ?>
     
     <?php if(!empty($more_services)): ?>
-    <div class="block">
+    <div class="block no-print">
       
       <h2 class="block-title"><?php if(!empty($more_services_title)) {print $more_services_title;} ?></h2>
       
