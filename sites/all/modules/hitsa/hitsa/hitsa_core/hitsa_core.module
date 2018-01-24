@@ -105,14 +105,25 @@ function hitsa_core_menu()
 }
 
 function hitsa_core_menu_alter(&$items)
-{
+{ 
   $items['search'] = array(
     'title' => 'Search',
     'page callback' => 'hitsa_core_search_page',
     'access callback' => true,
   );
   $items['taxonomy/term/%taxonomy_term']['page callback'] = 'hitsa_core_redirect_front';
-  // dpm($items);
+  $items['admin/structure/menu/manage/%menu']['access callback']= 'hitsa_core_menu_access';//For hiding main menu from toolbar
+  $items['admin/structure/menu/manage/%menu']['access arguments'][]= 4;//For hiding main menu from toolbar
+}
+function hitsa_core_menu_access($menu,$menu_item){
+  if($menu_item['menu_name']=='main-menu'){
+    return FALSE;
+  }
+  else{
+    if(user_access($menu)){
+      return TRUE;
+    }
+  }
 }
 /**
  * Implements hook_module_implements_alter().
