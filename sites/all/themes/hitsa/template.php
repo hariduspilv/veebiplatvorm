@@ -687,6 +687,18 @@ function hitsa_preprocess_menu_link(&$variables)
             }
             break;
         case 'menu_link__hitsa_quicklinks_menu':
+            if (!empty($variables['element'])) {
+                if (!empty($variables['element']['#localized_options'])) {
+                    if (!empty($variables['element']['#localized_options']['attributes'])) {
+                        if (isset($variables['element']['#localized_options']['attributes']['title'])) {
+                            unset($variables['element']['#localized_options']['attributes']['title']);
+                        }
+                        $variables['element']['#localized_options']['attributes']['target']='_blank';
+                    }
+
+                }
+            }
+            break;
         case 'menu_link__hitsa_main_menu':
             unset($variables['element']['#localized_options']['attributes']);
             break;
