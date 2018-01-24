@@ -1,0 +1,135 @@
+<?php
+
+/**
+ * @file
+ * Menu item limit enables the limitation of items per menu.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function menu_item_limit_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'menu_edit_menu':
+      // Extend menu_edit_menu with the limit form.
+      $form['menu_item_limit'] = menu_item_limit_config_menu($form, $form_state);
+      $form['#validate'][] = 'menu_item_limit_config_menu_validate';
+      $form['#submit'][] = 'menu_item_limit_config_menu_submit';
+      break;
+
+    case 'menu_edit_item':
+      // Add a validation to form menu_edit_item.
+      array_unshift($form['#validate'], 'menu_item_limit_menu_validate');
+      break;
+
+    default:
+      break;
+  }
+}
+
+/**
+ * Add a form element to configure the item limitation of a menu.
+ *
+ * @param array $form
+ *   The current menu edit form.
+ * @param array $form_state
+ *   The current state of the menu edit form.
+ *
+ * @return array
+ *   The prefilled form element.
+ */
+function menu_item_limit_config_menu($form, &$form_state) {
+  $menu_name = empty($form_state['build_info']['args'][1]['menu_name']) ? 'new' : $form_state['build_info']['args'][1]['menu_name'];
+  // Try to get the current limit of the menu.
+  $limit = variable_get('menu_item_limit-' . $menu_name, '0');
+  $config_item = array(
+    '#type' => 'textfield',
+    '#description' => t('Set the amount of items allowed in this menu. Set 0 to allow unlimited items.'),
+    '#title' => t('Item Limitation'),
+    '#default_value' => $limit,
+  );
+  return $config_item;
+}
+
+/**
+ * Validate the user input for the item limitation.
+ *
+ * @param array $form
+ *   The current menu edit form.
+ * @param array $form_state
+ *   The current state of the menu edit form.
+ */
+function menu_item_limit_config_menu_validate($form, &$form_state) {
+  // Check if the entered limit is set to a value of 0 or higher.
+  $limit = check_plain($form_state['values']['menu_item_limit']);
+  if ((!is_numeric($limit)) || ($limit < 0)) {
+    form_set_error('menu_item_limit', t('The Item Limitation has to be set to 0 or higher.'));
+  }
+}
+
+/**
+ * Set the new value for the item limitation of the menu.
+ *
+ * @param array $form
+ *   The current menu edit form.
+ * @param array $form_state
+ *   The current state of the menu edit form.
+ */
+function menu_item_limit_config_menu_submit($form, &$form_state) {
+  // Set the limit for the menu.
+  $limit = check_plain($form_state['values']['menu_item_limit']);
+  $menu_name = $form_state['values']['menu_name'];
+  variable_set('menu_item_limit-' . $menu_name, $limit);
+}
+
+/**
+ * Validate an item within limit settings.
+ *
+ * @param array $form
+ *   The current menu item edit form.
+ * @param array $form_state
+ *   The current state of the menu item edit form.
+ *
+ * @return bool
+ *   TRUE when the item can be created and the limit hasn't been reached.
+ */
+function menu_item_limit_menu_validate($form, &$form_state) {
+  // Check if menu item already exists and validate then.
+  if (!empty($form_state['values']['original_item']['mlid'])) {
+    return TRUE;
+  }
+  $menu_name = explode(':', $form_state['values']['parent']);
+  $menu_name = $menu_name[0];
+  // Get the item limitation, default to 0.
+  $limit = variable_get('menu_item_limit-' . $menu_name, 0);
+  // If the limit is set to unlimited, validate the form.
+  if ($limit == 0) {
+    return TRUE;
+  }
+  // Get the current amount of items and check if the count is within limits.
+  else {
+    $item_count = _menu_item_limitation_get_item_count($menu_name);
+    if ($item_count >= $limit) {
+      form_set_error('parent', t('The chosen menu already has the maximum number of items.'));
+    }
+  }
+}
+
+/**
+ * This function takes a menu name and returns the number of menu items in it.
+ *
+ * @param string $menu_name
+ *   The name of the menu.
+ *
+ * @return int
+ *   The amount of items in the menu.
+ */
+function _menu_item_limitation_get_item_count($menu_name) {
+  $menu = menu_tree_all_data($menu_name);
+  if (!empty($menu)) {
+    return count($menu);
+  }
+  else {
+    return 0;
+  }
+}

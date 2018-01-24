@@ -1,22 +1,23 @@
 <?php
 
-function hitsa_process_html_tag(&$vars) {
-  $el = &$vars['element'];
+function hitsa_process_html_tag(&$vars)
+{
+    $el = &$vars['element'];
  
   // Remove type="..." and CDATA prefix/suffix.
-  unset($el['#attributes']['type'], $el['#value_prefix'], $el['#value_suffix']);
+    unset($el['#attributes']['type'], $el['#value_prefix'], $el['#value_suffix']);
  
   // Remove media="all" but leave others unaffected.
-  if (isset($el['#attributes']['media']) && $el['#attributes']['media'] === 'all') {
-    unset($el['#attributes']['media']);
-  }
+    if (isset($el['#attributes']['media']) && $el['#attributes']['media'] === 'all') {
+        unset($el['#attributes']['media']);
+    }
 }
 function hitsa_preprocess_page(&$variables)
 {
     $google_api_key = !empty($key = variable_get_value('hitsa_google_api_key')) ? '&key=' . $key : '';
     drupal_add_js('https://maps.google.com/maps/api/js?sensor=false' . $google_api_key, 'external');
     if ($variables['is_front']) {
-        $variables['page']['content']['system_main']['#access'] = FALSE;
+        $variables['page']['content']['system_main']['#access'] = false;
     }
     if (module_exists('hitsa_core')) { // Add header and footer
         $variables['header'] = theme('hitsa_header');
@@ -234,17 +235,17 @@ function hitsa_menu_link__hitsa_main_menu_mobile($variables)
     $element['#title'] = t($element['#title']);
     if ($element['#original_link']['mlid'] === $service_menu_mlid) {
         $sub_menu = theme('service_menu_tree__hitsa_main_menu_mobile', array('element' => $element));
-        $services_available = FALSE;
+        $services_available = false;
         foreach ($element['#below'] as $service_subtype) {
             if (!empty($service_subtype['#below'])) {
-                $services_available = TRUE;
+                $services_available = true;
             }
         }
         if (!$services_available) {
             return ''; // No services available, hide menu.
         }
     } else if ($element['#below']) {
-        $children_mids = array_fill_keys(element_children($element['#below']), TRUE);
+        $children_mids = array_fill_keys(element_children($element['#below']), true);
         $children = array();
         foreach ($element['#below'] as $key => $el) {
             if (isset($children_mids[$key])) {
@@ -253,7 +254,8 @@ function hitsa_menu_link__hitsa_main_menu_mobile($variables)
         }
         $children_split = array_chunk($children, 5);
 
-        $sub_menu = theme('submenu_tree__hitsa_main_menu_mobile',
+        $sub_menu = theme(
+            'submenu_tree__hitsa_main_menu_mobile',
             array(
                 'submenu' => $children_split,
                 'parent' => $element['#title'],
@@ -302,8 +304,8 @@ function hitsa_menu_tree__hitsa_sitemap($variables)
 }
 
 /*
-* Services block
-*/
+ * Services block
+ */
 function hitsa_menu_tree__hitsa_services_block($variables)
 {
     $output = '';
@@ -348,9 +350,8 @@ function hitsa_menu_link__hitsa_sitemap(array $variables)
         $output = '<h3>' . t($element['#title']) . '</h3>';
     } else if ($element['#original_link']['plid'] !== '0') {
         $output = l($element['#title'], $element['#href'], $element['#localized_options']);
-    }
-    elseif($element['#original_link']['plid'] == '0' && $element['#href']=='contact'){
-        $output = '<h3 class="heading-link">'.l($element['#title'], $element['#href'], $element['#localized_options']).'</h3>';
+    } elseif ($element['#original_link']['plid'] == '0' && $element['#href'] == 'contact') {
+        $output = '<h3 class="heading-link">' . l($element['#title'], $element['#href'], $element['#localized_options']) . '</h3>';
     }
     return $output . $sub_menu . "\n";
 }
@@ -394,17 +395,17 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     $element['#title'] = t($element['#title']);
     if ($element['#original_link']['mlid'] === $service_menu_mlid) {
         $sub_menu = theme('service_menu_tree__hitsa_main_menu', array('element' => $element));
-        $services_available = FALSE;
+        $services_available = false;
         foreach ($element['#below'] as $service_subtype) {
             if (!empty($service_subtype['#below'])) {
-                $services_available = TRUE;
+                $services_available = true;
             }
         }
         if (!$services_available) {
             return ''; // No services available, hide menu.
         }
     } else if ($element['#below']) {
-        $children_mids = array_fill_keys(element_children($element['#below']), TRUE);
+        $children_mids = array_fill_keys(element_children($element['#below']), true);
         $children = array();
         foreach ($element['#below'] as $key => $el) {
             if (isset($children_mids[$key])) {
@@ -420,7 +421,8 @@ function hitsa_menu_link__hitsa_main_menu($variables)
             $chunk = 5;
         }
         $children_split = array_chunk($children, $chunk);
-        $sub_menu = theme('submenu_tree__hitsa_main_menu',
+        $sub_menu = theme(
+            'submenu_tree__hitsa_main_menu',
             array(
                 'submenu' => $children_split,
                 'parent' => $element['#title'],
@@ -502,8 +504,8 @@ function hitsa_links__locale_block($variables)
 
         foreach ($links as $key => $link) {
             $class = array($key);
-            
-            if(!empty($link['attributes']['xml:lang'])) {
+
+            if (!empty($link['attributes']['xml:lang'])) {
                 $link['attributes']['lang'] = $link['attributes']['xml:lang'];
             }
             
@@ -578,8 +580,8 @@ function hitsa_links__mobile_locale_block($variables)
         $output .= '<div class="language-more">';
         foreach ($links as $key => $link) {
             $class = array($key);
-            
-            if(!empty($link['attributes']['xml:lang'])) {
+
+            if (!empty($link['attributes']['xml:lang'])) {
                 $link['attributes']['lang'] = $link['attributes']['xml:lang'];
             }
             
@@ -665,8 +667,38 @@ function hitsa_preprocess_menu_link(&$variables)
     switch ($hook) {
         case 'menu_link__hitsa_header_menu':
             if (isset($variables['element']['#attributes']['class'])) unset($variables['element']['#attributes']['class']);
+
+            if (!empty($variables['element']['#original_link']['options'])) {
+
+                if (!empty($variables['element']['#original_link']['options']['attributes'])) {
+
+                    if (!empty($variables['element']['#original_link']['options']['attributes']['title'])) {
+                        unset($variables['element']['#original_link']['options']['attributes']['title']);
+
+                    }
+                }
+            }
+            if (!empty($variables['element']['#localized_options'])) {
+                if (!empty($variables['element']['#localized_options']['attributes'])) {
+                    if (!empty($variables['element']['#localized_options']['attributes']['title'])) {
+                        unset($variables['element']['#localized_options']['attributes']['title']);
+                    }
+                }
+            }
             break;
         case 'menu_link__hitsa_quicklinks_menu':
+            if (!empty($variables['element'])) {
+                if (!empty($variables['element']['#localized_options'])) {
+                    if (!empty($variables['element']['#localized_options']['attributes'])) {
+                        if (isset($variables['element']['#localized_options']['attributes']['title'])) {
+                            unset($variables['element']['#localized_options']['attributes']['title']);
+                        }
+                        $variables['element']['#localized_options']['attributes']['target']='_blank';
+                    }
+
+                }
+            }
+            break;
         case 'menu_link__hitsa_main_menu':
             unset($variables['element']['#localized_options']['attributes']);
             break;
@@ -688,18 +720,19 @@ function hitsa_form($variables)
     return '<form' . drupal_attributes($element['#attributes']) . '><div class="row">' . $element['#children'] . '</div></form>';
 }
 
-function hitsa_form_alter(&$form, &$form_state, $form_id) {
+function hitsa_form_alter(&$form, &$form_state, $form_id)
+{
     if (strstr($form_id, 'webform_client_form')) {
-	    $form['my_captcha_element'] = array(
-	    	'#type' => 'captcha',
-	    	'#captcha_type' => 'default',
-	    );
-	}
+        $form['my_captcha_element'] = array(
+            '#type' => 'captcha',
+            '#captcha_type' => 'default',
+        );
+    }
 }
 
 function hitsa_preprocess_webform_form(&$variables)
 {
-    if(!empty($variables['form']['my_captcha_element'])) { // Captcha formating
+    if (!empty($variables['form']['my_captcha_element'])) { // Captcha formating
         $variables['form']['my_captcha_element']['captcha_widgets']['#prefix'] = '<div class="col-12">';
         $variables['form']['my_captcha_element']['captcha_widgets']['#suffix'] = '</div>';
     }
@@ -730,14 +763,14 @@ function hitsa_webform_element($variables)
     // Generate description for above or below the field.
     $above = !empty($element['#webform_component']['extra']['description_above']);
     $description = array(
-        FALSE => '',
-        TRUE => !empty($element['#description']) ? ' <div class="form-item_disclaimer">' . $element['#description'] . "</div>\n" : '',
+        false => '',
+        true => !empty($element['#description']) ? ' <div class="form-item_disclaimer">' . $element['#description'] . "</div>\n" : '',
     );
 
     // If #children does not contain an element with a matching @id, do not
     // include @for in the label.
-    if (strpos($element['#children'], ' id="' . $variables['element']['#id'] . '"') === FALSE) {
-        $variables['element']['#id'] = NULL;
+    if (strpos($element['#children'], ' id="' . $variables['element']['#id'] . '"') === false) {
+        $variables['element']['#id'] = null;
     }
 
     switch ($element['#title_display']) {
@@ -807,7 +840,7 @@ function hitsa_form_element_label($variables)
 
         return '<span class="label-title">' . $title . '</span>';
     } else {
-        if(!empty($attributes['for'])) {
+        if (!empty($attributes['for'])) {
             // Remove "for" attribute to pass HTML validation
             unset($attributes['for']);
         }
@@ -1101,7 +1134,7 @@ function hitsa_pager($variables)
             'data' => $li_last,
           );
         }
-        */
+         */
 
         return theme('item_list__pager', array(
             'items' => $items,
@@ -1150,7 +1183,7 @@ function hitsa_item_list__pager($variables)
 
             if (count($children) > 0) {
                 // Render nested list.
-                $data .= theme_item_list(array('items' => $children, 'title' => NULL, 'type' => $type, 'attributes' => $attributes));
+                $data .= theme_item_list(array('items' => $children, 'title' => null, 'type' => $type, 'attributes' => $attributes));
             }
             if ($i == 1) {
                 $attributes['class'][] = 'first';
@@ -1188,7 +1221,7 @@ function hitsa_pager_link($variables)
 
     // Set each pager link title
     if (!isset($attributes['title'])) {
-        static $titles = NULL;
+        static $titles = null;
         if (!isset($titles)) {
             $titles = array(
                 t('« first') => t('Go to first page'),
@@ -1251,7 +1284,7 @@ function hitsa_gallery_grid($variables)
 function hitsa_css_alter(&$css)
 {
     $exclude = array(
-        'modules/system/system.theme.css' => FALSE,
+        'modules/system/system.theme.css' => false,
     );
     $css = array_diff_key($css, $exclude);
 }
@@ -1306,33 +1339,33 @@ function hitsa_radios($variables)
     return (!empty($element['#children']) ? $element['#children'] : '');
 }
 
-function hitsa_status_messages($variables) {
-  $display = $variables['display'];
-  $output = '';
+function hitsa_status_messages($variables)
+{
+    $display = $variables['display'];
+    $output = '';
 
-  $status_heading = array(
-    'status' => ' notification-success',
-    'error' => ' notification-danger',
-    'warning' => '',
-  );
-  foreach (drupal_get_messages($display) as $type => $messages) {
-    
-    $output .= '<div class="row"><div class="col-12">';
-    $output .= '<div class="notification' . $status_heading[$type] . '" data-plugin="notification">';
-    $output .= '<div class="notification-sign"></div>';
-    $output .= '<div class="notification-text">';
-    if (count($messages) > 1) {
-      
-      foreach ($messages as $message) {
-        $output .= '<p>' . $message . "</p>\n";
-      }
+    $status_heading = array(
+        'status' => ' notification-success',
+        'error' => ' notification-danger',
+        'warning' => '',
+    );
+    foreach (drupal_get_messages($display) as $type => $messages) {
+
+        $output .= '<div class="row"><div class="col-12">';
+        $output .= '<div class="notification' . $status_heading[$type] . '" data-plugin="notification">';
+        $output .= '<div class="notification-sign"></div>';
+        $output .= '<div class="notification-text">';
+        if (count($messages) > 1) {
+
+            foreach ($messages as $message) {
+                $output .= '<p>' . $message . "</p>\n";
+            }
+        } else {
+            $output .= '<p>' . reset($messages) . '</p>';
+        }
+        $output .= '</div>';
+        $output .= '<div class="notification-close"><span class="notification-close-label">' . t('Close') . '</span><span class="before-close"></span></div>';
+        $output .= "</div></div></div>";
     }
-    else {
-      $output .= '<p>' . reset($messages) . '</p>';
-    }
-    $output .= '</div>';
-    $output .= '<div class="notification-close"><span class="notification-close-label">' . t('Close') . '</span><span class="before-close"></span></div>';
-    $output .= "</div></div></div>";
-  }
-  return $output;
-  }
+    return $output;
+}

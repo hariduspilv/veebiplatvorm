@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Contains install and update function for menu item limit.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function menu_item_limit_uninstall() {
+  // Uninstall all variables set by menu_item_limit.
+  db_delete('variable')
+    ->condition('name', 'menu_item_limit%', 'LIKE')
+    ->execute();
+}
