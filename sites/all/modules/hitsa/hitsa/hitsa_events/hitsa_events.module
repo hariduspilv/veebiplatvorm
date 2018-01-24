@@ -939,7 +939,12 @@ function hitsa_events_front_page_block()
             });
             $event_type_count = count($event_type);
             $location = '';
-            foreach ($event_type as $event) {
+            $category_term = 0;
+            foreach ($event_type as $eventer_key => $event) {
+                if($eventer_key=='category'){
+                    $category_term = $event;
+                    continue;
+                }
                 if (!empty($event->locations)) {
                     if (!empty($event->locations[$language->language][0])) {
                         $location = taxonomy_term_load($event->locations[$language->language][0]['tid']);
@@ -1019,8 +1024,8 @@ function hitsa_events_front_page_block()
                 $link = url('calendar');
             }
 
-            if(!empty($event->taxonomy_category)){
-                $link = url('calendar',array('query'=> array('category'=>$event->taxonomy_category)));
+            if(!empty($category_term)){
+                $link = url('calendar',array('query'=> array('category'=>$category_term)));
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
