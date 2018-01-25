@@ -488,6 +488,7 @@ function hitsa_core_default_search_api_index()
           'catering',
           'article',
           'gallery',
+          'event',
         ),
       ),
       'data_alter_callbacks' => array(
@@ -577,6 +578,9 @@ function hitsa_core_default_search_api_index()
           'type' => 'list<text>',
         ),
         'gallery_images:file:name' => array(
+          'type' => 'list<text>',
+        ),
+        'gallery_images:file:field_image_author' => array(
           'type' => 'list<text>',
         ),
       ),
