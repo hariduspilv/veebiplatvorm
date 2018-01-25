@@ -482,7 +482,6 @@ function hitsa_core_default_search_api_index()
     'options' => array(
       'datasource' => array(
         'bundles' => array(
-          'contact_location',
           'contact',
           'curriculum',
           'content_page',
@@ -548,6 +547,9 @@ function hitsa_core_default_search_api_index()
         ),
         'gallery_author' => array(
           'type' => 'text',
+        ),
+        'field_event_type' => array(
+          'type' => 'string',
         ),
         'search_api_language' => array(
           'type' => 'string',
@@ -619,7 +621,11 @@ function hitsa_core_search($q = null)
   if (!empty($q['title'])) {
     $query->condition('title', $q['title']);
   }
-  if (!empty($q['category']) && $q['category'] !== 'all') {
+  if(!empty($q['category']) && $q['category'] === 'training') { // Special exception for training event node subtype
+    $query->condition('type', 'event');
+    $query->condition('field_event_type', 'training');
+  }
+  else if (!empty($q['category']) && $q['category'] !== 'all') {
     $query->condition('type', $q['category']);
   }
   if (!empty($q['date']) && preg_match("/\d{2}\/\d{2}\/\d{4} - \d{2}\/\d{2}\/\d{4}/", $q['date']) === 1) {
