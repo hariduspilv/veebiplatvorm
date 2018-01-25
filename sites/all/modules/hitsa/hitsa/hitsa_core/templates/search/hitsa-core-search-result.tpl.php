@@ -10,8 +10,20 @@ foreach($result_items as $bundle => $items): ?>
 </div>
 <div class="row-spacer-xs"></div>
   <div class="row">
-  <?php foreach($items as $item): ?>
+    <?php dpm($bundle); ?>
+  <?php 
+  $array_item_keys = array_keys($items);
+  $last_item = array_pop($array_item_keys);
+  foreach($items as $delta => $item): ?>
+    <?php if($bundle === 'contact') print '<div class="col-12">'; ?>
     <?php print $item; ?>
+    <?php if($bundle === 'contact'): ?>
+    </div>
+      <?php if($delta !== $last_item): ?>
+      <div class="row-spacer-xs sm-hide"></div>
+      <hr class="spacing-xs sm-show">
+      <?php endif; ?>
+    <?php endif; ?>
   <?php endforeach; ?>
   </div>
   <?php if($bundle !== $last): ?>
