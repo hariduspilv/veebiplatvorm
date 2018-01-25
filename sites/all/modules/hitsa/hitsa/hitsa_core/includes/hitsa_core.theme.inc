@@ -396,6 +396,10 @@ function hitsa_core_search_page($filter = FALSE) {
       }
       // Divide event content types between courses and regular events.
       if($result['entity']->type === 'event') {
+        if(!empty($result['entity']->body)) {
+          $result['entity']->body[LANGUAGE_NONE][0]['value'] = preg_replace("/" . $query['query'] ."/i", "<u>$0</u>", 
+            $result['entity']->body[LANGUAGE_NONE][0]['value']);
+        }
         if(!empty($result['entity']->field_event_type) && $result['entity']->field_event_type[LANGUAGE_NONE][0]['value'] === 'training') {
           $result['entity']->type = 'training';
         }
