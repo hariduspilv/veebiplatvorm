@@ -98,7 +98,7 @@
     <div class="object-content">
       <div class="object-content_col">
         <p>
-          <b><?php print check_plain($node->title); // Name ?> 
+          <b><?php print $node->title; // Name ?> 
           <?php 
           $attachment_type = !empty($content['cv_attachment_type']) ? $content['cv_attachment_type']['#items'][0]['value'] : NULL;
           if(!empty($content[$attachment_type])): // Contact CV ?>

@@ -376,12 +376,15 @@ function hitsa_core_search_page($filter = FALSE) {
   $query = drupal_get_query_parameters();
   if(!empty($query['query'])) {
     $search = hitsa_core_search($query);
-    
+
     $results = $search['results'];
     
     $results_rendered = array();
     $authors = array();
     foreach($results as $delta => $result) {
+      // Underline matches in the title
+      $result['entity']->title = preg_replace("/" . $query['query'] ."/i", "<u>$0</u>", $result['entity']->title);
+      
       // Skip these node types for search.
       if(in_array($result['entity']->type, array('book', 'webform', 'contact_location'))) {
         unset($results[$delta]);
