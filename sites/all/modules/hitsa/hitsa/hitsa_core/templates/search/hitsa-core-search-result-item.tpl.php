@@ -7,7 +7,7 @@
   <?php 
   global $language;
   $result_item['entity']->event_tags[$language->language] = $result_item['entity']->event_tags[LANGUAGE_NONE];
-  $node_rendered = hitsa_events_event_html($result_item['entity'], $result_item['entity']->field_event_type[LANGUAGE_NONE][0]['value'], $result_item['entity']->event_date[LANGUAGE_NONE][0]['value']);
+  $node_rendered = hitsa_events_event_html($result_item['entity'], $result_item['entity']->field_event_type[LANGUAGE_NONE][0]['value'], $result_item['entity']->event_date[LANGUAGE_NONE][0]['value'], TRUE);
   print $node_rendered['html']; ?>
 </div>
 <?php else: ?>

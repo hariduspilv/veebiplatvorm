@@ -480,6 +480,16 @@ function hitsa_core_default_search_api_index()
     'server' => 'hitsa_search_server',
     'enabled' => 1,
     'options' => array(
+      'datasource' => array(
+        'bundles' => array(
+          'contact_location',
+          'contact',
+          'curriculum',
+          'content_page',
+          'catering',
+          'article',
+        ),
+      ),
       'data_alter_callbacks' => array(
         'search_api_alter_node_status' => array(
           'status' => 1,
@@ -535,6 +545,9 @@ function hitsa_core_default_search_api_index()
         'last_name' => array(
           'type' => 'text',
           'boost' => '3.0'
+        ),
+        'gallery_author' => array(
+          'type' => 'text',
         ),
         'search_api_language' => array(
           'type' => 'string',
