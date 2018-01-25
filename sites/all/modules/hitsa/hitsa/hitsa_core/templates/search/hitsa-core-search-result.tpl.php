@@ -9,9 +9,11 @@ foreach($result_items as $bundle => $items): ?>
 	</div><!--/col-12-->
 </div>
 <div class="row-spacer-xs"></div>
+  <div class="row">
   <?php foreach($items as $item): ?>
     <?php print $item; ?>
   <?php endforeach; ?>
+  </div>
   <?php if($bundle !== $last): ?>
   <hr class="spacing-xl">
   <?php endif; ?>

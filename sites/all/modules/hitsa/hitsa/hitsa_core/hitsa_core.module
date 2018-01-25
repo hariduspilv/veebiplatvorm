@@ -569,6 +569,15 @@ function hitsa_core_default_search_api_index()
         'event_date:value2' => array(
           'type' => 'date',
         ),
+        'gallery_images:file:field_file_image_alt_text' => array(
+          'type' => 'list<text>',
+        ),
+        'gallery_images:file:field_file_image_title_text' => array(
+          'type' => 'list<text>',
+        ),
+        'gallery_images:file:name' => array(
+          'type' => 'list<text>',
+        ),
       ),
     ),
   ));
