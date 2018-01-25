@@ -632,10 +632,11 @@ function hitsa_events_get_nodes_html($nodes)
     }
 }
 
-function hitsa_events_event_html($event = null, $type = null, $start_date_date = null, $number = null)
+function hitsa_events_event_html($event = null, $type = null, $start_date_date = null, $number = null,$search=null)
 {
     global $language;
     $periood = null;
+
     $time = time();
     $time = strtotime('today midnight');
     setlocale(LC_CTYPE, 'et_EE');
@@ -771,7 +772,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= ($type == 'training' && !empty($training_cost)) ? ' ' . $training_cost . ' ' : '';
         $output .= '<br />';
 //        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
-        if ($start_date_date > time()) {
+        if ($start_date_date > time()&&$search==null) {
             $output .= ($type == 'training' || $type == 'event') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
             if (!empty($reg_form_id)) {
                 $output .= ($type == 'training' || $type == 'event') ? '<br><a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to ' . $type) . '</a>' : '';
