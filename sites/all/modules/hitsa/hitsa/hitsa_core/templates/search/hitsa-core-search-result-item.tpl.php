@@ -2,7 +2,7 @@
   $contact_view = node_view($result_item['entity']);
 ?>
 <?php print render($contact_view); ?>
-<?php elseif($result_item['entity']->type === 'event'): ?>
+<?php elseif($result_item['entity']->type === 'event' || $result_item['entity']->type === 'training'): ?>
 <div class="col-12">
   <?php 
   global $language;
