@@ -378,13 +378,19 @@ function hitsa_core_search_page($filter = FALSE) {
     $search = hitsa_core_search($query);
     
     $results = $search['results'];
-    $result_count = count($results);
+    
     $results_rendered = array();
     $authors = array();
-    foreach($results as $result) {
+    foreach($results as $delta => $result) {
+      if(in_array($result['entity']->type, array('book', 'webform', 'contact_location'))) { // Skip these node types for search.
+        unset($results[$delta]);
+        continue; 
+      }
       $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
       $authors[$result['entity']->uid] = $result['entity']->uid;
     }
+    
+    $result_count = count($results);
     
     $node_types = node_type_get_types();
     $bundle_filter = array();
