@@ -1,4 +1,4 @@
-
+<script>/*global Drupal */ Drupal.behaviors.spamspan.attach();</script>
 <?php 
 $array_keys = array_keys($result_items);
 $last = array_pop($array_keys);
