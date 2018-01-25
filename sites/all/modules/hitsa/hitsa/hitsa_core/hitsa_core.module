@@ -621,7 +621,11 @@ function hitsa_core_search($q = null)
   if (!empty($q['title'])) {
     $query->condition('title', $q['title']);
   }
-  if(!empty($q['category']) && $q['category'] === 'training') { // Special exception for training event node subtype
+  if(!empty(!empty($q['category']) && $q['category'] === 'content_page')) {
+    $query->condition('type', 'content_page');
+    $query->condition('type', 'curriculum');
+  }
+  else if(!empty($q['category']) && $q['category'] === 'training') { // Special exception for training event node subtype
     $query->condition('type', 'event');
     $query->condition('field_event_type', 'training');
   }
