@@ -1283,10 +1283,7 @@ function hitsa_gallery_grid($variables)
 
 function hitsa_css_alter(&$css)
 {   
-    // dpm($css);
-    global $base_path;
-    // dpm($_SERVER);
-    // dpm($base_path);
+    
     $exclude = array(
         'modules/system/system.theme.css' => false,
     );
@@ -1372,4 +1369,15 @@ function hitsa_status_messages($variables)
         $output .= "</div></div></div>";
     }
     return $output;
+}
+function hitsa_preprocess_html(&$variables){
+    global $base_path;
+    $conf_path = conf_path();
+    $conf_path = str_replace('sites/','',$conf_path);
+    if($conf_path=='default'){
+        $conf_path = 'all';
+    }
+    $css_location = 'sites/'.$conf_path.'/themes/hitsa/static/assets/styles/default.css';
+
+    drupal_add_css($css_location, array('type'=>'file','group' => CSS_SYSTEM, 'every_page' => TRUE));
 }
