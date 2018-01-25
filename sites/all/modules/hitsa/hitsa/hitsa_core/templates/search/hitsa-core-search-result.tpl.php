@@ -10,7 +10,6 @@ foreach($result_items as $bundle => $items): ?>
 </div>
 <div class="row-spacer-xs"></div>
   <div class="row">
-    <?php dpm($bundle); ?>
   <?php 
   $array_item_keys = array_keys($items);
   $last_item = array_pop($array_item_keys);
