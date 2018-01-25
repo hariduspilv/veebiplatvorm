@@ -487,6 +487,7 @@ function hitsa_core_default_search_api_index()
           'content_page',
           'catering',
           'article',
+          'gallery',
         ),
       ),
       'data_alter_callbacks' => array(
@@ -522,7 +523,7 @@ function hitsa_core_default_search_api_index()
             'excerpt_length' => '256',
             'exclude_fields' => array(),
             'highlight' => 'always',
-            'highlight_partial' => 0,
+            'highlight_partial' => 1,
           ),
         ),
       ),
