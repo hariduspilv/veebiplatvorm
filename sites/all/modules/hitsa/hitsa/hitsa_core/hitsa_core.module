@@ -482,12 +482,13 @@ function hitsa_core_default_search_api_index()
     'options' => array(
       'datasource' => array(
         'bundles' => array(
-          'contact_location',
           'contact',
           'curriculum',
           'content_page',
           'catering',
           'article',
+          'gallery',
+          'event',
         ),
       ),
       'data_alter_callbacks' => array(
@@ -523,7 +524,7 @@ function hitsa_core_default_search_api_index()
             'excerpt_length' => '256',
             'exclude_fields' => array(),
             'highlight' => 'always',
-            'highlight_partial' => 0,
+            'highlight_partial' => 1,
           ),
         ),
       ),
@@ -549,6 +550,9 @@ function hitsa_core_default_search_api_index()
         'gallery_author' => array(
           'type' => 'text',
         ),
+        'field_event_type' => array(
+          'type' => 'string',
+        ),
         'search_api_language' => array(
           'type' => 'string',
         ),
@@ -566,6 +570,18 @@ function hitsa_core_default_search_api_index()
         ),
         'event_date:value2' => array(
           'type' => 'date',
+        ),
+        'gallery_images:file:field_file_image_alt_text' => array(
+          'type' => 'list<text>',
+        ),
+        'gallery_images:file:field_file_image_title_text' => array(
+          'type' => 'list<text>',
+        ),
+        'gallery_images:file:name' => array(
+          'type' => 'list<text>',
+        ),
+        'gallery_images:file:field_image_author' => array(
+          'type' => 'list<text>',
         ),
       ),
     ),
@@ -619,7 +635,17 @@ function hitsa_core_search($q = null)
   if (!empty($q['title'])) {
     $query->condition('title', $q['title']);
   }
-  if (!empty($q['category']) && $q['category'] !== 'all') {
+  if(!empty(!empty($q['category']) && $q['category'] === 'content_page')) {
+    $subquery = $query->createFilter('OR');
+    $subquery->condition('type', 'content_page');
+    $subquery->condition('type', 'curriculum');
+    $query->filter($subquery);
+  }
+  else if(!empty($q['category']) && $q['category'] === 'training') { // Special exception for training event node subtype
+    $query->condition('type', 'event');
+    $query->condition('field_event_type', 'training');
+  }
+  else if (!empty($q['category']) && $q['category'] !== 'all') {
     $query->condition('type', $q['category']);
   }
   if (!empty($q['date']) && preg_match("/\d{2}\/\d{2}\/\d{4} - \d{2}\/\d{2}\/\d{4}/", $q['date']) === 1) {

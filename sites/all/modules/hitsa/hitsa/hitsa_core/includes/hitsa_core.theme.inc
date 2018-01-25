@@ -382,10 +382,22 @@ function hitsa_core_search_page($filter = FALSE) {
     $results_rendered = array();
     $authors = array();
     foreach($results as $delta => $result) {
-      if(in_array($result['entity']->type, array('book', 'webform', 'contact_location'))) { // Skip these node types for search.
+      // Skip these node types for search.
+      if(in_array($result['entity']->type, array('book', 'webform', 'contact_location'))) {
         unset($results[$delta]);
         continue; 
       }
+      // Group curriculum content type under content page
+      if($result['entity']->type === 'curriculum') {
+        $result['entity']->type = 'content_page';
+      }
+      // Divide event content types between courses and regular events.
+      if($result['entity']->type === 'event') {
+        if(!empty($result['entity']->field_event_type) && $result['entity']->field_event_type[LANGUAGE_NONE][0]['value'] === 'training') {
+          $result['entity']->type = 'training';
+        }
+      }
+      
       $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
       $authors[$result['entity']->uid] = $result['entity']->uid;
     }
@@ -394,8 +406,19 @@ function hitsa_core_search_page($filter = FALSE) {
     
     $node_types = node_type_get_types();
     $bundle_filter = array();
+
     foreach($results_rendered as $bundle => $results) {
-      $bundle_filter[$bundle] = $node_types[$bundle]->name;
+      switch($bundle) {
+        case 'event':
+          $bundle_filter[$bundle] = t('Events'); // Custom name
+          break;
+        case 'training':
+          $bundle_filter[$bundle] = t('Training'); // Custom name
+          break;
+        default:
+          $bundle_filter[$bundle] = $node_types[$bundle]->name;
+          break;
+      }
     }
     
     $result_output = theme('hitsa_search_result', array('result_items' => $results_rendered, 'bundles' => $bundle_filter));
