@@ -611,6 +611,9 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
             if (!empty($day_foods)) {
                 foreach ($day_foods as $food_key => $food) {
                     $meals_correct_array[$food_key][$day_key] = $food;
+                    if (!isset($meals_correct_array[$food_key]['count'])) {
+                        $meals_correct_array[$food_key]['count'] = 0;
+                    }
                     $meals_correct_array[$food_key]['count'] = (count($food) > $meals_correct_array[$food_key]['count']) ? count($food) : $meals_correct_array[$food_key]['count'];
                     $dessert_location = 0;
                     $dessert_count = 0;
@@ -625,9 +628,11 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
 
                         $dessert_location++;
                     }
-                    if ($meals_correct_array[$food_key]['des_count'] > 1) {
-                        if ($meals_correct_array[$food_key]['count'] - $meals_correct_array[$food_key]['dessert_location'] == 1) {
-                            $meals_correct_array[$food_key]['count'] = $meals_correct_array[$food_key]['count'] - 1 + $meals_correct_array[$food_key]['des_count'];
+                    if (isset($meals_correct_array[$food_key]['des_count'])) {
+                        if ($meals_correct_array[$food_key]['des_count'] > 1) {
+                            if ($meals_correct_array[$food_key]['count'] - $meals_correct_array[$food_key]['dessert_location'] == 1) {
+                                $meals_correct_array[$food_key]['count'] = $meals_correct_array[$food_key]['count'] - 1 + $meals_correct_array[$food_key]['des_count'];
+                            }
                         }
                     }
                 }
@@ -834,7 +839,13 @@ function hitsa_catering_provider_side_menu($providers)
                     $class = '';
                 }
             }
-            $output .= '<li class="' . $class . '"><a href="' . $link . '">' . $provider['provider']->name . '</a>';
+            if (!empty($provider['provider'])) {
+                $provider_name = $provider['provider']->field_catering_provider_big_name['und'][0]['value'];
+            }
+            else{
+                $provider_name = $provider['provider']->name;
+            }
+            $output .= '<li class="' . $class . '"><a href="' . $link . '">' . $provider_name. '</a>';
         }
         $output .= '</ul>';
         return $output;
