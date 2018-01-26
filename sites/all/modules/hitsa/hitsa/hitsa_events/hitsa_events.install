@@ -1103,10 +1103,10 @@ When user enter 01:15 then time will not appear in calendar',
     ),
   );
 
-  // Exported field_instance: 'node-event-field_training_tags'.
-  $field_instances['node-event-field_training_tags'] = array(
+   // Exported field_instance: 'node-event-field_training_tags'.
+   $field_instances['node-event-field_training_tags'] = array(
     'bundle' => 'event',
-    'default_value' => null,
+    'default_value' => NULL,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1114,8 +1114,8 @@ When user enter 01:15 then time will not appear in calendar',
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
-          'bypass_access' => false,
-          'link' => false,
+          'bypass_access' => FALSE,
+          'link' => FALSE,
         ),
         'type' => 'entityreference_label',
         'weight' => 7,
@@ -1140,22 +1140,22 @@ When user enter 01:15 then time will not appear in calendar',
     'settings' => array(
       'behaviors' => array(
         'taxonomy-index' => array(
-          'status' => true,
+          'status' => TRUE,
         ),
       ),
-      'entity_translation_sync' => false,
-      'user_register_form' => false,
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'entityreference',
+      'module' => 'options',
       'settings' => array(
         'entityreference_autocreate' => 0,
         'match_operator' => 'CONTAINS',
         'path' => '',
         'size' => 60,
       ),
-      'type' => 'entityreference_autocomplete_tags',
+      'type' => 'options_select',
       'weight' => 8,
     ),
   );
