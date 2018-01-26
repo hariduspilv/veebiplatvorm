@@ -1490,7 +1490,7 @@ function hitsa_curriculum_fp_subject_fields()
                        <span class="caroussel_profession">
                           <span class="caroussel_profession-icon ' . $class . '"></span>
                           <span class="caroussel_profession-title">' . $term->name . '</span>
-                          <span class="btn">Vaata erialasid</span>
+                          <span class="btn">'.t('Look at specialities').'</span>
                        </span><!--/caroussel_profession-->
                     </a><!--/block-->
                  </div><!--/col-3-->';
