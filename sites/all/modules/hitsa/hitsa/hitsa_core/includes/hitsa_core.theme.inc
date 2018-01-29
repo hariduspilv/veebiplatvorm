@@ -205,8 +205,18 @@ function hitsa_core_preprocess_hitsa_header(&$variables) {
   $hitsa_header_menu_name = variable_get('hitsa_header_menu_name');
   if(!empty($hitsa_header_menu_name)) {
     $header_menu = menu_tree_all_data($hitsa_header_menu_name);
-    $variables['header_menu'] = menu_tree_output($header_menu);
-    $variables['header_menu']['#theme_wrappers'] = array('header_menu_tree__hitsa_header_menu');
+    $header_count = count ($header_menu);
+    if ($header_count>3) {
+      $header_menus = array_chunk($header_menu,3,TRUE);
+      for ($i=0; $i <2 ; $i++) { 
+        $variables['header_menu_'.$i] = menu_tree_output($header_menus[$i]);
+        $variables['header_menu_'.$i]['#theme_wrappers'] = array('header_menu_tree__hitsa_header_menu');
+      }
+    }
+    else{
+      $variables['header_menu'] = menu_tree_output($header_menu);
+      $variables['header_menu']['#theme_wrappers'] = array('header_menu_tree__hitsa_header_menu');
+    }
   }
   // Quicklinks menu
   $hitsa_quicklinks_menu_name = variable_get('hitsa_quicklinks_menu_name');
