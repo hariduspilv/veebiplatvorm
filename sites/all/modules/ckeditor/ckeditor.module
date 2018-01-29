@@ -337,7 +337,8 @@ function ckeditor_profile_load($name = '', $clear = FALSE, $check_access = TRUE)
   if (empty($profiles) || $clear === TRUE) {
     $result = db_select('ckeditor_settings', 's')->fields('s')->execute();
     foreach ($result as $data) {
-      $data->settings = unserialize($data->settings);
+      $data->settings =  unserialize($data->settings);
+      
       $data->input_formats = array();
 
       $profiles[$data->name] = $data;
