@@ -52,6 +52,7 @@ function hitsa_ckeditor_install()
     $format->editor_settings = $serialized;
     filter_format_save($format);
     
+    
     $testing_having = db_select('ckeditor_input_format','cif');
     $testing_having -> condition('cif.name','Hitsa_custom','=');
     $testing_having -> fields('cif');
