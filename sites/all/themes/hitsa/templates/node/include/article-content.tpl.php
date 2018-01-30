@@ -38,6 +38,10 @@
     <div class="col-12">
       <article class="clearSpace">
         
+      <div class="btn-bar align-right sm-show sm-pull_right">
+              <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+              <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+            </div>
         <h1 class="col-7 sm-12"><?php print $title; ?>
           <?php if($node->type === 'article'): ?>
           <span class="editor-info">
@@ -52,10 +56,6 @@
 				<div class="row">
 				  <div class="col-7 sm-12">
 				    
-				    <div class="btn-bar align-right sm-show sm-pull_right">
-              <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
-              <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-            </div>
         
             <?php if(!empty($body)): ?>
             <?php if(!empty($body[0]['safe_summary'])): ?>
