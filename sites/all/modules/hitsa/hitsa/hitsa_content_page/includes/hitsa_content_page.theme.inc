@@ -267,7 +267,6 @@ function hitsa_content_page_view($query = array(), $filter = false, $type = null
     }
 
   }
-
   // Pager
   $quantity = ceil($result['count'] / 12);
 
