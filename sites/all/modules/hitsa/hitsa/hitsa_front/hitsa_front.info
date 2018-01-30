@@ -1,5 +1,5 @@
-name = Hitsa esilehe plogid osaliselt
-description = "Hitsa esilehe plogid osaliselt"
+name = Hitsa esilehe plokid osaliselt
+description = "Hitsa esilehe plokid osaliselt"
 dependencies[] = date
 dependencies[] = entityreference
 dependencies[] = date_popup

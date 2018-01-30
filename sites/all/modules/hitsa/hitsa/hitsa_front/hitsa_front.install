@@ -122,7 +122,7 @@ function hitsa_front_add_custom_taxonomy_field_base(){
       ),
       'timezone_db' => 'UTC',
       'todate' => 'required',
-      'tz_handling' => 'site',
+      'tz_handling' => 'none',
     ),
     'translatable' => 0,
     'type' => 'datetime',
@@ -144,7 +144,7 @@ function hitsa_front_add_custom_taxonomy_field_base(){
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'lunch' => 'Lucnch',
+        'lunch' => 'Lunch',
         'class' => 'Class',
       ),
       'allowed_values_function' => '',

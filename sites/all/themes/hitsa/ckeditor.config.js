@@ -8,7 +8,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 CKEDITOR.editorConfig = function (config) {
     config.indentClasses = ['rteindent1', 'rteindent2', 'rteindent3', 'rteindent4'];
-
+    
     // [ Left, Center, Right, Justified ]
     config.justifyClasses = ['rteleft', 'rtecenter', 'rteright', 'rtejustify'];
     console.dir(config);
@@ -32,7 +32,6 @@ CKEDITOR.editorConfig = function (config) {
     // [#1762328] Uncomment the line below to protect <code> tags in CKEditor (hide them in wysiwyg mode).
     // config.protectedSource.push(/<code>[\s\S]*?<\/code>/gi);
     config.extraPlugins = '';
-
     /*
       * Append here extra CSS rules that should be applied into the editing area.
       * Example:

@@ -23,6 +23,24 @@ function hitsa_front_form_alter(&$form, &$form_state, $form_id)
 /**
  * Implements hook_block_info().
  */
+function hitsa_front_taxonomy_term_presave($term){
+  if($term->vocabulary_machine_name='hitsa_hour_times'){
+    if (!empty($term->field_hours_times)) {
+      $term->field_hours_times['und'][0]['value']= str_replace('0000',date('Y',time()),$term->field_hours_times['und'][0]['value']);
+      $term->field_hours_times['und'][0]['value2']= str_replace('0000',date('Y',time()),$term->field_hours_times['und'][0]['value2']);
+    }
+  }
+  return $term;
+}
+function hitsa_front_taxonomy_term_insert($term){
+  if($term->vocabulary_machine_name='hitsa_hour_times'){
+    if (!empty($term->field_hours_times)) {
+      $term->field_hours_times['und'][0]['value']= str_replace('0000',date('Y',time()),$term->field_hours_times['und'][0]['value']);
+      $term->field_hours_times['und'][0]['value2']= str_replace('0000',date('Y',time()),$term->field_hours_times['und'][0]['value2']);
+    }
+  }
+  return $term;
+}
 function hitsa_front_block_info()
 {
   $blocks = array();
