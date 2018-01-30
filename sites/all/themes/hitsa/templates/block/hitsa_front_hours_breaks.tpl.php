@@ -3,8 +3,9 @@
 
 ?>
             <div class="block block-narrow <?php ($type=='desktop')?print 'sm-hide':print 'sm-show'?>" data-plugin="tabs">
-               <h2 class="block-title"><?php print($period['name'])?></h2>
-               
+            <?php if(!empty($period)):?>
+               <h2 class="block-title"><?php  print($period['name'])?></h2>
+            <?php endif?>
                <div class="row pull-up">
                   <div class="col-12">
                      <a href="javascript:void(0);" data-target="tab-1" class="link-tab"><?php print t('Hours')?></a><a href="javascript:void(0);" data-target="tab-2" class="link-tab"><?php print t('Breaks')?></a>
