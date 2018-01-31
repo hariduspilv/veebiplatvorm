@@ -475,8 +475,8 @@ function hitsa_events_endpoint($loaded_page = null)
         $years = (!empty($_REQUEST['year'])) ? explode(',', $_REQUEST['year']) : null;
         $dates = (!empty($_REQUEST['date'])) ? explode('-', $_REQUEST['date']) : null;
         $type = (!empty($_REQUEST['type'])) ? $_REQUEST['type'] : null;
-        $training_tag = (!empty($_REQUEST['training-category'])) ?  explode(',', $_REQUEST['training-category']) : null;
-        
+        $training_tag = (!empty($_REQUEST['training-category'])) ? explode(',', $_REQUEST['training-category']) : null;
+
 
     }
     $textured_nodes = '';
@@ -676,7 +676,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $start_date = !empty($event->event_date['und'][0]['value']) ? $event->event_date['und'][0]['value'] : null;
         $end_date = !empty($event->event_date['und'][0]['value2']) ? $event->event_date['und'][0]['value2'] : null;
         $start_time_hours = date('H:i', $start_date);
-        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '01:15') ? '<span>' . t('Time') . ': ' . $start_time_hours . ',</span>' : null;
+        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '00:00') ? '<span>' . t('Time') . ': ' . $start_time_hours . ',</span>' : null;
 
         if ($type == 'training') {
             $time_hours_minutes = '<span class="before-calendar">' . date('j.m', $start_date) . ' - ' . date('j.m', $end_date) . '</span>';
@@ -724,9 +724,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         }
         $training_tags = '';
         $training_cost = null;
-        if(!empty($_REQUEST)){
-            if($_REQUEST['type']=='training'){
-                $type='training';
+        if (!empty($_REQUEST)) {
+            if (!empty($_REQUEST['type']) && $_REQUEST['type'] == 'training') {
+                $type = 'training';
             }
         }
         if ($type == 'training') {
@@ -995,7 +995,9 @@ function hitsa_events_front_page_block()
                 $output .= '                         <a href="' . url('calendar') . '#' . rawurlencode($event->title) . '" class="object-title">' . $event->title . '</a>';
                 $output .= '                         <span class="object-footer">';
                 $output .= (!empty($location)) ? '                     ' . t('Location') . ': ' . $location : '';
-                $output .= '                             , ' . t('Time') . ' ' . $start_readable_time . '<br />';
+                if ($start_readable_time !== '00:00') {
+                    $output .= '                             , ' . t('Time') . ' ' . $start_readable_time . '<br />';
+                }
                 $output .= '                            <a href="/events/calendar/api/add/' . $event->nid . '/' . $start . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>';
                 $output .= '';
                 $output .= '                         </span><!--/object-footer-->';

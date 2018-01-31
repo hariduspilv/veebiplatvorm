@@ -893,6 +893,7 @@ When user enter 01:15 then time will not appear in calendar',
       'active' => 1,
       'module' => 'date',
       'settings' => array(
+        'display_all_day' => 1,
         'increment' => 15,
         'input_format' => 'd/m/Y - H:i:s',
         'input_format_custom' => '',
@@ -1618,4 +1619,11 @@ function hitsa_events_create_menu_links($school_type = null)
     menu_link_save($menu_link);
   }
   return true;
+}
+function hitsa_events_update_7000(){
+  $field_instance =  field_info_instance('node','event_date','event');
+  if(empty($field_instance['widget']['settings']['display_all_day'])){
+    $field_instance['widget']['settings']['display_all_day']=1;
+    field_update_instance($field_instance);
+  }
 }
