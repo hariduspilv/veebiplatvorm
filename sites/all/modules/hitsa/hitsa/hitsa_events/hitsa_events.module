@@ -1361,9 +1361,7 @@ function hitsa_events_training_calendar()
     $output .= '</div><!--/col-12-->';
     $output .= '</div><!--/row-->';
     $output .= '
-            </div><!--/block-->
-            
-         </div><!--/col-9-->';
+            </div><!--/block-->';
 
 
     return ($output);
