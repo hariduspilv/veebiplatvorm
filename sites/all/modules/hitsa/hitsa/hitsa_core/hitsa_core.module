@@ -202,6 +202,7 @@ function hitsa_core_block_info()
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => '<front>',
       'region' => 'content',
+      'cache' => DRUPAL_NO_CACHE,
       'status' => "1",
       'weight' => -17,
     );
