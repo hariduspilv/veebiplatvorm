@@ -1217,6 +1217,7 @@ function hitsa_catering_front_page_block()
     $foods_selected_tomorrow = array();
     if (!empty($foods_tomorrow)) {
         $f = 0;
+        dpm($foods_tomorrow);
         foreach ($foods_tomorrow as $food_key => $food) {
             $foods_selected_tomorrow[] = '<div class="col-12">
                               <div class="object object-event">
