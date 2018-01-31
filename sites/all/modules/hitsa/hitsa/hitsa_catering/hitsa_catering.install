@@ -946,6 +946,7 @@ function _hitsa_catering_installed_node_instances()
                 'browser_plugins' => array(
                     'media_default--media_browser_1' => 0,
                     'media_default--media_browser_my_files' => 0,
+                    'media_internet'=>0,
                     'upload' => 0,
                 ),
             ),
@@ -1739,4 +1740,27 @@ function hitsa_catering_delete_vocabulary_fields()
     foreach ($instances as $instance_name => $field_instance) {
         field_delete_instance($field_instance);
     }
+}
+function hitsa_catering_update_7000(){
+    $field_instance =  field_info_instance('node','field_catering_pictures','catering');
+  if(empty($field_instance['widget']['settings']['browser_plugins'])){
+    $field_instance['widget']['settings']['browser_plugins']['media_internet']=0;
+    field_update_instance($field_instance);
+  }
+}
+
+function hitsa_catering_update_7001(){
+    $field_instance =  field_info_instance('node','field_catering_pictures','catering');
+  if(!empty($field_instance['widget']['settings']['browser_plugins'])){
+    $field_instance['widget']['settings']['browser_plugins']['media_internet']=0;
+    field_update_instance($field_instance);
+  }
+}
+
+function hitsa_catering_update_7002(){
+   $field_instance =  field_info_instance('node','field_catering_pictures','catering');
+    if(!empty($field_instance['widget']['settings']['browser_plugins'])){
+      $field_instance['widget']['settings']['browser_plugins']['media_internet']=0;
+    }
+    field_update_instance($field_instance);
 }
