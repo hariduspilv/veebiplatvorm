@@ -1,0 +1,525 @@
+include "modules/head.html"
+
+<div class="wrapper">
+   
+   include "modules/header.html"
+   
+   <div class="inline">
+      
+      <div class="row">
+         <div class="col-9 sm-12">
+            
+            <div class="block">
+               
+               <h2 class="block-title">Kalender</h2>
+               
+               <div class="row no-print">
+                  <div class="col-12">
+                     <h3>Filtreeri sündmusi</h3>
+                  </div><!--/col-12-->
+               </div><!--/row-->
+               
+               <form method="post" action="kalender.html" data-plugin="filters" class="no-print">
+						
+               <div class="row">
+                  <div class="col-9 sm-12">
+                     <h4 data-show="hiddenFilter">Mingi pealkiri</h4>
+                     <div data-show="hiddenFilter" class="row-spacer"></div>
+                     
+                     <div class="btn-bar">
+                        <span class="btn-input">
+                           <input type="checkbox" name="category" value="all" checked />
+                           <span class="btn btn-xs btn-alternate">Kõik</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input">
+                           <input type="checkbox" name="category" value="1" />
+                           <span class="btn btn-xs btn-alternate">Õppetöö</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input">
+                           <input type="checkbox" name="category" value="2" />
+                           <span class="btn btn-xs btn-alternate">Huvitegevus</span>
+                        </span><!--/btn-input-->
+
+                     </div><!--/btn-bar-->
+                     
+                  </div><!--/col-9-->
+                  <div class="col-3 sm-12">
+                     <a href="javascript:void(0);" class="cta-link pull-right before-plus sm-no-pull" data-toggle="hiddenFilter" data-class="'active' : hiddenFilter">Veel valikuid</a>
+                  </div><!--/col-3-->
+               </div><!--/row-->
+                  
+               <div class="row" data-show="hiddenFilter | flex">
+                  <div class="col-12">
+                     <div>
+                        <div class="row-spacer sm-hide"></div>
+                        <h4>Õppeaastad</h4>
+                        <div class="row-spacer"></div>
+                        <div class="btn-bar">
+                           <span class="btn-input">
+                              <input type="checkbox" name="year" value="all" />
+                              <span class="btn btn-xs btn-alternate">Kõik</span>
+                           </span><!--/btn-input-->
+                           
+                           <span class="btn-input">
+                              <input type="checkbox" name="year" value="2017" checked="checked" />
+                              <span class="btn btn-xs btn-alternate"><span class="sm-hide">2016/2017</span><span class="sm-show">2016/17</span></span>
+                           </span><!--/btn-input-->
+
+                           <span class="btn-input">
+                              <input type="checkbox" name="year" value="2016" />
+                              <span class="btn btn-xs btn-alternate"><span class="sm-hide">2015/2016</span><span class="sm-show">2015/16</span></span>
+                           </span><!--/btn-input-->
+
+                           <span class="btn-input">
+                              <input type="checkbox" name="year" value="2015" />
+                              <span class="btn btn-xs btn-alternate"><span class="sm-hide">2014/2015</span><span class="sm-show">2014/15</span></span>
+                           </span><!--/btn-input-->
+
+                           <span class="btn-input">
+                              <input type="checkbox" name="year" value="2014" />
+                              <span class="btn btn-xs btn-alternate"><span class="sm-hide">2013/2014</span><span class="sm-show">2013/14</span></span>
+                           </span><!--/btn-input-->
+
+                           <span class="btn-input">
+                              <input type="checkbox" name="year" value="2013" />
+                              <span class="btn btn-xs btn-alternate"><span class="sm-hide">2012/2013</span><span class="sm-show">2012/13</span></span>
+                           </span><!--/btn-input-->
+                        </div><!--/btn-bar-->
+                     </div><!--hiddenFilter-->
+                  </div><!--/col-12-->
+               </div><!--/row-->
+					
+               <div class="row-spacer-xs"></div>
+               <hr />
+               <div class="row-spacer"></div>
+               
+               <div class="row">
+                  <div class="col-12">
+                     <div class="form-item-row">
+                        
+                        <div class="form-item after-search form-item_rounded form-item-stretch">
+                           <div class="form-item_title">Otsitav sündmus</div>
+                           <input type="text" name="person" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="api/autocomplete.json" data-onSubmit="true" />
+                        </div><!--/form-item-->
+
+                        <div class="form-item form-item_rounded after-calendar form-item-stretch">
+                           <div class="form-item_title">Kuupäev</div>
+                           <input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="Vali kuupäev" />
+                        </div><!--/form-item-->
+
+                        <div class="form-item">
+                           <div class="form-item_title">&nbsp;</div>
+                           <button class="btn btn-filled">Otsi</button>
+                        </div><!--/form-item-->
+                        
+                     </div><!--/form-item-row-->
+                  </div><!--/col-12-->
+               </div><!--/row-->
+               </form>
+					
+               <div class="row">
+                  <div class="col-12" data-postURL="api/kalender-ajax.html" data-plugin="filterContents">
+                     <div class="accordion" data-plugin="accordion">
+                        <div class="accordion-entry">
+                           <div class="accordion-title"><span class="sm-hide">2016/2017</span><span class="sm-show">2016/17</span> Sügissemester (16)</div>
+                           <div class="accordion-content">
+                              
+                              <div class="object object-event object-inactive">
+                                 <div class="object-inner">
+                                    <div class="object-date">
+                                       <div class="object-date_day">23</div>
+                                       <div class="object-date_month">Veebruar</div>
+                                    </div><!--/object-date-->
+                                    <div class="object-content">
+                                       <div class="object-title">EV aastapäeva aktus</div>
+                                       <div class="object-footer">
+                                          <span>Koht: Aula, Kell 10:00</span><br />
+
+
+                                          <ul class="tags">
+                                             <li><a href="">Õppetöö</a></li>
+                                             <li><a href="">Huvitegevus</a></li>
+                                          </ul><!--/tags-->
+
+                                       </div><!--/object-footer-->
+                                    </div><!--/object-content-->
+
+                                    <div class="object-button">
+                                       <!-- toggle muutuja on ID.. OBJEKTI ID -->
+                                       <a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_521743554" data-hide="object-details_521743554">Vaata lähemalt</a>
+
+                                       <div data-show="object-details_521743554">
+                                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                                          <a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
+                                          <a href="javascript:void(0);" data-toggle="object-details_521743554" class="sm-hide btn btn-transparent after-close">Sulge</a>
+                                       </div><!--/object-details_123743553-->
+
+                                    </div><!--/object-button-->
+                                 </div><!--/object-inner-->
+                                 
+                                 <div class="object-details" data-show="object-details_521743554">
+                                    <p>
+                                       Lorem Ipsum on lihtsalt proovitekst, mida kasutatakse printimis- ja ladumistööstuses. See on olnud tööstuse põhiline proovitekst juba alates 1500. aastatest, mil tundmatu printija võttis hulga suvalist teksti, et teha trükinäidist. Lorem Ipsum ei ole ainult viis sajandit säilinud, vaid on ka edasi kandunud elektroonilisse trükiladumisse, jäädes sealjuures peaaegu muutumatuks. See sai tuntuks 1960. aastatel Letraset'i lehtede väljalaskmisega, ja hiljuti tekstiredaktoritega nagu Aldus PageMaker, mis sisaldavad erinevaid Lorem Ipsumi versioone.
+                                    </p>
+                                    <div class="row-spacer-xs sm-show"></div>
+                                    <a href="javascript:void(0);" data-toggle="object-details_521743554" class="sm-show btn btn-transparent after-close">Sulge</a>
+                                 </div><!--/object-details-->
+                              </div><!--/object-->
+                              
+                              <hr />
+                              
+                              <div class="object object-event object-inactive">
+                                 <div class="object-inner">
+                                    <div class="object-date">
+                                       <div class="object-date_day">23</div>
+                                       <div class="object-date_month">Veebruar</div>
+                                    </div><!--/object-date-->
+                                    <div class="object-content">
+                                       <div class="object-title">EV aastapäeva aktus</div>
+                                       <div class="object-footer">
+                                          <span>Koht: Aula, Kell 10:00</span><br />
+
+
+                                          <ul class="tags">
+                                             <li><a href="">Õppetöö</a></li>
+                                             <li><a href="">Huvitegevus</a></li>
+                                          </ul><!--/tags-->
+
+                                       </div><!--/object-footer-->
+                                    </div><!--/object-content-->
+
+                                    <div class="object-button">
+                                       <!-- toggle muutuja on ID.. OBJEKTI ID -->
+                                       <a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_421743554" data-hide="object-details_421743554">Vaata lähemalt</a>
+
+                                       <div data-show="object-details_421743554">
+                                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                                          <a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
+                                          <a href="javascript:void(0);" data-toggle="object-details_421743554" class="sm-hide btn btn-transparent after-close">Sulge</a>
+                                       </div><!--/object-details_123743553-->
+
+                                    </div><!--/object-button-->
+                                 </div><!--/object-inner-->
+                                 
+                                 <div class="object-details" data-show="object-details_421743554">
+                                    <p>
+                                       Lorem Ipsum on lihtsalt proovitekst, mida kasutatakse printimis- ja ladumistööstuses. See on olnud tööstuse põhiline proovitekst juba alates 1500. aastatest, mil tundmatu printija võttis hulga suvalist teksti, et teha trükinäidist. Lorem Ipsum ei ole ainult viis sajandit säilinud, vaid on ka edasi kandunud elektroonilisse trükiladumisse, jäädes sealjuures peaaegu muutumatuks. See sai tuntuks 1960. aastatel Letraset'i lehtede väljalaskmisega, ja hiljuti tekstiredaktoritega nagu Aldus PageMaker, mis sisaldavad erinevaid Lorem Ipsumi versioone.
+                                    </p>
+                                    <div class="row-spacer-xs sm-show"></div>
+                                    <a href="javascript:void(0);" data-toggle="object-details_421743554" class="sm-show btn btn-transparent after-close">Sulge</a>
+                                 </div><!--/object-details-->
+                              </div><!--/object-->
+                              
+                              <hr />
+                              
+                              <div class="object object-event object-inactive">
+                                 <div class="object-inner">
+                                    <div class="object-date">
+                                       <div class="object-date_day">23</div>
+                                       <div class="object-date_month">Veebruar</div>
+                                    </div><!--/object-date-->
+                                    <div class="object-content">
+                                       <div class="object-title">EV aastapäeva aktus</div>
+                                       <div class="object-footer">
+                                          <span>Koht: Aula, Kell 10:00</span><br />
+
+
+                                          <ul class="tags">
+                                             <li><a href="">Õppetöö</a></li>
+                                             <li><a href="">Huvitegevus</a></li>
+                                          </ul><!--/tags-->
+
+                                       </div><!--/object-footer-->
+                                    </div><!--/object-content-->
+
+                                    <div class="object-button">
+                                       <!-- toggle muutuja on ID.. OBJEKTI ID -->
+                                       <a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_124743554" data-hide="object-details_124743554">Vaata lähemalt</a>
+
+                                       <div data-show="object-details_124743554">
+                                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                                          <a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
+                                          <a href="javascript:void(0);" data-toggle="object-details_124743554" class="sm-hide btn btn-transparent after-close">Sulge</a>
+                                       </div><!--/object-details_123743553-->
+
+                                    </div><!--/object-button-->
+                                 </div><!--/object-inner-->
+                                 
+                                 <div class="object-details" data-show="object-details_124743554">
+                                    <p>
+                                       Lorem Ipsum on lihtsalt proovitekst, mida kasutatakse printimis- ja ladumistööstuses. See on olnud tööstuse põhiline proovitekst juba alates 1500. aastatest, mil tundmatu printija võttis hulga suvalist teksti, et teha trükinäidist. Lorem Ipsum ei ole ainult viis sajandit säilinud, vaid on ka edasi kandunud elektroonilisse trükiladumisse, jäädes sealjuures peaaegu muutumatuks. See sai tuntuks 1960. aastatel Letraset'i lehtede väljalaskmisega, ja hiljuti tekstiredaktoritega nagu Aldus PageMaker, mis sisaldavad erinevaid Lorem Ipsumi versioone.
+                                    </p>
+                                    <div class="row-spacer-xs sm-show"></div>
+                                    <a href="javascript:void(0);" data-toggle="object-details_124743554" class="sm-show btn btn-transparent after-close">Sulge</a>
+                                 </div><!--/object-details-->
+                              </div><!--/object-->
+                              
+                              <div class="object-dateseparator"><span>täna, 22. veebruar</span></div>
+                              
+                              <div class="object object-event">
+                                 <div class="object-inner">
+                                    <div class="object-date">
+                                       <div class="object-date_day">23</div>
+                                       <div class="object-date_month">Veebruar</div>
+                                    </div><!--/object-date-->
+                                    <div class="object-content">
+                                       <div class="object-title">EV aastapäeva aktus</div>
+                                       <div class="object-footer">
+                                          <span>Koht: Aula, Kell 10:00</span><br />
+
+                                          <a href="kalender-lisa.html" data-plugin="modal" class="before-calendar">Lisa kalendrisse</a>
+
+                                          <ul class="tags">
+                                             <li><a href="">Õppetöö</a></li>
+                                             <li><a href="">Huvitegevus</a></li>
+                                          </ul><!--/tags-->
+
+                                       </div><!--/object-footer-->
+                                    </div><!--/object-content-->
+
+                                    <div class="object-button">
+                                       <!-- toggle muutuja on ID.. OBJEKTI ID -->
+                                       <a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_123733552" data-hide="object-details_123733552">Vaata lähemalt</a>
+
+                                       <div data-show="object-details_123733552">
+                                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                                          <a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
+                                          <a href="javascript:void(0);" data-toggle="object-details_123733552" class="sm-hide btn btn-transparent after-close">Sulge</a>
+                                       </div><!--/object-details_123743553-->
+
+                                    </div><!--/object-button-->
+                                 </div><!--/object-inner-->
+                                 
+                                 <div class="object-details" data-show="object-details_123733552">
+                                    <p>
+                                       Lorem Ipsum on lihtsalt proovitekst, mida kasutatakse printimis- ja ladumistööstuses. See on olnud tööstuse põhiline proovitekst juba alates 1500. aastatest, mil tundmatu printija võttis hulga suvalist teksti, et teha trükinäidist. Lorem Ipsum ei ole ainult viis sajandit säilinud, vaid on ka edasi kandunud elektroonilisse trükiladumisse, jäädes sealjuures peaaegu muutumatuks. See sai tuntuks 1960. aastatel Letraset'i lehtede väljalaskmisega, ja hiljuti tekstiredaktoritega nagu Aldus PageMaker, mis sisaldavad erinevaid Lorem Ipsumi versioone.
+                                    </p>
+                                    <div class="row-spacer-xs sm-show"></div>
+                                    <a href="javascript:void(0);" data-toggle="object-details_123733552" class="sm-show btn btn-transparent after-close">Sulge</a>
+                                 </div><!--/object-details-->
+                              </div><!--/object-->
+                              
+                              <hr />
+                              
+                              <div class="object object-event">
+                                 <div class="object-inner">
+                                    <div class="object-date">
+                                       <div class="object-date_day">23</div>
+                                       <div class="object-date_month">Veebruar</div>
+                                    </div><!--/object-date-->
+                                    <div class="object-content">
+                                       <div class="object-title">EV aastapäeva aktus</div>
+                                       <div class="object-footer">
+                                          <span>Koht: Aula, Kell 10:00</span><br />
+
+                                          <a href="kalender-lisa.html" data-plugin="modal" class="before-calendar">Lisa kalendrisse</a>
+
+                                          <ul class="tags">
+                                             <li><a href="">Õppetöö</a></li>
+                                             <li><a href="">Huvitegevus</a></li>
+                                          </ul><!--/tags-->
+
+                                       </div><!--/object-footer-->
+                                    </div><!--/object-content-->
+
+                                    <div class="object-button">
+                                       <!-- toggle muutuja on ID.. OBJEKTI ID -->
+                                       <a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_123743559" data-hide="object-details_123743559">Vaata lähemalt</a>
+
+                                       <div data-show="object-details_123743559">
+                                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                                          <a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
+                                          <a href="javascript:void(0);" data-toggle="object-details_123743559" class="sm-hide btn btn-transparent after-close">Sulge</a>
+                                       </div><!--/object-details_123743553-->
+
+                                    </div><!--/object-button-->
+                                 </div><!--/object-inner-->
+                                 
+                                 <div class="object-details" data-show="object-details_123743559">
+                                    <p>
+                                       Lorem Ipsum on lihtsalt proovitekst, mida kasutatakse printimis- ja ladumistööstuses. See on olnud tööstuse põhiline proovitekst juba alates 1500. aastatest, mil tundmatu printija võttis hulga suvalist teksti, et teha trükinäidist. Lorem Ipsum ei ole ainult viis sajandit säilinud, vaid on ka edasi kandunud elektroonilisse trükiladumisse, jäädes sealjuures peaaegu muutumatuks. See sai tuntuks 1960. aastatel Letraset'i lehtede väljalaskmisega, ja hiljuti tekstiredaktoritega nagu Aldus PageMaker, mis sisaldavad erinevaid Lorem Ipsumi versioone.
+                                    </p>
+                                    <div class="row-spacer-xs sm-show"></div>
+                                    <a href="javascript:void(0);" data-toggle="object-details_123743559" class="sm-show btn btn-transparent after-close">Sulge</a>
+                                 </div><!--/object-details-->
+                              </div><!--/object-->
+                              
+                              <hr />
+                              
+                              <div class="object object-event">
+                                 <div class="object-inner">
+                                    <div class="object-date">
+                                       <div class="object-date_day">23</div>
+                                       <div class="object-date_month">Veebruar</div>
+                                    </div><!--/object-date-->
+                                    <div class="object-content">
+                                       <div class="object-title">EV aastapäeva aktus</div>
+                                       <div class="object-footer">
+                                          <span>Koht: Aula, Kell 10:00</span><br />
+
+                                          <a href="kalender-lisa.html" data-plugin="modal" class="before-calendar">Lisa kalendrisse</a>
+
+                                          <ul class="tags">
+                                             <li><a href="">Õppetöö</a></li>
+                                             <li><a href="">Huvitegevus</a></li>
+                                          </ul><!--/tags-->
+
+                                       </div><!--/object-footer-->
+                                    </div><!--/object-content-->
+
+                                    <div class="object-button">
+                                       <!-- toggle muutuja on ID.. OBJEKTI ID -->
+                                       <a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_123743554" data-hide="object-details_123743554">Vaata lähemalt</a>
+
+                                       <div data-show="object-details_123743554">
+                                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                                          <a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
+                                          <a href="javascript:void(0);" data-toggle="object-details_123743554" class="sm-hide btn btn-transparent after-close">Sulge</a>
+                                       </div><!--/object-details_123743553-->
+
+                                    </div><!--/object-button-->
+                                 </div><!--/object-inner-->
+                                 
+                                 <div class="object-details" data-show="object-details_123743554">
+                                    <p>
+                                       Lorem Ipsum on lihtsalt proovitekst, mida kasutatakse printimis- ja ladumistööstuses. See on olnud tööstuse põhiline proovitekst juba alates 1500. aastatest, mil tundmatu printija võttis hulga suvalist teksti, et teha trükinäidist. Lorem Ipsum ei ole ainult viis sajandit säilinud, vaid on ka edasi kandunud elektroonilisse trükiladumisse, jäädes sealjuures peaaegu muutumatuks. See sai tuntuks 1960. aastatel Letraset'i lehtede väljalaskmisega, ja hiljuti tekstiredaktoritega nagu Aldus PageMaker, mis sisaldavad erinevaid Lorem Ipsumi versioone.
+                                    </p>
+                                    <div class="row-spacer-xs sm-show"></div>
+                                    <a href="javascript:void(0);" data-toggle="object-details_123743554" class="sm-show btn btn-transparent after-close">Sulge</a>
+                                 </div><!--/object-details-->
+                              </div><!--/object-->
+                              
+                              <hr />
+                              
+                              <div class="object object-event">
+                                 <div class="object-inner">
+                                    <div class="object-date">
+                                       <div class="object-date_day">23</div>
+                                       <div class="object-date_month">Veebruar</div>
+                                    </div><!--/object-date-->
+                                    <div class="object-content">
+                                       <div class="object-title">EV aastapäeva aktus</div>
+                                       <div class="object-footer">
+                                          <span>Koht: Aula, Kell 10:00</span><br />
+
+                                          <a href="kalender-lisa.html" data-plugin="modal" class="before-calendar">Lisa kalendrisse</a>
+
+                                          <ul class="tags">
+                                             <li><a href="">Õppetöö</a></li>
+                                             <li><a href="">Huvitegevus</a></li>
+                                          </ul><!--/tags-->
+
+                                       </div><!--/object-footer-->
+                                    </div><!--/object-content-->
+
+                                    <div class="object-button">
+                                       <!-- toggle muutuja on ID.. OBJEKTI ID -->
+                                       <a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_123743551" data-hide="object-details_123743551">Vaata lähemalt</a>
+
+                                       <div data-show="object-details_123743551">
+                                          <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                                          <a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
+                                          <a href="javascript:void(0);" data-toggle="object-details_123743551" class="sm-hide btn btn-transparent after-close">Sulge</a>
+                                       </div><!--/object-details_123743553-->
+
+                                    </div><!--/object-button-->
+                                 </div><!--/object-inner-->
+                                 
+                                 <div class="object-details" data-show="object-details_123743551">
+                                    <p>
+                                       Lorem Ipsum on lihtsalt proovitekst, mida kasutatakse printimis- ja ladumistööstuses. See on olnud tööstuse põhiline proovitekst juba alates 1500. aastatest, mil tundmatu printija võttis hulga suvalist teksti, et teha trükinäidist. Lorem Ipsum ei ole ainult viis sajandit säilinud, vaid on ka edasi kandunud elektroonilisse trükiladumisse, jäädes sealjuures peaaegu muutumatuks. See sai tuntuks 1960. aastatel Letraset'i lehtede väljalaskmisega, ja hiljuti tekstiredaktoritega nagu Aldus PageMaker, mis sisaldavad erinevaid Lorem Ipsumi versioone.
+                                    </p>
+                                    <div class="row-spacer-xs sm-show"></div>
+                                    <a href="javascript:void(0);" data-toggle="object-details_123743551" class="sm-show btn btn-transparent after-close">Sulge</a>
+                                 </div><!--/object-details-->
+                              </div><!--/object-->
+                              
+                           </div><!--/accordion-content-->
+                        </div><!--/accordion-entry-->
+                        
+                        <div class="accordion-entry">
+                           <div class="accordion-title"><span class="sm-hide">2016/2017</span><span class="sm-show">2016/17</span> Kevadsemester (7)</div>
+                           <div class="accordion-content">
+                              <p>
+                                 Lorem Ipsum on lihtsalt proovitekst, mida kasutatakse printimis- ja ladumistööstuses. See on olnud tööstuse põhiline proovitekst juba alates 1500. aastatest, mil tundmatu printija võttis hulga suvalist teksti, et teha trükinäidist. Lorem Ipsum ei ole ainult viis sajandit säilinud, vaid on ka edasi kandunud elektroonilisse trükiladumisse, jäädes sealjuures peaaegu muutumatuks. See sai tuntuks 1960. aastatel Letraset'i lehtede väljalaskmisega, ja hiljuti tekstiredaktoritega nagu Aldus PageMaker, mis sisaldavad erinevaid Lorem Ipsumi versioone.
+                              </p>
+                           </div><!--/accordion-content-->
+                        </div><!--/accordion-entry-->
+                        
+                     </div><!--/accordion-->
+                  </div><!--/col-12-->
+               </div><!--/row-->
+            </div><!--/block-->
+            
+         </div><!--/col-9-->
+         
+         <div class="col-3 sm-hide no-print">
+            <div class="block block-narrow">
+               <h2 class="block-title">Õppeaasta 17/18</h2>
+               <div class="row">
+                  <div class="col-12">
+                     <div class="object object-small object-horizontal object-inactive">
+                        <span class="object-inner">
+                           <span class="object-content">
+                              <span class="object-title">Õppeaasta algus</span>
+                              <span class="object-footer">
+                                 <span class="before-calendar">1. September</span>
+                              </span><!--/object-footer-->
+                           </span><!--/object-content-->
+                        </span><!--/object-inner-->
+                     </div><!--/object-->
+                  </div><!--/col-12-->
+                  <hr />
+                  <div class="col-12">
+                     <div class="object object-small object-horizontal object-inactive">
+                        <span class="object-inner">
+                           <span class="object-content">
+                              <span class="object-title">Sügissemester</span>
+                              <span class="object-footer">
+                                 <span class="before-calendar">21. september - 27. jaanuar</span>
+                              </span><!--/object-footer-->
+                           </span><!--/object-content-->
+                        </span><!--/object-inner-->
+                     </div><!--/object-->
+                  </div><!--/col-12-->
+                  <hr />
+                  <div class="col-12">
+                     <div class="object object-small object-horizontal object-inactive">
+                        <span class="object-inner">
+                           <span class="object-content">
+                              <span class="object-title">Kevadsemester</span>
+                              <span class="object-footer">
+                                 <span class="before-calendar">28. jaanuar - 16. juuni</span>
+                              </span><!--/object-footer-->
+                           </span><!--/object-content-->
+                        </span><!--/object-inner-->
+                     </div><!--/object-->
+                  </div><!--/col-12-->
+                  <hr />
+                  <div class="col-12">
+                     <div class="object object-small object-horizontal object-inactive">
+                        <span class="object-inner">
+                           <span class="object-content">
+                              <span class="object-title">Õppeaasta lõpp</span>
+                              <span class="object-footer">
+                                 <span class="before-calendar">16. juuni</span>
+                              </span><!--/object-footer-->
+                           </span><!--/object-content-->
+                        </span><!--/object-inner-->
+                     </div><!--/object-->
+                  </div><!--/col-12-->
+
+               </div><!--/row-->
+            </div><!--/block-->
+            
+         </div><!--/col-3-->
+      </div><!--/row-->
+      
+   </div><!--/inline-->
+   include "modules/footer.html"
+   
+</div><!--/wrapper-->
+
+include "modules/documentEnd.html"

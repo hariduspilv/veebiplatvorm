@@ -1,0 +1,76 @@
+include "modules/head.html"
+
+<div class="wrapper">
+   
+   include "modules/header.html"
+   
+   <div class="inline">
+      
+      <div class="row">
+         <div class="col-12">
+            
+            <div class="block" data-modal="true">
+               
+               <h1 class="block-title">Lisa kalendrisse <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a></h1>
+					
+					<div class="row-spacer-xs"></div>
+					
+					<form action="kalender-lisa-response.html" method="get" data-plugin="ajaxForm">
+						<div class="form-item">
+							
+							<label class="full-width">
+								<span class="customCheckbox">
+									<input type="checkbox" name="iCal" value="1" />
+									<span class="check"></span>
+								</span><!--/customCheckbox-->
+								<span class="label-title">Lae sündmus alla iCal sündmusena</span>
+							</label>
+							
+							<label class="full-width">
+								<span class="customCheckbox">
+									<input type="checkbox" name="outlook" value="1" />
+									<span class="check"></span>
+								</span><!--/customCheckbox-->
+								<span class="label-title">Lisa sündmus endale kalendrisse (Outlook)</span>
+							</label>
+							
+							<label class="full-width">
+								<span class="customCheckbox">
+									<input type="checkbox" data-plugin="hideElement" data-relative="emailInput" />
+									<span class="check"></span>
+								</span><!--/customCheckbox-->
+								<span class="label-title">Saada sündmus enda e-mailile:</span>
+							</label>
+							
+						</div><!--/form-item-->
+						
+						
+
+					
+					<div class="row-spacer"></div>
+					<div class="row">
+						<div class="col-12" id="emailInput">
+							<div class="form-item form-item_maxWidth form-item-h-offset">
+								<div class="form-item_title">Sinu e-maili aadress: *</div>
+								<input type="text" />
+							</div><!--/form-item-->
+						</div><!--/col-8-->
+						<div class="col-12">
+							<div class="form-item form-item-h-offset">
+								<div class="form-item_title">&nbsp;</div>
+								<button class="btn btn-filled btn-maxWidth sm-stretch">Valmis</button>
+							</div><!--/form-item-->
+						</div><!--/col-4-->
+					</div><!--/row-->
+					</form>
+            </div><!--/block-->
+            
+         </div><!--/col-12-->
+      </div><!--/row-->
+      
+   </div><!--/inline-->
+   include "modules/footer.html"
+   
+</div><!--/wrapper-->
+
+include "modules/documentEnd.html"

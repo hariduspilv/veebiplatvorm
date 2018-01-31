@@ -1,0 +1,483 @@
+include "modules/head.html"
+
+<div class="wrapper">
+   
+   include "modules/header.html"
+   
+   <div class="inline">
+      
+      <div class="row">
+         <div class="col-12">
+            
+            <div class="block" id="all">
+               
+               <h2 class="block-title"><span class="sm-hide">Otsingule <i>"tamm"</i> (leiti 15 tulemust)</span><span class="sm-show">Otsing "tamm" (15 vastet)</span></h2>
+               
+               <div class="row">
+                  <div class="col-12">
+                     <h3>Filtreeri kategooriaid</h3>
+                  </div><!--/col-12-->
+               </div><!--/row-->
+               
+               <form method="post" action="otsing.html" data-plugin="filters">
+               <div class="row">
+                  <div class="col-12">
+							<div class="btn-bar">
+                        <span class="btn-input">
+                           <input type="checkbox" name="category" value="all" checked />
+                           <span class="btn btn-xs btn-alternate">Kõik</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input">
+                           <input type="checkbox" name="category" value="kontaktid" />
+                           <span class="btn btn-xs btn-alternate">Kontaktid</span>
+                        </span><!--/btn-input-->
+
+                        <span class="btn-input">
+                           <input type="checkbox" name="category" value="uudised" />
+                           <span class="btn btn-xs btn-alternate">Uudised</span>
+                        </span><!--/btn-input-->
+								<span class="btn-input">
+                           <input type="checkbox" name="category" value="sundmused" />
+                           <span class="btn btn-xs btn-alternate">Sündmused</span>
+                        </span><!--/btn-input-->
+                     </div><!--/btn-bar-->
+                     
+                  </div><!--/col-12-->
+               </div><!--/row-->
+               
+               
+               <div class="row-spacer-xs sm-hide"></div>
+               <hr />
+               <div class="row-spacer sm-hide"></div>
+						
+               <div class="row">
+                  <div class="col-12">
+                     <div class="form-item-row">
+                        
+                        <div class="form-item after-search form-item_rounded form-item-stretch">
+                           <div class="form-item_title">Otsi pealkirja järgi</div>
+                           <input type="text" name="title" placeholder="Alusta trükkimist" data-plugin="autocomplete" data-url="api/autocomplete.json" data-onSubmit="true" />
+                        </div><!--/form-item-->
+
+                        <div class="form-item form-item_rounded after-calendar form-item-stretch">
+                           <div class="form-item_title">Kuupäev</div>
+                           <input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="Vali kuupäev" />
+                        </div><!--/form-item-->
+
+                        <div class="row-spacer-xs sm-show"></div>
+                        <div class="form-item">
+                           <div class="form-item_title sm-hide">&nbsp;</div>
+                           <button class="btn btn-filled">Otsi</button>
+                        </div><!--/form-item-->
+                        
+                     </div><!--/form-item-row-->
+                  </div><!--/col-12-->
+               </div><!--/row-->
+               <div class="row-spacer sm-hide"></div>
+               </form>
+               
+					<div data-postURL="api/otsing-ajax.html" data-plugin="filterContents">
+						<div class="row">
+							<div class="col-12">
+								<h3 id="contacts">Kontaktid (2)</h3>
+							</div><!--/col-12-->
+						</div><!--/row-->
+
+						<div class="row-spacer-xs"></div>
+
+						<div class="row">
+							<div class="col-12">
+								<div class="object object-horizontal">
+									<div class="object-inner">
+										<div class="object-image object-image-circle" style="background-image:url(assets/tmp/object-1.jpg);"><img alt="" src="assets/imgs/placeholder-56.gif" /></div>
+										<div class="object-content">
+											<div class="object-content_col">
+												<p><b>Mari <u>Tamm</u> <a href="">(CV)</a></b></p>
+												<p>
+													Kutseõpetaja<br />
+													+372 55 555 555<br />
+													<a href="mailto:mehis.adamson@vkhk.ee">mehis.adamson@vkhk.ee</a>
+												</p>
+											</div><!--/object-content_col-->
+											<div class="object-content_col">
+												<p><b>Vastuvõtuajad:</b></p>
+												<p>Direktor: kokkuleppel<br />Ajalugu: E-R 13-14</p>
+											</div><!--/object-content_col-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+
+							<div class="row-spacer-xs sm-hide"></div>
+							<hr class="spacing-xs sm-show" />
+
+							<div class="col-12">
+
+								<div class="object object-horizontal">
+									<div class="object-inner">
+										<div class="object-image object-image-circle" style="background-image:url(assets/tmp/object-1.jpg);"><img alt="" src="assets/imgs/placeholder-56.gif" /></div>
+										<div class="object-content">
+											<div class="object-content_col">
+												<p><b>Eduard <u>Tammik</u> <a href="">(CV)</a></b></p>
+												<p>
+													Kutseõpetaja<br />
+													+372 55 555 555<br />
+													<a href="mailto:mehis.adamson@vkhk.ee">mehis.adamson@vkhk.ee</a>
+												</p>
+											</div><!--/object-content_col-->
+											<div class="object-content_col">
+												<p><b>Vastuvõtuajad:</b></p>
+												<p>Direktor: kokkuleppel<br />Ajalugu: E-R 13-14</p>
+											</div><!--/object-content_col-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+							</div><!--/col-12-->
+						</div><!--/row-->
+
+						<hr class="spacing-xl" />
+
+						<div class="row">
+							<div class="col-12">
+								<h3 id="news">Uudised (5)</h3>
+							</div><!--/col-12-->
+						</div><!--/row-->
+
+						<div class="row">
+							<div class="col-12">
+
+								<a href="" class="object object-max_width">
+									<span class="object-inner">
+										<span class="object-content">
+											<span class="object-title">Viie kooli võistlus 2017</span>
+											<span class="object-footer">
+												<span class="before-calendar">20. juuni</span>
+												<span class="before-user">Haldur</span>
+											</span><!--/object-footer-->
+											<span class="object-description">12. ja 13. jaanuaril 2017. aastal toimus Tartu Miina Härma Gümnaasiumis arvult 52. Viie kooli võistlus, kus osalesid Viljandi Gümnaasium, Nõo Reaalgümnaasium, Hugo Treffneri Gümnaasium, Miina Härma Gümnaasium ja <u>Tamme</u> Gümnaasium.
+											</span><!--/object-description-->
+										</span><!--/object-content-->
+									</span><!--/object-inner-->
+								</a><!--/object-->
+
+							</div><!--/col-12-->
+							<div class="col-12">
+
+								<a href="" class="object object-max_width">
+									<span class="object-inner">
+										<span class="object-content">
+											<span class="object-title">Võrumaa Kutsehariduskeskus osales hariduskonverentsil pikem pealkiri ja nii edasi</span>
+											<span class="object-footer">
+												<span class="before-calendar">20. juuni</span>
+												<span class="before-user">Haldur</span>
+											</span><!--/object-footer-->
+											<span class="object-description">12. ja 13. jaanuaril 2017. aastal toimus Tartu Miina Härma Gümnaasiumis arvult 52. Viie kooli võistlus, kus osalesid Viljandi Gümnaasium, Nõo Reaalgümnaasium, Hugo Treffneri Gümnaasium, Miina Härma Gümnaasium ja <u>Tamme</u> Gümnaasium.
+											</span><!--/object-description-->
+										</span><!--/object-content-->
+									</span><!--/object-inner-->
+								</a><!--/object-->
+
+							</div><!--/col-12-->
+							<div class="col-12">
+
+								<a href="" class="object object-max_width">
+									<span class="object-inner">
+										<span class="object-content">
+											<span class="object-title">Võrumaa Kutsehariduskeskus osales hariduskonverentsil pikem pealkiri ja nii edasi</span>
+											<span class="object-footer">
+												<span class="before-calendar">20. juuni</span>
+												<span class="before-user">Haldur</span>
+											</span><!--/object-footer-->
+											<span class="object-description">12. ja 13. jaanuaril 2017. aastal toimus Tartu Miina Härma Gümnaasiumis arvult 52. Viie kooli võistlus, kus osalesid Viljandi Gümnaasium, Nõo Reaalgümnaasium, Hugo Treffneri Gümnaasium, Miina Härma Gümnaasium ja <u>Tamme</u> Gümnaasium.
+											</span><!--/object-description-->
+										</span><!--/object-content-->
+									</span><!--/object-inner-->
+								</a><!--/object-->
+
+							</div><!--/col-12-->
+							<div class="col-12">
+
+								<a href="" class="object object-max_width">
+									<span class="object-inner">
+										<span class="object-content">
+											<span class="object-title">Võrumaa Kutsehariduskeskus osales hariduskonverentsil pikem pealkiri ja nii edasi</span>
+											<span class="object-footer">
+												<span class="before-calendar">20. juuni</span>
+												<span class="before-user">Haldur</span>
+											</span><!--/object-footer-->
+											<span class="object-description">12. ja 13. jaanuaril 2017. aastal toimus Tartu Miina Härma Gümnaasiumis arvult 52. Viie kooli võistlus, kus osalesid Viljandi Gümnaasium, Nõo Reaalgümnaasium, Hugo Treffneri Gümnaasium, Miina Härma Gümnaasium ja <u>Tamme</u> Gümnaasium.
+											</span><!--/object-description-->
+										</span><!--/object-content-->
+									</span><!--/object-inner-->
+								</a><!--/object-->
+
+							</div><!--/col-12-->
+							<div class="col-12">
+
+								<a href="" class="object object-max_width">
+									<span class="object-inner">
+										<span class="object-content">
+											<span class="object-title">Võrumaa Kutsehariduskeskus osales hariduskonverentsil pikem pealkiri ja nii edasi</span>
+											<span class="object-footer">
+												<span class="before-calendar">20. juuni</span>
+												<span class="before-user">Haldur</span>
+											</span><!--/object-footer-->
+											<span class="object-description">12. ja 13. jaanuaril 2017. aastal toimus Tartu Miina Härma Gümnaasiumis arvult 52. Viie kooli võistlus, kus osalesid Viljandi Gümnaasium, Nõo Reaalgümnaasium, Hugo Treffneri Gümnaasium, Miina Härma Gümnaasium ja <u>Tamme</u> Gümnaasium.
+											</span><!--/object-description-->
+										</span><!--/object-content-->
+									</span><!--/object-inner-->
+								</a><!--/object-->
+
+							</div><!--/col-12-->
+						</div><!--/row-->
+
+						<hr class="spacing-xl" />
+
+						<div class="row">
+							<div class="col-12">
+								<h3 id="events">Sündmused (8)</h3>
+							</div><!--/col-12-->
+						</div><!--/row-->
+
+						<div class="row">
+							<div class="col-12">
+
+								<div class="object object-event object-inactive">
+									<div class="object-inner">
+										<a href="" class="object-date">
+											<span class="object-date_day">23</span>
+											<span class="object-date_month">Veebruar</span>
+										</a><!--/object-date-->
+										<div class="object-content">
+											<a href="" class="object-title">EV aastapäeva aktus</a>
+											<div class="object-footer">
+												<span>Koht: Aula, Kell 10:00</span><br />
+
+
+												<ul class="tags">
+													<li><a href="">Õppetöö</a></li>
+													<li><a href="">Huvitegevus</a></li>
+												</ul><!--/tags-->
+
+											</div><!--/object-footer-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+
+							<hr class="sm-show no-v-margin" />
+
+							<div class="col-12">
+
+								<div class="object object-event object-inactive">
+									<div class="object-inner">
+										<a href="" class="object-date">
+											<span class="object-date_day">23</span>
+											<span class="object-date_month">Veebruar</span>
+										</a><!--/object-date-->
+										<div class="object-content">
+											<a href="" class="object-title">EV aastapäeva aktus</a>
+											<div class="object-footer">
+												<span>Koht: Aula, Kell 10:00</span><br />
+
+
+												<ul class="tags">
+													<li><a href="">Õppetöö</a></li>
+													<li><a href="">Huvitegevus</a></li>
+												</ul><!--/tags-->
+
+											</div><!--/object-footer-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+
+							<hr class="sm-show no-v-margin" />
+
+							<div class="col-12">
+
+								<div class="object object-event object-inactive">
+									<div class="object-inner">
+										<a href="" class="object-date">
+											<span class="object-date_day">23</span>
+											<span class="object-date_month">Veebruar</span>
+										</a><!--/object-date-->
+										<div class="object-content">
+											<a href="" class="object-title">EV aastapäeva aktus</a>
+											<div class="object-footer">
+												<span>Koht: Aula, Kell 10:00</span><br />
+
+
+												<ul class="tags">
+													<li><a href="">Õppetöö</a></li>
+													<li><a href="">Huvitegevus</a></li>
+												</ul><!--/tags-->
+
+											</div><!--/object-footer-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+
+							<hr class="sm-show no-v-margin" />
+
+							<div class="col-12">
+
+								<div class="object object-event object-inactive">
+									<div class="object-inner">
+										<a href="" class="object-date">
+											<span class="object-date_day">23</span>
+											<span class="object-date_month">Veebruar</span>
+										</a><!--/object-date-->
+										<div class="object-content">
+											<a href="" class="object-title">EV aastapäeva aktus</a>
+											<div class="object-footer">
+												<span>Koht: Aula, Kell 10:00</span><br />
+
+
+												<ul class="tags">
+													<li><a href="">Õppetöö</a></li>
+													<li><a href="">Huvitegevus</a></li>
+												</ul><!--/tags-->
+
+											</div><!--/object-footer-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+
+							<hr class="sm-show no-v-margin" />
+
+							<div class="col-12">
+
+								<div class="object object-event object-inactive">
+									<div class="object-inner">
+										<a href="" class="object-date">
+											<span class="object-date_day">23</span>
+											<span class="object-date_month">Veebruar</span>
+										</a><!--/object-date-->
+										<div class="object-content">
+											<a href="" class="object-title">EV aastapäeva aktus</a>
+											<div class="object-footer">
+												<span>Koht: Aula, Kell 10:00</span><br />
+
+
+												<ul class="tags">
+													<li><a href="">Õppetöö</a></li>
+													<li><a href="">Huvitegevus</a></li>
+												</ul><!--/tags-->
+
+											</div><!--/object-footer-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+
+							<hr class="sm-show no-v-margin" />
+
+							<div class="col-12">
+
+								<div class="object object-event">
+									<div class="object-inner">
+										<a href="" class="object-date">
+											<span class="object-date_day">23</span>
+											<span class="object-date_month">Veebruar</span>
+										</a><!--/object-date-->
+										<div class="object-content">
+											<a href="" class="object-title">EV aastapäeva aktus</a>
+											<div class="object-footer">
+												<span>Koht: Aula, Kell 10:00</span><br />
+
+												<a href="kalender-lisa.html" data-plugin="modal" class="before-calendar">Lisa kalendrisse</a>
+
+												<ul class="tags">
+													<li><a href="">Õppetöö</a></li>
+													<li><a href="">Huvitegevus</a></li>
+												</ul><!--/tags-->
+
+											</div><!--/object-footer-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+
+							<hr class="sm-show no-v-margin" />
+
+							<div class="col-12">
+
+								<div class="object object-event">
+									<div class="object-inner">
+										<a href="" class="object-date">
+											<span class="object-date_day">23</span>
+											<span class="object-date_month">Veebruar</span>
+										</a><!--/object-date-->
+										<div class="object-content">
+											<a href="" class="object-title">EV aastapäeva aktus</a>
+											<div class="object-footer">
+												<span>Koht: Aula, Kell 10:00</span><br />
+
+												<a href="kalender-lisa.html" data-plugin="modal" class="before-calendar">Lisa kalendrisse</a>
+
+												<ul class="tags">
+													<li><a href="">Õppetöö</a></li>
+													<li><a href="">Huvitegevus</a></li>
+												</ul><!--/tags-->
+
+											</div><!--/object-footer-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+
+							<hr class="sm-show no-v-margin" />
+
+							<div class="col-12">
+
+								<div class="object object-event">
+									<div class="object-inner">
+										<a href="" class="object-date">
+											<span class="object-date_day">23</span>
+											<span class="object-date_month">Veebruar</span>
+										</a><!--/object-date-->
+										<div class="object-content">
+											<a href="" class="object-title">EV aastapäeva aktus</a>
+											<div class="object-footer">
+												<span>Koht: Aula, Kell 10:00</span><br />
+
+												<a href="kalender-lisa.html" data-plugin="modal" class="before-calendar">Lisa kalendrisse</a>
+
+												<ul class="tags">
+													<li><a href="">Õppetöö</a></li>
+													<li><a href="">Huvitegevus</a></li>
+												</ul><!--/tags-->
+
+											</div><!--/object-footer-->
+										</div><!--/object-content-->
+									</div><!--/object-inner-->
+								</div><!--/object-->
+
+							</div><!--/col-12-->
+						</div><!--/row-->
+					</div>
+            </div><!--/block-->
+            
+         </div><!--/col-12-->
+         
+      </div><!--/row-->
+      
+   </div><!--/inline-->
+   
+   include "modules/footer.html"
+   
+</div><!--/wrapper-->
+
+include "modules/documentEnd.html"

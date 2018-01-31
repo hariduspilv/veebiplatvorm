@@ -1,0 +1,7 @@
+{
+	"baseClass": "icon",
+	"beforePrefix": "before-",
+   "afterPrefix": "after-",
+   "classPrefix": "before-",
+   "font_path": "assets/fonts/iconFont"
+}

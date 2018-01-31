@@ -1,0 +1,79 @@
+.btn{display: inline-block; border:@highlight-1 1px solid; border-radius:@border-radius; font-size:18px; line-height:100%; text-decoration: none; cursor: pointer; padding:10px 20px; color:@highlight-1; transition: color 0.25s, background 0.25s, border 0.25s; text-align: center; min-width: 200px; background:none;
+   &:hover{background:@highlight-1; color:@text-1; border-color:@highlight-1; color:@text-2;}
+   &.btn-inverted{background:@text-2; color:@highlight-1; border-color:@text-2;
+      &:hover{background:@highlight-1; border-color:@text-2; color:@text-2;}
+   }
+   &.btn-alternate{border-color:@border-2; color:@text-1;
+		&:hover, &.active{background:@highlight-1-light; color:@text-1; border-color:@highlight-1-light;}
+	}
+   &.btn-filled{background:@highlight-1; color:@text-2; border-color:@highlight-1;
+      &:hover{color:@highlight-1; background:@text-2; border-color:@highlight-1;}
+   }
+   &.btn-stretch{width:100%;}
+   &.btn-xs{min-width:0; font-size:16px;}
+   &.btn-transparent{background:none; border-color:transparent; min-width:0; 
+      &:hover{background:@base-1; color:@highlight-1;}
+   }
+   
+   &[class*='after-']{
+      &:after{display: inline-block; vertical-align: middle; padding-left:12px; line-height:16px; margin-top:-2px;}
+   }
+   &+.link{line-height:40px;}
+   &.btn-round{width:40px; height:40px; line-height:38px; padding:0; min-width:40px;}
+	&.btn-maxWidth{width:auto !important; max-width:400px;}
+}
+
+a.block:hover{
+   .btn{background:@highlight-1; color:@text-1; border-color:@highlight-1; color:@text-2;}
+	
+}
+
+.link-tab{color:@highlight-1; display: inline-block; border-bottom:transparent 2pxi solid; text-decoration: none; line-height:120%; padding:0 0 6px 0; font-size:18px;
+   &+.link-tab{margin-left:20px;}
+	&:hover{border-color:@highlight-1-light;}
+   &.active{color:@text-1; font-weight: 500; border-color:@highlight-1; text-decoration: none;}
+}
+
+.btn-input{display: inline-block; position: relative; cursor: pointer;
+   &+.btn-input{margin-left:16px;}
+   input{position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:inherit; appearance:none; margin:0;}
+   input:checked + .btn{background:@highlight-1-light; color:@text-1; border-color:@highlight-1-light;}
+   &+.link{line-height:40px;}
+}
+
+.cta-link{font-size:16px; color:@highlight-1; text-decoration: none;
+   &:before{color:@text-2; background:@highlight-1; width:30px; height:30px; border-radius: 30px; text-align: center; line-height:100%; font-size:19px;  margin:0 10px 0 0; display: inline-flex; flex-direction: column; justify-content:center;}
+   
+   &.before-plus.active{.before-minus;}
+}
+
+.btn-bar{margin-bottom:-20px; font-size: 0;
+   & > .btn, & > .btn-input, & > .btn-circle{margin-bottom:20px; margin-right:20px; margin-left:0;}
+   &.align-right{text-align: right; position: relative; z-index: 10;
+      & > .btn, & > .btn-input, & > .btn-circle{margin-right:0; margin-left:20px;}
+   }
+	&+h1{clear:both;}
+}
+
+article>.btn-bar.sm-pull_right:first-child{margin-top:-10px;}
+
+
+.btn-circle{display: inline-block; width:30px; height:30px; text-align: center; line-height:30px; text-decoration: none; border-radius:30px; background:@base-3; color:@text-2 !important; vertical-align: middle; padding:0; transition:color 0.25s, background 0.25s; margin-right:16px; font-size:16px;
+   &:hover{background:@highlight-1;}
+	&.btn-active{background:@highlight-1;}
+}
+
+.link{color:@highlight-1; text-decoration: none;
+	
+	&:hover{text-decoration: underline;}
+	&:before{padding-right:7px; display: inline-block;}
+
+}
+
+.share-button{display: block; color:@highlight-1; text-decoration: none; margin-bottom:20px;
+	&:last-child{margin-bottom:0;}
+	&:before{display: inline-block; height:32px; width:32px; background:@highlight-1; text-align: center; line-height:32px; color:@text-2; border-radius: 40px; margin-right:10px; transition:transform 0.25s;}
+	&:hover{text-decoration: underline;
+		&:before{transform:scale(1.1);}
+	}
+}

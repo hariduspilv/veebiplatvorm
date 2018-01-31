@@ -1,0 +1,94 @@
+//main: build.less
+
+@columnCount: 12; // How many columns are in a row? If it's not 12 then get a new designer.
+@gridGutter: 20px;
+@smMaxWidth: 840px;
+@mdMaxWidth: 1200px;
+
+//DO NOT TOUCH START
+.grid-values (@index) when (@index > 0) {
+   
+	@tmpWidth: @index / @columnCount * 100;
+   
+	.col-@{index}{width:~"@{tmpWidth}%"; padding:@gridGutter/2;}
+	.col-offset-@{index}{margin-left:~"@{tmpWidth}%";}
+   
+   @media screen and(min-width:@smMaxWidth) and(max-width:@mdMaxWidth) {
+      .md-@{index}{width:~"@{tmpWidth}% !important"; }
+   }
+   
+   @media screen and(max-width:@smMaxWidth) and (orientation:portrait){
+      .sm-@{index}{width:~"@{tmpWidth}% !important";}
+		.sm-offset-@{index}{margin-left:~"@{tmpWidth}% !important";}
+   }
+   
+	.grid-values(@index - 1);
+}
+//DO NOT TOUCH END
+
+@media screen and(max-width:@smMaxWidth){
+   .sm-hide{display: none !important;}
+   .sm-show{display:block;}
+	
+	.row{
+		&:first-child{
+			&.sm-show+.row{padding-top:0 !important;}
+		}
+		.sm-offset-0{margin-left:0 !important;}
+	}
+}
+
+.row{display: flex; flex-wrap: wrap;
+   &:first-child{padding-top:@gridGutter/2;
+		&.sm-show+.row{padding-top:@gridGutter/2;}
+	}
+   &:last-child{padding-bottom:@gridGutter/2;}
+   
+   .grid-values(@columnCount);
+   
+   .flex-grow-last{display: flex; flex-flow: column;
+      .block:last-child{ flex-grow:1; }
+   }
+   
+   .flex-right{display: flex; justify-content: flex-end;}
+   
+   .vertical-center{display: flex; justify-content: center; flex-direction: column;}
+   &.gutter-x2{margin:-@gridGutter/2;
+      [class*='col-']{padding:@gridGutter;}
+   }
+   
+   &>hr{margin:10px @gridGutter/2;}
+   &.pull-up{margin-top:-@gridGutter/2;}
+   .col-margin{margin-top:10px;}
+   .row-vertical-xl{
+      [class*='col-']{padding:@gridGutter @gridGutter/2;}
+   }
+   .col-border-after{position: relative;
+      &:after{background: @base-1; position: absolute; right:0; top:15px; width: 2pxi; bottom: 10px; content: " ";}
+   }
+   
+   .d-flex{display: flex;}
+}
+.row[data-tab]{display: none;
+   &.active-tab{display: flex;}
+}
+.row-spacer-xl{height:30px; overflow: hidden; width: 100%;}
+.row-spacer{height:20px; overflow: hidden;width: 100%;}
+.row-spacer-xs{height:10px; overflow: hidden;width: 100%;}
+.row-spacer-m{height:13px; overflow: hidden;width: 100%;}
+
+.block .row{margin-left:-@gridGutter/2; margin-right:-@gridGutter/2;
+   .row{margin-left:0; margin-right:0;}
+}
+
+.block + .row{margin-bottom: 0;}
+
+.inline > .row > [class*='col-'] > .row{margin:@gridGutter/2 -@gridGutter/2;}
+.inline > .row > [class*='col-'] > .block + .row{margin-bottom: -@gridGutter/2;}
+[class*='col-']{
+   &>.block.sm-show{
+      &:first-child{margin-top: 20px;
+         &+.block{margin-top: 0px;}
+      }
+   }
+}

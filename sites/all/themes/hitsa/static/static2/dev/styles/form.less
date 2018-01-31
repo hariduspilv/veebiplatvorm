@@ -1,0 +1,159 @@
+.form-item{position: relative;
+   &:after{position: absolute; bottom:0; right:0; width:50px; height:40px; line-height:40px; text-align: center; color:@highlight-1; font-size:20px; cursor: pointer;}
+   
+   .form-item_title{display: block; font-size: 16px; font-weight: 500; margin:0 0 8px 0; line-height:100%;}
+   input[type='text'], input[type='password'], input[type='date'], input[type='email'], select, textarea{display: block; appearance:none; border:@border-2 1pxi solid; height:40px; line-height:38px; padding:0 15px; border-radius:4px; font-size:16px; color:@text-1; .placeholder; width:100%;
+      &:focus{box-shadow:0 0 3px 1px rgba(0,0,0,0.15);}
+		&:disabled{border-color:@border-2; background:@base-1;}
+   }
+   
+   textarea{height:200px; line-height:120%; padding-top:10px; padding-bottom:10px;}
+   .SumoSelect .CaptionCont{border-radius:4px;}
+   &.form-item_rounded{
+      .SumoSelect .CaptionCont{border-radius:40px;}
+      input[type='text'], input[type='password'], input[type='date'], input[type='email'], select, textarea{border-radius:40px;}
+   }
+   
+   &[class*='after']{
+      input{padding-right:50px;}
+   }
+   
+   select{cursor:pointer;}
+   .btn{width:100%;}
+   
+   &.form-item_half{
+      input[type='text'], input[type='password'], input[type='date'], input[type='email'], select, textarea{max-width:50%;}
+   }
+	
+	&.form-item_maxWidth{
+      input[type='text'], input[type='password'], input[type='date'], input[type='email'], select, textarea{max-width:75%;}
+   }
+   
+   label{display: inline-flex; align-items: center; width: auto; cursor: pointer;
+      .label-title{flex-grow: 1; line-height:122%;}
+		&:hover{
+			.label-title{text-decoration: underline;}
+			.customCheckbox, .customRadio{
+				.check{border-color:@highlight-1;}
+			}
+		}
+		&+label{margin-left:20px;}
+		&.full-width{display: flex;
+			&+label{margin-left:0; margin-top:20px;}
+		}
+   }
+   
+   .form-item_disclaimer{font-size:14px; display: block; padding-top:5px;}
+	&.form-item-h-offset{padding-left:35px;}
+}
+
+.customCheckbox{display: inline-block; width:25px; height:25px; flex-grow: 0; flex-shrink: 0; position: relative; cursor: pointer; vertical-align: middle; margin-right:10px;
+   input{position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor: pointer;}
+   .check{position: absolute; top:0; left:0; width:100%; height:100%; line-height:25px; text-align: center;  font-size:13px; color:@highlight-1; display: block; border:@border-2 1pxi solid; border-radius: 4px;}
+   input:checked + .check{box-shadow:0 0 3px 1px rgba(0,0,0,0.15);
+      .before-check;
+   }
+}
+
+.customRadio{display: inline-block; width:25px; height:25px; flex-grow: 0; flex-shrink: 0; position: relative; cursor: pointer; vertical-align: middle; margin-right:10px;
+   input{position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor: pointer;}
+   .check{position: absolute; top:0; left:0; width:100%; height:100%; line-height:25px; text-align: center;  font-size:13px; color:@highlight-1; display: block; border:@border-2 1pxi solid; border-radius: 100px;}
+   input:checked + .check{box-shadow:0 0 3px 1px rgba(0,0,0,0.15);
+		&:before{position: absolute; top:50%; left:50%; width:18px; height:18px; margin:-9px 0 0 -9px; background:@highlight-1; border-radius: 100px; content:" "; display: block;}
+   }
+}
+
+
+.form-item-row{display: flex;
+   .form-item{width:200px+@gridGutter; padding-right:@gridGutter;
+      &:after{right:@gridGutter;}
+		&.form-item-stretch{flex-grow: 1;}
+		&:last-child{padding-right:0;}
+   }
+}
+
+.daterangepicker{position: absolute; z-index: 999; background:@base-2; border-radius:8px; padding:16px 20px; margin-top:5px; display: none; border:@border-2 1pxi solid;
+	
+	.daterangepicker_input{display: none;}
+	.calendar{ float:left; width:auto !important;
+		&.right{position: relative; margin-left:@gridGutter; padding-left:@gridGutter;
+			&:before{position: absolute; top:15px; left:0; width:1px; bottom:0; background:@border-1; content:" "; display: block; overflow: hidden;}
+		}
+	}
+   
+   &.opensleft{
+      &:before{left:auto; right:80px;}
+   }
+   &.dropup{margin-top:-30px;
+      &:before{display: none;}
+      &:after{bottom: -30px; left: 50%; border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none; margin-left:-15px;}
+	  &:after {border-color: rgba(0, 0, 0, 0);border-top-color: @base-3; border-width: 15px;margin-left: -15px;}
+   }
+	.calendar-table{
+		table{width:100%; border-collapse: collapse; border:none;
+			th{font-weight:500; color:@text-1; padding-bottom:12px; font-size:18px; text-align: center;}
+			.month{color:@text-1; font-size:18px; vertical-align: middle; padding-bottom:10px;}
+			td{text-align: center; padding:0 0 2px 0;position: relative;
+				span{width:35px; height:35px; display: inline-block; line-height:35px; position: relative; z-index: 2;}
+				&.off{opacity:0.5;
+					span{color:@text-1;}
+				}
+				&:hover{
+					span{cursor: pointer;  border-radius:32px; box-shadow:inset 0 0 0 1pxi @border-1; font-weight:500;}
+					&:not(.in-range) span{border-radius:32px !important;}
+				}
+
+				
+				&.in-range span{background:@base-1;}
+				
+				&.start-date~.in-range{
+					span{background:@base-1;}
+					&.end-date span{background:@highlight-1;}
+				}
+				&.start-date+.in-range{
+					&:before{content:" "; position: absolute; top:0; bottom:2px; left:-50%; width:50%; background:@base-1;}
+				}
+				
+				&.in-range+.end-date{
+					&:before{content:" "; position: absolute; top:0; bottom:2px; left:0; width:50%; background:@base-1;}
+				}
+				
+				&:first-child span{border-radius:32px 0 0 32px;}
+				&:last-child span{border-radius:0 32px 32px 0;}
+				
+				&.in-range{
+					
+					&:hover{span{border-radius:0 32px 32px 0;} }
+					&.end-date:hover span{border-radius:32px;}
+				}
+				
+				&.in-range:hover+.in-range{
+					&:before{display: none;}
+					span{border-radius:32px 0 0 32px;}
+					&:last-child span{border-radius:32px;}
+					&.end-date span{border-radius:32px;}
+				}
+				&.in-range:first-child:hover span{border-radius:32px;}
+				
+				
+				&.active span{background:@highlight-1; color:@text-2; border-radius:32px;}
+				&.end-date{
+					span{background:@highlight-1; color:@text-2; border-radius:32px;}
+				}
+				
+				&.start-date+.end-date{
+					&:before{content:" "; position: absolute; top:0; bottom:2px; left:-50%; width:100%; background:@base-1;}
+					span{background:@highlight-1;}
+					&:hover span{border-radius:32px;}
+				}
+				
+				
+			}
+		}
+		.prev, .next{cursor: pointer; font-size:16px; color:@highlight-1; padding-bottom:6px; 
+			&.prev{ i{.before-arrow_left; font-style:normal; margin-left:-20px;  } }
+			&.next{ i{.before-arrow_right; font-style:normal; margin-right:-20px; } }
+			&:hover{color:@highlight-1;}
+		}
+	}
+}

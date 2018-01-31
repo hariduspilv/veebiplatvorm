@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="5px" height="6px" viewBox="0 0 5 6" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>path64</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Avaleht" transform="translate(-210.000000, -3552.000000)" fill-rule="nonzero" fill="#FFFFFF">
+            <g id="Group-203" transform="translate(0.000000, 3338.000000)">
+                <g id="Group-201" transform="translate(110.000000, 40.000000)">
+                    <g id="Group-200" transform="translate(1.000000, 46.000000)">
+                        <g id="Group-162" transform="translate(0.000000, 84.000000)">
+                            <g id="Group">
+                                <path d="M100.578835,44.5287448 L99.6199682,44.5287448 L99.6199682,49.4340404 L100.557899,49.4340404 L100.557899,48.7305921 C100.915904,49.342969 101.49583,49.5764049 102.067382,49.5764049 C103.239796,49.5764049 103.821815,48.7305921 103.821815,47.6398286 L103.821815,44.5287448 L102.862948,44.5287448 L102.862948,47.4754813 C102.862948,48.1590404 102.577173,48.7096562 101.720892,48.7096562 C100.96615,48.7096562 100.578835,48.1077473 100.578835,47.3634739 L100.578835,44.5287448 Z" id="path64" transform="translate(101.720892, 47.052575) scale(-1, 1) rotate(-180.000000) translate(-101.720892, -47.052575) "></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

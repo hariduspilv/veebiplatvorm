@@ -1,0 +1,38 @@
+<% if (stylesheet === 'less') { %>
+//main:build.less
+<% } %>
+
+<% if (fontfaceStyles) { %>
+<% if (fontSrc1 && embed.length) { %>
+@font-face {
+	font-family:"<%= fontFamilyName %>";
+	src:<%= fontSrc1 %>;
+	font-weight:normal;
+	font-style:normal;
+}
+<% } %>@font-face {
+	font-family:"<%= fontFamilyName %>";<% if (fontSrc1) { %>
+	src:<%= fontSrc1 %>;<% }%>
+	src:<%= fontSrc2 %>;
+	font-weight:normal;
+	font-style:normal;
+}
+<% } %>
+
+i[class*='before-']{font-style:normal;}
+i[class*='after-']{font-style:normal;}
+[class*='before-']:before{font-family:"<%= fontFamilyName %>";}
+[class*='after-']:after{font-family:"<%= fontFamilyName %>";}
+
+<% if (iconsStyles) { %>/* Icons */<% for (var glyphIdx = 0; glyphIdx < glyphs.length; glyphIdx++) { %>
+<% if (stylesheet === 'less') { %>
+.<%= beforePrefix %><%= glyphs[glyphIdx] %> { &:before {font-family:"<%= fontFamilyName %>"; content:"<% if (addLigatures) { %><%= glyphs[glyphIdx] %><% } else { %>\<%= codepoints[glyphIdx] %><% } %>"; }<% if (ie7) {%> *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= codepoints[glyphIdx] %>;'); <% } %>}
+.<%= afterPrefix %><%= glyphs[glyphIdx] %> { &:after {font-family:"<%= fontFamilyName %>"; content:"<% if (addLigatures) { %><%= glyphs[glyphIdx] %><% } else { %>\<%= codepoints[glyphIdx] %><% } %>"; }<% if (ie7) {%> *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= codepoints[glyphIdx] %>;'); <% } %>}
+<% } else { %>
+<% if (ie7) {%>.<%= beforePrefix %><%= glyphs[glyphIdx] %> {
+	*zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#x<%= codepoints[glyphIdx] %>;');
+}
+<% } %>
+.<%= beforePrefix %><%= glyphs[glyphIdx] %>:before {
+	content:"<% if (addLigatures) { %><%= glyphs[glyphIdx] %><% } else { %>\<%= codepoints[glyphIdx] %><% } %>";
+}<% } } } %>
