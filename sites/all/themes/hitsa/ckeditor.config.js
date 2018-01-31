@@ -11,10 +11,9 @@ CKEDITOR.editorConfig = function (config) {
     
     // [ Left, Center, Right, Justified ]
     config.justifyClasses = ['rteleft', 'rtecenter', 'rteright', 'rtejustify'];
-    console.dir(config);
     // The minimum editor width, in pixels, when resizing it with the resize handle.
     config.resize_minWidth = 450;
-
+    
     // Protect PHP code tags (<?...?>) so CKEditor will not break them when
     // switching from Source to WYSIWYG.
     // Uncommenting this line doesn't mean the user will not be able to type PHP
@@ -24,11 +23,11 @@ CKEDITOR.editorConfig = function (config) {
     config.protectedSource.push(/<\?[\s\S]*?\?>/g); // PHP Code
 
     config.format_h5 = { element: 'h5', attributes: { 'class': 'contentTitle5' } };
-    config.BulletedList = { element: 'ul', attributes: { 'class': 'contentTitle5' } };
-    config.liststyle = { element: 'ul', attributes: { 'class': 'contentTitle5' } };
-    config.lists = { element: 'ul', attributes: { 'class': 'contentTitle5' } };
+    // config.BulletedList = { element: 'ul', attributes: { 'class': 'contentTitle5 bullet-list' } };
+    // config.liststyle = { element: 'ul', attributes: { 'class': 'contentTitle5' } };
+    // config.lists = { element: 'ul', attributes: { 'class': 'contentTitle5' } };
 
-    // config.list = { element: 'list', attributes: { 'class': 'bullet-list_article'}}
+    config.list = { element: 'list', attributes: { 'class': 'bullet-list_article'}}
     // [#1762328] Uncomment the line below to protect <code> tags in CKEditor (hide them in wysiwyg mode).
     // config.protectedSource.push(/<code>[\s\S]*?<\/code>/gi);
     config.extraPlugins = '';
@@ -108,3 +107,24 @@ Drupal.settings.cke_toolbar_DrupalFull = [
     ['Maximize', 'ShowBlocks'],
     ['DrupalBreak', 'DrupalPageBreak']
 ];
+CKEDITOR.on('instanceReady', function (ev) {
+    // console.dir(ev);
+    ev.editor.dataProcessor.htmlFilter.addRules( {
+      elements : {
+        // ul : function( element ) {
+        //   // Add class to anchor a-tags.
+        //   var attr = element.attributes;
+
+        //   var listChildren = element.children;
+
+          
+        //     console.dir(listChildren);
+        //     console.dir(attr);
+        //     console.dir(element);
+        //     element.attributes.class = 'anchor-target';
+          
+        // }
+      }
+    });
+   
+  });

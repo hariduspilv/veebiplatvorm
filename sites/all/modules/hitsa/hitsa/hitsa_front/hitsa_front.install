@@ -316,3 +316,10 @@ function hitsa_front_remove_taxonomies(){
         }
     }
 }
+function hitsa_front_update_7000(){
+  $field = field_info_field('field_hours_times');
+  if($field['settings']['tz_handling']!='none'){
+    $field['settings']['tz_handling']='none';
+    field_update_field($field);
+  }
+}
