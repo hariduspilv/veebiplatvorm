@@ -861,8 +861,10 @@ function hitsa_events_get_time_periods()
         if ($time_period->field_time_period_dates_info['und'][0]['value2'] != $time_period->field_time_period_dates_info['und'][0]['value']) {
             $time_period_end = $time_period->field_time_period_dates_info['und'][0]['value2'];
         }
-        $dated_start = (!empty($time_period_start)) ? strftime('%d. %B', $time_period_start) : null;
-        $dated_end = (!empty($time_period_end)) ? strftime('%d. %B', $time_period_end) : null;
+        $dated_start = (!empty($time_period_start)) ? strftime('%d', $time_period_start) : null;
+        $dated_start .= (!empty($time_period_start)) ?'. '. t(strftime('%B', $time_period_start)) : null;
+        $dated_end = (!empty($time_period_end)) ? strftime('%d', $time_period_end) : null;
+        $dated_end .= (!empty($time_period_end)) ?'. '.  t(strftime('%B', $time_period_end)) : null;
         $output .= '          <div class="col-12">';
         $output .= '             <a href="" class="object object-small object-horizontal object-inactive">';
         $output .= '                <span class="object-inner">';
