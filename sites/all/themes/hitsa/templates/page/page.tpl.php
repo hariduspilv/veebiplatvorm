@@ -140,7 +140,9 @@
       <div class="col-12">
     <?php endif;?>
       <?php print render($page['content']); ?>
+      <?php if(empty($page['sidebar_right'])):?>
       </div><!--/col-x-->
+      <?php endif?>
     
     <?php if(!empty($page['sidebar_right'])):?>
       <div class="col-3 sm-12">
