@@ -1291,6 +1291,7 @@ function hitsa_catering_front_page_block()
                         <div class="row">
                          ';
         $i = 0;
+        dpm($foods_selected_tomorrow);
         foreach ($foods_selected_tomorrow as $food) {
 
             $output .= $food;
