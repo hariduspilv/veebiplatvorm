@@ -171,7 +171,7 @@ function hitsa_curriculum_block_view($delta = '')
 function hitsa_curriculum_node_insert($node)
 {
     if ($node->type == 'curriculum') {
-
+        
         $language_list = language_list();
         $language = $node->language;
         $selection = NULL;
@@ -184,6 +184,7 @@ function hitsa_curriculum_node_insert($node)
             $main_source = hitsa_curriculum_url_friendly_strings($main_source);
 
             $lookup_main = drupal_lookup_path('alias', $selection, $language);
+            
             if (!empty($language_list)) {
                 if (!empty($language_list[$language])) {
                     $language = $language_list[$language];
@@ -207,13 +208,31 @@ function hitsa_curriculum_node_insert($node)
                     $language = $language_list[$language];
                 }
             }
-            $path = array(
-                'source' => $source,
-                'alias' => $alias,
-                'pid' => NULL,
-                'language' => $language,
-                'pathauto' => 0,
-            );
+            
+            $path_check = drupal_lookup_path('source',$alias,$language->language);
+            if(!$path_check){
+                $path = array(
+                    'source' => $source,
+                    'alias' => $alias,
+                    'pid' => NULL,
+                    'language' => $language,
+                    'pathauto' => 0,
+                );
+            }
+            else{
+                $alias.='-1';
+                $path_check = drupal_lookup_path('source',$alias,$language->language);
+                if(!empty($path_check)){
+                    $alias = str_replace('-1','-2',$alias);
+                }
+                $path = array(
+                    'source' => $source,
+                    'alias' => $alias,
+                    'pid' => NULL,
+                    'language' => $language,
+                    'pathauto' => 0,
+                );
+            }
             $node->path = $path;
         }
 
@@ -281,7 +300,6 @@ function hitsa_curriculum_node_presave($node)
                 $main_source = hitsa_curriculum_url_friendly_strings($main_source);
 
                 $lookup_main = drupal_lookup_path('alias', $selection, $language);
-
                 if (!empty($language_list)) {
                     if (!empty($language_list[$language])) {
                         $language = $language_list[$language];
@@ -326,6 +344,30 @@ function hitsa_curriculum_node_presave($node)
 
                 }
                 if ($renew) {
+                    $path_check = drupal_lookup_path('source',$alias,$language->language);
+                    if(!$path_check){
+                        $path = array(
+                            'source' => $source,
+                            'alias' => $alias,
+                            'pid' => NULL,
+                            'language' => $language,
+                            'pathauto' => 0,
+                        );
+                    }
+                    else{
+                        $alias.='-1';
+                        $path_check = drupal_lookup_path('source',$alias,$language->language);
+                        if(!empty($path_check)){
+                            $alias = str_replace('-1','-2',$alias);
+                        }
+                        $path = array(
+                            'source' => $source,
+                            'alias' => $alias,
+                            'pid' => NULL,
+                            'language' => $language,
+                            'pathauto' => 0,
+                        );
+                    }
                     $node->path = $path;
                 }
             }
