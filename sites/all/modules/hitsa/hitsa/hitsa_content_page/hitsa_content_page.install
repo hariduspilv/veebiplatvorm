@@ -304,6 +304,14 @@ function _hitsa_content_page_field_instances() {
       'widget' => array(
         'type' => 'media_generic',
         'module' => 'media',
+        'settings' => array(
+          'browser_plugins' => array(
+            'upload' => 'upload',
+            'media_default--media_browser_1' => 'media_default--media_browser_1',
+            'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
+            'media_internet' => 0,
+          ),
+        ),
       ),
       'display' => array(
         'default' => array(

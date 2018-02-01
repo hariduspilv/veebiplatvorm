@@ -8,3 +8,4 @@ dependencies[] = hitsa_core
 dependencies[] = hitsa_content_page
 dependencies[] = media
 dependencies[] = image_url_formatter
+dependencies[] = ckeditor

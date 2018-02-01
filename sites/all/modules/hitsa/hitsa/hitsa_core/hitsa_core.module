@@ -637,19 +637,33 @@ function hitsa_core_search($q = null)
   if (!empty($q['title'])) {
     $query->condition('title', $q['title']);
   }
-  if(!empty($q['category']) && $q['category'] === 'content_page') {
+  
+  // Category filter
+  if(!empty($q['category'])) {
+    $categories = explode(',', $q['category']);
     $subquery = $query->createFilter('OR');
-    $subquery->condition('type', 'content_page');
-    $subquery->condition('type', 'curriculum');
+    foreach($categories as $c) {
+      if($c === 'content_page') {
+        $subquery->condition('type', $c);
+        $subquery->condition('type', 'curriculum');
+      } else if($c === 'training') { // Special exception for training event node subtype
+        $t_subquery = $query->createFilter('AND');
+        $t_subquery->condition('type', 'event');
+        $t_subquery->condition('field_event_type', 'training');
+        $subquery->filter($t_subquery);
+      } else if($c === 'event') {
+        $e_subquery = $query->createFilter('AND');
+        $e_subquery->condition('type', 'event');
+        $e_subquery->condition('field_event_type', 'event');
+        $subquery->filter($e_subquery);
+      } else if($c !== 'all') {
+        $subquery->condition('type', $c);
+      }
+    }
+    
     $query->filter($subquery);
   }
-  else if(!empty($q['category']) && $q['category'] === 'training') { // Special exception for training event node subtype
-    $query->condition('type', 'event');
-    $query->condition('field_event_type', 'training');
-  }
-  else if(!empty($q['category']) && $q['category'] !== 'all') {
-    $query->condition('type', $q['category']);
-  }
+
   if (!empty($q['date']) && preg_match("/\d{2}\/\d{2}\/\d{4} - \d{2}\/\d{2}\/\d{4}/", $q['date']) === 1) {
     $date_range = explode(" - ", $q['date']);
     $date_from = date_create_from_format("d/m/Y H:i", $date_range[0] . ' 00:00');

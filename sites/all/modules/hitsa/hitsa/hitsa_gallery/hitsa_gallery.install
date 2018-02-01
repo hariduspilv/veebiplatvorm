@@ -82,6 +82,12 @@ function _hitsa_gallery_field_instances() {
         'module' => 'media',
         'settings' => array(
           'manualcrop_enable' => 1,
+          'browser_plugins' => array(
+            'upload' => 'upload',
+            'media_default--media_browser_1' => 'media_default--media_browser_1',
+            'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
+            'media_internet' => 0,
+          ),
         ),
       ),
       'display' => array(
