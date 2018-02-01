@@ -131,18 +131,20 @@
         </div><!--/col-12-->
       </div><!--/row-->
     <?php endif; ?>
-      
   <div class="row">
     
-    <?php if(!empty($page['sidebar_right'])):?>
-      <div class="col-9 sm-12">
-    <?php else:?>
+    <?php if(empty($page['sidebar_right'])):?>
       <div class="col-12">
+    <?php else:?>
+      <div class="col-9 sm-12">
     <?php endif;?>
       <?php print render($page['content']); ?>
+      <?php if(empty($page['sidebar_right'])):?>
       </div><!--/col-x-->
+      <?php endif?>
     
     <?php if(!empty($page['sidebar_right'])):?>
+    </div><!--/col-x-->
       <div class="col-3 sm-12">
       <?php print render($page['sidebar_right'])?>
       </div><!--/col-x-->
