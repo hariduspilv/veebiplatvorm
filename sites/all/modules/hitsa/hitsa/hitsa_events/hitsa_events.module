@@ -886,7 +886,9 @@ function hitsa_events_get_time_periods()
 }
 
 function hitsa_events_front_page_block()
-{   
+{
+
+
     global $language;
     $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'event'));
     $school_type = hitsa_core_get_school_type();
@@ -1136,8 +1138,10 @@ function hitsa_events_training_calendar()
                                 $start_date_date = date('U', strtotime("+{$i} day", $start_date));
                                 $event_html = hitsa_events_event_html($event, $type = 'training', $start_date_date);
                                 $events_array[] = $event_html;
-                                $periods[$event_html['periods']->tid] = $event_html['periods'];
-                                $periods[$event_html['periods']->tid]->events[] = array('date' => $event_html['start_date'], 'html' => $event_html['html']);
+                                if (!empty($event_html['periods']->tid)) {
+                                    $periods[$event_html['periods']->tid] = $event_html['periods'];
+                                    $periods[$event_html['periods']->tid]->events[] = array('date' => $event_html['start_date'], 'html' => $event_html['html']);
+                                }
                             }
                         }
                     }

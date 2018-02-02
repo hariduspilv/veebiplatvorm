@@ -256,7 +256,7 @@ a.object:hover{
       .object-title{font-size:16px; padding-bottom:0; line-height:19px;}
    }
    
-   .object-button{padding-top:20px;
+   .object-button{padding-top:20px; flex-shrink: 0;
       a{vertical-align: middle;}
    }
    
@@ -329,6 +329,12 @@ a.object:hover{
       }
    }
 }
+
+a:before{text-decoration: underline;}
+a:before{text-decoration: none;}
+
+a:after{text-decoration: underline;}
+a:after{text-decoration: none;}
 
 .bullet-links{
    a{.before-arrow-right-circle; color:@highlight-1; text-decoration: none; display: block; line-height:20px; margin:10px 0 10px -1px;
@@ -451,7 +457,7 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
       }
    }
 }
-.gallery-image{display:block; background:center center no-repeat; background-size:contain; background-color:@base-1;
+.gallery-image{display:block; background:center center no-repeat; background-size:contain; 
    img{display:block; width:100%;}
 	.print_img{display: none;}
 }

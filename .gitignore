@@ -34,3 +34,5 @@ sites/default/settings.php
 \.idea/
 
 sites/hitsa-korg-2/themes/hitsa/
+
+sites/all/themes/hitsa/static/package-lock\.json
