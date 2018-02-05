@@ -567,10 +567,15 @@ function hitsa_core_set_default_variables() {
 
 function hitsa_core_set_default_patterns(){
   if(module_exists('hitsa_content_page')){
+
     $t = get_t();
     variable_set('pathauto_node_content_page_pattern','[node:title]');
     variable_set('pathauto_node_article_pattern',$t('news/').'[node:title]');
+    variable_set('pathauto_node_article_en_pattern',$t('news/').'[node:title]');
+    variable_set('pathauto_node_article_et_pattern',$t('uudised/').'[node:title]');
     variable_set('pathauto_node_gallery_pattern',$t('galleries/').'[node:title]');
+    variable_set('pathauto_node_gallery_en_pattern',$t('galleries/').'[node:title]');
+    variable_set('pathauto_node_gallery_et_pattern',$t('galeriid/').'[node:title]');
     if(module_exists('transliteration')){
         variable_set('pathauto_transliterate',1);
     }
@@ -587,6 +592,26 @@ function hitsa_core_update_7000(){
     variable_set('pathauto_node_content_page_pattern','[node:title]');
     variable_set('pathauto_node_article_pattern',$t('news/').'[node:title]');
     variable_set('pathauto_node_gallery_pattern',$t('galleries/').'[node:title]');
+    if(module_exists('transliteration')){
+        variable_set('pathauto_transliterate',1);
+    }
+   }
+}
+/**
+ * 
+ * Update to make site pathauto working and also remove non english characters
+ */
+function hitsa_core_update_7001(){
+  if(module_exists('hitsa_content_page')){
+
+    $t = get_t();
+    variable_set('pathauto_node_content_page_pattern','[node:title]');
+    variable_set('pathauto_node_article_pattern',$t('news/').'[node:title]');
+    variable_set('pathauto_node_article_en_pattern',$t('news/').'[node:title]');
+    variable_set('pathauto_node_article_et_pattern',$t('uudised/').'[node:title]');
+    variable_set('pathauto_node_gallery_pattern',$t('galleries/').'[node:title]');
+    variable_set('pathauto_node_gallery_en_pattern',$t('galleries/').'[node:title]');
+    variable_set('pathauto_node_gallery_et_pattern',$t('galeriid/').'[node:title]');
     if(module_exists('transliteration')){
         variable_set('pathauto_transliterate',1);
     }
