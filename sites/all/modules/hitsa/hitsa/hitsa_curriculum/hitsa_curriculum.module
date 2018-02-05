@@ -184,7 +184,7 @@ function hitsa_curriculum_node_insert($node)
             $main_source = hitsa_curriculum_url_friendly_strings($main_source);
 
             $lookup_main = drupal_lookup_path('alias', $selection, $language);
-            
+            $lookup_main_translated = drupal_lookup_path('source',$main_source);
             if (!empty($language_list)) {
                 if (!empty($language_list[$language])) {
                     $language = $language_list[$language];
@@ -200,8 +200,19 @@ function hitsa_curriculum_node_insert($node)
                 );
                 path_save($path_main);
             }
+
+            if(!($lookup_main_translated)){
+                $path_main_translated = array(
+                    'source' => $selection,
+                    'alias' => $main_source,
+                    'pid' => null,
+                    'language' => $language->language,
+                    'pathauto' => 0,
+                );
+                path_save($path_main_translated);
+            }
             hitsa_curriculum_check_block_visibility($main_source, $selection);
-            $source = $selection . '/' . $node->nid;
+            $source =  'node/' . $node->nid;
             $alias = $main_source . '/' . hitsa_curriculum_url_friendly_strings($node->title);
             if (!empty($language_list) && !is_object($language)) {
                 if (!isset($language_list[$language])) {
@@ -300,6 +311,8 @@ function hitsa_curriculum_node_presave($node)
                 $main_source = hitsa_curriculum_url_friendly_strings($main_source);
 
                 $lookup_main = drupal_lookup_path('alias', $selection, $language);
+                $lookup_main_translated = drupal_lookup_path('source',$main_source);
+               
                 if (!empty($language_list)) {
                     if (!empty($language_list[$language])) {
                         $language = $language_list[$language];
@@ -315,7 +328,17 @@ function hitsa_curriculum_node_presave($node)
                     );
                     path_save($path_main);
                 }
-                $source = $selection . '/' . $node->nid;
+                if(!($lookup_main_translated)){
+                    $path_main_translated = array(
+                        'source' => $selection,
+                        'alias' => $main_source,
+                        'pid' => null,
+                        'language' => $language->language,
+                        'pathauto' => 0,
+                    );
+                    path_save($path_main_translated);
+                }
+                $source = 'node/' . $node->nid;
                 $title = hitsa_curriculum_url_friendly_strings($node->title);
                 hitsa_curriculum_check_block_visibility($main_source, $selection);
                 $alias = $main_source . '/' . $title;

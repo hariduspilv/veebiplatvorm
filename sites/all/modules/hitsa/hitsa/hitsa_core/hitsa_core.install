@@ -7,6 +7,7 @@ function hitsa_core_install() {
   //hitsa_core_set_language_detection_rules();
   hitsa_core_search_server_add_index();
   hitsa_core_set_default_variables();
+  hitsa_core_set_default_patterns();
 }
 
 function hitsa_core_uninstall() {
@@ -562,4 +563,32 @@ function hitsa_core_install_metatag_config($configs) {
 
 function hitsa_core_set_default_variables() {
   variable_set('captcha_default_challenge', 'image_captcha/Image');
+}
+
+function hitsa_core_set_default_patterns(){
+  if(module_exists('hitsa_content_page')){
+    $t = get_t();
+    variable_set('pathauto_node_content_page_pattern','[node:title]');
+    variable_set('pathauto_node_article_pattern',$t('news/').'[node:title]');
+    variable_set('pathauto_node_gallery_pattern',$t('galleries/').'[node:title]');
+    if(module_exists('transliteration')){
+        variable_set('pathauto_transliterate',1);
+    }
+   }
+}
+/**
+ * 
+ * Update to make site pathauto working and also remove non english characters
+ */
+function hitsa_core_update_7000(){
+  if(module_exists('hitsa_content_page')){
+
+    $t = get_t();
+    variable_set('pathauto_node_content_page_pattern','[node:title]');
+    variable_set('pathauto_node_article_pattern',$t('news/').'[node:title]');
+    variable_set('pathauto_node_gallery_pattern',$t('galleries/').'[node:title]');
+    if(module_exists('transliteration')){
+        variable_set('pathauto_transliterate',1);
+    }
+   }
 }
