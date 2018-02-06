@@ -36,3 +36,11 @@ sites/default/settings.php
 sites/hitsa-korg-2/themes/hitsa/
 
 sites/all/themes/hitsa/static/package-lock\.json
+
+\.buildpath
+
+\.project
+
+\.settings/org\.eclipse\.php\.core\.prefs
+
+\.settings/org\.eclipse\.wst\.common\.project\.facet\.core\.xml

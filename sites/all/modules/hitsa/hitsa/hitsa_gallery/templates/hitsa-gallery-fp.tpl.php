@@ -1,4 +1,4 @@
-<div class="block sm-hide">
+<div class="block">
   <h2 class="block-title sm-borderless"><?php print t('Gallery'); ?></h2>
   
   <div class="row">
