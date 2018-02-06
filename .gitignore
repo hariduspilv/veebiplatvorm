@@ -5,10 +5,10 @@ sites/*/settings*.php
 sites/*/files
 sites/*/private
 sites/default/settings.php
-
+sites/hitsa-korg-2/themes/hitsa/
+sites/all/themes/hitsa/static/package-lock\.json
 \.vscode/settings\.json
 
-<<<<<<< HEAD
 \.idea/deployment\.xml
 
 \.idea/hitsa-backend\.iml
@@ -17,14 +17,12 @@ sites/default/settings.php
 
 \.idea/modules\.xml
 
-=======
 \.idea/hitsa-backend\.iml
 
 \.idea/modules\.xml
 
 \.idea/php\.xml
 
->>>>>>> master
 \.idea/vcs\.xml
 
 \.idea/workspace\.xml
@@ -32,10 +30,6 @@ sites/default/settings.php
 \.idea/workspace\.xml___jb_tmp___
 
 \.idea/
-
-sites/hitsa-korg-2/themes/hitsa/
-
-sites/all/themes/hitsa/static/package-lock\.json
 
 \.buildpath
 
