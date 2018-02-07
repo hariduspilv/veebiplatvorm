@@ -51,8 +51,8 @@ function hitsa_ckeditor_install()
     $serialized = serialize($ckeditor_settings);
     $format->editor_settings = $serialized;
     filter_format_save($format);
-    
-    
+
+
     $testing_having = db_select('ckeditor_input_format','cif');
     $testing_having -> condition('cif.name','Hitsa_custom','=');
     $testing_having -> fields('cif');
@@ -102,5 +102,27 @@ function hitsa_ckeditor_install()
         }
     }
 
+    $ckeditor_global_settings='a:10:{s:4:"skin";s:10:"moono-lisa";s:13:"ckeditor_path";s:11:"%l/ckeditor";s:19:"ckeditor_local_path";s:0:"";s:21:"ckeditor_plugins_path";s:19:"%l/ckeditor/plugins";s:27:"ckeditor_plugins_local_path";s:0:"";s:13:"ckfinder_path";s:11:"%m/ckfinder";s:19:"ckfinder_local_path";s:0:"";s:18:"ckeditor_aggregate";s:1:"f";s:14:"toolbar_wizard";s:1:"t";s:11:"loadPlugins";a:0:{}}';
+    if(!empty($ckeditor_global_settings)){
+      db_update('ckeditor_settings')
+      -> fields(array(
+        'name' => 'CKEditor Global Profile',
+        'settings' => $ckeditor_global_settings,
+      ))
+      ->condition('name','CKEditor Global Profile','=')
+      ->execute();
+    }
+}
+function hitsa_ckeditor_update_7000(){
 
+      $ckeditor_global_settings='a:10:{s:4:"skin";s:10:"moono-lisa";s:13:"ckeditor_path";s:11:"%l/ckeditor";s:19:"ckeditor_local_path";s:0:"";s:21:"ckeditor_plugins_path";s:19:"%l/ckeditor/plugins";s:27:"ckeditor_plugins_local_path";s:0:"";s:13:"ckfinder_path";s:11:"%m/ckfinder";s:19:"ckfinder_local_path";s:0:"";s:18:"ckeditor_aggregate";s:1:"f";s:14:"toolbar_wizard";s:1:"t";s:11:"loadPlugins";a:0:{}}';
+      if(!empty($ckeditor_global_settings)){
+        db_update('ckeditor_settings')
+        -> fields(array(
+          'name' => 'CKEditor Global Profile',
+          'settings' => $ckeditor_global_settings,
+        ))
+        ->condition('name','CKEditor Global Profile','=')
+        ->execute();
+      }
 }

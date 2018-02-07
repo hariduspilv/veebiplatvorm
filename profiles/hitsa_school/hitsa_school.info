@@ -26,9 +26,14 @@ dependencies[] = overlay
 dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
+dependencies[] = pathauto
+dependencies[] = transliteration
+dependencies[] = module_filter
+dependencies[] = admin_views
 dependencies[] = hitsa_core
 dependencies[] = hitsa_content_page
 dependencies[] = hitsa_articles
+dependencies[] = hitsa_front
 dependencies[] = hitsa_gallery
 dependencies[] = hitsa_book_exporter
 dependencies[] = hitsa_catering
@@ -37,9 +42,9 @@ dependencies[] = hitsa_curriculum
 dependencies[] = hitsa_events
 dependencies[] = hitsa_logos
 dependencies[] = hitsa_translation_importer
+dependencies[] = hitsa_ckeditor
 
 ; Information added by Drupal.org packaging script on 2017-06-21
 version = "7.56"
 project = "drupal"
 datestamp = "1498069849"
-

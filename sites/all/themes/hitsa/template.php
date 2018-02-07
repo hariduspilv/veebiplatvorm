@@ -3,10 +3,10 @@
 function hitsa_process_html_tag(&$vars)
 {
     $el = &$vars['element'];
- 
+
   // Remove type="..." and CDATA prefix/suffix.
     unset($el['#attributes']['type'], $el['#value_prefix'], $el['#value_suffix']);
- 
+
   // Remove media="all" but leave others unaffected.
     if (isset($el['#attributes']['media']) && $el['#attributes']['media'] === 'all') {
         unset($el['#attributes']['media']);
@@ -77,13 +77,6 @@ function hitsa_preprocess_hitsa_front_content(&$variables)
             }
             $variables['our_stories_block'] = theme('hitsa_our_stories_block', array('nodes' => $our_stories_nodes, 'authors' => $authors));
         }
-    }
-    if (module_exists('hitsa_events')) {
-        // $block = module_invoke('hitsa_events', 'block_view', 'fornt_page_training');
-
-        // $variables['hitsa_training_events'] = render($block['content']);
-        // $block = module_invoke('hitsa_events','block_view','fornt_page_events');
-        // $variables['hitsa_front_events'] = render($block['content']);
     }
     if (module_exists('hitsa_logos')) { // HITSA Logos module
         // Add awards block
@@ -508,7 +501,7 @@ function hitsa_links__locale_block($variables)
             if (!empty($link['attributes']['xml:lang'])) {
                 $link['attributes']['lang'] = $link['attributes']['xml:lang'];
             }
-            
+
             // Add first, last and active classes to the list of links to help out
             // themers.
             if ($i == 1) {
@@ -584,7 +577,7 @@ function hitsa_links__mobile_locale_block($variables)
             if (!empty($link['attributes']['xml:lang'])) {
                 $link['attributes']['lang'] = $link['attributes']['xml:lang'];
             }
-            
+
             // Add first, last and active classes to the list of links to help out
             // themers.
             if ($i == 1) {
@@ -1282,8 +1275,8 @@ function hitsa_gallery_grid($variables)
 }
 
 function hitsa_css_alter(&$css)
-{   
-    
+{
+
     $exclude = array(
         'modules/system/system.theme.css' => false,
     );
@@ -1378,6 +1371,11 @@ function hitsa_preprocess_html(&$variables){
         $conf_path = 'all';
     }
     $css_location = 'sites/'.$conf_path.'/themes/hitsa/static/assets/styles/default.css';
-
-    drupal_add_css($css_location, array('type'=>'file','group' => CSS_SYSTEM, 'every_page' => TRUE));
+    if (file_exists($css_location)) {
+      drupal_add_css($css_location, array('type'=>'file','group' => CSS_SYSTEM, 'every_page' => TRUE));
+    }
+    else{
+      $css_location = 'sites/all/themes/hitsa/static/assets/styles/default.css';
+      drupal_add_css($css_location,array('type'=>'file','group' => CSS_SYSTEM, 'every_page' => TRUE));
+    }
 }

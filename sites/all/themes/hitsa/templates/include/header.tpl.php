@@ -26,6 +26,7 @@
       </div><!--/col-3-->
         <?php else:?>
           <div class="col-6">
+            
             <?php if(!empty($site_logo)): ?>
             <a href="<?php print url('<front>'); ?>" class="header-logo"><img alt="" src="<?php print $site_logo; ?>" /></a>
             <?php endif; ?>

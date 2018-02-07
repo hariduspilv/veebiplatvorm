@@ -87,7 +87,7 @@
 
 ?>
 <div class="wrapper">
-   
+
   <header class="main sm-hide">
    <?php if(!empty($page['header'])): ?>
     <?php print drupal_render($page['header']); ?>
@@ -95,7 +95,7 @@
     <?php print $header?>
    <?php endif; ?>
   </header><!--/main-->
-  
+
   <?php if(!empty($mobile_menu)): ?>
     <?php print $mobile_menu; ?>
   <?php endif; ?>
@@ -103,7 +103,7 @@
   <?php if(!empty($page['hero'])):?>
   <?php print render($page['hero'])?>
   <?php endif;?>
-  
+
   <div class="inline">
     <?php if ($messages): ?>
       <div id="messages">
@@ -112,10 +112,10 @@
         </div>
       </div> <!-- /.section, /#messages -->
     <?php endif; ?>
-    
+
     <?php if ($breadcrumb): ?>
     <?php endif; ?>
-    
+
     <?php if(!empty($page['super_news'])):?>
       <div class="row">
          <div class="col-12">
@@ -123,7 +123,7 @@
          </div><!--/col-12-->
       </div><!--/row-->
     <?php endif;?>
-    
+
     <?php if ($tabs && !empty($tabs_rendered = render($tabs))): ?>
       <div class="row no-print">
         <div class="col-12">
@@ -132,7 +132,7 @@
       </div><!--/row-->
     <?php endif; ?>
   <div class="row">
-    
+
     <?php if(empty($page['sidebar_right'])):?>
       <div class="col-12">
     <?php else:?>
@@ -142,7 +142,7 @@
       <?php if(empty($page['sidebar_right'])):?>
       </div><!--/col-x-->
       <?php endif?>
-    
+
     <?php if(!empty($page['sidebar_right'])):?>
     </div><!--/col-x-->
       <div class="col-3 sm-12">
@@ -151,12 +151,12 @@
     <?php endif?>
   </div><!--/row-->
   </div><!--/inline-->
-  
+
   <?php if($page['sidebar_right'] || $page['sidebar_second']): ?>
   <div class="inline">
   <?php if(drupal_is_front_page()): ?>
   <?php else: ?>
-    
+
     <?php if($page['sidebar_right']): ?>
       <div id="sidebar-first" class="column sidebar"><div class="section">
         <?php // print render($page['sidebar_right']); ?>
@@ -185,7 +185,7 @@
     <?php endif; ?>
 
   <?php endif; ?>
-  </div> 
+  </div>
   <?php endif; ?>
 
   <footer class="main">

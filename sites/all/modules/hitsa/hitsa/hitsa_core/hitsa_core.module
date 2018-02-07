@@ -462,6 +462,15 @@ function hitsa_core_get_content_by_type($e_type = 'node', $type = null, $languag
                 case 'limit':
                     $query->range(0, $condition);
                     break;
+                case 'cp_type':
+                  $query->fieldCondition('cp_type', 'value', $condition, '=');
+                  break;
+                case 'service_public':
+                  $query->fieldCondition('cp_service_type', 'value', $condition, '=');
+                  break;
+                case 'curr_type':
+                  $query->fieldCondition('field_school_selections', 'value', $condition, '=');
+                  break;
             }
         }
     }

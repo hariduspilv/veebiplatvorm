@@ -236,10 +236,12 @@ function hitsa_core_preprocess_hitsa_header(&$variables)
   }
   // Main logo
   $site_logo_fid = variable_get_value('hitsa_site_logo_fid');
+  if($site_logo_fid){
   $logo_file = file_load($site_logo_fid);
   if ($logo_file) {
     $variables['site_logo'] = image_style_url('hitsa_core_logo', $logo_file->uri);
   }
+}
 }
 
 /**
@@ -286,7 +288,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
   if (module_exists('hitsa_logos')) {
     $variables['partners'] = views_embed_view('hitsa_logos', 'partners_block');
   }
-  
+
   // General Contact
   $general_contact_name = variable_get_value('general_contact_name');
   $general_contact_address = variable_get_value('general_contact_address');
@@ -299,7 +301,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
     check_plain($general_contact_phone_nr),
     spamspan(check_plain($general_contact_email))
   );
-  
+
   // Important contacts
   $important_contacts = '';
   for ($i = 1; $i < 5; $i++) {
@@ -322,7 +324,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
     $footer_menu = menu_tree_all_data($hitsa_footer_menu_name);
     $variables['footer_menu'] = menu_tree_output($footer_menu);
   }
-  
+
   // School Location Map
   $variables['google_api_key'] = variable_get_value('hitsa_google_api_key');
   $variables['hitsa_school_place_coords'] = variable_get_value('hitsa_school_place_coords');
@@ -405,7 +407,7 @@ function hitsa_core_search_page($filter = false)
     foreach ($results as $delta => $result) {
       // Underline matches in the title
       $result['entity']->title = preg_replace("/" . $query['query'] . "/i", "<u>$0</u>", $result['entity']->title);
-      
+
       // Skip these node types for search.
       if (in_array($result['entity']->type, array('book', 'webform', 'contact_location'))) {
         unset($results[$delta]);

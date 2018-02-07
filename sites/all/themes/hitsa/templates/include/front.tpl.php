@@ -1,15 +1,15 @@
 <?php if(!empty($important_article)) print $important_article; // Tähtis uudis ?>
 <div class="row">
   <div class="col-9">
-    
+
     <?php if(!empty($news_block)) print $news_block; // Uudised ?>
     <?php if(!empty($hitsa_front_events)) print $hitsa_front_events; // Uudised ?>
-            
-    
-            
+
+
+
     <div class="block">
                <h2 class="block-title">Galerii</h2>
-               
+
                <div class="row">
                   <div class="col-12">
                      <a href="" class="object">
@@ -25,9 +25,9 @@
                      </a><!--/object-->
                   </div><!--/col-12-->
                </div><!--/row-->
-               
+
                <div class="row-spacer"></div>
-               
+
                <div class="row">
                   <div class="col-6">
                      <a href="" class="object">
@@ -56,20 +56,20 @@
                      </a><!--/object-->
                   </div><!--/col-6-->
                </div><!--/row-->
-               
+
                <div class="row">
                   <div class="col-12">
                      <a href="" class="btn">Kõik galeriid</a>
                   </div><!--/col-12-->
                </div><!--/row-->
-               
+
             </div><!--/block-->
   </div><!--/col-9-->
-         
+
   <div class="col-3">
     <div class="block block-narrow">
                <h2 class="block-title">Teenused</h2>
-               
+
                <div class="row pull-up">
                   <div class="col-12">
                      <a href="javascript:void(0);" data-target="tab-1" class="link-tab">Teenused</a><a href="javascript:void(0);" data-target="tab-2" class="link-tab active">Koolitused</a>
@@ -81,22 +81,22 @@
                </div><!--/data-tab-1-->
                <div data-tab="tab-2" class="active-tab">
                   <div class="row">
-                     
-                     
-                     
-                     
+
+
+
+
                      <div class="col-12 col-margin">
                         <a href="<?php print url('training_calendar')?>" class="btn btn-filled btn-stretch"><?php print t('Training calendar')?></a>
                      </div><!--/col-12-->
-                     
+
                   </div><!--/row-->
                </div><!--/data-tab-->
-               
+
             </div><!--/block-->
-    
+
     <?php if(!empty($our_stories_block)) print $our_stories_block; // Meie lood ?>
-    
+
     <?php if(!empty($awards_block)) print $awards_block; // Tunnustused ?>
-    
+
   </div><!--/col-3-->
 </div>

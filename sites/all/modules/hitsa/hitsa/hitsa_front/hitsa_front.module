@@ -5,12 +5,12 @@
  */
 function hitsa_front_form_alter(&$form, &$form_state, $form_id)
 {
-  switch ($form_id) {
+    switch ($form_id) {
     case 'taxonomy_form_term':
 
       if ($form['vocabulary_machine_name']['#value'] == 'hitsa_breaks' || $form['vocabulary_machine_name']['#value'] == 'hitsa_hour_times') {
-        $form['#metatags']['#access'] = false;
-        $form['relations']['#access'] = false;
+          $form['#metatags']['#access'] = false;
+          $form['relations']['#access'] = false;
       }
       break;
 
@@ -18,7 +18,7 @@ function hitsa_front_form_alter(&$form, &$form_state, $form_id)
           # code...
       break;
   }
-  return $form;
+    return $form;
 }
 
 /**
@@ -44,10 +44,10 @@ function hitsa_front_form_alter(&$form, &$form_state, $form_id)
 // }
 function hitsa_front_block_info()
 {
-  $blocks = array();
-  if (hitsa_core_get_school_type() == 1) {
-    $school_type = hitsa_core_get_school_type();
-    $blocks['hitsa_services_events'] = array(
+    $blocks = array();
+    if (hitsa_core_get_school_type() == 1) {
+        $school_type = hitsa_core_get_school_type();
+        $blocks['hitsa_services_events'] = array(
       'info' => t('HITSA breaks and hours'),
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => '<front>',
@@ -55,7 +55,7 @@ function hitsa_front_block_info()
       'status' => "1",
       'weight' => -100
     );
-    $blocks['hitsa_services_events_mobile'] = array(
+        $blocks['hitsa_services_events_mobile'] = array(
       'info' => t('HITSA breaks and hours for mobile'),
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => '<front>',
@@ -63,15 +63,43 @@ function hitsa_front_block_info()
       'status' => "1",
       'weight' => -16
     );
-  }
-  return $blocks;
+
+        $blocks['hitsa_front_hero_for_school'] = array(
+    'info' => t('Hero for hitsa school'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'region' => 'hero',
+    'status' => '1',
+    'weight' => -1,
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+        $blocks['hitsa_front_services_block'] = array(
+    'info' => t('Services for schools'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'region' => 'sidebar_right',
+    'status' => '1',
+    'weight' => 3,
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+        $blocks['hitsa_front_school_sf'] =  array(
+    'info' => t('Subject fields block for schools'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'region' => 'sidebar_right',
+    'status' => '1',
+    'weight' => 2,
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+    }
+    return $blocks;
 }
 /**
  * Implements hook_block_view().
  */
 function hitsa_front_block_view($delta = '')
 {
-  switch ($delta) {
+    switch ($delta) {
     case 'hitsa_services_events':
       $hours = taxonomy_vocabulary_machine_name_load('hitsa_hour_times');
       $hours_tree = taxonomy_get_tree($hours->vid, 0, null, true);
@@ -86,7 +114,7 @@ function hitsa_front_block_view($delta = '')
       $block['title'] = t('');
       $block['content'] = theme('hitsa_front_hours_breaks', array('hours' => $hours_tree, 'breaks' => $breaks, 'period' => $time_periods,'type'=>'desktop'));
       if (!empty($hours_tree || !empty($breaks))) {
-        return $block;
+          return $block;
       }
       break;
     case 'hitsa_services_events_mobile':
@@ -103,10 +131,35 @@ function hitsa_front_block_view($delta = '')
       $block['title'] = t('');
       $block['content'] = theme('hitsa_front_hours_breaks', array('hours' => $hours_tree, 'breaks' => $breaks, 'period' => $time_periods,'type'=>'mobile'));
       if (!empty($hours_tree || !empty($breaks))) {
-        return $block;
+          return $block;
       }
       break;
-
+    case 'hitsa_front_hero_for_school':
+      $front_page_image = variable_get_value('hitsa_fp_image_fid');
+      if (!empty($front_page_image)) {
+          $front_page_image = file_load($front_page_image);
+          $front_page_image = file_create_url($front_page_image->uri);
+          $block = array();
+          $block['content'] = theme('hitsa_front_hero_block', array('image_link'=>$front_page_image));
+          return $block;
+      }
+        break;
+    case 'hitsa_front_services_block':
+      $front_page_services = hitsa_front_get_services();
+      if (!empty($front_page_services)) {
+          $block = array();
+          $block['content'] = $front_page_services;
+          return $block;
+      }
+      break;
+    case 'hitsa_front_school_sf':
+      $front_page_services = hitsa_front_get_subject_fields();
+      if (!empty($front_page_services)) {
+          $block = array();
+          $block['content'] = $front_page_services;
+          return $block;
+      }
+      break;
     default:
       # code...
       break;
@@ -117,9 +170,9 @@ function hitsa_front_block_view($delta = '')
  */
 function hitsa_front_theme()
 {
-  $items = array();
+    $items = array();
 
-  $items['hitsa_front_hours_breaks'] = array(
+    $items['hitsa_front_hours_breaks'] = array(
     'render element' => 'hitsa_front_hours_breaks',
     'template' => 'hitsa_front_hours_breaks',
     'path' => drupal_get_path('theme', 'hitsa') . '/templates/block',
@@ -128,20 +181,47 @@ function hitsa_front_theme()
       'breaks' => null,
     ),
   );
-  return $items;
+    $items['hitsa_front_hero_block'] = array(
+    'render element' => 'hitsa_front_hero',
+    'template' => 'hitsa_front_page_school_hero',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/block',
+    'variables' => array(
+      'image_link' => null,
+    ),
+  );
+    $items['hitsa_front_right_content_block_element'] = array(
+    'render element' => 'hitsa_front_right_content_block_element',
+    'template' => 'hitsa_front_right_content_block_element',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/block',
+    'variables' => array(
+      'title' => null,
+      'url' =>null,
+      'body' => null,
+    ),
+  );
+    $items['hitsa_front_right_content_block'] = array(
+    'render element' => 'hitsa_front_right_content_block',
+    'template' => 'hitsa_front_right_content_block',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/block',
+    'variables' => array(
+      'block_title' => null,
+      'services' =>null,
+    ),
+  );
+    return $items;
 }
 function hitsa_front_requried_information($terms, $type)
 {
-  $list = array();
-  foreach ($terms as $term_key => $term) {
-    if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
+    $list = array();
+    foreach ($terms as $term_key => $term) {
+        if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
       $term = i18n_taxonomy_localize_terms($term); // The important part!
       $list[$term->tid] = array(
         'name' => $term->name,
 
 
       );
-      switch ($type) {
+            switch ($type) {
         case 'hours':
           $hours_date = $term->field_hours_times[LANGUAGE_NONE][0]['value'];
           $hours_date = date_create($hours_date);
@@ -166,12 +246,12 @@ function hitsa_front_requried_information($terms, $type)
               # code...
           break;
       }
+        }
     }
-  }
-  usort($list, function ($a, $b) {
-    return strtotime($a['start']) - strtotime($b['start']);
-  });
-  switch ($type) {
+    usort($list, function ($a, $b) {
+        return strtotime($a['start']) - strtotime($b['start']);
+    });
+    switch ($type) {
     case 'hours':
       $list = hitsa_front_make_html_list($list);
       break;
@@ -182,88 +262,145 @@ function hitsa_front_requried_information($terms, $type)
 
       break;
   }
-  return $list;
+    return $list;
 }
 
 function hitsa_front_get_time_period($periods)
 {
-  if (!empty($periods)) {
-    $period_chosen = array();
-    foreach ($periods as $key => $period) {
-      $start = $period->field_time_period_dates_info[LANGUAGE_NONE][0]['value'];
-      $end = $period->field_time_period_dates_info[LANGUAGE_NONE][0]['value2'];
-      if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
+    if (!empty($periods)) {
+        $period_chosen = array();
+        foreach ($periods as $key => $period) {
+            $start = $period->field_time_period_dates_info[LANGUAGE_NONE][0]['value'];
+            $end = $period->field_time_period_dates_info[LANGUAGE_NONE][0]['value2'];
+            if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
         $period = i18n_taxonomy_localize_terms($period); // The important part!
-      }
-      $time = time();
-      if ($time >= $start && $time <= $end) {
-        $period_chosen = array(
+            }
+            $time = time();
+            if ($time >= $start && $time <= $end) {
+                $period_chosen = array(
           'name' => $period->name,
         );
-      }
+            }
+        }
     }
-  }
-  return $period_chosen;
+    if (!empty($period_chosen)) {
+        return $period_chosen;
+    }
 }
 
 function hitsa_front_make_html_list($list)
 {
-  $out = array();
-  $i = 0;
-  $type = null;
-  foreach ($list as $list_item) {
-    if (empty($type)) {
-      $out[$i]['type'] = $list_item['type'];
+    $out = array();
+    $i = 0;
+    $type = null;
+    foreach ($list as $list_item) {
+        if (empty($type)) {
+            $out[$i]['type'] = $list_item['type'];
+        }
+        $type = (empty($type)) ? $list_item['type'] : $type;
+        if ($type != $list_item['type']) {
+            $i++;
+            $out[$i]['type'] = $list_item['type'];
+            $type = $list_item['type'];
+        }
+        $out[$i]['hours'][] = $list_item;
     }
-    $type = (empty($type)) ? $list_item['type'] : $type;
-    if ($type != $list_item['type']) {
-      $i++;
-      $out[$i]['type'] = $list_item['type'];
-      $type = $list_item['type'];
-    }
-    $out[$i]['hours'][] = $list_item;
-  }
-  $output = null;
-  $i = 0;
-  $count_elements = count($out);
-  foreach ($out as $part_key => $part) {
-    $type = $part['type'] == 'class' ? t('Classes') : t('Lunch');
-    // $output.=!empty($output)?'<hr/>':'';
-    $output .= '<div class="time-table">
+    $output = null;
+    $i = 0;
+    $count_elements = count($out);
+    foreach ($out as $part_key => $part) {
+        $type = $part['type'] == 'class' ? t('Classes') : t('Lunch');
+        // $output.=!empty($output)?'<hr/>':'';
+        $output .= '<div class="time-table">
     <p><b>' . $type . '</b></p>';
-    foreach ($part['hours'] as $key => $hour) {
-      $output .= $hour['hour_html'];
-    }
-    $output .= '
+        foreach ($part['hours'] as $key => $hour) {
+            $output .= $hour['hour_html'];
+        }
+        $output .= '
     </div><!--/time-table-->';
-    if ($i != $count_elements - 1) {
-      $output .= '<hr/>';
+        if ($i != $count_elements - 1) {
+            $output .= '<hr/>';
+        }
+        $i++;
     }
-    $i++;
-  }
-  return $output;
+    return $output;
 }
 
 function hitsa_front_html_breaks($list)
 {
-  $output = '';
+    $output = '';
 
-  if (!empty($list)) {
-    $breaks = count($list);
-    $i = 0;
-    foreach ($list as $key => $break) {
-      $output .= '<div class="time-table">
+    if (!empty($list)) {
+        $breaks = count($list);
+        $i = 0;
+        foreach ($list as $key => $break) {
+            $output .= '<div class="time-table">
       <p><b>' . $break['name'] . ':</b></p>
       <p><span class="before-calendar"></span> ' . $break['start'] . ' - ' . $break['end'] . '</p>
    </div><!--/time-table-->
 ';
-      if ($i != $breaks - 1) {
-        $output .= '
+            if ($i != $breaks - 1) {
+                $output .= '
         <hr />';
-      }
-      $i++;
-
+            }
+            $i++;
+        }
     }
-  }
-  return $output;
+    return $output;
+}
+function hitsa_front_get_services()
+{
+    $nodes = hitsa_core_get_content_by_type($e_type = 'node', $type = 'content_page', $language = null, $conditions = array('cp_type'=>'cp_service','service_type'=>'service_public'));
+    if (!empty($nodes)) {
+        $nodes= $nodes['node'];
+        $services = array();
+        $i=0;
+        foreach ($nodes as $node_key => $node) {
+            if ($i==6) {
+                break;
+            }
+            $node = node_load($node->nid);
+            $url = url('node/'.$node->nid);
+            $title = $node->title;
+            if (!empty($node->body) && !empty($node->body['und'][0]['safe_summary'])) {
+                $service_summary = $node->body['und'][0]['safe_summary'];
+            } elseif (!empty($node->body)) {
+                $service_summary = $node->body['und'][0]['safe_value'];
+            }
+            $services[$node_key]['html'] = theme('hitsa_front_right_content_block_element', array('url'=>$url,'title'=>$title,'body'=>$service_summary));
+            $i++;
+        }
+        if (!empty($services)) {
+            $services_block = theme('hitsa_front_right_content_block', array('services'=>$services,'block_title'=>t('Services')));
+            return $services_block;
+        }
+    }
+}
+function hitsa_front_get_subject_fields()
+{
+    $nodes = hitsa_core_get_content_by_type($e_type = 'node', $type = 'curriculum', $language = null, $conditions = array('curr_type'=>'subject-field'));
+    if (!empty($nodes)) {
+        $nodes= $nodes['node'];
+        $services = array();
+        $i=0;
+        foreach ($nodes as $node_key => $node) {
+            if ($i==6) {
+                break;
+            }
+            $node = node_load($node->nid);
+            $url = url('node/'.$node->nid);
+            $title = $node->title;
+            if (!empty($node->body) && !empty($node->body['und'][0]['safe_summary'])) {
+                $service_summary = $node->body['und'][0]['safe_summary'];
+            } elseif (!empty($node->body)) {
+                $service_summary = $node->body['und'][0]['safe_value'];
+            }
+            $services[$node_key]['html'] = theme('hitsa_front_right_content_block_element', array('url'=>$url,'title'=>$title,'body'=>$service_summary));
+            $i++;
+        }
+        if (!empty($services)) {
+            $services_block = theme('hitsa_front_right_content_block', array('services'=>$services,'block_title'=>t('Subject fields')));
+            return $services_block;
+        }
+    }
 }

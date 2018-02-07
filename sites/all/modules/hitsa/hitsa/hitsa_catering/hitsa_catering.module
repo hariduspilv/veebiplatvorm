@@ -43,13 +43,13 @@ function hitsa_catering_block_info()
         'weight' => 100,
     );
     $school_type = hitsa_core_get_school_type();
-            // $blocks['catering_block_front_page'] = array(
-            //     'info' => t('Catering front page'),
-            //     'region' => 'content',
-            //     'status' => ($school_type==2)?0:1,
-            //     'visibility' => BLOCK_VISIBILITY_LISTED,
-            //     'pages' => '<front>',
-            // );
+    // $blocks['catering_block_front_page'] = array(
+    //     'info' => t('Catering front page'),
+    //     'region' => 'content',
+    //     'status' => ($school_type==2)?0:1,
+    //     'visibility' => BLOCK_VISIBILITY_LISTED,
+    //     'pages' => '<front>',
+    // );
     return $blocks;
 }
 
@@ -116,7 +116,7 @@ function hitsa_catering_node_validate($node, $form, &$form_state)
             }
         }
     }
-//  exit();
+    //  exit();
 }
 
 function hitsa_catering_week_page()
@@ -156,7 +156,6 @@ function hitsa_catering_node_info()
  **/
 function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
 {
-
     switch ($form_id) {
         case 'catering_node_form':
             if (!empty($form['field_catering_provider'])) {
@@ -165,6 +164,8 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
                     if (isset($form['field_catering_provider']['und']['#options']['_none'])) {
                         $form['field_catering_provider']['#access'] = false;
                     }
+                } elseif (count($catering_options) == 1 && isset($catering_options['_none'])) {
+                    $form['field_catering_provider']['#access'] = false;
                 } else {
                     unset($form['field_catering_provider']['und']['#options']['_none']);
                 }
@@ -184,7 +185,6 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
             break;
         case 'taxonomy_form_term':
             if (!empty($form['#bundle']) && $form['#bundle'] == 'catering_provider') {
-
                 if (!empty($form['name'])) {
                     $form['name']['#title'] = t('Business name');
                 }
@@ -206,7 +206,7 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
       'locked' => '1',
     ),
   );
-  
+
   return $items;
 }*/
 
@@ -280,8 +280,6 @@ function hitsa_catering_node_insert(&$node)
             'language' => $node->language,
             'pathauto' => 0,
         );
-
-
     }
 }
 
@@ -293,8 +291,6 @@ function hitsa_catering_node_presave($node)
     // Set first+last name as node title.
     $start_date = '';
     if ($node->type === 'catering') {
-
-
         if (!empty($node)) {
             if (is_object($node)) {
                 if (!empty($node->field_date)) {
@@ -364,7 +360,6 @@ function hitsa_catering_week($start_date = null)
             if (is_object($menu_items['page_arguments'][0])) {
                 $node = $menu_items['page_arguments'][0];
                 if ($node->type == 'catering') {
-
                     $lookup = drupal_lookup_path('source', t('catering'), $node->language);
                     if (empty($lookup)) {
                         $lookup = drupal_lookup_path('source', t('content/catering'), $node->language);
@@ -435,7 +430,6 @@ function hitsa_catering_week($start_date = null)
     $provider_count = 0;
     $provider_to_htmlize = array();
     if (!empty($providers) and count($providers) > 1) {
-
         $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers);
 
         $catering_mobile = hitsa_catering_provider_side_menu($providers);
@@ -445,7 +439,7 @@ function hitsa_catering_week($start_date = null)
             <div class="accordion-entry">
                 <div class="accordion-title">' . t('More caterers') . '</div>
                 <div class="accordion-content">' . $catering_mobile . '</div><!--/accordion-content-->
-						
+
                 </div><!--/accordion-entry-->
             </div><!--/accordion-->
         </div><!--/col-12-->
@@ -492,9 +486,9 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['#prefix'] = '
             <div class="block no-padding">
             <div class="row">
-            
-            
-            
+
+
+
             ';
         $build['catering']['#suffix'] = '</div> </div><!--/block-->';
         $build['catering']['#type'] = 'container';
@@ -554,12 +548,8 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                             $food_type = taxonomy_term_load($meal->field_food_type['und'][0]['target_id']);
                             if (!empty($food_type)) {
                                 $meals_array[$food_type->name]['foods'][$subcategory->name] = $subcategory;
-
                             }
-
-
                         }
-
                     }
                     if (!empty($subcategory)) {
                         $food_type = taxonomy_term_load($meal->field_food_type['und'][0]['target_id']);
@@ -761,12 +751,10 @@ function hitsa_catering_provider_html($provider)
         $homepage_out .= '                         <p><a href="' . $homepage . '" target="_blank">' . $title . '</a></p>';
         $homepage_out .= '                      </div><!--/list-details_text-->';
         $homepage_out .= '                   </li>';
-
     }
     $phone = null;
     if (!empty($provider->field_phone_number)) {
         $phone = check_plain($provider->field_phone_number['und'][0]['value']);
-
     }
     $output = '<div class="row">';
 
@@ -885,7 +873,6 @@ function hitsa_catering_check_block_visibility($translated, $not_translated)
             ));
             $update->execute();
         }
-
     }
     return;
 }
@@ -948,7 +935,6 @@ function hitsa_catering_generate_header($node)
         $output .= ' </div>';
     }
     return $output;
-
 }
 
 function hitsa_catering_front_page_block()
@@ -992,7 +978,6 @@ function hitsa_catering_front_page_block()
                 if (!empty($catering_provider_loaded)) {
                     if (!empty($catering_provider_loaded->field_show_on_front_page)) {
                         if ($catering_provider_loaded->field_show_on_front_page['und'][0]['value'] == 1) {
-
                         } else {
                             continue;
                         }
@@ -1005,14 +990,12 @@ function hitsa_catering_front_page_block()
             $to_check = 'field_catering_' . $lower_today;
             if (!empty($node->$to_check)) {
                 foreach ($node->$to_check[LANGUAGE_NONE] as $food) {
-
                     $id = $food['value'];
                     $food = entity_load_single('paragraphs_item', $id);
                     if (!empty($food->field_food_name)) {
                         $food_name = $food->field_food_name[LANGUAGE_NONE][0]['value'];
 //                        $foods[$food_name]['name'] = $food_name;
                         if (!empty($food->field_food_subcategory)) {
-
                             $food_subcategory = $food->field_food_subcategory[LANGUAGE_NONE][0]['target_id'];
                             $food_subcategory = taxonomy_term_load($food_subcategory);
                             if (!empty($food_subcategory->field_food_icon)) {
@@ -1038,7 +1021,6 @@ function hitsa_catering_front_page_block()
                         }
                     }
                 }
-
             }
         }
     }
@@ -1063,7 +1045,6 @@ function hitsa_catering_front_page_block()
                     if (!empty($catering_provider_loaded)) {
                         if (!empty($catering_provider_loaded->field_show_on_front_page)) {
                             if ($catering_provider_loaded->field_show_on_front_page['und'][0]['value'] == 1) {
-
                             } else {
                                 continue;
                             }
@@ -1086,11 +1067,9 @@ function hitsa_catering_front_page_block()
                             $food_name = $food->field_food_name['und'][0]['value'];
 //                        $foods[$food_name]['name'] = $food_name;
                             if (!empty($food->field_food_subcategory)) {
-
-
                                 $food_subcategory = $food->field_food_subcategory['und'][0]['target_id'];
                                 $food_subcategory = taxonomy_term_load($food_subcategory);
-                                
+
                                 if (!empty($food_subcategory->field_food_icon)) {
                                     $icon = 'before-' . $food_subcategory->field_food_icon['und'][0]['value'];
                                     $sub_category_name = $food_subcategory->name;
@@ -1113,7 +1092,6 @@ function hitsa_catering_front_page_block()
                         }
                         $f++;
                     }
-
                 }
             }
         }
@@ -1138,7 +1116,6 @@ function hitsa_catering_front_page_block()
                     if (!empty($catering_provider_loaded)) {
                         if (!empty($catering_provider_loaded->field_show_on_front_page)) {
                             if ($catering_provider_loaded->field_show_on_front_page['und'][0]['value'] == 1) {
-
                             } else {
                                 continue;
                             }
@@ -1159,10 +1136,9 @@ function hitsa_catering_front_page_block()
                         if (!empty($food->field_food_name)) {
                             $food_name = $food->field_food_name['und'][0]['value'];
                             if (!empty($food->field_food_subcategory)) {
-
                                 $food_subcategory = $food->field_food_subcategory['und'][0]['target_id'];
                                 $food_subcategory = taxonomy_term_load($food_subcategory);
-                                
+
                                 if (!empty($food_subcategory->field_food_icon)) {
                                     $icon = 'before-' . $food_subcategory->field_food_icon['und'][0]['value'];
                                     $sub_category_name = $food_subcategory->name;
@@ -1185,7 +1161,6 @@ function hitsa_catering_front_page_block()
                         }
                         $f++;
                     }
-
                 }
             }
         }
@@ -1242,7 +1217,7 @@ function hitsa_catering_front_page_block()
     $sunday = date('d/m/Y', strtotime('this week sunday', $today));
     if (!empty($foods_selected) || !empty($foods_selected_tomorrow)) {
         $output .= '
-                  
+
                   <div class="block block-stretch flex-grow" data-plugin="tabs">
                      <h2 class="block-title">' . t('Catering') . '</h2>
 
@@ -1255,10 +1230,9 @@ function hitsa_catering_front_page_block()
             if (!empty($foods_selected_tomorrow)) {
                 $output .= '<a href="javascript:void(0);" data-target="tab-2" class="link-tab">' . t('Tomorrow') . '</a>';
             }
-
         }
         $output .= '
-                           
+
                         </div><!--/col-12-->
                      </div><!--/row-->
 
@@ -1266,7 +1240,6 @@ function hitsa_catering_front_page_block()
                         <div class="row">';
         $i = 0;
         foreach ($foods_selected as $food) {
-
             $output .= $food;
             if ($i == 0 && count($foods_selected) > 1) {
                 $output .= '<hr>';
@@ -1293,7 +1266,6 @@ function hitsa_catering_front_page_block()
                          ';
         $i = 0;
         foreach ($foods_selected_tomorrow as $food) {
-
             $output .= $food;
             if ($i == 0 && count($foods_selected_tomorrow) > 1) {
                 $output .= '<hr>';
@@ -1304,7 +1276,7 @@ function hitsa_catering_front_page_block()
             $catering_link_tomorrow = url(t('catering'));
         } else {
         }
-        $output .= '        
+        $output .= '
         </div>
                         <hr>
 
@@ -1320,8 +1292,6 @@ function hitsa_catering_front_page_block()
                   </div><!--/block-->';
     }
     return $output;
-
-
 }
 
 function hitsa_catering_taxonomy_term_validate($form, &$form_state)
@@ -1383,7 +1353,6 @@ function hitsa_catering_catering_header($content)
             } else {
                 $catering_provider_name = '&nbsp;';
             }
-
         }
     }
     if (!empty($content->field_date)) {

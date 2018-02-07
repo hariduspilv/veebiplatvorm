@@ -14,6 +14,8 @@
 function hitsa_school_install() {
   variable_set('hitsa_school_type', 1);
   hitsa_install();
+  hitsa_disable__mods();
+
 }
 
 function hitsa_install() {
@@ -203,7 +205,18 @@ function hitsa_install() {
     $query->values($block);
   }
   $query->execute();
+  $enable = array(
+   'theme_default' => 'hitsa',
+   'admin_theme' => 'adminimal_theme',
+     //'zen'
+   );
+   theme_enable($enable);
 
+   foreach ($enable as $var => $theme) {
+     if (!is_numeric($var)) {
+       variable_set($var, $theme);
+     }
+   }
   // Insert default pre-defined node types into the database. For a complete
   // list of available node type attributes, refer to the node type API
   // documentation at: http://api.drupal.org/api/HEAD/function/hook_node_info.
@@ -434,4 +447,27 @@ function hitsa_install() {
     ->execute();
   variable_set('admin_theme', 'seven');
   variable_set('node_admin_theme', '1');
+}
+function hitsa_disable__mods(){
+  if( module_exists('overlay')) {
+    module_disable(array('overlay'));
+  }
+}
+
+/**
+ * Disable and uninstall the module.
+ */
+function hitsa_school_update_7000() {
+  if( module_exists('overlay')) {
+    module_disable(array('overlay'));
+  }
+  if(module_exists('toolbar')){
+    module_disable(array('toolbar'));
+  }
+  $enable = array(
+   'theme_default' => 'hitsa',
+   'admin_theme' => 'adminimal_theme',
+     //'zen'
+   );
+   theme_enable($enable);
 }
