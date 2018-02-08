@@ -103,7 +103,6 @@ function hitsa_core_menu()
 
     return $items;
 }
-
 function hitsa_core_menu_alter(&$items)
 {
     $items['search'] = array(

@@ -134,7 +134,7 @@ function hitsa_catering_node_info()
     $site_default_language = language_default();
     $items = array(
         'catering' => array(
-            'name' => t('Catering week'),
+            'name' => t('Nädalamenüü'),
             'type' => 'catering',
             'base' => 'node_content',
             'description' => t('Catering data.'),

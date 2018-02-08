@@ -92,9 +92,14 @@ function hitsa_color_change($form, &$form_state)
     if ($conf_path!='default') {
         $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/site-theme.less';
     }
+    else{
+      $conf_path = 'all';
+      $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/site-theme.less';
+    }
     $file =fopen($site_theme_location, 'w');
     fwrite($file, $output);
     fclose($file);
+
     var_dump(shell_exec('cd '.$_SERVER['DOCUMENT_ROOT'].'/'.'sites'.'/'.$conf_path.'/themes/hitsa/static && grunt compile 2>&1'));
     //$file = file_save_data($output, 'private://'. 'site-theme.less',FILE_EXISTS_REPLACE);
     return $file;

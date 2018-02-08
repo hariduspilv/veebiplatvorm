@@ -166,7 +166,26 @@ module.exports = function (grunt) {
          tasksArray.push(i);
       }   
    }
+	
+	var compileTasks = {
+      webfont: true,
+      concat: true,
+      uglify: true,
+      less: true,
+      px_to_rem: true,
+      autoprefixer: true
+   };
+   
+   var compileArray = new Array();
+   
+   for( var i in compileTasks ){
+      if( compileTasks[i] ){
+         compileArray.push(i);
+      }   
+   }
    
    grunt.registerTask('default', tasksArray);
+	
+	grunt.registerTask('compile', compileArray);
    
 };

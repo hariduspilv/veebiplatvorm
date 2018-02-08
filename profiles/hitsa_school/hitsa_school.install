@@ -11,16 +11,18 @@
  *
  * @see system_install()
  */
-function hitsa_school_install() {
-  variable_set('hitsa_school_type', 1);
-  hitsa_install();
-  hitsa_disable__mods();
-
+function hitsa_school_install()
+{
+    variable_set('hitsa_school_type', 1);
+    hitsa_install();
+    hitsa_disable__mods();
+    hitsa_enable_translations();
 }
 
-function hitsa_install() {
-  // Add text formats.
-  $filtered_html_format = array(
+function hitsa_install()
+{
+    // Add text formats.
+    $filtered_html_format = array(
     'format' => 'filtered_html',
     'name' => 'Filtered HTML',
     'weight' => 0,
@@ -46,11 +48,11 @@ function hitsa_install() {
         'status' => 1,
       ),
     ),
-  );
-  $filtered_html_format = (object) $filtered_html_format;
-  filter_format_save($filtered_html_format);
+    );
+    $filtered_html_format = (object) $filtered_html_format;
+    filter_format_save($filtered_html_format);
 
-  $full_html_format = array(
+    $full_html_format = array(
     'format' => 'full_html',
     'name' => 'Full HTML',
     'weight' => 1,
@@ -71,14 +73,14 @@ function hitsa_install() {
         'status' => 1,
       ),
     ),
-  );
-  $full_html_format = (object) $full_html_format;
-  filter_format_save($full_html_format);
+    );
+    $full_html_format = (object) $full_html_format;
+    filter_format_save($full_html_format);
 
-  // Enable some standard blocks.
-  $default_theme = variable_get('theme_default', 'bartik');
-  $admin_theme = 'seven';
-  $blocks = array(
+    // Enable some standard blocks.
+    $default_theme = variable_get('theme_default', 'bartik');
+    $admin_theme = 'seven';
+    $blocks = array(
     array(
       'module' => 'system',
       'delta' => 'main',
@@ -199,28 +201,28 @@ function hitsa_install() {
       'pages' => '',
       'cache' => -1,
     ),
-  );
-  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
-  foreach ($blocks as $block) {
-    $query->values($block);
-  }
-  $query->execute();
-  $enable = array(
-   'theme_default' => 'hitsa',
-   'admin_theme' => 'adminimal_theme',
+    );
+    $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
+    foreach ($blocks as $block) {
+        $query->values($block);
+    }
+    $query->execute();
+    $enable = array(
+    'theme_default' => 'hitsa',
+    'admin_theme' => 'adminimal_theme',
      //'zen'
-   );
-   theme_enable($enable);
+    );
+    theme_enable($enable);
 
-   foreach ($enable as $var => $theme) {
-     if (!is_numeric($var)) {
-       variable_set($var, $theme);
-     }
-   }
-  // Insert default pre-defined node types into the database. For a complete
-  // list of available node type attributes, refer to the node type API
-  // documentation at: http://api.drupal.org/api/HEAD/function/hook_node_info.
-  $types = array(
+    foreach ($enable as $var => $theme) {
+        if (!is_numeric($var)) {
+            variable_set($var, $theme);
+        }
+    }
+    // Insert default pre-defined node types into the database. For a complete
+    // list of available node type attributes, refer to the node type API
+    // documentation at: http://api.drupal.org/api/HEAD/function/hook_node_info.
+    $types = array(
     array(
       'type' => 'page',
       'name' => st('Basic page'),
@@ -239,16 +241,16 @@ function hitsa_install() {
       'modified' => 1,
       'locked' => 0,
     ),
-  );
+    );
 
-  foreach ($types as $type) {
-    $type = node_type_set_defaults($type);
-    node_type_save($type);
-    node_add_body_field($type);
-  }
+    foreach ($types as $type) {
+        $type = node_type_set_defaults($type);
+        node_type_save($type);
+        node_add_body_field($type);
+    }
 
-  // Insert default pre-defined RDF mapping into the database.
-  $rdf_mappings = array(
+    // Insert default pre-defined RDF mapping into the database.
+    $rdf_mappings = array(
     array(
       'type' => 'node',
       'bundle' => 'page',
@@ -270,37 +272,37 @@ function hitsa_install() {
         ),
       ),
     ),
-  );
-  foreach ($rdf_mappings as $rdf_mapping) {
-    rdf_mapping_save($rdf_mapping);
-  }
+    );
+    foreach ($rdf_mappings as $rdf_mapping) {
+        rdf_mapping_save($rdf_mapping);
+    }
 
-  // Default "Basic page" to not be promoted and have comments disabled.
-  variable_set('node_options_page', array('status'));
-  variable_set('comment_page', COMMENT_NODE_HIDDEN);
+    // Default "Basic page" to not be promoted and have comments disabled.
+    variable_set('node_options_page', array('status'));
+    variable_set('comment_page', COMMENT_NODE_HIDDEN);
 
-  // Don't display date and author information for "Basic page" nodes by default.
-  variable_set('node_submitted_page', FALSE);
+    // Don't display date and author information for "Basic page" nodes by default.
+    variable_set('node_submitted_page', false);
 
-  // Enable user picture support and set the default to a square thumbnail option.
-  variable_set('user_pictures', '1');
-  variable_set('user_picture_dimensions', '1024x1024');
-  variable_set('user_picture_file_size', '800');
-  variable_set('user_picture_style', 'thumbnail');
+    // Enable user picture support and set the default to a square thumbnail option.
+    variable_set('user_pictures', '1');
+    variable_set('user_picture_dimensions', '1024x1024');
+    variable_set('user_picture_file_size', '800');
+    variable_set('user_picture_style', 'thumbnail');
 
-  // Allow visitor account creation with administrative approval.
-  variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
+    // Allow visitor account creation with administrative approval.
+    variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
 
-  // Create a default vocabulary named "Tags", enabled for the 'article' content type.
-  $description = st('Use tags to group articles on similar topics into categories.');
-  $vocabulary = (object) array(
+    // Create a default vocabulary named "Tags", enabled for the 'article' content type.
+    $description = st('Use tags to group articles on similar topics into categories.');
+    $vocabulary = (object) array(
     'name' => st('Tags'),
     'description' => $description,
     'machine_name' => 'tags',
-  );
-  taxonomy_vocabulary_save($vocabulary);
+    );
+    taxonomy_vocabulary_save($vocabulary);
 
-  $field = array(
+    $field = array(
     'field_name' => 'field_' . $vocabulary->machine_name,
     'type' => 'taxonomy_term_reference',
     // Set cardinality to unlimited for tagging.
@@ -313,11 +315,11 @@ function hitsa_install() {
         ),
       ),
     ),
-  );
-  field_create_field($field);
+    );
+    field_create_field($field);
 
-  $help = st('Enter a comma-separated list of words to describe your content.');
-  $instance = array(
+    $help = st('Enter a comma-separated list of words to describe your content.');
+    $instance = array(
     'field_name' => 'field_' . $vocabulary->machine_name,
     'entity_type' => 'node',
     'label' => 'Tags',
@@ -337,41 +339,41 @@ function hitsa_install() {
         'weight' => 10,
       ),
     ),
-  );
-  field_create_instance($instance);
+    );
+    field_create_instance($instance);
 
 
-  // Create an image field named "Image", enabled for the 'article' content type.
-  // Many of the following values will be defaulted, they're included here as an illustrative examples.
-  // See http://api.drupal.org/api/function/field_create_field/7
+    // Create an image field named "Image", enabled for the 'article' content type.
+    // Many of the following values will be defaulted, they're included here as an illustrative examples.
+    // See http://api.drupal.org/api/function/field_create_field/7
 
-  $field = array(
+    $field = array(
     'field_name' => 'field_image',
     'type' => 'image',
     'cardinality' => 1,
-    'locked' => FALSE,
+    'locked' => false,
     'indexes' => array('fid' => array('fid')),
     'settings' => array(
       'uri_scheme' => 'public',
-      'default_image' => FALSE,
+      'default_image' => false,
     ),
     'storage' => array(
       'type' => 'field_sql_storage',
       'settings' => array(),
     ),
-  );
-  field_create_field($field);
+    );
+    field_create_field($field);
 
 
-  // Many of the following values will be defaulted, they're included here as an illustrative examples.
-  // See http://api.drupal.org/api/function/field_create_instance/7
-  $instance = array(
+    // Many of the following values will be defaulted, they're included here as an illustrative examples.
+    // See http://api.drupal.org/api/function/field_create_instance/7
+    $instance = array(
     'field_name' => 'field_image',
     'entity_type' => 'node',
     'label' => 'Image',
     'bundle' => 'article',
     'description' => st('Upload an image to go with this article.'),
-    'required' => FALSE,
+    'required' => false,
 
     'settings' => array(
       'file_directory' => 'field/image',
@@ -379,7 +381,7 @@ function hitsa_install() {
       'max_filesize' => '',
       'max_resolution' => '',
       'min_resolution' => '',
-      'alt_field' => TRUE,
+      'alt_field' => true,
       'title_field' => '',
     ),
 
@@ -406,68 +408,151 @@ function hitsa_install() {
         'weight' => -1,
       ),
     ),
-  );
-  field_create_instance($instance);
+    );
+    field_create_instance($instance);
 
-  // Enable default permissions for system roles.
-  $filtered_html_permission = filter_permission_name($filtered_html_format);
-  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'access comments', $filtered_html_permission));
-  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
+    // Enable default permissions for system roles.
+    $filtered_html_permission = filter_permission_name($filtered_html_format);
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'access comments', $filtered_html_permission));
+    user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'access comments', 'post comments', 'skip comment approval', $filtered_html_permission));
 
-  // Create a default role for site administrators, with all available permissions assigned.
-  $admin_role = new stdClass();
-  $admin_role->name = 'administrator';
-  $admin_role->weight = 2;
-  user_role_save($admin_role);
-  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
-  // Set this as the administrator role.
-  variable_set('user_admin_role', $admin_role->rid);
+    // Create a default role for site administrators, with all available permissions assigned.
+    $admin_role = new stdClass();
+    $admin_role->name = 'administrator';
+    $admin_role->weight = 2;
+    user_role_save($admin_role);
+    user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
+    // Set this as the administrator role.
+    variable_set('user_admin_role', $admin_role->rid);
 
-  // Assign user 1 the "administrator" role.
-  db_insert('users_roles')
+    // Assign user 1 the "administrator" role.
+    db_insert('users_roles')
     ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
     ->execute();
 
-  // Create a Home link in the main menu.
-  $item = array(
+    // Create a Home link in the main menu.
+    $item = array(
     'link_title' => st('Home'),
     'link_path' => '<front>',
     'menu_name' => 'main-menu',
-  );
-  menu_link_save($item);
+    );
+    menu_link_save($item);
 
-  // Update the menu router information.
-  menu_rebuild();
+    // Update the menu router information.
+    menu_rebuild();
 
-  // Enable the admin theme.
-  db_update('system')
+    // Enable the admin theme.
+    db_update('system')
     ->fields(array('status' => 1))
     ->condition('type', 'theme')
     ->condition('name', 'seven')
     ->execute();
-  variable_set('admin_theme', 'seven');
-  variable_set('node_admin_theme', '1');
+    variable_set('admin_theme', 'seven');
+    variable_set('node_admin_theme', '1');
 }
-function hitsa_disable__mods(){
-  if( module_exists('overlay')) {
-    module_disable(array('overlay'));
-  }
+function hitsa_disable__mods()
+{
+    if (module_exists('overlay')) {
+        module_disable(array('overlay'));
+    }
 }
 
+
+function hitsa_enable_translations()
+{
+  if (!module_exists('hitsa_enable_translations')) {
+      $modules = array('l10n_update'); // Array of module names
+      $enable_dependencies = true; // Whether or not to enable dependant modules
+      module_enable($modules, $enable_dependencies);
+  }
+  variable_set('l10n_update_download_store', 'sites/all/translations');
+  module_load_include('inc','l10n_update','l10n_update.batch');
+  $directory = variable_get_value('l10n_update_download_store');
+  $files = file_scan_directory($directory,'/.*\.po/');
+  $objects = array();
+  $languages = array('ru','en','et');
+  foreach ($files as $key => $file) {
+    $language = substr($file->filename,0,2);
+    $dot_location = strpos($file->filename,'.');
+    $filename_length = strlen($file->filename);
+    $group = substr($file->filename,3,$dot_location-3);
+    $file_object = (file_uri_to_object($file->uri));
+    _locale_import_po($file_object, $language, LOCALE_IMPORT_KEEP, $group);
+  }
+  $types = node_type_get_types();
+  foreach ($types as $type_key => $type_value) {
+    switch ($type_key) {
+      case 'curriculum':
+        $type_value->name = 'Sakkidega sisuleht';
+        $type_value->title_label = 'Pealkiri';
+        node_type_save($type_value);
+        break;
+      case 'catering':
+        $type_value->name = 'Nädalamenüü';
+        $type_value->title_label = 'Pealkiri';
+        node_type_save($type_value);
+        break;
+      case 'gallery':
+        $type_value->name = 'Galerii';
+        $type_value->title_label = 'Pealkiri';
+        node_type_save($type_value);
+        break;
+      case 'event':
+        $type_value->name = 'Kalendri sündmus';
+        $type_value->title_label = 'Pealkiri';
+        node_type_save($type_value);
+        break;
+      case 'webform':
+        $type_value->name = 'Veebivormid';
+        $type_value->title_label = 'Pealkiri';
+        node_type_save($type_value);
+        break;
+      case 'article':
+        $type_value->name = 'Uudised';
+        $type_value->title_label = 'Pealkiri';
+        node_type_save($type_value);
+        break;
+      case 'contact':
+        $type_value->name = 'Kontakt';
+        $type_value->title_label = 'Nimi';
+        node_type_save($type_value);
+        break;
+      case 'content_page':
+        $type_value->name = 'Sisulehekülg';
+        $type_value->title_label = 'Pealkiri';
+        node_type_save($type_value);
+        break;
+      case 'contact_location':
+        $type_value->name = 'Koht';
+        $type_value->title_label = 'Nimi';
+        node_type_save($type_value);
+        break;
+      case 'Logo':
+        $type_value->name = 'Logo';
+        $type_value->title_label = 'Nimi';
+        node_type_save($type_value);
+        break;
+    }
+  }
+}
 /**
- * Disable and uninstall the module.
+ * Disable and uninstall the module
  */
-function hitsa_school_update_7000() {
-  if( module_exists('overlay')) {
-    module_disable(array('overlay'));
-  }
-  if(module_exists('toolbar')){
-    module_disable(array('toolbar'));
-  }
-  $enable = array(
-   'theme_default' => 'hitsa',
-   'admin_theme' => 'adminimal_theme',
+function hitsa_school_update_7000()
+{
+    if (module_exists('overlay')) {
+        module_disable(array('overlay'));
+    }
+    if (module_exists('toolbar')) {
+        module_disable(array('toolbar'));
+    }
+    $enable = array(
+    'theme_default' => 'hitsa',
+    'admin_theme' => 'adminimal_theme',
      //'zen'
-   );
-   theme_enable($enable);
+    );
+    theme_enable($enable);
+}
+function hitsa_school_update_7001(){
+  hitsa_enable_translations();
 }

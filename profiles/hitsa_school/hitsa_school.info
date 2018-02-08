@@ -29,6 +29,8 @@ dependencies[] = rdf
 dependencies[] = pathauto
 dependencies[] = transliteration
 dependencies[] = module_filter
+dependencies[] = l10n_update
+dependencies[] = i18n_field
 dependencies[] = admin_views
 dependencies[] = hitsa_core
 dependencies[] = hitsa_content_page
@@ -43,6 +45,7 @@ dependencies[] = hitsa_events
 dependencies[] = hitsa_logos
 dependencies[] = hitsa_translation_importer
 dependencies[] = hitsa_ckeditor
+dependencies[] = hitsa_color
 
 ; Information added by Drupal.org packaging script on 2017-06-21
 version = "7.56"
