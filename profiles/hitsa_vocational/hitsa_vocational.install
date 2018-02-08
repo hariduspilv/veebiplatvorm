@@ -19,14 +19,15 @@ function hitsa_vocational_install()
     hitsa_vocational_install_themes();
     hitsa_vocational_disable_modules();
     hitsa_vocational_enable_translations();
+    hitsa_vocational_disable_blocks();
 }
 function hitsa_vocational_install_themes()
 {
     $enable = array(
-   'theme_default' => 'hitsa',
-   'admin_theme' => 'adminimal_theme',
+    'theme_default' => 'hitsa',
+    'admin_theme' => 'adminimal_theme',
      //'zen'
-   );
+    );
     theme_enable($enable);
 }
 function hitsa_vocational_disable_modules()
@@ -43,83 +44,83 @@ function hitsa_vocational_disable_modules()
 
 function hitsa_vocational_enable_translations()
 {
-  if (!module_exists('hitsa_enable_translations')) {
-      $modules = array('l10n_update'); // Array of module names
-      $enable_dependencies = true; // Whether or not to enable dependant modules
-      module_enable($modules, $enable_dependencies);
-  }
-  variable_set('l10n_update_download_store', 'sites/all/translations');
-  module_load_include('inc','l10n_update','l10n_update.batch');
-  $directory = variable_get_value('l10n_update_download_store');
-  $files = file_scan_directory($directory,'/.*\.po/');
-  $objects = array();
-  $languages = array('ru','en','et');
-  foreach ($files as $key => $file) {
-    $language = substr($file->filename,0,2);
-    $dot_location = strpos($file->filename,'.');
-    $filename_length = strlen($file->filename);
-    $group = substr($file->filename,3,$dot_location-3);
-    $file_object = (file_uri_to_object($file->uri));
-    _locale_import_po($file_object, $language, LOCALE_IMPORT_KEEP, $group);
-  }
-  $types = node_type_get_types();
-  foreach ($types as $type_key => $type_value) {
-    switch ($type_key) {
-      case 'curriculum':
-        $type_value->name = 'Sakkidega sisuleht';
-        $type_value->title_label = 'Pealkiri';
-        node_type_save($type_value);
-        break;
-      case 'catering':
-        $type_value->name = 'Nädalamenüü';
-        $type_value->title_label = 'Pealkiri';
-        node_type_save($type_value);
-        break;
-      case 'gallery':
-        $type_value->name = 'Galerii';
-        $type_value->title_label = 'Pealkiri';
-        node_type_save($type_value);
-        break;
-      case 'event':
-        $type_value->name = 'Kalendri sündmus';
-        $type_value->title_label = 'Pealkiri';
-        node_type_save($type_value);
-        break;
-      case 'webform':
-        $type_value->name = 'Veebivormid';
-        $type_value->title_label = 'Pealkiri';
-        node_type_save($type_value);
-        break;
-      case 'article':
-        $type_value->name = 'Uudised';
-        $type_value->title_label = 'Pealkiri';
-        node_type_save($type_value);
-        break;
-      case 'contact':
-        $type_value->name = 'Kontakt';
-        $type_value->title_label = 'Nimi';
-        node_type_save($type_value);
-        break;
-      case 'content_page':
-        $type_value->name = 'Sisulehekülg';
-        $type_value->title_label = 'Pealkiri';
-        node_type_save($type_value);
-        break;
-      case 'contact_location':
-        $type_value->name = 'Koht';
-        $type_value->title_label = 'Nimi';
-        node_type_save($type_value);
-        break;
-      case 'Logo':
-        $type_value->name = 'Logo';
-        $type_value->title_label = 'Nimi';
-        node_type_save($type_value);
-        break;
+    if (!module_exists('hitsa_enable_translations')) {
+        $modules = array('l10n_update'); // Array of module names
+        $enable_dependencies = true; // Whether or not to enable dependant modules
+        module_enable($modules, $enable_dependencies);
     }
-  }
-  $vocabularies = taxonomy_vocabulary_get_names();
-  foreach ($vocabularies as $voc_mach => $vocabulary) {
-      switch ($voc_mach) {
+    variable_set('l10n_update_download_store', 'sites/all/translations');
+    module_load_include('inc', 'l10n_update', 'l10n_update.batch');
+    $directory = variable_get_value('l10n_update_download_store');
+    $files = file_scan_directory($directory, '/.*\.po/');
+    $objects = array();
+    $languages = array('ru','en','et');
+    foreach ($files as $key => $file) {
+        $language = substr($file->filename, 0, 2);
+        $dot_location = strpos($file->filename, '.');
+        $filename_length = strlen($file->filename);
+        $group = substr($file->filename, 3, $dot_location-3);
+        $file_object = (file_uri_to_object($file->uri));
+        _locale_import_po($file_object, $language, LOCALE_IMPORT_KEEP, $group);
+    }
+    $types = node_type_get_types();
+    foreach ($types as $type_key => $type_value) {
+        switch ($type_key) {
+        case 'curriculum':
+            $type_value->name = 'Sakkidega sisuleht';
+            $type_value->title_label = 'Pealkiri';
+            node_type_save($type_value);
+            break;
+        case 'catering':
+            $type_value->name = 'Nädalamenüü';
+            $type_value->title_label = 'Pealkiri';
+            node_type_save($type_value);
+            break;
+        case 'gallery':
+            $type_value->name = 'Galerii';
+            $type_value->title_label = 'Pealkiri';
+            node_type_save($type_value);
+            break;
+        case 'event':
+            $type_value->name = 'Kalendri sündmus';
+            $type_value->title_label = 'Pealkiri';
+            node_type_save($type_value);
+            break;
+        case 'webform':
+            $type_value->name = 'Veebivormid';
+            $type_value->title_label = 'Pealkiri';
+            node_type_save($type_value);
+            break;
+        case 'article':
+            $type_value->name = 'Uudised';
+            $type_value->title_label = 'Pealkiri';
+            node_type_save($type_value);
+            break;
+        case 'contact':
+            $type_value->name = 'Kontakt';
+            $type_value->title_label = 'Nimi';
+            node_type_save($type_value);
+            break;
+        case 'content_page':
+            $type_value->name = 'Sisulehekülg';
+            $type_value->title_label = 'Pealkiri';
+            node_type_save($type_value);
+            break;
+        case 'contact_location':
+            $type_value->name = 'Koht';
+            $type_value->title_label = 'Nimi';
+            node_type_save($type_value);
+            break;
+        case 'Logo':
+            $type_value->name = 'Logo';
+            $type_value->title_label = 'Nimi';
+            node_type_save($type_value);
+            break;
+        }
+    }
+    $vocabularies = taxonomy_vocabulary_get_names();
+    foreach ($vocabularies as $voc_mach => $vocabulary) {
+        switch ($voc_mach) {
         case 'academic_years':
             $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
             $vocabulary->name = 'Akadeemilised aastad';
@@ -201,8 +202,24 @@ function hitsa_vocational_enable_translations()
             taxonomy_vocabulary_save($vocabulary);
             break;
 
-      }
-  }
+        }
+    }
+}
+function hitsa_vocational_disable_blocks()
+{
+    $blocks = array('navigation','form','login','help');
+    foreach ($blocks as $key => $block_value) {
+        $num_updated = db_update('block') // Table name no longer needs {}
+        ->fields(
+            array(
+            'region' => -1,
+            'status' => 0,
+            )
+        )
+        ->condition('theme', 'hitsa', '=')
+        ->condition('delta', $block_value, '=')
+        ->execute();
+    }
 }
 /**
  * Disable and uninstall the module.
@@ -216,13 +233,15 @@ function hitsa_vocational_update_7000()
         module_disable(array('toolbar'));
     }
     $enable = array(
-   'theme_default' => 'hitsa',
-   'admin_theme' => 'adminimal_theme',
+    'theme_default' => 'hitsa',
+    'admin_theme' => 'adminimal_theme',
      //'zen'
-   );
+    );
     theme_enable($enable);
 }
 
-function hitsa_vocational_update_7001(){
-  hitsa_vocational_enable_translations();
+function hitsa_vocational_update_7001()
+{
+    hitsa_vocational_enable_translations();
+    hitsa_vocational_disable_blocks();
 }
