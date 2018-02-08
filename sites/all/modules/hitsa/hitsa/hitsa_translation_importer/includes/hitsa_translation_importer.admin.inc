@@ -96,7 +96,6 @@ function hitsa_translations_importer_settings_form_submit($form, &$form_state)
     //     }
     // }
 
-    
 }
 function hitsa_translations_importer_settings_form_validate($form, &$form_state)
 {

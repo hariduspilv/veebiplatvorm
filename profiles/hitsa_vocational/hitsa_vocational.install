@@ -117,6 +117,92 @@ function hitsa_vocational_enable_translations()
         break;
     }
   }
+  $vocabularies = taxonomy_vocabulary_get_names();
+  foreach ($vocabularies as $voc_mach => $vocabulary) {
+      switch ($voc_mach) {
+        case 'academic_years':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Akadeemilised aastad';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'catering_food_type':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Toitlustamise toidutüübid';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'catering_provider':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Toitlustuse pakkuja';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'catering_food_subcategory':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Toidu kategooria';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'content_information':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Content information';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'fields':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Valdkonnad';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'hitsa_event_tags':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Südmuste kalendri kategooriad';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'time_periods':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Semestrid';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'hitsa_locations':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Sündmuste asukohad';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'time_period_info':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Semestri info';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'training_tags':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Koolituste tagid';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'hitsa_breaks':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Vaheajad';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'hitsa_hour_times':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Tundide ajad ja lõunapausid';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'tags':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Tagid';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'contacts_job_position':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Töökohad';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+        case 'contacts_department':
+            $vocabulary = taxonomy_vocabulary_load($vocabulary->vid);
+            $vocabulary->name = 'Osakond';
+            taxonomy_vocabulary_save($vocabulary);
+            break;
+
+      }
+  }
 }
 /**
  * Disable and uninstall the module.
