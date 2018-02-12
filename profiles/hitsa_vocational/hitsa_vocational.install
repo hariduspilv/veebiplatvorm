@@ -20,6 +20,7 @@ function hitsa_vocational_install()
     hitsa_vocational_disable_modules();
     hitsa_vocational_enable_translations();
     hitsa_vocational_disable_blocks();
+    hitsa_vocational_de_u_mt();
 }
 function hitsa_vocational_install_themes()
 {
@@ -221,6 +222,21 @@ function hitsa_vocational_disable_blocks()
         ->execute();
     }
 }
+function hitsa_vocational_de_u_mt(){
+  $modules = array('module_filter','hitsa_color'); // Array of module names
+  $enable_dependencies = TRUE; // Whether or not to enable dependant modules
+  module_enable($modules, $enable_dependencies);
+  $themes = array(
+    'bartik',
+  );
+  theme_disable($themes);
+  $themes = array(
+    'hitsa',
+    'adminimal',
+  );
+  theme_enable($themes);
+  variable_set('admin_theme', 'adminimal');
+}
 /**
  * Disable and uninstall the module.
  */
@@ -234,7 +250,7 @@ function hitsa_vocational_update_7000()
     }
     $enable = array(
     'theme_default' => 'hitsa',
-    'admin_theme' => 'adminimal_theme',
+    'admin_theme' => 'adminimal',
      //'zen'
     );
     theme_enable($enable);
@@ -244,4 +260,11 @@ function hitsa_vocational_update_7001()
 {
     hitsa_vocational_enable_translations();
     hitsa_vocational_disable_blocks();
+}
+
+/**
+*Enabling and disabling themes and modules
+*/
+function hitsa_vocational_update_7002(){
+  hitsa_vocational_de_u_mt();
 }

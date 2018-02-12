@@ -1,7 +1,7 @@
 <?php
 function hitsa_color_permission(){
 	return array(
-		'use hitsa_color_change '=>array(
+		'use hitsa_color_change'=>array(
 			'title'	=> t('Use to change theme color')
 			),
 	);

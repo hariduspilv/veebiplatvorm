@@ -7,6 +7,7 @@ sites/*/private
 sites/default/settings.php
 sites/hitsa-korg-2/themes/hitsa/
 sites/gymn/themes/hitsa/
+sites/hitsa-another
 sites/all/themes/hitsa/static/package-lock\.json
 \.vscode/settings\.json
 
