@@ -683,5 +683,5 @@ function hitsa_school_update_7001()
 *Enabling and disabling themes and modules
 */
 function hitsa_school_update_7002(){
-  hitsa_school_disabe_u_mt();
+  hitsa_school_de_u_mt();
 }
