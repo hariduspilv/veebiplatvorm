@@ -1,5 +1,9 @@
 node_modules
 assets/fonts/iconFont.*
 assets/fonts/icons.html
+assets/styles/default.css
+assets/js/main.js
+assets/js/main-drupal.js
 dev/styles/icons.less
 package-lock.json
+dev/styles/site-theme.less
