@@ -8,6 +8,8 @@ sites/default/settings.php
 sites/hitsa-korg-2/themes/hitsa/
 sites/gymn/themes/hitsa/
 sites/hitsa-another
+sites/hitsa4
+sites/hitsa3
 sites/all/themes/hitsa/static/package-lock\.json
 \.vscode/settings\.json
 

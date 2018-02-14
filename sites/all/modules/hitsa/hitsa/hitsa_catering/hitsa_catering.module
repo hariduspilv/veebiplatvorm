@@ -234,7 +234,7 @@ function hitsa_catering_get_all_catering_dates()
     return $dates;
 }
 
-function hitsa_catering_node_insert(&$node)
+function hitsa_catering_node_insert($node)
 {
     if ($node->type == 'catering') {
         if (!empty($node)) {
@@ -280,6 +280,9 @@ function hitsa_catering_node_insert(&$node)
             'language' => $node->language,
             'pathauto' => 0,
         );
+    }
+    if(!empty($node)){
+        return $node;
     }
 }
 
