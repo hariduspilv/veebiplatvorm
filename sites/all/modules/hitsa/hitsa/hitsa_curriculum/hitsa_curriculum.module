@@ -1581,7 +1581,9 @@ function hitsa_curriculum_fp_subject_fields()
     if (!empty($output_slide_container)) {
         $site_logo_fid = variable_get_value('hitsa_fp_image_fid');
         $file = $site_logo_fid !== null ? file_load($site_logo_fid) : false;
-        $file_url = file_create_url($file->uri);
+        if(!empty($file->uri)){
+          $file_url = file_create_url($file->uri);
+        }
         if (!empty($file_url)) {
             $output .= '
         <div class="hero sm-hide">
