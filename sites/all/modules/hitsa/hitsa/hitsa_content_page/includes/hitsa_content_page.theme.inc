@@ -142,7 +142,7 @@ function hitsa_content_page_services_block()
   $services_menu_mlid = variable_get('hitsa_services_mlid');
 
   $output = '';
-  dpm($services_menu_mlid);
+  
   if (!empty($services_menu_mlid)) {
     $tree = menu_tree_all_data('hitsa-main-menu');
     foreach ($tree as $child) {
