@@ -45,6 +45,7 @@ function hitsa_curriculum_uninstall()
     foreach ($result as $row) {
         $node_ids[] = $row->nid;
     }
+    module_load_include('module','hitsa_core','hitsa_core');
     $school_type = hitsa_core_get_school_type();
     if (empty(variable_get('hitsa_school_type'))) {
         variable_set('hitsa_school_type', 1);
