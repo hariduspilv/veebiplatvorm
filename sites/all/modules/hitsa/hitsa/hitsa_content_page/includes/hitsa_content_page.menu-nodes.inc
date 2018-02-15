@@ -1,11 +1,11 @@
 <?php
 
-function _hitsa_content_page_menu_nodes($main_menu_links) {
-  
-  $menu_nodes = array();
-  
-  $school_type = variable_get('hitsa_school_type', HITSA_SCHOOL_GYMNASIUM);
-  switch($school_type) {
+function _hitsa_content_page_menu_nodes($main_menu_links)
+{
+    $menu_nodes = array();
+
+    $school_type = variable_get('hitsa_school_type', HITSA_SCHOOL_GYMNASIUM);
+    switch ($school_type) {
     case HITSA_SCHOOL_GYMNASIUM:
       $menu_nodes = _hitsa_content_page_gymnasium_nodes($main_menu_links);
       break;
@@ -13,23 +13,26 @@ function _hitsa_content_page_menu_nodes($main_menu_links) {
       $menu_nodes = _hitsa_content_page_vocational_nodes($main_menu_links);
       break;
   }
-  
-  return $menu_nodes;
+
+    return $menu_nodes;
 }
 
-function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
-  $t = get_t();
-  return array(
+function _hitsa_content_page_gymnasium_nodes($main_menu_links)
+{
+    $t = get_t();
+    return array(
     // Vastuvõtt
-    /*
+
     array(
       'title' => array('et' => 'Õppesuunad', 'ru' => 'Направления обучения', 'en' => 'Subject fields'),
       'menu' => array(
         'plid' => $main_menu_links['Admission'],
         'weight' => 0,
       ),
+      'cp_type' => 'cp_specialities',
       // Madis
     ),
+    /*
       */
     array(
       'title' => array('et' => 'Vastuvõtu tingimused ja kord', 'ru' => 'Условия и порядок приема', 'en' => 'Admission terms and procedure'),
@@ -55,17 +58,16 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_simple',
     ),
-    /*
+
     array(
       'title' => array('et' => 'Ettevalmistuskursused', 'ru' => 'Подготовительные курсы', 'en' => 'Preparatory courses'),
       'menu' => array(
         'plid' => $main_menu_links['Admission'],
         'weight' => 4,
       ),
+      'cp_type' => 'cp_specialities',
       // Madis
     ),
-
-      */
     array(
       'title' => array('et' => 'Vastuvõtu ajakava', 'ru' => 'График приема', 'en' => 'Admission schedule'),
       'menu' => array(
@@ -83,24 +85,26 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_simple',
     ),
-    /*
+
     array(
       'title' => array('et' => 'Valikained', 'ru' => 'Предмет на выбор', 'en' => 'Elective subjects'),
       'menu' => array(
         'plid' => $main_menu_links['Studies'],
         'weight' => 1,
       ),
-      // Madis
+      'cp_type' => 'cp_specialities',
     ),
+
     array(
       'title' => array('et' => 'Tunniplaan', 'ru' => 'Расписание', 'en' => 'Timetable'),
       'menu' => array(
         'plid' => $main_menu_links['Studies'],
         'weight' => 2,
       ),
-      // Madis
-      
+      'cp_type' => 'cp_specialities',
+
     ),
+    /*
     array(
       'title' => array('et' => 'Õppetöö kalender', 'ru' => 'Календарь занятий', 'en' => 'Study calendar'),
       'menu' => array(
@@ -108,7 +112,7 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
         'weight' => 3,
       ),
       // Madis
-      
+
     ),
     */
     array(
@@ -168,15 +172,16 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_simple',
     ),
-    /*
+
     array(
       'title' => array('et' => 'Õpilaskodu', 'ru' => 'Общежитие для учеников', 'en' => 'Boarding school'),
       'menu' => array(
         'plid' => $main_menu_links['Student Life'],
         'weight' => 2,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
+    /*
     array(
       'title' => array('et' => 'Toitlustamine', 'ru' => 'Питание', 'en' => 'Catering'),
       'menu' => array(
@@ -219,6 +224,7 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
       ),
       // Madis
     ),
+    */
     array(
       'title' => array('et' => 'Huviringid', 'ru' => 'Кружки по интересам', 'en' => 'Hobby Groups'),
       'menu' => array(
@@ -226,24 +232,25 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
         'weight' => 8,
       ),
       // Madis
+      'cp_type' => 'cp_specialities',
     ),
-    
+
     array(
       'title' => array('et' => 'Sport', 'ru' => 'Спорт', 'en' => 'Sports'),
       'menu' => array(
         'plid' => $main_menu_links['Student Life'],
         'weight' => 9,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
-    
+
     array(
       'title' => array('et' => 'Toetused', 'ru' => 'Пособия', 'en' => 'Scholarships'),
       'menu' => array(
         'plid' => $main_menu_links['Student Life'],
         'weight' => 10,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     // Meie koolist
     array(
@@ -252,9 +259,9 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
         'plid' => $main_menu_links['About us'],
         'weight' => 0,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
-    */
+
     array(
       'title' => array('et' => 'Virtuaaltuur', 'ru' => 'Виртуальный тур', 'en' => 'Virtual tour'),
       'menu' => array(
@@ -327,16 +334,16 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_simple',
     ),
-    /*
+
     array(
       'title' => array('et' => 'Koostöö', 'ru' => 'Сотрудничество', 'en' => 'Collaboration'),
       'menu' => array(
         'plid' => $main_menu_links['About us'],
         'weight' => 10,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
-    */
+
     array(
       'title' => array('et' => 'Vilistlased', 'ru' => 'Выпускники', 'en' => 'Graduates'),
       'menu' => array(
@@ -345,16 +352,16 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
       ),
       'cp_type' => 'cp_simple',
     ),
-    /*
+
     array(
       'title' => array('et' => 'Tööpakkumised', 'ru' => 'Предложения работы', 'en' => 'Vacancies'),
       'menu' => array(
         'plid' => $main_menu_links['About us'],
         'weight' => 12,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
-    */
+
     array(
       'title' => array('et' => 'Arengukava', 'ru' => 'План развития', 'en' => 'Development plan'),
       'menu' => array(
@@ -390,9 +397,10 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links) {
   );
 }
 
-function _hitsa_content_page_vocational_nodes($main_menu_links) {
-  $t = get_t();
-  $menu_links = array(
+function _hitsa_content_page_vocational_nodes($main_menu_links)
+{
+    $t = get_t();
+    $menu_links = array(
     // Sisseastumine
     /*
     array(
@@ -411,7 +419,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Admission'],
         'weight' => 0,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Vastuvõtt', 'ru' => 'Прием', 'en' => 'Admission'),
@@ -436,7 +444,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Admission'],
         'weight' => 3,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     /*
     array(
@@ -489,7 +497,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'weight' => 0,
       ),
       // Madis
-   
+
     ), */
     array(
       'title' => array('et' => 'Tunniplaan', 'ru' => 'Расписание', 'en' => 'Timetable'),
@@ -545,7 +553,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Studies'],
         'weight' => 7,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
       // Madis
     ),
     array(
@@ -554,9 +562,9 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Studies'],
         'weight' => 8,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
       // Madis
-      
+
     ),
     /*
     array(
@@ -574,7 +582,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'weight' => 8,
       ),
       // Madis
-      
+
     ),
     */
     // Koolielu
@@ -595,7 +603,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Student Life'],
         'weight' => 1,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Toitlustamine', 'ru' => 'Питание', 'en' => 'Catering'),
@@ -629,7 +637,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'weight' => 5,
       ),
       // Madis
-      
+
     ),
     array(
       'title' => array('et' => 'Sportimisvõimalused', 'ru' => 'Возможности для занятий спортом', 'en' => 'Sport facilities'),
@@ -637,7 +645,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Student Life'],
         'weight' => 6,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     */
 
@@ -647,7 +655,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Student Life'],
         'weight' => 5,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Sportimisvõimalused', 'ru' => 'Возможности для занятий спортом', 'en' => 'Sport facilities'),
@@ -655,7 +663,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Student Life'],
         'weight' => 6,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Nõustamine', 'ru' => 'Консультирование', 'en' => 'Counselling'),
@@ -674,14 +682,14 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       ),
       // Madis
     ),
-    
+
     array(
       'title' => array('et' => 'Toetused', 'ru' => 'Пособия', 'en' => 'Scholarships'),
       'menu' => array(
         'plid' => $main_menu_links['Student Life'],
         'weight' => 8,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     // Täiendusõpe
     array(
@@ -690,7 +698,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Trainings'],
         'weight' => 0,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'E-kursused', 'ru' => 'Электронные курсы', 'en' => 'E-courses'),
@@ -714,7 +722,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Trainings'],
         'weight' => 3,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Tellitavad koolitused', 'ru' => 'Заказные тренинги', 'en' => 'Ordered trainings'),
@@ -722,8 +730,8 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['Trainings'],
         'weight' => 4,
       ),
-      'cp_type' => 'cp_tabbed',
-      
+      'cp_type' => 'cp_specialities',
+
     ),
     // Teenused
     /* Added through custom code */
@@ -734,7 +742,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['About us'],
         'weight' => 0,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Virtuaaltuur', 'ru' => 'Виртуальный тур', 'en' => 'Virtual tour'),
@@ -814,7 +822,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['About us'],
         'weight' => 10,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Vilistlased', 'ru' => 'Выпускники', 'en' => 'Graduates'),
@@ -830,7 +838,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
         'plid' => $main_menu_links['About us'],
         'weight' => 12,
       ),
-      'cp_type' => 'cp_tabbed',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Arengukava', 'ru' => 'План развития', 'en' => 'Development plan'),
@@ -857,6 +865,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links) {
       'cp_type' => 'cp_simple',
     ),
   );
-  
-  return $menu_links;
+
+    return $menu_links;
 }

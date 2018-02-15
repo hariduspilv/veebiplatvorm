@@ -332,8 +332,8 @@ function hitsa_events_calendar_page_html()
         $allowed[$term->tid] = $term->name;
     }
     $output .= '
-      
-      
+
+
             <div class="block">';
     $output .= '<h2 class="block-title">' . t('Calendar') . '</h2>';
     $output .= '<div class="row">
@@ -343,12 +343,12 @@ function hitsa_events_calendar_page_html()
                </div><!--/row-->
                ';
     $output .= '<form method="post" action="kalender.html" data-plugin="filters" class="no-print">
-						
+
                <div class="row">
                   <div class="col-9 sm-12">
                      <h4 data-show="hiddenFilter">' . t('Event type') . '</h4>
                      <div data-show="hiddenFilter" class="row-spacer"></div>
-                     
+
                      <div class="btn-bar">';
     if (!empty($allowed)) {
         $output .= '     <span class="btn-input" > ';
@@ -372,13 +372,13 @@ function hitsa_events_calendar_page_html()
     }
 
     $output .= '      </div><!--/btn-bar-->
-                     
+
                   </div><!--/col-9-->
                   <div class="col-3 sm-12">
                      <a href="javascript:void(0);" class="cta-link pull-right before-plus sm-no-pull" data-toggle="hiddenFilter" data-class="\'active\' : hiddenFilter">' . t('More options') . '</a>
                   </div><!--/col-3-->
                </div><!--/row-->
-                  
+
                <div class="row" data-show="hiddenFilter | flex">
                   <div class="col-12">
                      <div>
@@ -406,15 +406,15 @@ function hitsa_events_calendar_page_html()
                      </div><!--hiddenFilter-->
                   </div><!--/col-12-->
                </div><!--/row-->
-					
+
                <div class="row-spacer-xs"></div>
                <hr />
                <div class="row-spacer"></div>
-               
+
                <div class="row">
                   <div class="col-12">
                      <div class="form-item-row">
-                        
+
                         <div class="form-item after-search form-item_rounded">
                            <div class="form-item_title">Otsitav sündmus</div>
                            <input type="text" name="event-title" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
@@ -429,7 +429,7 @@ function hitsa_events_calendar_page_html()
                            <div class="form-item_title">&nbsp;</div>
                            <button class="btn btn-filled">Otsi</button>
                         </div><!--/form-item-->
-                        
+
                      </div><!--/form-item-row-->
                   </div><!--/col-12-->
                </div><!--/row-->
@@ -887,7 +887,7 @@ function hitsa_events_get_time_periods()
 
 function hitsa_events_front_page_block()
 {
-    
+
 
     global $language;
     $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'event'));
@@ -1166,8 +1166,8 @@ function hitsa_events_training_calendar()
         $output = '';
     }
     $output .= '
-      
-      
+
+
             <div class="block">';
     $output .= '<h2 class="block-title">' . t('Calendar') . '</h2>';
     $output .= '<div class="row">
@@ -1177,12 +1177,12 @@ function hitsa_events_training_calendar()
                </div><!--/row-->
                ';
     $output .= '<form method="post" action="kalender.html" data-plugin="filters" class="no-print">
-						
+
                <div class="row">
                   <div class="col-9 sm-12">
                      <h4 data-show="hiddenFilter"></h4>
                      <div data-show="hiddenFilter" class="row-spacer"></div>
-                     
+
                      <div class="btn-bar">';
     if (!empty($allowed)) {
         $output .= '     <span class="btn-input" > ';
@@ -1222,13 +1222,13 @@ function hitsa_events_training_calendar()
     }
 
     $output .= '      </div><!--/btn-bar-->
-                     
+
                   </div><!--/col-9-->
                   <div class="col-3 sm-12">
                      <a href="javascript:void(0);" class="cta-link pull-right before-plus sm-no-pull" data-toggle="hiddenFilter" data-class="\'active\' : hiddenFilter">' . t('More options') . '</a>
                   </div><!--/col-3-->
                </div><!--/row-->
-                  
+
                <div class="row" data-show="hiddenFilter | flex">
                   <div class="col-12">
                      <div>
@@ -1256,15 +1256,15 @@ function hitsa_events_training_calendar()
                      </div><!--hiddenFilter-->
                   </div><!--/col-12-->
                </div><!--/row-->
-					
+
                <div class="row-spacer-xs"></div>
                <hr />
                <div class="row-spacer"></div>
-               
+
                <div class="row">
                   <div class="col-12">
                      <div class="form-item-row">
-                        
+
                         <div class="form-item after-search form-item_rounded">
                            <div class="form-item_title">Otsitav sündmus</div>
                            <input type="text" name="event-title" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
@@ -1279,11 +1279,11 @@ function hitsa_events_training_calendar()
                            <div class="form-item_title">&nbsp;</div>
                            <button class="btn btn-filled">Otsi</button>
                         </div><!--/form-item-->
-                        
+
                      </div><!--/form-item-row-->
                   </div><!--/col-12-->
                </div><!--/row-->
-               
+
                               <input type="hidden" name="type" value="training" />
                </form>';
     $output .= '<div class="row-spacer"></div>';
@@ -1442,7 +1442,7 @@ function hitsa_events_for_services()
             $output .= '      </span><!--/object-inner-->';
             $output .= '   </a><!--/object-->';
             $output .= '</div><!--/col-12-->';
-            if ($i != 0) {
+            if ($i >= 0) {
                 $output .= '<hr>';
             }
             if ($i == 4) {
@@ -1824,15 +1824,15 @@ function hitsa_events_register_event($event, $form_id, $date)
     if (!empty($form)) {
         $form = render($form);
         $markup = ' <div class="block" data-modal="true">
-               
+
                <h1 class="block-title">' . t('Add to calendar') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
-					
+
 					<div class="row-spacer-xs"></div>' . $form . '</div>';
     } else {
         $markup = ' <div class="block" data-modal="true">
-               
+
                <h1 class="block-title">' . t('Add to calendar') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
-					
+
 					<div class="row-spacer-xs"></div></div>';
 
     }
@@ -1849,13 +1849,13 @@ function hitsa_events_calendar_submission()
     $build['element'] = array(
 
         '#markup' => '  <div class="block" data-modal="true">
-               
+
                <h1 class="block-title">' . t('Add to calendar') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
-					
+
 					<div class="row-spacer-xs"></div>
-					
+
 					' . $file . '
-					
+
             </div><!--/block-->',
     );
     return $build;
