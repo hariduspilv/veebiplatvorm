@@ -5,6 +5,7 @@ function hitsa_core_installer($module, $type) {
   foreach(_hitsa_core_installer_types() as $installer_type) {
     if(function_exists('_' . $module . '_' . $installer_type)) {
       $installer_input = '_' . $module . '_' . $installer_type;
+
       if($type === 'install') {
         $installer_function = 'hitsa_core_add_' . $installer_type;
         //print_r('Adding: ' . $installer_type . "\n");
@@ -54,7 +55,7 @@ function hitsa_core_add_field_instances($installed_instances = array(), $module 
 }
 
 function hitsa_core_delete_fields($installed_fields = array(), $module = NULL) {
-  
+
   foreach (array_keys($installed_fields) as $field) {
     field_delete_field($field);
   }
@@ -91,7 +92,7 @@ function hitsa_core_add_vocabularies($installed_vocabularies = array(), $module 
   // Create vocabulary
   foreach ($installed_vocabularies as $v) {
     taxonomy_vocabulary_save($v['vocabulary']);
-    
+
     $vocab = taxonomy_vocabulary_machine_name_load($v['vocabulary']->machine_name);
     if($vocab) {
       variable_set('hitsa_' . $vocab->machine_name . '_vid' , $vocab->vid);
@@ -124,31 +125,31 @@ function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
   $nid_array = array();
 
   foreach ($installed_nodes as $node_data) {
-    
+
     if(is_array($node_data['title'])) { // Multilang nodes
       $tnid = NULL;
       $translation_set = i18n_translation_set_create('menu_link');
       foreach($node_data['title'] as $lang => $title) { // Split into separate language nodes.
         if(!isset($lang_list[$lang])) continue; // Skip disabled languages.
-        
+
         $node_t = $node_data;
         $node_t['title'] = $title;
-        
+
         $node = (object) $node_t;
         node_object_prepare($node);
         $node->language = $lang;
-        
+
         $node->menu['link_title'] = $title;
-        
+        $node->menu['enabled'] = 1;
         if(empty($tnid)) {
           node_save($node);
           $tnid = $node->nid; // Set initial tnid.
         }
-        
+
         $node->tnid = $tnid;
-        
+
         $node->status = 0; // Unpublished by default.
-        
+
         // Content pages
         if($node_data['type'] === 'content_page') {
           if(!empty($node_data['cp_type'])) {
@@ -162,9 +163,8 @@ function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
             );
           }
         }
-        
+
         node_save($node);
-        
         // Add to menu translation set
         if(!empty($node->menu['mlid'])) {
           $item = menu_link_load($node->menu['mlid']);
@@ -286,7 +286,7 @@ function hitsa_core_add_date_formats($installed_date_formats = array(), $module 
   foreach($installed_date_formats as $date_format) {
     db_insert('date_formats')->fields($date_format['format_array'])->execute();
     db_insert('date_format_type')->fields($date_format['type_array'])->execute();
- 
+
     variable_set('date_format_' . $date_format['type_array']['type'], $date_format['format_array']['format']);
   }
 }
@@ -295,7 +295,7 @@ function hitsa_core_delete_date_formats($installed_date_formats = array(), $modu
   foreach($installed_date_formats as $date_format) {
     db_delete('date_formats')->condition('format', $date_format['format_array'])->execute();
     db_delete('date_format_type')->condition('type', $date_format['type_array']['type'])->execute();
-    
+
     variable_del('date_format_' . $date_format['type_array']['type']);
   }
 }
@@ -337,7 +337,7 @@ function hitsa_core_add_roles($installed_roles = array(), $module = NULL) {
     $role = new stdClass();
     $role->name = $name;
     user_role_save($role);
-    
+
     if($role = user_role_load_by_name($name)) {
       $rid = $role->rid;
       user_role_grant_permissions($rid, $permissions);
