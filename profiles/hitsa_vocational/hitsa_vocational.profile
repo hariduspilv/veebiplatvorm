@@ -15,7 +15,6 @@ function hitsa_vocational_form_install_configure_form_alter(&$form, $form_state)
   $form['site_information']['site_name']['#default_value'] = $_SERVER['SERVER_NAME'];
 }
 
-
 function hitsa_vocational_install_tasks() {
   return hitsa_school_install_tasks();
 }

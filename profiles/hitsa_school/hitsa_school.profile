@@ -19,7 +19,7 @@ function hitsa_school_form_install_configure_form_alter(&$form, $form_state)
 function hitsa_school_install_tasks()
 {
     $tasks['choose_school_type'] = array(
-    'display_name' => st('Select school type'),
+    'display_name' => st('Select enabled languages'),
     'display' => true,
     'type' => 'form',
     'run' => INSTALL_TASK_RUN_IF_NOT_COMPLETED,
@@ -40,12 +40,12 @@ function hitsa_school_install_tasks()
 function school_type_form($form, &$form_state)
 {
     $form = array();
-    $form['school_type'] = array(
-    '#type' => 'radios',
-    '#title' => st('School type'),
-    '#default_value' => 1,
-    '#options' => array(1 => 'Kõrgkool/Kutsekool', 2 => 'Gümnaasium'),
-    '#description' => st('Select the school type'),
+    $form['enabled_languages'] = array(
+    '#type' => 'checkboxes',
+    '#title' => st('Languages'),
+    '#default_value' => array('en', 'ru'),
+    '#options' => array('en' => st('English'), 'ru' => st('Russian')),
+    '#description' => st('Select additional enabled languages'),
     );
 
     $form['submit'] = array(
@@ -58,8 +58,16 @@ function school_type_form($form, &$form_state)
 
 function school_type_form_submit($form, &$form_state)
 {
-    $school_type = $form_state['values']['school_type'];
-    //variable_set('hitsa_school_type', $school_type);
+    $enabled_languages = $form_state['values']['enabled_languages'];
+    foreach($enabled_languages as $lang => $enabled) {
+    db_update('languages')
+      ->fields(array(
+        'enabled' => empty($enabled) ? 0 : 1,
+      ))
+      ->condition('language', $lang)
+      ->execute();
+    }
+
 }
 
 function hitsa_school_profile_details()
@@ -111,4 +119,13 @@ function hitsa_set_language_detection_rules()
         $negotation[$id]['weight'] = $weight;
     }
     language_negotiation_set(LANGUAGE_TYPE_INTERFACE, $negotation);
+}
+
+function hitsa_school_install_tasks_alter(&$tasks, $install_state){
+    $tasks['install_select_locale']['function'] = '_hitsa_school_locale_selection';
+}
+
+// local callback function
+function _hitsa_school_locale_selection(&$install_state){
+    $install_state['parameters']['locale'] = 'en';
 }
