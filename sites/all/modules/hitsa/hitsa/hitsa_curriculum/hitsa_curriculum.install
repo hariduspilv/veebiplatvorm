@@ -6,10 +6,13 @@
 function hitsa_curriculum_install()
 {
     module_load_include('module','hitsa_core','hitsa_core');
-    $school_type = hitsa_core_get_school_type();
+    $school_type = '';
     if (empty(variable_get('hitsa_school_type'))) {
         variable_set('hitsa_school_type', 1);
         $school_type = 1;
+    }
+    else{
+      $school_type =  variable_get('hitsa_school_type');
     }
     hitsa_curriculum_create_node();
 
