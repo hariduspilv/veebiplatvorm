@@ -142,7 +142,7 @@ function hitsa_content_page_services_block()
   $services_menu_mlid = variable_get('hitsa_services_mlid');
 
   $output = '';
-
+  dpm($services_menu_mlid);
   if (!empty($services_menu_mlid)) {
     $tree = menu_tree_all_data('hitsa-main-menu');
     foreach ($tree as $child) {
@@ -191,8 +191,8 @@ function hitsa_services_page_view($query = array())
     $nodes = node_load_multiple(array_keys($nids_array['node']));
 
     $services_grouped = array();
-    
-    
+
+
     // Group services by service type
     foreach ($nodes as $node) {
       if (!empty($node->cp_service_type)) {
@@ -245,7 +245,7 @@ function hitsa_content_page_view($query = array(), $filter = false, $type = null
 
   if (!empty($nids_array['node'])) {
     $nodes = node_load_multiple(array_keys($nids_array['node']));
-    
+
     // Sort and group the content based on the academic year.
     $articles_grouped = array();
 
@@ -254,7 +254,7 @@ function hitsa_content_page_view($query = array(), $filter = false, $type = null
       if (!empty($node->academic_year[LANGUAGE_NONE][0]['tid'])) {
         $articles_grouped[$node->academic_year[LANGUAGE_NONE][0]['tid']][] = theme('hitsa_content_page_teaser', array('node' => $node, 'author' => $author));
       }
-      // TODO: Handle content without set academic year. 
+      // TODO: Handle content without set academic year.
     }
 
     $articles_grouped_sorted = array();

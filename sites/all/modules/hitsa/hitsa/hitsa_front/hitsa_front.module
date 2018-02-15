@@ -101,6 +101,7 @@ function hitsa_front_block_view($delta = '')
 {
     switch ($delta) {
     case 'hitsa_services_events':
+
       $hours = taxonomy_vocabulary_machine_name_load('hitsa_hour_times');
       $hours_tree = taxonomy_get_tree($hours->vid, 0, null, true);
       $hours_tree = hitsa_front_requried_information($hours_tree, 'hours');
@@ -367,7 +368,7 @@ function hitsa_front_get_services()
             } elseif (!empty($node->body)) {
                 $service_summary = $node->body['und'][0]['safe_value'];
             }
-            $services[$node_key]['html'] = theme('hitsa_front_right_content_block_element', array('url'=>$url,'title'=>$title,'body'=>$service_summary));
+            $services[$node_key]['html'] = theme('hitsa_front_right_content_block_element', array('url'=>$url,'title'=>$title,'body'=>!empty($service_summary)?$service_summary:''));
             $i++;
         }
         if (!empty($services)) {
