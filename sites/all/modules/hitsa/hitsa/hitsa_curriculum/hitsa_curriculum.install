@@ -5,6 +5,7 @@
  */
 function hitsa_curriculum_install()
 {
+    module_load_include('module','hitsa_core','hitsa_core');
     $school_type = hitsa_core_get_school_type();
     if (empty(variable_get('hitsa_school_type'))) {
         variable_set('hitsa_school_type', 1);
@@ -46,7 +47,7 @@ function hitsa_curriculum_uninstall()
         variable_set('hitsa_school_type', 1);
         $school_type = 1;
     }
-    
+
     // Delete fields and vocabularies
     hitsa_curriculum_delete_custom_node_fields($school_type);
     hitsa_curriculum_delete_custom_paragraphs_fields();
@@ -4344,7 +4345,7 @@ function hitsa_curriculum_add_custom_taxonomy_fields()
 function hitsa_curriculum_add_custom_taxonomy_fields_base()
 {
     $field_bases = array();
-  
+
     // Exported field_base: 'field_icon_choice'.
 
     $field_bases['field_icon_choice'] = array(
@@ -4406,7 +4407,7 @@ function hitsa_curriculum_add_custom_taxonomy_fields_base()
 function hitsa_curriculum_add_custom_taxonomy_fields_instances()
 {
     $field_instances = array();
-  
+
     // Exported field_instance: 'taxonomy_term-fields-field_icon_choice'.
     $field_instances['taxonomy_term-fields-field_icon_choice'] = array(
         'bundle' => 'fields',
@@ -4437,7 +4438,7 @@ function hitsa_curriculum_add_custom_taxonomy_fields_instances()
             'weight' => 1,
         ),
     );
-   
+
     // Translatables
     // Included for use with string extractors like potx.
     t('Field picture');
@@ -4554,7 +4555,7 @@ function hitsa_curriculum_update_7000(){
             ),
             'value' => array(),
         ),
-    ); 
+    );
     $dependee = field_info_instance('node', $dependecy['dependee'], 'curriculum')['id'];
     $dependent = field_info_instance('node', $dependecy['dependent'], 'curriculum')['id'];
     $dependency = array(
