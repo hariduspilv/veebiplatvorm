@@ -10,6 +10,7 @@ function hitsa_translations_importer_settings_form($form, &$form_state)
     $form = array();
     $code = variable_get('period_title');
     $form['tranlsation_file'] = array(
+        '#name' => 'translations_file',
         '#type' => 'managed_file',
         '#upload_location' => 'public://translations/',
         '#title' => t('Choose a file'),

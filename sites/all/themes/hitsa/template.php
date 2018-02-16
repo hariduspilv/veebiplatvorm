@@ -63,7 +63,8 @@ function hitsa_preprocess_hitsa_front_content(&$variables)
         }
 
         // Add news block
-        $variables['news_block'] = views_embed_view('hitsa_news', 'news_block');
+        $news = views_embed_view('hitsa_news', 'news_block');
+        $variables['news_block'] = $news;
 
         // Add our stories block
         $query = array('article_type' => 'our_stories', 'range' => array(0, 2));

@@ -36,13 +36,13 @@ dependencies[] = hitsa_content_page
 dependencies[] = hitsa_articles
 dependencies[] = hitsa_gallery
 dependencies[] = hitsa_book_exporter
-dependencies[] = hitsa_catering
 dependencies[] = hitsa_content_information
 dependencies[] = hitsa_curriculum
 dependencies[] = hitsa_events
 dependencies[] = hitsa_logos
 dependencies[] = hitsa_translation_importer
 dependencies[] = hitsa_ckeditor
+dependencies[] = hitsa_catering
 dependencies[] = hitsa_color
 
 

@@ -561,7 +561,7 @@ function _hitsa_curriculum_installed_node_fields($school_type = null)
 {
 
 
-    if ($school_type == 1) {
+    if ($school_type == 2) {
         $subtypes = array(
             'specialities' => 'Speciality',
             'elective-courses' => 'Elective courses',
@@ -571,11 +571,11 @@ function _hitsa_curriculum_installed_node_fields($school_type = null)
             'training-scholarships' => 'Training Scholarships',
             'e-course' => 'E-Course',
             'catering' => 'Catering',
-            'ordered-trainings' => 'Ordered trainings',
+              'ordered-trainings' => 'Ordered trainings',
             'certification-exams' => 'Certification exams',
             'cooperation-and-partners' => 'Cooperation and projects',
         );
-    } elseif ($school_type == 2) {
+    } elseif ($school_type == 1) {
         $subtypes = array(
             'subject-field' => 'Subject field',
             'boarding-school' => 'Boarding school',

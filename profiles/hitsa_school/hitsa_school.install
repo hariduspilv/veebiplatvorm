@@ -454,8 +454,15 @@ function hitsa_install()
 }
 function hitsa_disable__mods()
 {
+    $modules = array();
     if (module_exists('overlay')) {
-        module_disable(array('overlay'));
+        $modules[] = 'overlay';
+    }
+    if (module_exists('toolbar')) {
+        $modules[] = 'toolbar';
+    }
+    if (!empty($modules)) {
+        module_disable($modules);
     }
 }
 
@@ -626,8 +633,7 @@ function hitsa_enable_translations()
 }
 function hitsa_school_disable_blocks()
 {
-
-      $blocks = array('navigation','form','login','help');
+    $blocks = array('navigation','form','login','help');
     foreach ($blocks as $key => $block_value) {
         $num_updated = db_update('block') // Table name no longer needs {}
         ->fields(
@@ -641,20 +647,21 @@ function hitsa_school_disable_blocks()
         ->execute();
     }
 }
-function hitsa_school_de_u_mt(){
-  $modules = array('module_filter','hitsa_color'); // Array of module names
-  $enable_dependencies = TRUE; // Whether or not to enable dependant modules
+function hitsa_school_de_u_mt()
+{
+    $modules = array('module_filter','hitsa_color'); // Array of module names
+  $enable_dependencies = true; // Whether or not to enable dependant modules
   module_enable($modules, $enable_dependencies);
-  $themes = array(
+    $themes = array(
     'bartik',
   );
-  theme_disable($themes);
-  $themes = array(
+    theme_disable($themes);
+    $themes = array(
     'hitsa',
     'adminimal',
   );
-  theme_enable($themes);
-  variable_set('admin_theme', 'adminimal');
+    theme_enable($themes);
+    variable_set('admin_theme', 'adminimal');
 }
 /**
  * Disable and uninstall the module
@@ -682,6 +689,7 @@ function hitsa_school_update_7001()
 /**
 *Enabling and disabling themes and modules
 */
-function hitsa_school_update_7002(){
-  hitsa_school_de_u_mt();
+function hitsa_school_update_7002()
+{
+    hitsa_school_de_u_mt();
 }
