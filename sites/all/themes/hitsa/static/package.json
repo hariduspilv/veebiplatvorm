@@ -14,7 +14,7 @@
     "grunt-open": "^0.2.3",
     "grunt-px-to-rem": "^0.4.0",
     "grunt-webfont": "^1.6.0",
-    "uglify-js": "^3.3.9",
+	 "uglify-js": "^3.3.9",
     "open": "0.0.5"
   },
   "dependencies": {
