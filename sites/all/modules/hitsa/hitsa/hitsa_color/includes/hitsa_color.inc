@@ -37,12 +37,24 @@ function hitsa_color_change_form($form, &$form_state)
             }
             $row_value = explode(':', $site_theme_row);
             $form_state['storage']['classes'][]=$row_value[0];
+            $description = '';
+            if($row_value[0]=='@highlight-1'){
+              $description = 'Lehe põhivärvitoon, millest genereeritakse ülejäänud värvitoonid';
+            }
+            if(strpos($row_value[0],'@border-radius')!=FALSE){
+              $description = 'Nuppude raadius 999px tähendab ümarat 0px tähendab kandilist';
+            }
+            if(strpos($row_value[0],'@block-border-radius')!=FALSE){
+              $description = 'Kastide raadius 2pxi tähendab ümarat 0pxi tähendab kandilist';
+            }
+
             $form[$row_value[0]] = array(
-        '#title'=> $row_value[0] . ':',
-        '#type' => 'textfield',
-        '#size' => 10,
-        '#default_value' => $row_value[1],
-    );
+                '#title'=> $row_value[0] . ':',
+                '#type' => 'textfield',
+                '#size' => 10,
+                '#description' => $description,
+                '#default_value' => $row_value[1],
+            );
         }
         if (!empty($my_color)) {
             $form['submit'] = array(
