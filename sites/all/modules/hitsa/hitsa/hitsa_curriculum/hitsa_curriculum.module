@@ -81,7 +81,7 @@ function hitsa_curriculum_block_info()
     $languages = language_list('enabled');
     $t = get_t();
     foreach ($allowed as $allowed_key => $allowed_title) {
-        $pages = $allowed_key . "\n" . $allowed_key . '/*' . "\n" . 'content/' . $allowed_key . "\n" . 'content/' . $allowed_key . '/*';
+        $pages = $allowed_key . "\n" . $allowed_key . '/*' . "\n" . 'content/' . $allowed_key . "\n" . 'content/' . $allowed_key . '/*'."\n".t($allowed_key,array(),array('langcode' => 'et'))."\n".t($allowed_key,array(),array('langcode' => 'et')).'/*';
         if (!empty($languages[1])) {
             $languages = $languages[1];
             foreach ($languages as $lang_key => $language) {

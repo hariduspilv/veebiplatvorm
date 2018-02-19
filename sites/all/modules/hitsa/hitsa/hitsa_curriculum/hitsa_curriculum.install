@@ -571,7 +571,7 @@ function _hitsa_curriculum_installed_node_fields($school_type = null)
             'training-scholarships' => 'Training Scholarships',
             'e-course' => 'E-Course',
             'catering' => 'Catering',
-              'ordered-trainings' => 'Ordered trainings',
+            'ordered-trainings' => 'Ordered trainings',
             'certification-exams' => 'Certification exams',
             'cooperation-and-partners' => 'Cooperation and projects',
         );

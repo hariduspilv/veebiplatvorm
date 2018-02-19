@@ -4,6 +4,8 @@ function hitsa_front_install()
 
     hitsa_front_add_custom_vocubularies();
     hitsa_front_add_custom_taxonomy_fields();
+    hitsa_front_set_default_variables();
+    hitsa_front_set_default_patterns();
 }
 /**
  * Implements hook_uninstall().
@@ -342,4 +344,25 @@ function hitsa_front_update_7002()
     }
     module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
     hitsa_core_add_nodes($nodes_to_add, $module = 'hitsa_content_page');
+}
+
+function hitsa_front_set_default_variables() {
+  variable_set('captcha_default_challenge', 'image_captcha/Image');
+}
+
+function hitsa_front_set_default_patterns(){
+  if(module_exists('hitsa_content_page')){
+
+    $t = get_t();
+    variable_set('pathauto_node_content_page_pattern','[node:title]');
+    variable_set('pathauto_node_article_pattern',$t('news/').'[node:title]');
+    variable_set('pathauto_node_article_en_pattern',$t('news/').'[node:title]');
+    variable_set('pathauto_node_article_et_pattern',$t('uudised/').'[node:title]');
+    variable_set('pathauto_node_gallery_pattern',$t('galleries/').'[node:title]');
+    variable_set('pathauto_node_gallery_en_pattern',$t('galleries/').'[node:title]');
+    variable_set('pathauto_node_gallery_et_pattern',$t('galeriid/').'[node:title]');
+    if(module_exists('transliteration')){
+        variable_set('pathauto_transliterate',1);
+    }
+   }
 }

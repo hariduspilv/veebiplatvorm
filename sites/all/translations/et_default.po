@@ -45523,7 +45523,7 @@ msgstr "koolitoit"
 
 #: /et/admin/hitsa/translation_importer_settings
 msgid "Trainings"
-msgstr "Koolitused"
+msgstr "Täiendusõpe"
 
 #: /et/admin/hitsa/translation_importer_settings
 msgid "trainings"
@@ -69402,4 +69402,3 @@ msgstr "Numbrite järgi sortimine"
 msgctxt "Sort order"
 msgid "Alphabetical"
 msgstr "Tähestikuline sortimine"
-

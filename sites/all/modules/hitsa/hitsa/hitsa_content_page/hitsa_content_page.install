@@ -8,10 +8,10 @@ function hitsa_content_page_install() {
   node_types_rebuild();
   $types = node_type_get_types();
   node_add_body_field($types['content_page']);
-  
+
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_content_page', 'install');
-  
+
   variable_set('language_content_type_content_page', TRANSLATION_ENABLED); // Make multilingual
   variable_set('i18n_node_options_content_page', array('required')); // Disable language neutral option
 }
@@ -28,7 +28,7 @@ function hitsa_content_page_uninstall() {
 
 function _hitsa_content_page_fields() {
   $t = get_t();
-  
+
   return array(
     'cp_type' => array(
       'field_name' => 'cp_type',
@@ -212,7 +212,7 @@ function _hitsa_content_page_fields() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'subject-field' => 'Subject field',
+        'subject-fields' => 'Subject field',
         'preparatory-courses' => 'Preparatory courses',
         'elective-subjects' => 'Elective subjects',
         'hobby-groups' => 'Hobby Groups',
@@ -435,7 +435,7 @@ function _hitsa_content_page_field_instances() {
         'text_processing' => 1,
       ),
     ),
-    
+
     'subpage_images' => array(
       'field_name' => 'subpage_images',
       'entity_type' => 'paragraphs_item',
@@ -612,7 +612,7 @@ function _hitsa_content_page_field_instances() {
 
 function _hitsa_content_page_field_groups() {
   $groups = array();
-  
+
   $groups[] = (object) array(
     'identifier' => 'group_ci|node|content_page|form',
     'group_name' => 'group_ci',
@@ -643,7 +643,7 @@ function _hitsa_content_page_field_groups() {
       'formatter' => 'collapsed',
     ),
   );
-  
+
   return $groups;
 }
 
@@ -653,13 +653,13 @@ function _hitsa_content_page_field_groups() {
 function _hitsa_content_page_paragraphs() {
   $t = get_t();
   $paragraphs = array();
-  
+
   $paragraphs['subpage'] = (object) array(
     'name' => 'Alamleht',
     'bundle' => 'subpage',
     'locked' => 1,
   );
-  
+
   return $paragraphs;
 }
 
@@ -668,14 +668,14 @@ function _hitsa_content_page_paragraphs() {
 */
 function _hitsa_content_page_nodes() {
   $main_menu_name = variable_get('hitsa_main_menu_name');
-  
+
   // Get main menu mlids
   $main_menu_tree = menu_tree_all_data($main_menu_name, NULL, 1);
   $main_menu_links = array();
   foreach($main_menu_tree as $link) {
     $main_menu_links[$link['link']['title']] = $link['link']['mlid'];
   }
-  
+
   $node_defaults = array(
     'type' => 'content_page',
     'menu' => array(
@@ -685,19 +685,19 @@ function _hitsa_content_page_nodes() {
       'menu_name' => $main_menu_name,
     ),
   );
-  
+
   $nodes = array();
-  
+
   // Main menu nodes
   module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.menu-nodes');
   $nodes = _hitsa_content_page_menu_nodes($main_menu_links);
-  
+
   foreach($nodes as &$node) {
     $node += $node_defaults;
     $node['menu'] += $node_defaults['menu'];
     $node['menu']['link_title'] = $node['title'];
   }
-  
+
   return $nodes;
 }
 
@@ -746,7 +746,7 @@ function _hitsa_content_page_image_styles() {
 		  ),
 		),
   );
-  
+
   return $image_styles;
 }
 
@@ -755,9 +755,9 @@ function _hitsa_content_page_image_styles() {
 */
 function _hitsa_content_page_menu_links() {
   $t = get_t();
-  
+
   $menu_links = array();
-  
+
   $services_mlid = variable_get('hitsa_services_mlid');
   if(!empty($services_mlid)) {
     $menu_links[] = array(
@@ -785,6 +785,6 @@ function _hitsa_content_page_menu_links() {
       'hitsa_menu_type' => 'service_entrepreneurial',
     );
   }
-  
+
   return $menu_links;
 }

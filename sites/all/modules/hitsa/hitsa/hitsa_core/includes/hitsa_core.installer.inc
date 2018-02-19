@@ -42,6 +42,39 @@ function _hitsa_core_installer_types() {
 */
 function hitsa_core_add_fields($installed_fields = array(), $module = NULL) {
   foreach ($installed_fields as $field) {
+    if (!empty($field['field_name']) && $field['field_name']=='field_school_selections') {
+      module_load_include('module','hitsa_core','hitsa_core');
+      $school_type = hitsa_core_get_school_type();
+      if ($school_type == 2) {
+          $subtypes = array(
+              'specialities' => 'Speciality',
+              'elective-courses' => 'Elective courses',
+              'accommodation' => 'Accommodation',
+              'hobby-activity' => 'Hobby activity',
+              'sport-facilities' => 'Sport facilities',
+              'training-scholarships' => 'Training Scholarships',
+              'e-course' => 'E-Course',
+              'catering' => 'Catering',
+              'ordered-trainings' => 'Ordered trainings',
+              'certification-exams' => 'Certification exams',
+              'cooperation-and-partners' => 'Cooperation and projects',
+          );
+      } elseif ($school_type == 1) {
+          $subtypes = array(
+              'subject-fields' => 'Subject field',
+              'boarding-school' => 'Boarding school',
+              'hobby-groups' => 'Hobby Groups',
+              'sport' => 'Sport',
+              'cooperation' => 'Cooperation',
+          );
+      }
+      $subtypes['vacancies'] = 'Vacancies';
+      $subtypes['publications'] = 'Publications';
+      $subtypes['preparatory-courses'] = 'Preparatory courses';
+      $subtypes['publications'] = 'Publications';
+      $subtypes['elective-subjects'] = 'Elective subjects';
+      $field['settings']['allowed_values'] = $subtypes;
+    }
     $field['locked'] = !empty($field['locked']) ? $field['locked'] : TRUE;
     field_create_field($field);
   }
@@ -149,7 +182,9 @@ function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
         $node->tnid = $tnid;
 
         $node->status = 0; // Unpublished by default.
-
+        if($lang=='et'){
+          $node->status = 1;
+        }
         // Content pages
         if($node_data['type'] === 'content_page') {
           if(!empty($node_data['cp_type'])) {

@@ -13,7 +13,7 @@ function hitsa_events_install()
   $voc_machine_name_locations = 'hitsa_locations'; //Sündmuse toimumise asukoht masina nimi
   $voc_name = st('Hitsa events tags'); //Sõnastiku masina nimi
   $voc_name_locations = st('Hitsa event locations'); //Sündmuse toimumise asukoht kuvatav nimi
-  $cont_name = st('Calendar event'); //Sisutüübi välja kuvatav nimi
+  $cont_name = st('Kalendri sündmus'); //Sisutüübi välja kuvatav nimi
   $cont_type = 'event'; //Sisutüübi masinnimi
   $school_type = variable_get('hitsa_school_type');
   $school_type_label = variable_get('school_type_label');

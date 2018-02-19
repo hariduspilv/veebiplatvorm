@@ -394,6 +394,7 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links)
       ),
       'cp_type' => 'cp_simple',
     ),
+
   );
 }
 
@@ -683,7 +684,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links)
     ),
 
     // Täiendusõpe
-    
+
     array(
       'title' => array('et' => 'Täiendusõppe toetused', 'ru' => 'Пособия для повышения квалификации', 'en' => 'Training Scholarships'),
       'menu' => array(

@@ -155,7 +155,7 @@ msgstr ""
 
 #: menu:item:2032:title
 msgctxt "item:2032:title"
-msgid "Koolitused"
+msgid "Täiendusõpe"
 msgstr ""
 
 #: menu:item:2033:title
@@ -212,4 +212,3 @@ msgstr ""
 msgctxt "menu:hitsa-quicklinks-menu:title"
 msgid "Kiirlingid"
 msgstr ""
-

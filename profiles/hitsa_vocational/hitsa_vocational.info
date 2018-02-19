@@ -27,11 +27,15 @@ dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
 dependencies[] = pathauto
+dependencies[] = date_all_day
 dependencies[] = transliteration
 dependencies[] = admin_views
 dependencies[] = module_filter
+dependencies[] = admin_menu_toolbar
 dependencies[] = i18n_field
 dependencies[] = hitsa_core
+dependencies[] = hitsa_contacts
+dependencies[] = hitsa_locations
 dependencies[] = hitsa_content_page
 dependencies[] = hitsa_articles
 dependencies[] = hitsa_gallery
@@ -44,6 +48,7 @@ dependencies[] = hitsa_translation_importer
 dependencies[] = hitsa_ckeditor
 dependencies[] = hitsa_catering
 dependencies[] = hitsa_color
+dependencies[] = hitsa_front
 
 
 ; Information added by Drupal.org packaging script on 2017-06-21

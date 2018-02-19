@@ -18,43 +18,43 @@ function hitsa_color_change_form($form, &$form_state)
     if ($conf_path!='default') {
         $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/site-theme.less';
     }
-		if(file_exists($site_theme_location)){
-    // if(!file_exists($site_theme_location)){
-    // 	drupal_set_message('Vajalikku faili ei eksisteeri');
-    // 	break;
-    // }
-    $my_color = file_get_contents($site_theme_location);
-    if (empty($my_color)) {
-        drupal_set_message('Vajalikku faili ei eksisteeri');
-    }
-    $form_state['storage']['file_content'] = $my_color;
-    $file_content = explode(';', $my_color);
-
-    foreach ($file_content as $site_theme_row) {
-        if (empty($site_theme_row)) {
-            continue;
+    if (file_exists($site_theme_location)) {
+        // if(!file_exists($site_theme_location)){
+        // 	drupal_set_message('Vajalikku faili ei eksisteeri');
+        // 	break;
+        // }
+        $my_color = file_get_contents($site_theme_location);
+        if (empty($my_color)) {
+            drupal_set_message('Vajalikku faili ei eksisteeri');
         }
-        $row_value = explode(':', $site_theme_row);
-        $form_state['storage']['classes'][]=$row_value[0];
-        $form[$row_value[0]] = array(
+        $form_state['storage']['file_content'] = $my_color;
+        $file_content = explode(';', $my_color);
+        foreach ($file_content as $site_theme_row) {
+            if (empty($site_theme_row)) {
+                continue;
+            } elseif (strlen($site_theme_row)==1) {
+                continue;
+            }
+            $row_value = explode(':', $site_theme_row);
+            $form_state['storage']['classes'][]=$row_value[0];
+            $form[$row_value[0]] = array(
         '#title'=> $row_value[0] . ':',
         '#type' => 'textfield',
         '#size' => 10,
         '#default_value' => $row_value[1],
     );
-    }
-    if (!empty($my_color)) {
-        $form['submit'] = array(
+        }
+        if (!empty($my_color)) {
+            $form['submit'] = array(
     '#submit' => array('hitsa_color_change'),
     '#type' => 'submit',
     '#value' => t('Vaheta värvi')
 );
+        }
+        return $form;
+    } else {
+        drupal_set_message('Vajalikku faili ei eksisteeri');
     }
-    return $form;
-	}
-	else{
-		drupal_set_message('Vajalikku faili ei eksisteeri');
-	}
 }
 
 /**
@@ -86,15 +86,14 @@ function hitsa_color_change($form, &$form_state)
     //$cmd .= 'grunt watch';
     //var_dump(shell_exec($cmd));
 
-		$site_theme_location = 'sites/all/themes/hitsa/static/dev/site-theme.less';
+    $site_theme_location = 'sites/all/themes/hitsa/static/dev/site-theme.less';
     $conf_path = conf_path();
     $conf_path = str_replace('sites/', '', $conf_path);
     if ($conf_path!='default') {
         $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/site-theme.less';
-    }
-    else{
-      $conf_path = 'all';
-      $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/site-theme.less';
+    } else {
+        $conf_path = 'all';
+        $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/site-theme.less';
     }
     $file =fopen($site_theme_location, 'w');
     fwrite($file, $output);

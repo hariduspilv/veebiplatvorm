@@ -9,8 +9,6 @@
  */
 function hitsa_events_menu()
 {
-
-
     $items['calendar'] = array(
         'title' => '',
         'page callback' => 'hitsa_events_calendar_page',
@@ -62,7 +60,6 @@ function hitsa_events_block_info()
 {
     // This example comes from node.module.
     if (hitsa_core_get_school_type() == 2) {
-
         $blocks['fornt_page_events'] = array(
             'info' => t('Front page calendar events'),
             'cache' => DRUPAL_NO_CACHE,
@@ -137,8 +134,6 @@ function hitsa_events_disable_content_type($type)
  */
 function hitsa_events_node_prepare($node)
 {
-
-
     return $node;
 }
 
@@ -169,7 +164,6 @@ function hitsa_events_preprocess_node(&$variables)
  */
 function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 {
-
     switch ($form_id) {
         case 'event_node_form':
             $school_type = hitsa_core_get_school_type();
@@ -184,7 +178,6 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
                     unset($options['_none']);
                     $form['event_tags']['und']['#options'] = $options;
                 }
-
             }
             if (!empty($school_type)) {
                 if ($school_type == 1) {
@@ -197,7 +190,6 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
                     unset($options['_none']);
                     $form['field_event_type']['und']['#options'] = $options;
                 }
-
             }
             if (!empty($form['field_time_period_dates'])) {
                 $form['field_time_period_dates']['#access'] = false;
@@ -257,7 +249,6 @@ function hitsa_events_add_types($school_type)
 
 function hitsa_events_calendar_page()
 {
-
     $build = array();
     $build['events'] = array(
         '#markup' => hitsa_events_calendar_page_html(),
@@ -398,7 +389,6 @@ function hitsa_events_calendar_page_html()
                                   <input type="checkbox" name="year" value="' . $time_period_value . '" checked="checked" />
                                   <span class="btn btn-xs btn-alternate"><span class="sm-hide">' . $time_period . '</span><span class="sm-show">' . $time_period . '</span></span>
                                </span><!--/btn-input-->';
-
         }
         $output .= '</div><!--/btn-bar-->';
     }
@@ -476,8 +466,6 @@ function hitsa_events_endpoint($loaded_page = null)
         $dates = (!empty($_REQUEST['date'])) ? explode('-', $_REQUEST['date']) : null;
         $type = (!empty($_REQUEST['type'])) ? $_REQUEST['type'] : null;
         $training_tag = (!empty($_REQUEST['training-category'])) ? explode(',', $_REQUEST['training-category']) : null;
-
-
     }
     $textured_nodes = '';
     $q = db_select('node', 'n');
@@ -504,7 +492,6 @@ function hitsa_events_endpoint($loaded_page = null)
                     } else {
                         $db_or->condition('fdpr.period_tid', $yeaar->tid, '=');
                     }
-
                 }
             }
         }
@@ -512,7 +499,6 @@ function hitsa_events_endpoint($loaded_page = null)
         $q->fields('fdpr');
     }
     if (!empty($category) && $category[0] != 'all') {
-
         $db_or = db_or();
         $q->join('field_data_event_tags', 'fdet', 'n.nid=fdet.entity_id');
         foreach ($category as $category_tid) {
@@ -555,7 +541,6 @@ function hitsa_events_endpoint($loaded_page = null)
     $nodes = array();
     foreach ($r as $key => $node) {
         $nodes[$node->nid] = node_load($node->nid);
-
     }
     if (!empty($nodes)) {
         $textured_nodes = hitsa_events_get_nodes_html($nodes);
@@ -572,7 +557,6 @@ function hitsa_events_endpoint($loaded_page = null)
             return $textured_nodes;
         }
     }
-
 }
 
 function hitsa_events_get_nodes_html($nodes)
@@ -630,7 +614,6 @@ function hitsa_events_get_nodes_html($nodes)
                     }
                 }
             }
-
         }
     }
     usort($periods, function ($a, $b) {
@@ -746,8 +729,6 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
                     $training_tags .= '<li><a href="">' . $tag . '</a></li>';
                 }
             }
-
-
         }
         if ($type == 'training' || $type == 'event') {
             if (!empty($event->field_registration_form)) {
@@ -887,8 +868,6 @@ function hitsa_events_get_time_periods()
 
 function hitsa_events_front_page_block()
 {
-
-
     global $language;
     $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'event'));
     $school_type = hitsa_core_get_school_type();
@@ -1000,7 +979,10 @@ function hitsa_events_front_page_block()
                 $output .= '                         <span class="object-footer">';
                 $output .= (!empty($location)) ? '                     ' . t('Location') . ': ' . $location : '';
                 if ($start_readable_time !== '00:00') {
-                    $output .= '                             , ' . t('Time') . ' ' . $start_readable_time . '<br />';
+                  if(!empty($location)){
+                    $output.=', ';
+                  }
+                    $output .= t('Time') . ' ' . $start_readable_time . '<br />';
                 }
                 $output .= '                            <a href="/events/calendar/api/add/' . $event->nid . '/' . $start . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>';
                 $output .= '';
@@ -1047,7 +1029,15 @@ function hitsa_events_front_page_block()
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
-            $output .= '            <div class="align-center">';
+            if (isset($school_type)) {
+                if ($school_type==1) {
+                    $output .= '            <div class="align-center">';
+                } else {
+                    $output .= '            <div class="">';
+                }
+            } else {
+                $output .= '           <div class="align-center">';
+            }
             $output .= '             <a  href="' . $link . '" class="btn btn-filled sm-stretch">' . t(':key calendar', array(':key' => $key)) . '</a>';
             $output .= '            </div><!--/col-12-->';
             $output .= '          </div><!--/col-12-->';
@@ -1065,7 +1055,6 @@ function hitsa_events_front_page_block()
 
 function hitsa_events_node_presave($node)
 {
-
     if ($node->type == 'event') {
         $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_periods');
         $time_periods = taxonomy_get_tree($time_periods_vocabulary->vid);
@@ -1248,7 +1237,6 @@ function hitsa_events_training_calendar()
                                   <input type="checkbox" name="year" value="' . $time_period_value . '"  />
                                   <span class="btn btn-xs btn-alternate"><span class="sm-hide">' . $time_period . '</span><span class="sm-show">' . $time_period . '</span></span>
                                </span><!--/btn-input-->';
-
         }
         $output .= '</div><!--/btn-bar-->';
     }
@@ -1505,15 +1493,12 @@ function hitsa_events_htmlize_periods($periods)
                 }
                 if (!empty($period->events[$key - 1])) {
                     if (isset($period->events[$key - 1]['today'])) {
-
                     } else {
-
                         if ($new_counter == 0) {
                             $output .= '<hr />';
                         }
                     }
                 }
-
             }
             $output .= $event_html['html'];
             $i++;
@@ -1556,8 +1541,6 @@ function hitsa_events_autocomplete()
         $json = json_encode($data);
         print($json);
     }
-
-
 }
 
 function hitsa_events_calendar_add($event_id = null, $date = null)
@@ -1646,11 +1629,11 @@ function hitsa_events_add_to_calendar_form($form, &$form_state, $event_id = null
 //        '#title' => t('Download as iCal calendar event'),
 //        '#value' => 'outlookevent',
 //        '#suffix' => '<span class="check"></span>
-//								</span><!--/customCheckbox-->
-//								<span class="label-title">'.t('Add event to calendar (Outlook)').'</span>
-//							</label>',
+    //								</span><!--/customCheckbox-->
+    //								<span class="label-title">'.t('Add event to calendar (Outlook)').'</span>
+    //							</label>',
 //        '#prefix' => '<label class="full-width">
-//								<span class="customCheckbox">',
+    //								<span class="customCheckbox">',
 //    );
     $form['selections']['email'] = array(
         '#name' => 'email',
@@ -1834,7 +1817,6 @@ function hitsa_events_register_event($event, $form_id, $date)
                <h1 class="block-title">' . t('Add to calendar') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
 
 					<div class="row-spacer-xs"></div></div>';
-
     }
     $build['webform'] = array(
         '#markup' => $markup,
@@ -1985,7 +1967,6 @@ function hitsa_events_send_mail($file_link, $post, $event)
                 return $return;
             }
         } else {
-
             $return = array(
                 'success' => false,
                 t('There was problem sending e-mail to address:') . $post['email']
@@ -2012,7 +1993,7 @@ function hitsa_events_mail($key, &$message, $params)
 
 function hitsa_events_generate_custom_form($form, &$form_state, $components, $nid)
 {
-//TODO Failide üleslaadimise osad teha
+    //TODO Failide üleslaadimise osad teha
     if (!empty($components)) {
         $form = array(
             '#action' => 'training-calendar/registration',
@@ -2052,7 +2033,6 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
 
                     );
                 } elseif ($component['type'] == 'textarea') {
-
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
 								<div class="form-item_title">' . $component_name . '</div>',
@@ -2064,7 +2044,6 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
 
                     );
                 } elseif ($component['type'] == 'number') {
-
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
 								<div class="form-item_title">' . $component_name . '</div>',
@@ -2076,7 +2055,6 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
 
                     );
                 } elseif ($component['type'] == 'email') {
-
                     $form[$cmp_key] = array(
                         '#prefix' => '<div class="col-12"><div class="form-item">
 								<div class="form-item_title">' . $component_name . '</div>',
@@ -2088,7 +2066,6 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
 
                     );
                 } elseif ($component['type'] == 'select') {
-
                     if (!empty($component['extra'])) {
                         if ($component['extra']['multiple'] == 1) {
                             $options = $component['extra']['items'];
@@ -2109,7 +2086,6 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                                 '#required' => $component['required'],
                                 '#weight' => $component['weight'],
                             );
-
                         }
                         if ($component['extra']['multiple'] == 0) {
                             if ($component['extra']['aslist'] == 0) {
@@ -2134,7 +2110,6 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                                     '#weight' => $component['weight'],
                                 );
                             } else {
-
                                 $options = $component['extra']['items'];
                                 $options = preg_split('/\n|\r\n?/', $options);
                                 $elements = array();
@@ -2153,9 +2128,7 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
                                     '#required' => $component['required'],
                                     '#weight' => $component['weight'],
                                 );
-
                             }
-
                         }
                     }
                 }
@@ -2171,7 +2144,6 @@ function hitsa_events_generate_custom_form($form, &$form_state, $components, $ni
             }
 
             if (!empty($form)) {
-
                 $form['captcha'] = array(
                     '#prefix' => '<div class="col-12"><div class="form-item">
 								<div class="form-item_title">' . t('') . '</div>',
@@ -2315,11 +2287,9 @@ function hitsa_events_registration_validation($post)
                 $post_length = strlen($post_value);
                 $post_value_value = substr($post_value, $space_location, $post_length);
                 if (empty($post[$key_error]) || !isset($post[$key_error])) {
-
                     if ($post_type == 'textfield' || $post_type == 'textarea' || $post_type == 'email') {
                         if ($post_type == 'email') {
                             if (!empty($post['email_' . $key_error])) {
-
                                 if (filter_var($post['email_' . $key_error], FILTER_VALIDATE_EMAIL)) {
                                 } else {
                                     $error[$key_error] = t('Entered email is not valid');
@@ -2339,7 +2309,6 @@ function hitsa_events_registration_validation($post)
                             $errors = true;
                         }
                     }
-
                 }
 
                 unset($post[$post_key]);
@@ -2385,7 +2354,6 @@ function hitsa_events_registration_validation($post)
 //            }
 
         //}
-
     }
     if (!$errors) {
         return array(
@@ -2467,7 +2435,6 @@ function hitsa_events_registration_submission($post)
         if (module_exists('webform')) {
             module_load_include('inc', 'webform', 'includes/webform.submissions');
             $sid = webform_submission_insert($node, $submission);
-
         }
         if (!empty($sid)) {
             return true;
