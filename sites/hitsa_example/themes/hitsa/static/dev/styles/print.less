@@ -1,0 +1,75 @@
+@media print{
+	header.main{display: none !important;}
+	footer.main{display: none !important;}
+	html,body{height:auto; width:1000px !important;}
+	body{background:#fff;}
+	
+	.wrapper, .block{display:inline;}
+	
+	.inline{max-width: 100%; width:1000px !important; padding:0; display: inline;
+		article{padding-right:0; page-break-before: avoid; page-break-inside: auto; display: inline; position: relative; z-index: 2;
+		}
+		
+		.article-date{position: relative; left:0 !important; bottom:0 !important;}
+		.article-date.sm-hide{display: none !important;}
+		
+		.block{background:none;
+			.col-7+.col-4.sm-12, .row.print-flex{display: flex !important; width: 100% !important; margin:0 !important; padding:0 !important; flex-wrap: wrap;
+				.row-spacer-xl{width:100%;}
+				
+				
+				&>figure{width:50%; padding: 0 10px;
+					&:after{display: none;}
+				}
+			}
+		}
+		.btn-bar{display: none !important;}
+		
+		&>.row{
+			&>.col-9{width:100%;}
+			&>.col-3{display: none;}
+		}
+		
+		.row{display: inline !important; width:100%; font-size:0 !important;
+			[class*='col-']{display: inline;	font-size:1rem !important; vertical-align: top;}
+			//.block .row [class*='col-']{display: inline-block !important;}
+		}
+		* .no-print{display: none !important; height:0; overflow: hidden;}
+	}
+	
+	.block{box-shadow: none;}
+	
+	.hero{display: none;}
+	
+	* .no-print{display: none !important; height:0; overflow: hidden;}
+
+	.overflow-hidden{
+		.wrapper{display: none;}
+		.overlay{background:none; position: relative !important;
+			*{background:none;}
+			.block{position: static; width:100%; padding:0;
+				.btn-bar{display: none;}
+				.block-title{
+					.btn{display: none;}
+				}
+				.mobile-thumbnails{display: none !important;}
+				.sm-hide{display: none !important;}
+				.sm-12{width:100% !important;}
+				.swiper-wrapper{transform:none !important;}
+				.swiper-button-prev, .swiper-button-next{display: none;}
+				.swiper-slide{display: none !important;}
+				.swiper-slide-active{display: block !important;}
+				.gallery-image{background:none !important; width:100%;
+					.print_img{display: block; width:100%;
+						&+img{display: none;}
+					}
+				}
+			}
+		}
+		
+		
+	}
+
+	[data-modal]{.overflow-hidden .overlay .block;}
+	
+}

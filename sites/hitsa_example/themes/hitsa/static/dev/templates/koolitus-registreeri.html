@@ -1,0 +1,304 @@
+include "modules/head.html"
+
+<div class="wrapper">
+   
+   include "modules/header.html"
+   
+   <div class="inline">
+      
+      <div class="row">
+         <div class="col-12">
+            
+            <div class="block" data-modal="true">
+               
+               <h1 class="block-title">Registreeri koolitusele <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a></h1>
+              
+					<article>
+					<h3>Koolituse info</h3>
+					<p>
+						Irure do in dolore pariatur. Non mandaremus ex eiusmod te mandaremus tamen nulla 
+						ne tamen. Ubi nisi nisi dolor nostrud. Ne id lorem sunt enim aut te anim quem 
+						nulla mandaremus an an an reprehenderit est cillum aliquip est proident si 
+						eiusmod te enim appellat, senserit tamen cupidatat offendit, ullamco quo tempor, 
+						illum fabulas est cillum esse. Litteris o dolore nam an ipsum malis in proident, 
+						ad do irure litteris, multos an si fugiat commodo, legam officia consequat qui 
+						dolore occaecat aut domesticarum, ingeniis et multos pariatur ubi proident 
+						philosophari ad ullamco. Amet mandaremus ea minim elit de nam culpa singulis, de 
+						fabulas exquisitaque, si anim laborum nostrud hic offendit esse pariatur 
+						cernantur, a si esse commodo ne quem quamquam sed consequat non ex cillum ad 
+						ipsum. Non summis cohaerescant. Aliquip labore velit do esse de eu summis varias 
+						ea iudicem, amet incurreret ne quibusdam, dolore voluptate do graviterque.
+					</p>
+					</article>
+					
+					<div class="row-spacer-xl"></div>
+					<form>
+               <div class="row">
+						<div class="col-4 sm-12">
+							<div class="form-item form-item_rounded">
+								<div class="form-item_title">Select</div>
+								<select name="profession" data-plugin="SumoSelect" data-onSubmit="true" >
+									<option value="">Vali kategooria</option>
+									<option value="1">Kategooria 1</option>
+									<option value="2">Kategooria 2</option>
+									<option value="3">Kategooria 3</option>
+									<option value="4">Kategooria 4</option>
+									<option value="5">Kategooria 5</option>
+									<option value="6">Kategooria 6</option>
+								</select>
+							</div><!--/form-item-->
+						</div><!--/col-4-->
+						<div class="col-4 sm-12">
+							<div class="form-item after-search form-item_rounded">
+								<div class="form-item_title">Autocomplete</div>
+								<input type="text" name="person" placeholder="Otsi kontakti" data-plugin="autocomplete" data-url="api/autocomplete.json" data-onSubmit="true" />
+							</div><!--/form-item-->
+						</div><!--/col-4-->
+
+						<div class="col-4 sm-12">
+                     <div class="form-item form-item_rounded after-calendar">
+								<div class="form-item_title">Datepicker</div>
+								<input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="Vali kuupäev" />
+							</div><!--/form-item-->
+                  </div><!--/col-4-->
+						
+						<div class="col-12">
+							<div class="form-item">
+								<div class="form-item_title">Checkboxid kõrvuti</div>
+                        
+								<label>
+                           <span class="customCheckbox">
+                              <input type="checkbox">
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Auto</span>
+                        </label>
+								
+								<label>
+                           <span class="customCheckbox">
+                              <input type="checkbox">
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Maja</span>
+                        </label>
+								
+								<label>
+                           <span class="customCheckbox">
+                              <input type="checkbox">
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Kass</span>
+                        </label>
+								
+								<label>
+                           <span class="customCheckbox">
+                              <input type="checkbox">
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Koer</span>
+                        </label>
+                     </div>
+						</div><!--/col-12-->
+						
+						<div class="col-12">
+							<div class="form-item">
+								<div class="form-item_title">Checkboxid üksteise all</div>
+                        
+								<label class="full-width">
+                           <span class="customCheckbox">
+                              <input type="checkbox">
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Auto</span>
+                        </label>
+								
+								<label class="full-width">
+                           <span class="customCheckbox">
+                              <input type="checkbox">
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Maja</span>
+                        </label>
+								
+								<label class="full-width">
+                           <span class="customCheckbox">
+                              <input type="checkbox">
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Kass</span>
+                        </label>
+								
+								<label class="full-width">
+                           <span class="customCheckbox">
+                              <input type="checkbox">
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Koer</span>
+                        </label>
+                     </div>
+						</div><!--/col-12-->
+						
+						<div class="col-12">
+							<div class="form-item">
+								<div class="form-item_title">Radiobuttonid kõrvuti</div>
+                        
+								<label>
+                           <span class="customRadio">
+                              <input type="radio" name="radio1" />
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Auto</span>
+                        </label>
+								
+								<label>
+                           <span class="customRadio">
+                              <input type="radio" name="radio1" />
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Maja</span>
+                        </label>
+								
+								<label>
+                           <span class="customRadio">
+                              <input type="radio" name="radio1" />
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Kass</span>
+                        </label>
+								
+								<label>
+                           <span class="customRadio">
+                              <input type="radio" name="radio1" />
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Koer</span>
+                        </label>
+                     </div>
+						</div><!--/col-12-->
+						
+						<div class="col-12">
+							<div class="form-item">
+								<div class="form-item_title">Radiobuttonid üksteise all</div>
+                        
+								<label class="full-width">
+                           <span class="customRadio">
+                              <input type="radio" name="radio2" />
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Auto</span>
+                        </label>
+								
+								<label class="full-width">
+                           <span class="customRadio">
+                              <input type="radio" name="radio2" />
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Maja</span>
+                        </label>
+								
+								<label class="full-width">
+                           <span class="customRadio">
+                              <input type="radio" name="radio2" />
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Kass</span>
+                        </label>
+								
+								<label class="full-width">
+                           <span class="customRadio">
+                              <input type="radio" name="radio2" />
+                              <span class="check"></span>
+                           </span><!--/customCheckbox-->
+                           <span class="label-title">Koer</span>
+                        </label>
+                     </div>
+						</div><!--/col-12-->
+						
+                  <div class="col-12">
+                     <div class="form-item form-item_half">
+                        <div class="form-item_title">Teksti input</div>
+                        <input type="text">
+                     </div><!--/form-item-->
+                  </div><!--/col-12-->
+                  
+                  <div class="col-6 sm-12">
+                     <div class="form-item">
+                        <div class="form-item_title">Teksti inputid kõrvuti</div>
+                        <input type="text">
+                     </div><!--/form-item-->
+                  </div><!--/col-6-->
+						
+						<div class="col-6 sm-12">
+                     <div class="form-item">
+                        <div class="form-item_title">Teksti inputid kõrvuti</div>
+                        <input type="text">
+                     </div><!--/form-item-->
+                  </div><!--/col-6-->
+						
+						<div class="col-4 sm-12">
+                     <div class="form-item">
+                        <div class="form-item_title">Teksti inputid kolmikud</div>
+                        <input type="text">
+                     </div><!--/form-item-->
+                  </div><!--/col-4-->
+						
+						<div class="col-4 sm-12">
+                     <div class="form-item">
+                        <div class="form-item_title">Teksti inputid kolmikud</div>
+                        <input type="text">
+                     </div><!--/form-item-->
+                  </div><!--/col-4-->
+						
+						<div class="col-4 sm-12">
+                     <div class="form-item">
+                        <div class="form-item_title">Teksti inputid kolmikud</div>
+                        <input type="text">
+                     </div><!--/form-item-->
+                  </div><!--/col-4-->
+                  
+                  <div class="col-6 sm-12">
+                     <div class="form-item">
+                        <div class="form-item_title">Sõnum: *</div>
+                        <textarea></textarea>
+                        <div class="form-item_disclaimer">* märgitud väljad on kohustuslikud</div>
+                     </div><!--/form-item-->
+                  </div><!--/col-6-->
+						
+						<div class="col-6 sm-12">
+                     <div class="form-item">
+                        <div class="form-item_title">Sõnum: *</div>
+                        <textarea></textarea>
+                        <div class="form-item_disclaimer">* märgitud väljad on kohustuslikud</div>
+                     </div><!--/form-item-->
+                  </div><!--/col-6-->
+						
+						<div class="col-12">
+                     <div class="form-item">
+                        <div class="form-item_title">Sõnum: *</div>
+                        <textarea></textarea>
+                        <div class="form-item_disclaimer">* märgitud väljad on kohustuslikud</div>
+                     </div><!--/form-item-->
+                  </div><!--/col-12-->
+						
+						
+
+                  
+                  <div class="col-12">
+                     <button class="btn btn-filled sm-stretch">Saada</button>
+                  </div><!--/col-12-->
+                  
+               </div><!--/row-->
+                  
+                  
+               </form>
+            </div><!--/block-->
+            
+         </div><!--/col-12-->
+      </div><!--/row-->
+      
+   </div><!--/inline-->
+   include "modules/footer.html"
+   
+</div><!--/wrapper-->
+
+include "modules/documentEnd.html"

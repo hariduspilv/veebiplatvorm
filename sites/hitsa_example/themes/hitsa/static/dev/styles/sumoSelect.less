@@ -1,0 +1,53 @@
+.sumoStopScroll{overflow:hidden;}
+
+/* Filtering style */
+.SumoSelect .hidden { display:none; }
+.SumoSelect .search-txt{display:none;outline:none;}
+.SumoSelect .no-match{display:none;padding: 6px;}
+.SumoSelect.open .search-txt{display: inline-block;position: absolute;top: 0;left: 0;width: 100%;margin: 0;padding: 5px 16px; height:45px; border: none; border-radius: 5px;}
+.SumoSelect.open>.search>span, .SumoSelect.open>.search>label{visibility:hidden;}
+
+/*this is applied on that hidden select. DO NOT USE display:none; or visiblity:hidden; and Do not override any of these properties. */
+.SelectClass, .SumoUnder { position: absolute; top: 0; left: 0; right: 0; height: 100%; width: 100%; border: none; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: alpha(opacity=0); -moz-opacity: 0; -khtml-opacity: 0; opacity: 0; }
+.SumoSelect > .optWrapper > .options  li.opt label, .SumoSelect > .CaptionCont,.SumoSelect .select-all > label { user-select: none; -o-user-select: none; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; }
+
+.SumoSelect{display: block; position: relative; cursor: pointer; 
+	.CaptionCont{display: block; margin:0; padding:0; background:@base-2; font-size:16px; height:40px; line-height:40px !important; padding:0 40px 0 15px; color:@text-1; display: block; width:100%; position: relative; border:@border-2 1pxi solid; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius:40px;
+      span{padding-right:32px;}
+		.after-arrow_down;
+		&:after{font-size:10px; position: absolute; top:0; right:0; height:40px; width:40px; text-align: center; color:@highlight-1;
+			-webkit-transition:-webkit-transform 0.4s; transition:transform 0.4s;
+		}
+	}
+	.optWrapper{position: absolute; top:45px; left:0; min-width:100%; width:auto; max-width:150%; background:@base-2; max-height:238px; overflow: auto; display: none; border:@border-2 1pxi solid; border-radius: 4px;
+		.MultiControls{display: none;}
+		.options{padding:0; margin:0; list-style:none;
+         li{display: none;
+            &:before{display: none;}
+         }
+			.opt, .group{display: block;  padding:10px; line-height:120%; color:@text-1;  cursor: pointer; margin:0;
+            &.hidden{display: none;}
+				&:before{display: none;}
+				*{cursor: pointer;}
+				&.selected{font-weight: 500;}
+				&:hover{background:@base-1;}
+			}
+         .group .opt{margin:0 -20px; padding-left:24px; padding-right:24px;}
+         
+         .group > label{font-weight: bold; color:@text-1; padding-bottom:8px; display: block; margin-right: 0;}
+         ul{margin:0;}
+         
+		}
+      &.up{top:auto; bottom:50px; margin-bottom:-2px;}
+	}
+	&.open{z-index: 10;
+		.optWrapper{display: block;}
+		.CaptionCont:after{-webkit-transform:rotate(180deg); transform:rotate(180deg);}
+
+	}
+}
+
+.autocomplete-dropdown{.SumoSelect .optWrapper; display: block; z-index: 20; top:100%; margin-top:5px;
+	.no-results{padding:10px;}
+   .opt{.SumoSelect .optWrapper .options .opt;}
+}

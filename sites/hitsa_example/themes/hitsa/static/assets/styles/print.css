@@ -1,0 +1,1 @@
+@media print{header.main{display:none !important}footer.main{display:none !important}body{background:#fff}.inline{max-width:100%;padding:0;page-break-inside:avoid}.inline article{display:table !important}.inline>.row>.col-9{width:100%}.inline>.row>.col-3{display:none}.block{box-shadow:none}.hero{display:none}*{display:none !important}}
