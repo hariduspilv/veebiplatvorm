@@ -24,6 +24,10 @@
  * @ingroup views_templates
  */
 ?>
-<a href="<?php print $fields['logo_link']->content; ?>" target="_blank" rel="nofollow">
-  <img src="<?php print $fields['banner_image']->content; ?>" alt="<?php print $fields['title']->content; ?>" />
-</a>
+<?php if(!empty($fields['logo_link'])):?>
+  <a href="<?php print $fields['logo_link']->content; ?>" target="_blank" rel="nofollow">
+    <?php if(!empty($fileds['banner_image'])):?>
+      <img src="<?php print $fields['banner_image']->content; ?>" alt="<?php print $fields['title']->content; ?>" />
+    <?php endif?>
+  </a>
+<?php endif?>

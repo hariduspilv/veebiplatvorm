@@ -722,10 +722,12 @@ function hitsa_core_get_placeholder_image()
     if (!isset($placeholder_url)) {
         $placeholder_url = "";
         $placeholder_logo_fid = variable_get_value('hitsa_site_logo_fid');
-        $placeholder_logo = file_load($placeholder_logo_fid);
-        if ($placeholder_logo) {
-            $placeholder_url = file_create_url($placeholder_logo->uri);
-        }
+        if(!empty($placeholder_logo_fid)){
+          $placeholder_logo = file_load($placeholder_logo_fid);
+          if ($placeholder_logo) {
+              $placeholder_url = file_create_url($placeholder_logo->uri);
+          }
+      }
     }
     return $placeholder_url;
 }

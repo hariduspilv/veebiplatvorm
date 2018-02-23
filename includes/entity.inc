@@ -156,6 +156,7 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
    */
   public function load($ids = array(), $conditions = array()) {
     $entities = array();
+
     // Revisions are not statically cached, and require a different query to
     // other conditions, so separate the revision id into its own variable.
     if ($this->revisionKey && isset($conditions[$this->revisionKey])) {
@@ -171,9 +172,6 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
     // were passed. The $ids array is reduced as items are loaded from cache,
     // and we need to know if it's empty for this reason to avoid querying the
     // database when all requested entities are loaded from cache.
-    // if(!empty($ids)){
-    //   var_dump(debug_backtrace());
-    // }
     $passed_ids = !empty($ids) ? array_flip($ids) : FALSE;
     // Try to load entities from the static cache, if the entity type supports
     // static caching.
@@ -315,10 +313,8 @@ class DrupalDefaultEntityController implements DrupalEntityControllerInterface {
       }
       $query->fields('revision', $entity_revision_fields);
     }
-    if(!isset($entity_fields)){
-	    $entity_fields = array();
-	  }
-     $query->fields('base', $entity_fields);
+
+    $query->fields('base', $entity_fields);
 
     if ($ids) {
       $query->condition("base.{$this->idKey}", $ids, 'IN');

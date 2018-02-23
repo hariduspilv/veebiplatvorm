@@ -38,14 +38,14 @@ function hitsa_color_change_form($form, &$form_state)
             $row_value = explode(':', $site_theme_row);
             $form_state['storage']['classes'][]=$row_value[0];
             $description = '';
-            if($row_value[0]=='@highlight-1'){
-              $description = 'Lehe põhivärvitoon, millest genereeritakse ülejäänud värvitoonid';
+            if ($row_value[0]=='@highlight-1') {
+                $description = 'Lehe põhivärvitoon, millest genereeritakse ülejäänud värvitoonid';
             }
-            if(strpos($row_value[0],'@border-radius')!=FALSE){
-              $description = 'Nuppude raadius 999px tähendab ümarat 0px tähendab kandilist';
+            if (strpos($row_value[0], '@border-radius')!=false) {
+                $description = 'Nuppude raadius 999px tähendab ümarat 0px tähendab kandilist';
             }
-            if(strpos($row_value[0],'@block-border-radius')!=FALSE){
-              $description = 'Kastide raadius 2pxi tähendab ümarat 0pxi tähendab kandilist';
+            if (strpos($row_value[0], '@block-border-radius')!=false) {
+                $description = 'Kastide raadius 2pxi tähendab ümarat 0pxi tähendab kandilist';
             }
 
             $form[$row_value[0]] = array(
@@ -123,27 +123,28 @@ function hitsa_color_change($form, &$form_state)
     //$file = file_save_data($output, 'private://'. 'site-theme.less',FILE_EXISTS_REPLACE);
     return $file;
 }
-function hitsa_import_css($form, &$form_state){
-      $files = array(
+function hitsa_import_css($form, &$form_state)
+{
+    $files = array(
         'article.less','build.less','buttons.less','elements.less','footer.less','form.less','grid.less','header.less','print.less','reset.less','responsive.less','sumoSelect.less','swiper.less','theme.less','tooltipster.bundle.less'
       );
-      $files_location = 'sites/all/themes/hitsa/static/dev/styles';
-      $conf_path = conf_path();
-      $conf_path = str_replace('sites/', '', $conf_path);
-      if ($conf_path!='default') {
-          $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/styles';
-      }
-      else{
+    $files_location = 'sites/all/themes/hitsa/static/dev/styles';
+    $conf_path = conf_path();
+    $conf_path = str_replace('sites/', '', $conf_path);
+    if ($conf_path!='default') {
+        $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/styles';
+    } else {
         $site_theme_location=false;
-      }
-      foreach ($files as $key => $file_name) {
+    }
+    foreach ($files as $key => $file_name) {
         $file_content = file_get_contents($files_location.'/'.$file_name);
-        if(!$site_theme_location){
-          break;
+        if (!empty($file_content)) {
+            if (!$site_theme_location) {
+                break;
+            }
+            $file =fopen($site_theme_location.'/'.$file_name, 'w');
+            fwrite($file, $file_content);
+            fclose($file);
         }
-        $file =fopen($site_theme_location.'/'.$file_name, 'w');
-        fwrite($file, $file_content);
-        fclose($file);
-
-      }
+    }
 }
