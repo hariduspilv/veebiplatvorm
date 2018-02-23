@@ -204,6 +204,7 @@ function hitsa_vocational_enable_translations()
 
         }
     }
+    variable_set('pathauto_transliterate','1');
 }
 function hitsa_vocational_disable_blocks()
 {

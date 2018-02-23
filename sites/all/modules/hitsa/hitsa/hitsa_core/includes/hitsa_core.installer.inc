@@ -180,6 +180,7 @@ function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
         }
 
         $node->tnid = $tnid;
+        $node->path['pathauto'] = "1";
 
         $node->status = 0; // Unpublished by default.
         if($lang=='et'){

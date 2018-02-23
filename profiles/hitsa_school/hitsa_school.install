@@ -451,6 +451,7 @@ function hitsa_install()
     ->execute();
     variable_set('admin_theme', 'seven');
     variable_set('node_admin_theme', '1');
+    variable_set('pathauto_transliterate','1');
 }
 function hitsa_disable__mods()
 {
@@ -663,6 +664,7 @@ function hitsa_school_de_u_mt()
     theme_enable($themes);
     variable_set('admin_theme', 'adminimal');
 }
+
 /**
  * Disable and uninstall the module
  */

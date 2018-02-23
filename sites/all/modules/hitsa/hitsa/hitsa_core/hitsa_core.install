@@ -27,7 +27,7 @@ function hitsa_core_uninstall() {
 */
 function _hitsa_core_fields() {
   $t = get_t();
-  
+
   return array(
     'field_image_author' => array(
       'field_name' => 'field_image_author',
@@ -141,7 +141,7 @@ function _hitsa_core_field_instances() {
 */
 function _hitsa_core_vocabularies() {
   $vocabularies = array();
-  
+
   $vocabularies['academic_years'] =
     array(
       'vocabulary' => (object) array(
@@ -151,7 +151,7 @@ function _hitsa_core_vocabularies() {
       ),
       'terms' => array(),
     );
-    
+
   return $vocabularies;
 }
 
@@ -161,7 +161,7 @@ function _hitsa_core_vocabularies() {
 
 function _hitsa_core_menus() {
   $t = get_t();
-  
+
   return array(
     'hitsa_main_menu' => array(
       'menu_name' => 'hitsa-main-menu',
@@ -189,9 +189,9 @@ function _hitsa_core_menus() {
 
 function _hitsa_core_menu_links() {
   $t = get_t();
-  
+
   $menu_links = array();
-  
+
   // Footer menu
   $hitsa_footer_menu = variable_get('hitsa_footer_menu_name');
   if(!empty($hitsa_footer_menu)) {
@@ -202,11 +202,11 @@ function _hitsa_core_menu_links() {
       'weight' => 1,
     );
   }
-  
+
   // Main Menu
   $hitsa_main_menu = variable_get('hitsa_main_menu_name');
   if(!empty($hitsa_main_menu)) {
-    
+
     $school_type = hitsa_core_get_school_type();
 
     switch($school_type) {
@@ -219,7 +219,7 @@ function _hitsa_core_menu_links() {
           'menu_name' => $hitsa_main_menu,
           'weight' => -7,
         );
-        
+
         $menu_links[] = array(
           'link_path' => '<front>',
           'link_title' => 'Services',
@@ -229,28 +229,28 @@ function _hitsa_core_menu_links() {
         );
         break;
     }
-    
+
     $menu_links[] = array(
       'link_path' => '<front>',
       'link_title' => 'Admission',
       'menu_name' => $hitsa_main_menu,
       'weight' => -10,
     );
-    
+
     $menu_links[] = array(
       'link_path' => '<front>',
       'link_title' => 'Studies',
       'menu_name' => $hitsa_main_menu,
       'weight' => -9,
     );
-    
+
     $menu_links[] = array(
       'link_path' => '<front>',
       'link_title' => 'Student Life',
       'menu_name' => $hitsa_main_menu,
       'weight' => -8,
     );
-    
+
     $menu_links[] = array(
       'link_path' => '<front>',
       'link_title' => 'About us',
@@ -259,7 +259,7 @@ function _hitsa_core_menu_links() {
       'hitsa_menu_type' => 'about_us',
     );
   }
-  
+
   return $menu_links;
 }
 
@@ -331,7 +331,7 @@ function _hitsa_core_image_styles() {
 		  ),
 		),
   );
-  
+
   return $image_styles;
 }
 
@@ -340,7 +340,7 @@ function hitsa_core_set_default_language() {
   $langs = language_list(); // Note: No argument
   $langcode = 'et';
   variable_set('language_default', $langs[$langcode]);
-  
+
   // Set default language settings
   db_update('languages')
     ->fields(array(
@@ -361,7 +361,7 @@ function hitsa_core_set_default_language() {
  */
 function hitsa_core_set_language_detection_rules() {
   require_once DRUPAL_ROOT . '/includes/language.inc';
-  
+
   $weighted_provider_list = array(
     1 => LOCALE_LANGUAGE_NEGOTIATION_URL,
     10 => LANGUAGE_NEGOTIATION_DEFAULT,
@@ -437,7 +437,7 @@ function hitsa_core_add_user_roles() {
     if(!empty($r->rid)) {
       user_role_grant_permissions($r->rid, $permissions);
     }
-    
+
   }
 }
 
@@ -535,7 +535,7 @@ function _hitsa_core_user_roles() {
       'view the administration theme',
     ),
   );
-  
+
   return $roles;
 }
 
@@ -552,9 +552,9 @@ function _hitsa_core_metatag_configs() {
       'disabled' => false,
       'api_version' => 1,
       'instance' => 'node:article',
-      'config' => 
+      'config' =>
       array (
-        'og:image' => 
+        'og:image' =>
         array (
           'value' => '[node:subpage_images]',
         ),
@@ -565,12 +565,21 @@ function _hitsa_core_metatag_configs() {
 
 function hitsa_core_install_metatag_config($configs) {
   foreach($configs as $config) {
-    
+
   }
 }
 
 function hitsa_core_set_default_variables() {
   variable_set('captcha_default_challenge', 'image_captcha/Image');
+  variable_set('pathauto_transliterate','1');
+  variable_set('pathauto_node_content_page_pattern','[node:title]');
+  $t = get_t();
+  variable_set('pathauto_node_article_pattern',$t('news/').'[node:title]');
+  variable_set('pathauto_node_article_en_pattern',$t('news/').'[node:title]');
+  variable_set('pathauto_node_article_et_pattern',$t('uudised/').'[node:title]');
+  variable_set('pathauto_node_gallery_pattern',$t('galleries/').'[node:title]');
+  variable_set('pathauto_node_gallery_en_pattern',$t('galleries/').'[node:title]');
+  variable_set('pathauto_node_gallery_et_pattern',$t('galeriid/').'[node:title]');
 }
 
 function hitsa_core_set_default_patterns(){
@@ -590,7 +599,7 @@ function hitsa_core_set_default_patterns(){
    }
 }
 /**
- * 
+ *
  * Update to make site pathauto working and also remove non english characters
  */
 function hitsa_core_update_7000(){
@@ -606,7 +615,7 @@ function hitsa_core_update_7000(){
    }
 }
 /**
- * 
+ *
  * Update to make site pathauto working and also remove non english characters
  */
 function hitsa_core_update_7001(){

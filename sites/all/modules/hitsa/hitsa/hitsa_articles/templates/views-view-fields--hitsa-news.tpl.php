@@ -25,11 +25,13 @@
  */
 ?>
 <div class="col-6 sm-12">
+  <?php if(!empty($row->_field_data)):?>
   <?php if((node_access("update", $row->_field_data['nid']['entity'], $user) === TRUE)): ?>
       <ul class="tabs primary">
         <li><a href="<?php print url('node/' . $row->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
         <li><a href="<?php print url('node/' . $row->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
       </ul>
+    <?php endif; ?>
     <?php endif; ?>
   <a href="<?php print $fields['path']->content; ?>" class="object<?php if($view->current_display === 'news_block') {print ' object-horizontal';} ?>">
     <span class="object-inner">
