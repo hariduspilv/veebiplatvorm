@@ -327,23 +327,23 @@ function hitsa_front_update_7000(){
 }
 function hitsa_front_update_7002()
 {
-    $main_menu_name = variable_get('hitsa_main_menu_name');
-
-    // Get main menu mlids
-    $main_menu_tree = menu_tree_all_data($main_menu_name, null, 1);
-    $main_menu_links = array();
-    foreach ($main_menu_tree as $link) {
-        $main_menu_links[$link['link']['title']] = $link['link']['mlid'];
-    }
-
-    module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.menu-nodes');
-    $nodes_to_add = _hitsa_content_page_menu_nodes($main_menu_links);
-    foreach ($nodes_to_add as $key => $value) {
-        $value['type'] = 'content_page';
-        $nodes_to_add[$key] = $value;
-    }
-    module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
-    hitsa_core_add_nodes($nodes_to_add, $module = 'hitsa_content_page');
+    // $main_menu_name = variable_get('hitsa_main_menu_name');
+    //
+    // // Get main menu mlids
+    // $main_menu_tree = menu_tree_all_data($main_menu_name, null, 1);
+    // $main_menu_links = array();
+    // foreach ($main_menu_tree as $link) {
+    //     $main_menu_links[$link['link']['title']] = $link['link']['mlid'];
+    // }
+    //
+    // module_load_include('inc', 'hitsa_content_page', 'includes/hitsa_content_page.menu-nodes');
+    // $nodes_to_add = _hitsa_content_page_menu_nodes($main_menu_links);
+    // foreach ($nodes_to_add as $key => $value) {
+    //     $value['type'] = 'content_page';
+    //     $nodes_to_add[$key] = $value;
+    // }
+    // module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
+    // hitsa_core_add_nodes($nodes_to_add, $module = 'hitsa_content_page');
 }
 
 function hitsa_front_set_default_variables() {
