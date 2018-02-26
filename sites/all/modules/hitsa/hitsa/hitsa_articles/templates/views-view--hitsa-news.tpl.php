@@ -33,7 +33,9 @@
   </div>
   <?php endif; ?>
   
+  <?php if ($rows): ?>
   <div class="row-spacer sm-hide"></div>
+  <?php endif; ?>
   
   <?php if($view->current_display === 'news_block'): ?>
     <?php if ($rows): ?>
@@ -47,7 +49,9 @@
     <?php endif; ?>
   <?php endif; ?>
   
+  <?php if ($rows): ?>
   <div class="row-spacer"></div>
+  <?php endif; ?>
   
   <?php if($view->current_display === 'news_block'): ?>
   <div class="row">
