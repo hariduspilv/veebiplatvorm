@@ -109,7 +109,7 @@ function hitsa_articles_preprocess_node(&$variables) {
     if(!empty($variables['article_video']) && $variables['view_mode'] === 'full') {
       $video_id = preg_replace('/.*:\/\/v\//', '', $variables['article_video'][0]['uri']);
       $type = str_replace('video/', '', $variables['article_video'][0]['filemime']);
-      $file_directory = 'sites/default/files/media-' . $type .'/' . $video_id . '.jpg';
+      $file_directory = variable_get('file_' . file_default_scheme() . '_path', conf_path() . '/files') . '/media-' . $type .'/' . $video_id . '.jpg';
       if(file_exists(getcwd() . '/' . $file_directory)) {
         global $base_url;
         $file_url = file_create_url($file_directory);
