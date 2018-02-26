@@ -15,7 +15,7 @@ sites/hitsa5
 sites/hitsa3
 sites/hitsa5
 sites/hitsa-7
-
+sites/*.ee
 sites/all/themes/hitsa/static/package-lock\.json
 \.vscode/settings\.json
 
