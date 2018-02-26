@@ -475,9 +475,9 @@ function hitsa_enable_translations()
         $enable_dependencies = true; // Whether or not to enable dependant modules
         module_enable($modules, $enable_dependencies);
     }
-    variable_set('l10n_update_download_store', 'sites/all/translations');
+
     module_load_include('inc', 'l10n_update', 'l10n_update.batch');
-    $directory = variable_get_value('l10n_update_download_store');
+    $directory = 'sites/all/translations';
     $files = file_scan_directory($directory, '/.*\.po/');
     $objects = array();
     $languages = array('ru','en','et');
