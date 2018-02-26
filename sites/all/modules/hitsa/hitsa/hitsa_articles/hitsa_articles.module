@@ -117,6 +117,15 @@ function hitsa_articles_block_info() {
   return $blocks;
 }
 
+function hitsa_articles_block_view_alter(&$data, $block) {
+  if($block->delta === 'hitsa_news-news_block') {
+    $news = views_get_view_result('hitsa_news', 'news_latest_attachment');
+    if(empty($news)) {
+      $data['content']['#markup'] = '';
+    }
+  }
+}
+
 function hitsa_articles_block_view($delta = '') {
   $output = array();
   switch($delta) {

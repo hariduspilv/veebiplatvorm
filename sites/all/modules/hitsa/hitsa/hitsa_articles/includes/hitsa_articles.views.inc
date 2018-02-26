@@ -57,6 +57,10 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['style_options']['row_class_special'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
+  /* Käitumine, kui tulemusi pole: Globaalne: Vaate ala */
+  $handler->display->display_options['empty']['view']['id'] = 'view';
+  $handler->display->display_options['empty']['view']['table'] = 'views';
+  $handler->display->display_options['empty']['view']['field'] = 'view';
   /* Seos: Sisu: Autor */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -156,6 +160,13 @@ function hitsa_articles_views_default_views() {
   
   /* Display: News - Small */
   $handler = $view->new_display('block', 'News - Small', 'news_block');
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* Käitumine, kui tulemusi pole: Globaalne: Vaate ala */
+  $handler->display->display_options['empty']['view']['id'] = 'view';
+  $handler->display->display_options['empty']['view']['table'] = 'views';
+  $handler->display->display_options['empty']['view']['field'] = 'view';
+  $handler->display->display_options['empty']['view']['empty'] = TRUE;
+  $handler->display->display_options['empty']['view']['view_to_insert'] = 'hitsa_news:news_latest_attachment';
   
   /* Display: News - Latest Attachment */
   $handler = $view->new_display('attachment', 'News - Latest Attachment', 'news_latest_attachment');
@@ -163,6 +174,7 @@ function hitsa_articles_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '2';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['footer'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Väli: Sisu: Pealkiri */
   $handler->display->display_options['fields']['title']['id'] = 'title';
