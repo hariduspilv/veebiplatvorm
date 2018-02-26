@@ -62,6 +62,7 @@ function hitsa_vocational_enable_translations()
         $file_object = (file_uri_to_object($file->uri));
         _locale_import_po($file_object, $language, LOCALE_IMPORT_KEEP, $group);
     }
+    hitsa_vocational_csv_import();
     $types = node_type_get_types();
     foreach ($types as $type_key => $type_value) {
         switch ($type_key) {
@@ -236,6 +237,72 @@ function hitsa_vocational_de_u_mt(){
   theme_enable($themes);
   variable_set('admin_theme', 'adminimal');
 }
+
+function hitsa_vocational_csv_import(){
+  $directory = 'sites/all/translations';
+  $files = file_scan_directory($directory, '/.*\.csv/');
+  $objects = array();
+  $languages = array('ru','en','et');
+  foreach ($files as $key => $file) {
+    if($file->filename=='hitsa_translations_csv.csv'){
+      module_load_include('inc','hitsa_translation_importer','includes/hitsa_translation_importer.admin');
+      $loaded_file = file_load($file_id);
+      $read_text = file_get_contents($file->uri);
+      $data = array_map("str_getcsv", preg_split('/\r*\n+|\r+/', $read_text));
+      $translatable_array=array();
+      foreach ($data as $translate_key => $translate_value) {
+          if (!empty($translate_value[1])) {
+              //dpm(t($translate_value[1]));
+              $translatable_array[$translate_value[1]] = array(
+              'et' => (!empty($translate_value[0]))?$translate_value[0]:'',
+              'ru' => (!empty($translate_value[2]))?$translate_value[2]:'',
+              );
+              $lower_eng = (!empty($translate_value[1]))?mb_strtolower($translate_value[1]):'';
+              //dpm(t($lower_eng));
+              $lower_est = (!empty($translate_value[0]))?mb_strtolower($translate_value[0]):'';
+              $lower_ru = (!empty($translate_value[2]))?mb_strtolower($translate_value[2]):'';
+
+              $translatable_array[$lower_eng] = array(
+                  'et' => (!empty($lower_est))?$lower_est:'',
+                  'ru' => (!empty($lower_ru))?$lower_ru:'',
+                  );
+
+              $lower_eng = (!empty($lower_eng))?str_replace(' ','-',$lower_eng):'';
+              //dpm(t($lower_eng));
+              $lower_est = (!empty($lower_est))?str_replace(' ','-',$lower_est):'';
+              $lower_ru = (!empty($lower_ru))?str_replace(' ','-',$lower_ru):'';
+
+              $translatable_array[$lower_eng] = array(
+                  'et' => (!empty($lower_est))?$lower_est:'',
+                  'ru' => (!empty($lower_ru))?$lower_ru:'',
+                  );
+
+              $first_eng = (!empty($translate_value[1]))?ucfirst(strtolower($translate_value[1])):'';
+              //dpm(($first_eng));
+              $first_est = (!empty($translate_value[0]))?ucfirst($translate_value[0]):'';
+              $first_ru = (!empty($translate_value[2]))?ucfirst($translate_value[2]):'';
+              $translatable_array[$first_eng] = array(
+                  'et' => (!empty($first_est))?$first_est:'',
+                  'ru' => (!empty($first_ru))?$first_ru:'',
+              );
+
+          }
+      }
+              foreach ($translatable_array as $translatable_key => $translatable){
+                  foreach($translatable as $test_key => $test){
+                      if(empty($test)){
+                          unset($translatable_array[$translatable_key][$test_key]);
+                      }
+                  }
+              }
+      if (!empty($translatable_array)) {
+          if (is_array($translatable_array)) {
+              hitsa_translations_importer_translations($translatable_array);
+          }
+      }
+    }
+  }
+}
 /**
  * Disable and uninstall the module.
  */
@@ -266,4 +333,7 @@ function hitsa_vocational_update_7001()
 */
 function hitsa_vocational_update_7002(){
   hitsa_vocational_de_u_mt();
+}
+function hitsa_vocational_update_7003(){
+  hitsa_vocational_csv_import();
 }

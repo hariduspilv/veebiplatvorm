@@ -1,0 +1,595 @@
+Eesnimi,First name,
+Perekonnanimi,Last name,
+Pilt,Image,
+Vali,Browse,
+Ametikoht,Job Position,
+Puudub,None,
+Arendusjuht,Development Manager,
+Direktor,Headmaster,
+Ajalugu,History,
+Matemaatika,Mathematics,
+Õppenõustaja,Study counselor,
+Telefoninumber,Phone Nr.,
+Keel,Language,
+Neutraalne,Language neutral,
+Eesti,Estonian,
+Inglise,English,
+Vene,Russian,
+E-mail,E-Mail,
+Kontakt CV,Contact CV,
+VASTUVÕTUAJAD,RECEPTION TIMES,
+Osakonnad,Departments,
+"Ühtegi osakonda pole veel lisatud.
+Vali osakonna tüüp ja kliki nupul, et 
+lisada üks.","No Departments added yet. 
+Select a Department type and press the button below to add one.",
+Lisa uus osakond,Add new Department,
+Osakonna tüüp: Kontakt osakond,Department type: Contact Department,
+Osakond,Department,
+Töötajad,Employees,
+Juhtkond,Management,
+Juhatus,Managing Board,
+Õpetajad,Teachers,
+Osakonna kaal,Department weight,
+Sulge,Collapse,
+Eemalda,Remove,
+Lisa veel üks osakond,Add another Department,
+Menüü seaded,Menu settings,
+Ei ole menüüs,Not in menu,
+Esitage menüü link,Provide a menu link,
+Redigeerimisinfo,Revision information,
+Versioone pole,No revision,
+Lisa uus versioon,Create new revision,
+Läbivaatamislogi sõnum,Revision log message,
+"Esitage selgitused tehtud muudatustest. See aitab 
+teistel autoritel paremini mõista teie motivatsiooni.","Provide an explanation of the changes you are making. 
+This will help other authors understand your motivations.",
+Kommentaari seaded,Comment settings,
+Avatud,Open,
+Suletud,Closed,
+"Kasutajatel, kellel on kommenteerimise õigus, saavad 
+postitada kommentaare.","Users with the ""Post comments"" permission can post comments.",
+Kasutajad ei saa kommenteerida.,Users cannot post comments.,
+URL'i tee seaded,URL path settings,
+Pseudonüümi pole,No alias,
+URL'i alias,URL alias,
+"Võimalikult täpne alternatiivne URL, mille kaudu 
+pääseb selle sisu juurde. Näiteks sisestage ""meist"", 
+kui sisestate vastavasisulist lehte. Kasutage suhtelist 
+teekonda ja ärge lisage kaldkriipsu, muidu URL alias 
+ei toimi.","Optionally specify an alternative URL by which this content can be accessed. 
+For example, type ""about"" when writing an about page. 
+Use a relative path and don't add a trailing slash or the URL alias won't work.",
+Autoriteave,Authoring information,
+Autor: ,Authored by,
+"Jäta tühjaks, kui soovid postitada anonüümselt.",Leave blank for Anonymous.,
+Autor on,Authored on,
+"Formaat: 2017-11-13 09:25:40 +0200.
+Ajaformaat on YYYY-MM-DD ja +0200 on ajatsoon 
+UTC järgi. Vormi sisestamise aja jaoks jätke tühjaks.","Format: 2017-11-13 09:25:40 +0200. 
+The date format is YYYY-MM-DD and +0200 is the time zone offset from UTC. 
+Leave blank to use the time of form submission.",
+Avaldamise seaded,Publishing options,
+"Avaldatud, Esilehel välja toodud","Published, Promoted to front page",
+Avaldatud,Published,
+Esilehel välja toodud,Promoted to front page,
+,Sticky at top of lists,
+Näita ridade kaalusid,Show row weights,
+JÄRJESTA,ORDER,
+Peida ridade kaalud,Hide row weights,
+Salvesta,Save,
+Eelvaade,Preview,
+Loo,Create,
+Avaleht,Home,
+Lisa sisu,Add content,
+Kontakt,Contact,
+Toitlustus,Catering,
+Toitlustusasutuse valik,Catering company selection,
+See võimaldab valida toitlustusettevõtte,This allows to choose which catering company has this menu,
+KUUPÄEV,DATE,
+Kuupäev,Date,
+"Näiteks, @date","E.g., @date",
+kuni,to,
+"Lõike pole veel lisatud. Vali lõigu tüüp ja vajuta nupule, 
+et see valida.","No Paragraphs added yet. 
+Select a Paragraph type and press a button below to add one.",
+Lisa toit,Add Food,
+Lõigu tüüp: Toit,Paragraph type: Food,
+Toidu nimi,Food name,
+Toidu tüüp,Food type,
+Lihtlehekülg,Basic page,
+Pealkiri,Title,
+Kokkuvõte,Summary,
+Peida kokkuvõte,Hide summary,
+Lähtekood,Source,
+"Jätke tühjaks, et kasutada kohendatud täis teksti.",Leave blank to use trimmed value of full text as the summary.,
+Sisu,Body,
+Pöörduge tavalisse tekstitöötlusesse,Switch to plain text editor,
+Tekstiformaat,Text format,
+"Veebilehtede aadressid ja e-posti aadressid muutuvad 
+linkideks automaatselt.",Web page addresses and e-mail addresses turn into links automatically.,
+Lubatud HTML märgendid: @tags,Allowed HTML tags: @tags,
+Read ja lõigud lõikuvad automaatselt.,Lines and paragraphs break automatically.,
+Sisulehe tüüp,Content page type,
+Lihtne,Simple,
+,Tabbed,
+Teenus,Service,
+Kontaktid,Contacts,
+Erialad,Specialities,
+Sisu lehe stiil,Content page style,
+Ruudustiku vaade,Grid,
+Logo,Logo,
+Nimi,Name,
+Tüüp,Type,
+Vali väärtus,Select a value,
+Link,Link,
+Veebivorm,Webform,
+Kooli valikud,School selections,
+Õppevaldkonnad,Areas of study,
+Õppesuund,Subject field,
+Ettevalmistavad kursused,Preparatory courses,
+Valikained,Elective subjects,
+Huviringid,Hobby Groups,
+Eriala,Speciality,
+Valikaine kursused,Elective courses,
+Huvitegevus,Hobby activity,
+E-kursus,E-Course,
+Muuda kokkuvõtet,Edit summary,
+Peida kokkuvõte,Hide summary,
+Õpikud,Textbooks,
+PILDID,PICTURES,
+Lisa fail,Attach media,
+Lisa kontakte,Add Contacts,
+Palun oota,Please wait,
+Kontakti pealkiri,Contact title,
+Veebisait,Website,
+E-mail,Email,
+Telefoninumber,Phone number,
+Aadress,Address,
+kontakti tüüp: Kontaktid,contact type: Contacts,
+Töölaud,Dashboard,
+Tunnustused,Awards,
+Koostööpartnerid,Partners,
+Avaleht,Homepage,
+Muuda,Edit,
+,,
+Filtreeri,Filter,
+Kõik,All,
+Juhatus,Managing board,
+Rohkem valikuid,More choices,
+Otsi kontakti,Search for person,
+Vali kategooria,Select category,
+Vastuvõtuajad,Reception times,
+Ees- ja perekonnanimi,Your name,
+E-mail,Your e-mail,
+Sõnum,Message,
+Saada,Submit,
+Autor,Author,
+Jah,Yes,
+Ei,No,
+- Kõik -,- Any -,
+Sõnastik,Vocabulary,
+Akadeemilised aastad,Academic years,
+Toitlustamise toidutüübid,Catering food types,
+Toitlustuse pakkuja,Catering provider,
+Sündmuse asukohad,Event locations,
+Valdkonnad,Fields,
+Hitsa sündmuste märksõnad,Hitsa event tags,
+Töökohad,Job positions,
+Teenuse kategooriad,Service categories,
+Märksõnad,Tags,
+Ajaperioodi info,Time period info,
+Ajaperioodid,Time periods,
+Koolitussildid,Training tags,
+Rakenda,Apply,
+Lähtesta,Reset,
+TEGEVUSED,OPERATIONS,
+- Vali tegevus -,- Choose an operation -,
+Muuda autorit,Change author,
+Kustuta,Delete,
+Muuda väärtust,Change value,
+Kleebi,Stick,
+Hülga,Unstick,
+Lisa esilehele,Promote to front page,
+Avalda,Publish,
+Eemalda esilehelt,Demote from front page,
+Avaldamata,Unpublish,
+Teosta,Execute,
+« esimene,« first,
+‹ eelmine,‹ previous,
+järgmine ›,next ›,
+viimane »,last »,
+Ikooni valik,Icon choice,
+Valdkond,Field,
+Eriala kirjeldus,Speciality description,
+ERIALADE TABEL,SPECIALITY TABLE,
+"Esimene rida kuvatakse tabeli päisena. Jäta esimene rida tühjaks, kui sa ei vaja päist.",The first row will appear as the table header. Leave the first row blank if you do not need a header.,
+Tabeli kirjeldus,Table description,
+"See lühike pealkiri on seotud tabeliga ja see aitab 
+abistaval tehnoloogial, nagu ekraanilugejad, sisu 
+paremini kirjeldada.","This brief caption will be associated with the table and will help Assitive 
+Technology, like screen readers, better describe the content within.",
+MUUDA RIDADE/VEERGUDE ARVU,CHANGE NUMBER OF ROWS/COLUMNS.,
+Mitu veergu,How many Columns,
+Mitu rida,How many Rows,
+Uuenda tabel,Rebuild Table,
+Lae üles CSV fail,UPLOAD CSV FILE,
+Faili üleslaadimine,File upload,
+Ühtegi faili pole valitud,No file selected,
+Lae CSV üles,Upload CSV,
+KOPEERI & KLEEBI,COPY & PASTE,
+Veeru eraldaja,Column separator,
+TÜHIK,TAB,
+Koma,Comma,
+Semikoolon,Semicolon,
+Püstkriips,Pipe,
+Pluss,Plus,
+Koolon,Colon,
+Excelist kopeeritud andmed kasutavad tühikut,Data copied from Excel will use TAB.,
+Kleebi tabeli andmed siia:,Paste table data here:,
+Impordi & Uuenda,Import & Rebuild,
+Tabeli kirjeldused,Table descriptions,
+Veerg,Column,
+Rida,Row,
+Millises veerus peaks kirjeldus olema nähtav alates 1,In which column should the description appear starting from 1,
+Millises reas peaks olema kirjeldus nähtav,In which row should the description appear,
+Lisa kirjeldus,Add Description,
+Tabeli välja kirjeldus,Table field description,
+Töökohad tulevikus kirjeldus,Jobs pretext,
+Töökohad,JOBS,
+Lõigu tüüp: Töökohad,Paragraph type: Jobs,
+Töökoht,Job,
+Kirjeldus,Description,
+Lisa veel üks lõik,Add another Paragraph,
+FAILID,ATTACHMENTS,
+KONTAKTID,CONTACTS,
+Töökohad tulevikus kirjeldus,Jobs in the future,
+Transport,Transportation,
+Aitäh! Me oleme su kirja kätte saanud.,Thank you! We've received your message.,
+Sakkidega sisuleht,Tabbed content page,
+"Sisu @title_multiple pole veel sisestatud, Sisestamiseks vajutake all olevat nuppu.",No @title_multiple added yet. Select a @title type and press the button below to add one.,
+Toitlustamise nädal:,Menu week:,
+Toitlustamise nädal,Menu week,
+Kestvus,Length,
+kuni:,to:,
+Algab,Start,
+Koolitaja,Instructor,
+Eeldus,Premise,
+Sakkidega sisulehe tüüp,Tabbed content page type,
+Sisu,Content,
+Asukoha andmed.,Location data.,
+Kontakti andmed.,Contact data.,
+Toitlustamise andmed.,Catering data.,
+Sponsori või tunnustuse logo,Sponsor or award logo,
+Artikkel,Article,
+"Kasuta <em>artikleid</em> ajale põhineval sisul nagu uudised, pressiväljaanded ja blogipostitused.","Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.",
+"Kasuta <em>lihtlehekülgi</em> oma staatilise sisu jaoks, näiteks ""Meist""","Use <em>basic pages</em> for your static content, such as an 'About us' page.",
+Sisulehekülg,Content page,
+Mitmeotstarbeline sisulehekülg.,A multipurpose content page.,
+Loo uus vorm või küsimustik kasutajatele kättesaadavaks. Esitamise tulemused ja statistika on registreeritud ja kättesaadavad vaid piiratud õigustega kasutajatele.,Create a new form or questionnaire accessible to users. Submission results and statistics are recorded and accessible to privileged users.,
+Uuendatud,Updated,
+Uus,New,
+Õppeainete tabel,Subjects table,
+"Kirjeldusi pole veel lisatud. Vali kirjelduse tüüp ja vajuta allolevat nuppu, et lisada üks.",No Descriptions added yet. Select a Lühikirjeldus type and press a button below to add one.,
+"Ühtegi kontakti pole veel lisatud. Vali kontakti tüüp ja vajuta allolevat nuppu, et üks lisada.",No kontaktid added yet. Select a kontakt type and press a button below to add one.,
+Lingi pealkirja maksimaalne tähemärkide arv on 128.,The link title is limited to @maxlength characters maximum.,
+Automaatne alias,Automatic alias,
+Kommentaarid,Comments,
+Failid,Files,
+tüüp,type,
+Struktuur,Structure,
+Taksonoomia,Taxonomy,
+Lisa termin,Add term,
+"Hallake oma sisu sildistamist, liigitamist ja liigitust.","Manage tagging, categorization, and classification of your content.",
+Toitlustuse pakkuja lehel kuvatav nimi,Catering provider big name,
+toitlustuse pildid,catering pictures,
+Toit,Food,
+Magustoit,Dessert,
+Pearoog,Main dish,
+Lae üles uus fail,Upload a new file,
+Vali...,Browse...,
+Lae üles,Upload,
+"Failid peavad olema alla !size.
+","Files must be less than !size.
+",
+Lubatud failitüübid: !extensions.,Allowed file types: !extensions.,
+Failinimi,File name,
+Sorteeri,Sort by,
+Üleslaadimise kuupäev,Upload date,
+Kasuta loendust,Use count,
+Kahanevalt,Desc,
+Kasvavalt,Asc,
+Minu failid,My files,
+,Media browser,
+Alt tekst,Alt text,
+Pealkiri,Title Text,
+"Alternatiivset teksti kasutavad ekraanilugejad, otsingumootorid ja kui pilti ei saa laadida. Alt-teksti lisades parandate juurdepääsu ja otsingumootori optimeerimist.","Alternative text is used by screen readers, search engines, and when the image cannot be loaded. By adding alt text you improve accessibility and search engine optimization.",
+"Pealkirja teksti kasutatakse nagu märksõnana, mida kuvatakse kasutajale, kui ta liigub hiirega üle pildi. Pealkirja teksti lisamine hõlbustab pildi konteksti mõistmist ja parandab kasutatavust.",Title text is used in the tool tip when a user hovers their mouse over the image. Adding title text makes it easier to understand the context of an image and improves usability.,
+Lisa uus,Add new,
+Lisa veel üks,Add another,
+Lühikirjeldus,Short description,
+Esmaspäev,Monday,Понедельник
+Teisipäev,Tuesday,Вторник
+Kolmapäev,Wednesday,Среда
+Neljapäev,Thursday,Четверг
+Reede,Friday,Пятница
+1. veerand,1st academic quarter,1-я четверть
+2. veerand,2nd academic quarter,2-я четверть
+2017/2018 õppeaasta,Academic year 2017/2018,2017/2018 учебный год
+3. veerand,3rd academic quarter,3-я четверть
+4. veerand,4th academic quarter,4-я четверть
+Aastaaruanded,Annual reports,Годовые отчеты
+Aastad,Years,Года
+Arengukava,Development plan,План развития
+Asukoht,Location,Расположение
+Avaleht,Homepage,Стартовая страница
+Avalikud,Public Services,Публичные (услуги)
+Avatud uste päev,Open house days,День открытых дверей
+Broneeri,Book,Забронируйте
+Eeldus,Prerequisite,Предварительное условие
+Ees- ja perekonnanimi,First and surname,Имя и фамилия
+E-kursused,E-courses,Электронные курсы
+E-mail,E-mail,Электронная почта
+Eriala/Erialad,Curriculum,Специальность/Специальности
+Erialad haridusnõudeta,Curriculums without educational requirement,Специальности без требования о наличии образования
+Erialad keskhariduse baasil,Curriculums based on secondary education,Специальности на базе среднего образования
+Erialad kutsekeskharidusõppel,Curriculums based on pre-vocational studies,Специальности среднего профессионального обучения
+Erialad põhihariduse baasil,Curriculums based on basic education,Специальности на базе общего образования
+Erialad töökohapõhisel õppel,Curriculums on work-based studies,Специальности профессионального обучения на месте работы
+Ettevalmistuskursused,Preparatory courses,Подготовительные курсы
+Ettevõtjale,Services for Entrepreneur,Для предпринимателей (услуги)
+Galerii,Gallery,Галерея
+Gümnasisti vari,Student shadow,«Тень» гимназиста
+Hindamine,Assessment,Оценивание
+Hinde kujunemine,Rating,Формирование оценки
+Hoolekogu,Board of trustees,Попечительский совет
+Huviringid,Hobby Groups,Кружки по интересам
+Huvitavat lugemist,Interesting reads,Увлекательного чтения
+Huvitegevus,Hobby activity,Деятельность по интересам
+Sündmuste kalender,Events calendar,Календарь деятельности по интересам
+Huvitegevused,Hobby activities,Деятельность по интересам
+Jaga,Share,Поделиться
+Juhendaja,Advisor,Руководитель
+Juhtkond,Management,Руководство
+Kaart,Map,Карта
+Kasutatav õppekirjandus,Literature Used,Используемая учебная литература
+Kaugõpe,Distance learning,Заочное обучение
+Kell,Time,Время
+Kevadsemester,Spring semester,Весенний семестр
+Kodukord,Rules of Procedure,Внутренний распорядок
+Koht,Location,Место
+Konsultatsiooniajad,Consultation times,Время консультаций
+Kontakt,Contact information,Контакт
+Kooli sümboolika,Brand and Logo,Школьная символика
+Kooli väljaanded,Publications,Школьные издания
+Koolibuss,School bus,Школьный автобус
+Koolibussi sõidugraafik,School bus timetable,График движения школьного автобуса
+Koolielu,Student Life,Школьная жизнь
+Koolisisesed,Internal Services,Внутришкольные (услуги)
+Koolitoit,School meals,Школьное питание
+Koolitused,Trainings,Тренинги
+Koostöö,Collaboration,Сотрудничество
+Koostööpartnerid,Collaboration partners,Партнеры по сотрудничеству
+Kursuse algus,Course start,Начало курса
+Kutseeksamid,Certification exams,Квалификационные экзамены
+Kõik galeriid,All galleries,Все галереи
+Kõik koolitused,All trainings,Все тренинги
+Kõik lood,All stories,Все истории
+Kõik teenused,All services,Все услуги
+Kõik uudised,All news,Все новости
+Laktoosivaba,Lactose free,Без лактозы
+Liitun kooli e-maili listiga,Join Our E-mail List,Подписаться на электронную рассылку школы
+Lisa kalendrisse,Add to the calendar,Добавить в календарь
+Loe pikemat kirjeldust,Read description,Читать подробное описание
+Lõputöö,Final thesis,Выпускная работа
+Lühikirjeldus,Description,Краткое описание
+Maht,Volume,Объем
+Maja avatud E-R 8-17,Doors are open  Mon-Fr 08:00 - 17:00,Здание открыто Пн–Пт 8:00–17:00
+Majajuht,Building Guide,Указатель по зданию
+Majutus,Accommodation,Проживание
+Meie lood,Our stories,Наши истории
+*märgitud väljad on kohustuslikud,*marked fields are required,*Отмеченные поля обязательны для заполнения
+Märkused,Notes,Примечания
+Nõustamine,Counselling,Консультирование
+Nädalamenüü,Weekly menu,Недельное меню
+Näita rohkem,Show more,Подробнее
+Olulised kontaktid,Important contacts,Важные контакты
+Otsi,Search,Поиск
+Parkimine,Parking,Парковка
+Peahoone,Main building,Главное здание
+Praktika,Internship,Практика
+Põhimäärus,Statutes,Устав
+Põhiväärtused,Core values,Высшие ценности
+Raamatukogu,Library,Библиотека
+Registreeri valikainesse,Register to elective subjects,Зарегистрируйтесь на посещение предмета на выбор
+Ruum,Room,Кабинет
+Saada,Send,Отправить
+Sihtgrupp,Target group,Целевая группа
+Sinu e-mail,Your e-mail,Ваш адрес электронной почты
+Sinu nimi,Your name,Ваше имя
+Sisseastumine,Admission,Поступление
+Sisukaart,Sitemap,Карта содержания
+Sport,Sports,Спорт
+Sportimisvõimalused,Sport facilities,Возможности для занятий спортом
+Sõnum,Message,Сообщение
+Sügissemester,Autumn semester,Осенний семестр
+Sündmuste kalender,Event calendar,Календарь событий
+Taimetoit,Vegetarian food,Вегетарианская пища
+Teenused,Services,Услуги
+Tellitavad koolitused,Ordered trainings,Заказные тренинги
+Tervisekabinet,Health services,Медпункт
+Toetused,Scholarships,Пособия
+Toitlustamine,Catering,Питание
+Traditsioonid,Traditions,Традиции
+Transport,Transport,Транспорт
+Tudengi vari,Student shadow,«Тень» студента
+Tunnid (koolitunnid),Lessons,Уроки (школьные уроки)
+Tunniplaan,Timetable,Расписание
+Tunnustused,Recognitions,Почетное признание
+Täiendusõpe,Continuing education,Повышение квалификации
+Täiendusõppe toetused,Training Scholarships,Пособия для повышения квалификации
+Töökohapõhine õpe,Work-based studies,Профессиональное обучение на месте работы
+Tööpakkumised,Vacancies,Предложения работы
+Uue õppuri meelespea,Student guide,Памятка новичка
+Uurimustöö,Research,Научно-исследовательская работа
+Vabaained,Elective courses,Факультативные предметы
+Vaheajad,Breaks,Каникулы
+Vajalikud dokumendid,Required documents,Необходимые документы
+Valdkonnad,Curriculum,Области деятельности
+Vali kuupäev,Select date,Выберите число
+Vali kõik,Select all,Выбрать все
+Valikained,Elective subjects,Предмет на выбор
+Vastuvõtt,Admission,Прием
+Vastuvõtu ajakava,Admission schedule,График приема
+Vastuvõtu tingimused ja kord,Admission terms and procedure,Условия и порядок приема
+Veel valikuid,More options,Дополнительные опции
+Vilistlased,Graduates,Выпускники
+Virtuaaltuur,Virtual tour,Виртуальный тур
+VÕTA (Varasemate õpingute ja töökogemuse arvestamine),APEL (Accreditation of Prior and Experiential Learning),VÕTA (учет предыдущей учебы и предшествующего опыта работы)
+Võta meiega ühendust,Contact us,Свяжитесь с нами
+Õpetajad,Teachers,Учителя
+Õpilasesindus,Student council,Ученическое представительство
+Õpilaskodu,Boarding school,Общежитие для учеников
+Õpilastööde vormistamine,Requirements for researchers,Оформление работ учеников
+Õpiränne,Learning mobility,Учебная миграция
+Õppenõukogu,Teachers’ Council,Педагогический совет
+Õppesuunad,Subject fields,Направления обучения
+Õppetöö,Studies,Занятия
+Õppetöö kalender,Study calendar,Календарь занятий
+Õppetöö korraldus,Study arrangement ,Организация занятий
+Üldkontakt,General contact,Общий контакт
+,,
+Töökohad tulevikus,Future career,Будущие рабочие места
+Rakenduskava,Implementation Act,Программа действий
+Õppekava,Curriculum,Учебная программа
+Õppeaasta algus,Academic year begins,Начало учебного года
+Õppeaasta lõpp,Academic year ends,Kонец учебного года
+Filtreeri,Filter ,Отфильтровать
+Viimati muudetud,Last changed, Последние изменения
+Veel uudiseid,More news,Больше новостей
+Veel teenuseid,More services,Больше услуг
+Nädalamenüü,Weekly menu,Меню на неделю
+Huvitegevuse kalender,,Xобби kалендарь
+Sinu e-mail,,Ваш адрес э-почты
+Meie koolist ,About us,Из нашей школы
+Vali kategooria,Select a category,Выберите категорию
+Üldinfo,General information,Общая информация
+Eriala tabel,Specialitiy table,
+Faili informatsioon,File information,
+Toidu alamkategooria,Food subcategory,
+Lahtiolekuaeg,Visiting hours,
+Koordinaadid,Coordinates,
+%title on uuendatud.,%title has been updated.,
+@type %title on uuendatud.,@type %title has been updated.,
+Palun oota...,Please wait...,
+@type %title on loodud.,@type %title has been created.,
+%title on loodud.,%title has been created.,
+Vaade,View,
+Viimati muudeti,Last modified,
+Artikli tüüp,Article type,
+Uudised,News,
+Oluline,Important,
+Õppeaasta,Academic year,
+Sulge,Close,
+/uudised,/news,
+"""%mail"" ei ole õige e-maili aadress","""%mail"" is not a valid email address",
+Kasutajanimi,Username,
+Parool,Password,
+Sisesta oma @s kasutajanimi.,Enter your @s username.,
+Sisestage oma kasutajanimega kaasasolev parool.,Enter the password that accompanies your username.,
+"See küsimus on mõeldud selleks, et kontrollida, kas te olete inimene ja vältida automaatset rämpsposti esitamist.",This question is for testing whether or not you are a human visitor and to prevent automated spam submissions.,
+Matemaatiline küsimus,Math question,
+Lahenda see lihtne matemaatika probleem ja sisestage tulemus. Näiteks 1+3 jaoks sisestage 4.,"Solve this simple math problem and enter the result. E.g. for 1+3, enter 4.",
+Logi sisse,Log in,
+Loo uus konto,Create new account,
+Taotle uut parooli,Request new password,
+/kontakt,/contact,
+Vaheta fail,Replace file,
+Sulge aken,Close Window,
+Tere <strong>@username</strong>,Hello <strong>@username</strong>,
+Logi välja,Log out,
+Toimumispäevad,Days it takes place,
+"Ühtegi @title_multiple pole veel lisatud. Vali @title tüüp ja vajuta allolevat nuppu, et lisada üks.",No @title_multiple added yet. Select a @title type and press a button below to add one.,
+@type %title on kustutatud.,@type %title has been deleted.,
+AVALEHT,HOMEPAGE,
+Lisage asukoht,Get location,
+Sisesta aadress / asukoht / Google kaardi URL tekstiväljale või kliki kaardile asukoha saamiseks,Enter an address / location / Google map URL in the textfield or you can also click on the map to set a marker,
+", või kasutage oma brauseri geolokatsioonisüsteemi, klõpsates sellel lingil",", or use your browser geolocation system by clicking this link",
+Minu asukoht,My Location,
+Laiuskraad:,Latitude:,
+Pikkuskraad:,Longitude:,
+Lisateave tekstivormingute kohta,More information about text formats,
+Meediumibrauser,Media browser,
+"Hoiatus: see sisu tuleb salvestada, et kajastada muudatusi käesolevas lõikes.",Warning: this content must be saved to reflect changes on this paragraph item.,
+"See @title on eemaldatud, vajutage allolevat nuppu, et taastada.","This @title has been removed, press the button below to restore.",
+"Hoiatus: see @title kustutatakse, kui vajutate ""!confirm"" või ""!save""!","Warning: this @title will actually be deleted when you press ""!confirm"" or ""!save""!",
+Taasta,Restore,
+Kinnitage kustutamine,Confirm Deletion,
+- Puudub -,- None -,
+Alamlehed,Subpages,
+Teenuse tüüp,Service Type,
+Avalik,Public,
+Sisemine,Internal,
+Ettevõtlik,Entrepreneurial,
+Lisa !title,Add !title,
+Lisa !display,Add !display,
+Otseteed,Shortcuts,
+Ühtegi komponenti pole lisatud. Lisa allpool.,"No Components, add a component below.",
+Silt,Label,
+Vormi võti,Form key,
+Väärtus,Value,
+Kohustuslik,Required,
+Uus komponendi nimi,New component name,
+Lisa,Add,
+Vormi komponendid,Form components,
+Tingimused,Conditionals,
+E-mailid,E-mails,
+Vormi seaded,Form settings,
+Tulemused,Results,
+Tuvastamata,Undefined,
+Näiteks: +372 55555555,Example: +372 55555555,
+Näiteks: E-R kell 15-18,Example: E-R kell 15-18,
+Nädalamenüü,Catering week,
+Lisa uus !title,Add new !title,
+Kursuse aeg,Course duration,
+Kursus algab,Course starts on,
+Toimumispäevad,What days it takes place on,
+Osakond on kohustuslik,Department is required,
+Kõik tabeli väljad peavad olema täidetud,All table fields need to be filled,
+Aine kestus,Duration of subject,
+Aine algab,Subject starts on,
+Huviringi kestus,Hobby activity duration,
+Huviring algus,Hobby activities start on,
+Kursus lõpeb,Course ends,
+Partner,Partner,
+Tunnustus,Award,
+Faili URL või meediumi fail,File URL or media resource,
+"Sisestage faili või meediumiressurssi URL. Paljud meediateenuste pakkujad toetavad ka meediate identifitseerimist embed koodi abil, mida kasutatakse meediumide lisamiseks välistesse veebisaitidesse.",Enter a URL to a file or media resource. Many media providers also support identifying media via the embed code used to embed the media into external websites.,
+Toetatud Interneti meediapakkujad: !providers. ,Supported internet media providers: !providers.,
+Lohista failid siia.,Drag files here.,
+Lisa failid,Add files,
+Alusta üleslaadimist,Start upload,
+Üles laetud %d/%d faili,Uploaded %d/%d files,
+Lisasätted,Additional settings,
+Galerii sisu,Gallery container.,
+<em>Raamatutel</em> on sisseehitatud hierarhiline navigeerimine. Kasutage käsiraamatute või õppematerjalide jaoks.,"<em>Books</em> have a built-in hierarchical navigation. Use for handbooks or tutorials.
+",
+"Uus veebivormi %title on loodud. Lisage veebivormile uued väljad, kasutades allolevat vormi.",The new webform %title has been created. Add new fields to your webform with the form below.,
+Otsingu tulemusi ei leitud!,No results found!,
+Otsi pealkirja või node ID järgi.,Search by the node's title or ID.,
+"Periood, millal sündmus aset leiab",Date period when event takes place,
+"Periood, millal sündmus aset leiab",Time period when event takes place,
+Koolituskalender,Training calendar,
+Lisa kalendrisse,Add to calendar,
+Veel lugusid,More stories,
+Homme,Tomorrow,
+Huvitegevuse kalender,Huvitegevus calendar,
+Näita vähem,Show less,
+täna,today,
+Lae sündmus alla iCal sündmusena,Download event as iCal event,
+Saada sündmus enda e-mailile,Send event to your e-mail,
+Valmis,Ready,
+E-posti aadressile saatmisel tekkis probleem:,There was problem sending e-mail to address:,
+Kalendri .ics faili allalaadimiseks kliki siia,To download calendar .ics file click here,
+Järgmisel esmaspäeval,Next Monday,
+Koostöö ja partnerid,Cooperation and partners,
