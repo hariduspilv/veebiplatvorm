@@ -310,7 +310,7 @@ function _hitsa_core_image_styles() {
 		  'effect' => array(
 		    'name' => 'image_scale',
 		    'data' => array(
-		      'width' => NULL,
+		      'width' => 435,
 		      'height' => 94,
 		      'upscale' => FALSE,
 		    ),

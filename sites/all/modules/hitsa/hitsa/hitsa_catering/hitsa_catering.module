@@ -367,6 +367,14 @@ function hitsa_catering_week($start_date = null)
                     if (empty($lookup)) {
                         $lookup = drupal_lookup_path('source', t('content/catering'), $node->language);
                     }
+                    $lookup = drupal_lookup_path('source', t('toitlustamine'), $node->language);
+                    if (empty($lookup)) {
+                        $lookup = drupal_lookup_path('source', t('content/toitlustamine'), $node->language);
+                    }
+                    $lookup = drupal_lookup_path('source', t('pitanie'), $node->language);
+                    if (empty($lookup)) {
+                        $lookup = drupal_lookup_path('source', t('content/pitanie'), $node->language);
+                    }
                     $node_header = menu_get_object("node", 1, $lookup);
                     $node_header_part = hitsa_catering_generate_header($node_header);
                     $build['catering_header']['#markup'] = $node_header_part;

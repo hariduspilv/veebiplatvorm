@@ -1585,40 +1585,100 @@ function _hitsa_events_get_field_ids($dependee, $dependent)
 function hitsa_events_create_menu_links($school_type = null)
 {
 
-  $menu_links = array();
-  if ($school_type == 2) {
-    $menu_links[] = array(
-      'link_path' => 'calendar',
-      'link_title' => 'Calendar',
-      'menu_name' => 'hitsa_main_menu',
-    );
-    $menu_links[] = array(
-      'link_path' => 'training-calendar',
-      'link_title' => 'Training calendar',
-      'menu_name' => 'hitsa_main_menu',
-    );
-  }
-  $menu_links_old = menu_load_links('hitsa-main-menu');
-  foreach ($menu_links as $menu_link) {
-    if ($menu_link['link_title'] == 'Training calendar') {
-      foreach ($menu_links_old as $key => $menu_old_link) {
-        if ($menu_old_link['link_title'] == 'Student Life') {
-          $menu_link['plid'] = $menu_old_link['mlid'];
-          break;
-        }
+
+    module_load_include('module','hitsa_core','hitsa_core');
+    $school_type = hitsa_core_get_school_type();
+    $menu_links = array();
+    $event_tags = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
+    $event_tags = taxonomy_get_tree($event_tags->vid);
+    $hob_cat='';
+    $stud_cat='';
+    foreach ($event_tags as $event_tag_key => $event_value) {
+      if($event_value->name=='Hobby activity'||$event_value->name=='Huvitegevus'){
+        $hob_tag = $event_value->tid;
+      }
+      if($event_value->name=='Studies'||$event_value->name=='Õppetöö'){
+        $stud_cat = $event_value->tid;
       }
     }
-    elseif($menu_link['link_title'] == 'Calendar'){
-      foreach ($menu_links_old as $key => $menu_old_link) {
-        if ($menu_old_link['link_title'] == 'Studies') {
-          $menu_link['plid'] = $menu_old_link['mlid'];
-          break;
+      $menu_links[] = array(
+        'link_path' => 'calendar',
+        'options'=>array(
+          'query'=>array(
+            'category'=>$hob_tag,
+            'type' =>'event',
+          ),
+        ),
+        'link_title' => 'Hobby calendar',
+        'menu_name' => 'hitsa_main_menu',
+        'customized' => 1,
+      );
+      $menu_links[] = array(
+        'link_path' => 'calendar',
+        'options'=>array(
+          'query'=>array(
+            'category'=>$stud_cat,
+            'type' =>'event',
+          ),
+        ),
+        'link_title' => 'Studies calendar',
+        'menu_name' => 'hitsa_main_menu',
+        'customized' => 1,
+      );
+      $menu_links[] = array(
+        'link_path' => 'training-calendar',
+        'link_title' => 'Training calendar',
+        'menu_name' => 'hitsa_main_menu',
+        'customized' => 1,
+      );
+
+    $menu_links_old = menu_load_links('hitsa-main-menu');
+    foreach ($menu_links as $menu_link) {
+      if ($menu_link['link_title'] == 'Training calendar') {
+        foreach ($menu_links_old as $key => $menu_old_link) {
+          if ($menu_old_link['link_title'] == 'Student Life') {
+            if($menu_old_link['depth']==1){
+              $menu_link['plid'] = $menu_old_link['mlid'];
+            }
+            break;
+          }
         }
       }
+      elseif($menu_link['link_title'] == 'Calendar'){
+        foreach ($menu_links_old as $key => $menu_old_link) {
+          if ($menu_old_link['link_title'] == 'Student Life') {
+            if($menu_old_link['depth']==1){
+              $menu_link['plid'] = $menu_old_link['mlid'];
+            }
+            break;
+          }
+        }
+      }
+      elseif($menu_link['link_title'] == 'Studies calendar'){
+        foreach ($menu_links_old as $key => $menu_old_link) {
+          if ($menu_old_link['link_title'] == 'Studies') {
+            if($menu_old_link['depth']==1){
+              $menu_link['plid'] = $menu_old_link['mlid'];
+            }
+            break;
+          }
+        }
+      }
+      $have=FALSE;
+      foreach ($menu_links_old as $key => $menu_old_link) {
+        if($menu_old_link['link_path']==$menu_link['link_path']){
+          $have=TRUE;
+          break;
+        }
     }
-    menu_link_save($menu_link);
+    if(!$have){
+      if(isset($menu_link['plid'])){
+        $menu_link = menu_link_save($menu_link);
+      }
+    }
   }
-  return true;
+
+  return TRUE;
 }
 function hitsa_events_update_7000(){
   $field_instance =  field_info_instance('node','event_date','event');
@@ -1626,4 +1686,7 @@ function hitsa_events_update_7000(){
     $field_instance['widget']['settings']['display_all_day']=1;
     field_update_instance($field_instance);
   }
+}
+function hitsa_events_update_7001(){
+  hitsa_events_create_menu_links();
 }
