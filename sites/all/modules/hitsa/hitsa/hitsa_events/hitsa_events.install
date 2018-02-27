@@ -1105,9 +1105,9 @@ function _hitsa_events_add_field_instances()
   );
 
    // Exported field_instance: 'node-event-field_training_tags'.
-   $field_instances['node-event-field_training_tags'] = array(
+  $field_instances['node-event-field_training_tags'] = array(
     'bundle' => 'event',
-    'default_value' => NULL,
+    'default_value' => null,
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -1115,8 +1115,8 @@ function _hitsa_events_add_field_instances()
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
+          'bypass_access' => false,
+          'link' => false,
         ),
         'type' => 'entityreference_label',
         'weight' => 7,
@@ -1141,11 +1141,11 @@ function _hitsa_events_add_field_instances()
     'settings' => array(
       'behaviors' => array(
         'taxonomy-index' => array(
-          'status' => TRUE,
+          'status' => true,
         ),
       ),
-      'entity_translation_sync' => FALSE,
-      'user_register_form' => FALSE,
+      'entity_translation_sync' => false,
+      'user_register_form' => false,
     ),
     'widget' => array(
       'active' => 1,
@@ -1586,107 +1586,141 @@ function hitsa_events_create_menu_links($school_type = null)
 {
 
 
-    module_load_include('module','hitsa_core','hitsa_core');
-    $school_type = hitsa_core_get_school_type();
-    $menu_links = array();
-    $event_tags = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
-    $event_tags = taxonomy_get_tree($event_tags->vid);
-    $hob_cat='';
-    $stud_cat='';
-    foreach ($event_tags as $event_tag_key => $event_value) {
-      if($event_value->name=='Hobby activity'||$event_value->name=='Huvitegevus'){
-        $hob_tag = $event_value->tid;
-      }
-      if($event_value->name=='Studies'||$event_value->name=='Õppetöö'){
-        $stud_cat = $event_value->tid;
-      }
+  module_load_include('module', 'hitsa_core', 'hitsa_core');
+  $school_type = hitsa_core_get_school_type();
+  $menu_links = array();
+  $event_tags = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
+  $event_tags = taxonomy_get_tree($event_tags->vid);
+  $hob_cat = '';
+  $stud_cat = '';
+  foreach ($event_tags as $event_tag_key => $event_value) {
+    if ($event_value->name == 'Hobby activity' || $event_value->name == 'Huvitegevus') {
+      $hob_tag = $event_value->tid;
     }
-      $menu_links[] = array(
-        'link_path' => 'calendar',
-        'options'=>array(
-          'query'=>array(
-            'category'=>$hob_tag,
-            'type' =>'event',
-          ),
-        ),
-        'link_title' => 'Hobby calendar',
-        'menu_name' => 'hitsa_main_menu',
-        'customized' => 1,
-      );
-      $menu_links[] = array(
-        'link_path' => 'calendar',
-        'options'=>array(
-          'query'=>array(
-            'category'=>$stud_cat,
-            'type' =>'event',
-          ),
-        ),
-        'link_title' => 'Studies calendar',
-        'menu_name' => 'hitsa_main_menu',
-        'customized' => 1,
-      );
-      $menu_links[] = array(
-        'link_path' => 'training-calendar',
-        'link_title' => 'Training calendar',
-        'menu_name' => 'hitsa_main_menu',
-        'customized' => 1,
-      );
+    if ($event_value->name == 'Studies' || $event_value->name == 'Õppetöö') {
+      $stud_cat = $event_value->tid;
+    }
+  }
+  $menu_links[] = array(
+    'link_path' => 'calendar',
+    'options' => array(
+      'query' => array(
+        'category' => $hob_tag,
+        'type' => 'event',
+      ),
+    ),
+    'link_title' => 'Hobby calendar',
+    'menu_name' => 'hitsa_main_menu',
+    'customized' => 1,
+  );
+  $menu_links[] = array(
+    'link_path' => 'calendar',
+    'options' => array(
+      'query' => array(
+        'category' => $stud_cat,
+        'type' => 'event',
+      ),
+    ),
+    'link_title' => 'Studies calendar',
+    'menu_name' => 'hitsa_main_menu',
+    'customized' => 1,
+  );
+  $menu_links[] = array(
+    'link_path' => 'training-calendar',
+    'link_title' => 'Training calendar',
+    'menu_name' => 'hitsa_main_menu',
+    'customized' => 1,
+  );
 
-    $menu_links_old = menu_load_links('hitsa-main-menu');
-    foreach ($menu_links as $menu_link) {
-      if ($menu_link['link_title'] == 'Training calendar') {
-        foreach ($menu_links_old as $key => $menu_old_link) {
-          if ($menu_old_link['link_title'] == 'Student Life') {
-            if($menu_old_link['depth']==1){
-              $menu_link['plid'] = $menu_old_link['mlid'];
-            }
-            break;
-          }
-        }
-      }
-      elseif($menu_link['link_title'] == 'Calendar'){
-        foreach ($menu_links_old as $key => $menu_old_link) {
-          if ($menu_old_link['link_title'] == 'Student Life') {
-            if($menu_old_link['depth']==1){
-              $menu_link['plid'] = $menu_old_link['mlid'];
-            }
-            break;
-          }
-        }
-      }
-      elseif($menu_link['link_title'] == 'Studies calendar'){
-        foreach ($menu_links_old as $key => $menu_old_link) {
-          if ($menu_old_link['link_title'] == 'Studies') {
-            if($menu_old_link['depth']==1){
-              $menu_link['plid'] = $menu_old_link['mlid'];
-            }
-            break;
-          }
-        }
-      }
-      $have=FALSE;
+  $menu_links_old = menu_load_links('hitsa-main-menu');
+  foreach ($menu_links as $menu_link) {
+    if ($menu_link['link_title'] == 'Training calendar') {
       foreach ($menu_links_old as $key => $menu_old_link) {
-        if($menu_old_link['link_path']==$menu_link['link_path']){
-          $have=TRUE;
+        if ($menu_old_link['link_title'] == 'Student Life') {
+          if ($menu_old_link['depth'] == 1) {
+            $menu_link['plid'] = $menu_old_link['mlid'];
+          }
           break;
         }
+      }
+    } elseif ($menu_link['link_title'] == 'Hobby calendar') {
+      foreach ($menu_links_old as $key => $menu_old_link) {
+        if ($menu_old_link['link_title'] == 'Student Life') {
+          if ($menu_old_link['depth'] == 1) {
+            $menu_link['plid'] = $menu_old_link['mlid'];
+          }
+          break;
+        }
+      }
+    } elseif ($menu_link['link_title'] == 'Studies calendar') {
+      foreach ($menu_links_old as $key => $menu_old_link) {
+        if ($menu_old_link['link_title'] == 'Studies') {
+          if ($menu_old_link['depth'] == 1) {
+            $menu_link['plid'] = $menu_old_link['mlid'];
+          }
+          break;
+        }
+      }
     }
-    if(!$have){
-      if(isset($menu_link['plid'])){
+    $have = false;
+    foreach ($menu_links_old as $key => $menu_old_link) {
+      if ($menu_old_link['link_path'] == $menu_link['link_path']) {
+        $have = true;
+        break;
+      }
+    }
+    if (!$have) {
+      if (isset($menu_link['plid'])) {
         $menu_link = menu_link_save($menu_link);
       }
     }
   }
-
-  return TRUE;
+  $translations = array(
+    'Studies calendar' => array(
+      'et' => 'Õppetöö kalender',
+      'ru' => 'Учебный календарь'
+    ),
+    'Hobby calendar' => array(
+      'et' => 'Huvitegevuse kalender',
+      'ru' => 'Интересный календарь'
+    ),
+    'Catering' => array(
+      'et' => 'Toitlustamine',
+      'ru' => 'общественное питание'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', 'includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($translations);
+  return true;
 }
-function hitsa_events_update_7000(){
-  $field_instance =  field_info_instance('node','event_date','event');
-  if(empty($field_instance['widget']['settings']['display_all_day'])){
-    $field_instance['widget']['settings']['display_all_day']=1;
+function hitsa_events_update_7000()
+{
+  $field_instance = field_info_instance('node', 'event_date', 'event');
+  if (empty($field_instance['widget']['settings']['display_all_day'])) {
+    $field_instance['widget']['settings']['display_all_day'] = 1;
     field_update_instance($field_instance);
   }
 }
-function hitsa_events_update_7001(){
+function hitsa_events_update_7001()
+{
   hitsa_events_create_menu_links();
+}
+function hitsa_events_update_7002()
+{
+  $translations = array(
+    'Studies calendar' => array(
+      'et' => 'Õppetöö kalender',
+      'ru' => 'Учебный календарь'
+    ),
+    'Hobby calendar' => array(
+      'et' => 'Huvitegevuse kalender',
+      'ru' => 'Интересный календарь'
+    ),
+    'Catering' => array(
+      'et' => 'Toitlustamine',
+      'ru' => 'общественное питание'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', 'includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($translations);
 }

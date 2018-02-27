@@ -737,14 +737,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links)
       'cp_type' => 'cp_specialities',
     ),
     array(
-      'title' => array('et' => 'Virtuaaltuur', 'ru' => 'Виртуальный тур', 'en' => 'Virtual tour'),
-      'menu' => array(
-        'plid' => $main_menu_links['About us'],
-        'weight' => 1,
-      ),
-      // ????
-    ),
-    array(
       'title' => array('et' => 'Põhiväärtused', 'ru' => 'Высшие ценности', 'en' => 'Core values'),
       'menu' => array(
         'plid' => $main_menu_links['About us'],
