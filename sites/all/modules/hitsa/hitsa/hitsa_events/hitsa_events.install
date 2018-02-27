@@ -1675,6 +1675,7 @@ function hitsa_events_create_menu_links($school_type = null)
       }
     }
   }
+  
   $translations = array(
     'Studies calendar' => array(
       'et' => 'Õppetöö kalender',
@@ -1687,6 +1688,10 @@ function hitsa_events_create_menu_links($school_type = null)
     'Catering' => array(
       'et' => 'Toitlustamine',
       'ru' => 'общественное питание'
+    ),
+    'Training calendar' => array(
+      'et' => 'Koolituskalender',
+      'ru' => 'Календарь тренировок'
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', 'includes/hitsa_translation_importer.admin');
@@ -1719,6 +1724,10 @@ function hitsa_events_update_7002()
     'Catering' => array(
       'et' => 'Toitlustamine',
       'ru' => 'общественное питание'
+    ),
+    'Training calendar' => array(
+      'et' => 'Koolituskalender',
+      'ru' => 'Календарь тренировок'
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', 'includes/hitsa_translation_importer.admin');
