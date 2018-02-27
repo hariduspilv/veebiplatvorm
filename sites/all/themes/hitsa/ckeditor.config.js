@@ -8,12 +8,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 CKEDITOR.editorConfig = function (config) {
     config.indentClasses = ['rteindent1', 'rteindent2', 'rteindent3', 'rteindent4'];
-    
+
     // [ Left, Center, Right, Justified ]
     config.justifyClasses = ['rteleft', 'rtecenter', 'rteright', 'rtejustify'];
     // The minimum editor width, in pixels, when resizing it with the resize handle.
     config.resize_minWidth = 450;
-    
+
     // Protect PHP code tags (<?...?>) so CKEditor will not break them when
     // switching from Source to WYSIWYG.
     // Uncommenting this line doesn't mean the user will not be able to type PHP
@@ -111,20 +111,24 @@ CKEDITOR.on('instanceReady', function (ev) {
     // console.dir(ev);
     ev.editor.dataProcessor.htmlFilter.addRules( {
       elements : {
-        // ul : function( element ) {
-        //   // Add class to anchor a-tags.
-        //   var attr = element.attributes;
+        img : function( element ) {
+          // Add class to anchor a-tags.
+          var attr = element.attributes;
 
-        //   var listChildren = element.children;
+          var listChildren = element.children;
 
-          
-        //     console.dir(listChildren);
-        //     console.dir(attr);
-        //     console.dir(element);
-        //     element.attributes.class = 'anchor-target';
-          
-        // }
+
+          var div = document.createElement("div");
+          // div.outerHTML = "<div class=\"test\">test</div>";
+          console.dir(div);
+            element.parent.outerHTML = div;
+            element.parent.name = "div";
+            element.parent.attributes.class = "pilt-class";
+            console.dir(element);
+            element.attributes.class = 'pilt-target';
+
+        }
       }
     });
-   
+
   });

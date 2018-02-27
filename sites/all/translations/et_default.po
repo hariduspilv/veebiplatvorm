@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-01-25 10:42+0200\n"
-"PO-Revision-Date: 2018-01-25 10:42+0200\n"
+"POT-Creation-Date: 2018-02-27 12:54+0200\n"
+"PO-Revision-Date: 2018-02-27 12:54+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -28046,10 +28046,6 @@ msgstr ""
 msgid "Training cost"
 msgstr ""
 
-#: /et/node/add/event
-msgid "Training"
-msgstr ""
-
 #: /et/admin/structure/types/manage/event/fields
 msgid "Ujukomaarv"
 msgstr ""
@@ -33633,6 +33629,335 @@ msgstr ""
 msgid "Sündmuste seaded"
 msgstr ""
 
+#: /et/admin/config/search/search_api/index/hitsa_search_index/disable
+msgid "Searches on this index won't be available until it is re-enabled."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/disable
+msgid ""
+"The following views were using the index %name: @views. You should "
+"disable or delete them."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index
+msgid "Indexed bundles: !bundles."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index
+msgid "Item type configuration"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/enable?token=I7wNwxVM-8P0809p8Y9goOhNt4Cu_j8gkM8qUE46qQI
+msgid "The index was successfully enabled."
+msgstr ""
+
+#: /et/batch?id=102&op=do
+msgid "Successfully indexed @count items."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/delete
+msgid "Revert index @name"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/delete
+msgid "Do you really want to revert this index?"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/delete
+msgid ""
+"This will revert all settings on this index back to the defaults. This "
+"action cannot be undone."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/delete
+msgid "The index settings have been successfully reverted."
+msgstr ""
+
+#: /et/batch?id=103&op=finished
+msgid "@count items could not be indexed. Check the logs for details."
+msgstr ""
+
+#: /et/batch?id=104&op=finished
+msgid "Couldn't index items. Check the logs for details."
+msgstr ""
+
+#: /et/admin/reports/dblog
+msgid ""
+"%type while trying to index item %item_id on index %index: !message in "
+"%function (line %line of %file)."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/clear
+msgid "Clear index @name"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/clear
+msgid "Do you really want to clear the indexed data of this index?"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/clear
+msgid ""
+"This will remove all data currently indexed for this index. Before the "
+"data is reindexed, searches on the index will not return any results. "
+"This action cannot be undone."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/clear
+msgid "The index was successfully cleared."
+msgstr ""
+
+#: /et/search?query=Galerii
+msgid "(Caution: This may perform very poorly for large result sets.)"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/fields
+msgid ""
+"The indexed fields were successfully changed. The index was cleared "
+"and will have to be <a href=\"@url\">re-indexed</a> with the new "
+"settings."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/workflow
+msgid ""
+"<strong>Note:</strong> This index is already restricted to certain "
+"bundles. If you use this data alteration, those will be reduced "
+"further. However, the index setting is better supported in the user "
+"interface and should therefore be prefered. For example, using this "
+"data alteration will not reduce the displayed total number of items to "
+"index (even though some of them will not be indexed). Consider "
+"creating a new index with appropriate bundle settings instead."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/workflow
+msgid ""
+"The indexing workflow was successfully edited. All content was "
+"scheduled for re-indexing so the new settings can take effect."
+msgstr ""
+
+#: /et/media/browser?render=media-popup&types=&enabledPlugins=&options=aLzzv8gzmES4dxjAvyvh9S8cZSvcmEH-QOq7QKfdT6Y&plugins=undefined
+msgid "Dokument"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/facets
+msgid ""
+"For performance reasons, you should only enable facets that you intend "
+"to have available to users on the search page."
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/facets
+msgid "Configure display"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/facets
+msgid "Configure dependencies"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/facets
+msgid "Configure filters"
+msgstr ""
+
+#: /et/admin/config/search/search_api/index/hitsa_search_index/facets
+msgid "Configure the appropriate cache setting for facet blocks."
+msgstr ""
+
+#: /et/toitlustamine/15/01/2018-21/01/2018/Tervislik%20L%C3%B5una%20O%C3%9C%202
+msgid "More caterers"
+msgstr ""
+
+#: /et/devel/reinstall?destination=node
+msgid "Vaheajad"
+msgstr ""
+
+#: /et/devel/reinstall?destination=node
+msgid "Tundide ajad ja lõunapausid"
+msgstr ""
+
+#: /et/admin/modules
+msgid "Hitsa esilehe plokid osaliselt"
+msgstr ""
+
+#: /et/admin_menu/flush-cache?token=uPw4mdPjyK3RJVmzaJyYXaaMFeiVIaKkhZ6fvg9J6M4&destination=node
+msgid "HITSA front catering block"
+msgstr ""
+
+#: /et/admin_menu/flush-cache?token=uPw4mdPjyK3RJVmzaJyYXaaMFeiVIaKkhZ6fvg9J6M4&destination=node
+msgid "HITSA breaks and hours for mobile"
+msgstr ""
+
+#: /et/admin/content
+msgid "Nädalamenüü"
+msgstr ""
+
+#: /et/training-calendar
+msgid "Sügissemesteer"
+msgstr ""
+
+#: /et/training-calendar
+msgid "Sügissemester"
+msgstr ""
+
+#: /et/admin/modules/list/confirm
+msgid ""
+"Transliteration has been installed. <a "
+"href=\"@transliteration-url\">Fix existing file names</a>."
+msgstr ""
+
+#: /et/batch?op=start&id=120
+msgid "Convert existing file names to US-ASCII."
+msgstr ""
+
+msgid "Database not supported."
+msgstr ""
+
+msgid "Original file name"
+msgstr ""
+
+msgid "Transliterate"
+msgstr ""
+
+msgid "Are you sure you want to transliterate existing file names?"
+msgstr ""
+
+msgid ""
+"Not all file names could be converted. The following files could not "
+"be accessed and have been ignored:"
+msgstr ""
+
+msgid "@filenames have been successfully transliterated."
+msgstr ""
+
+msgid "Lowercase transliterated file names."
+msgstr ""
+
+msgid ""
+"Retroactive transliteration is not supported for the database system "
+"of this Drupal installation. If you think this should be fixed please "
+"<a href=\"@issues-url\">file an issue</a> in the project issue queue."
+msgstr ""
+
+msgid "Transliteration is not required."
+msgstr ""
+
+msgid "There are currently no files names containing non-ASCII characters."
+msgstr ""
+
+msgid "Transliterated file name"
+msgstr ""
+
+msgid ""
+"The database currently lists @x_filenames containing non-ASCII "
+"characters."
+msgstr ""
+
+msgid "Note: table shows only the first 10 entries."
+msgstr ""
+
+msgid ""
+"<strong>WARNING:</strong> if you have manually entered image or file "
+"paths in text fields (for example, text areas or WYSIWYG editors), "
+"renaming the files will break these references. Since there is "
+"currently no automated way to also fix referenced files in textual "
+"contents, it is a very good idea to backup the database and %files "
+"directory beforehand. Modules accessing files using their internal "
+"system ids are not affected."
+msgstr ""
+
+msgid "Transliterate file names during upload."
+msgstr ""
+
+msgid ""
+"Enable to convert file names to US-ASCII character set for "
+"cross-platform compatibility."
+msgstr ""
+
+msgid ""
+"This is a recommended setting to prevent issues with case-insensitive "
+"file systems. It has no effect if transliteration has been disabled."
+msgstr ""
+
+msgid "Convert all characters to US-ASCII"
+msgstr ""
+
+#: /update.php?op=selection&token=R9_XL9A-wSoQRXS-lFLJXHfx3qN_iPuWZAJroxrlrgw&id=121&op=do
+msgid "news/"
+msgstr ""
+
+#: /update.php?op=selection&token=R9_XL9A-wSoQRXS-lFLJXHfx3qN_iPuWZAJroxrlrgw&id=121&op=do
+msgid "galleries/"
+msgstr ""
+
+#: /update.php?op=selection&token=R9_XL9A-wSoQRXS-lFLJXHfx3qN_iPuWZAJroxrlrgw&id=122&op=do
+msgid "uudised/"
+msgstr ""
+
+#: /update.php?op=selection&token=R9_XL9A-wSoQRXS-lFLJXHfx3qN_iPuWZAJroxrlrgw&id=122&op=do
+msgid "galeriid/"
+msgstr ""
+
+#: /et/admin/content/tabbed-content-pages
+msgid "...and %count more."
+msgstr ""
+
+#: /et/content/uue-%C3%B5ppuri-meelespea
+msgid ""
+"This processor will make searches insensitive to accents and other "
+"non-ASCII characters."
+msgstr ""
+
+#: /et/admin/config/regional/language/configure/url
+msgid "Domain"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields/copy_i18n_field
+msgid "Copy i18n_field translations batch"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields/copy_i18n_field
+msgid "Copy i18n_field translations batch is starting."
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields/copy_i18n_field
+msgid "Copy i18n_field translations batch encountered an error."
+msgstr ""
+
+#: /et/batch?id=129&op=finished
+msgid "Cleared translation cache of all languages."
+msgstr ""
+
+#: /et/batch?id=129&op=finished
+msgid ""
+"Succeeded copying/updating !translations translations of !completed "
+"sources from i18n_field to localize_fields."
+msgstr ""
+
+#: /et/ettevalmistuskursused
+msgid "Vastuvõtt alam"
+msgstr ""
+
+#: /et/vastuvotu-tingimused-ja-kord
+msgid "Gümnasisti vari2"
+msgstr ""
+
+#: /et/file/add/upload/archive
+msgid "Upload an archive file"
+msgstr ""
+
+#: /et/file/add/upload/archive
+msgid ""
+"Only files matching this pattern will be imported. For example, to "
+"import all jpg and gif files, the pattern would be "
+"<em>*.jpg|*.gif</em>. Use <em>.*</em> to extract all files in the "
+"archive."
+msgstr ""
+
+#: /et/admin/content/file/thumbnails
+msgid "Deleted 1 file."
+msgstr ""
+
+#: /ru/node/895/edit
+msgid "- Не указано -"
+msgstr ""
+
 msgctxt "Date repeat"
 msgid "Repeats"
 msgstr ""
@@ -33729,6 +34054,11 @@ msgstr ""
 #: /et/node/add/content-page
 msgctxt "field:cp_service_type:allowed_values"
 msgid "- Puudub -"
+msgstr ""
+
+#: /ru/node/895/edit
+msgctxt "field:cp_service_type:allowed_values"
+msgid "- Не указано -"
 msgstr ""
 
 #: /et/node/add/content-page
@@ -34381,6 +34711,11 @@ msgctxt "field:field_school_selections:allowed_values"
 msgid "- Puudub -"
 msgstr ""
 
+#: /ru/node/895/edit
+msgctxt "field:field_school_selections:allowed_values"
+msgid "- Не указано -"
+msgstr ""
+
 #: /et/admin/structure/taxonomy/catering_provider/fields/field_show_on_front_page?destinations%5B0%5D=admin/structure/taxonomy/catering_provider/fields
 msgctxt "field:field_show_on_front_page:allowed_values"
 msgid "Nähtav esilehel"
@@ -34393,12 +34728,12 @@ msgstr ""
 
 #: /et/admin/structure/taxonomy/hitsa_hour_times/add
 msgctxt "field:field_time_type:allowed_values"
-msgid "Lucnch"
+msgid "Class"
 msgstr ""
 
-#: /et/admin/structure/taxonomy/hitsa_hour_times/add
+#: /et/taxonomy/term/235/edit?destination=admin/structure/taxonomy/hitsa_hour_times
 msgctxt "field:field_time_type:allowed_values"
-msgid "Class"
+msgid "Lunch"
 msgstr ""
 
 #: /ru/rss.xml
@@ -35467,11 +35802,6 @@ msgctxt "field_instance:gallery-gallery_author:label"
 msgid "Autor"
 msgstr ""
 
-#: /et/node/1188/edit?destination=admin/content
-msgctxt "field_instance:gallery-gallery_images:label"
-msgid "Gallery Images"
-msgstr ""
-
 #: /et/admin/structure/taxonomy/hitsa_breaks/add
 msgctxt "field_instance:hitsa_breaks-field_break_period:label"
 msgid "Break period"
@@ -35684,6 +36014,88 @@ msgid ""
 "localize_fields (!human_1)."
 msgstr ""
 
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid "About Localize Fields and it's drush script and sub modules"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid "Use translation context"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid ""
+"Also applies to drush localize-fields, unless given the --usecontext "
+"option which overrules."
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid "Yes, and fall back on non-context."
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid ""
+"Yes, no fallback. Clean and predictable, but not the right choice if "
+"you're only testing this module."
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid "No. And translations may get mixed up, just like ordinary translation."
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid ""
+"Don't translate the label and/or description that gets passed to other "
+"widget alterers"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid ""
+"Localize Fields defaults to translate labels/descriptions of the "
+"$context arg passed to hook_field_widget_form_alter() "
+"implementations,!nlthus securing that other modules 'see' translated "
+"labels/descriptions.!nlChecking this will break description "
+"translation (though only for field types which Token's replacement "
+"actually works for ;-)."
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid "Default source text of '!add_row' button labels"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields"
+msgid "For multi-valued fields."
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields/copy_i18n_field
+msgctxt "module:localize_fields"
+msgid "Copy translations to"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields/copy_i18n_field
+msgctxt "module:localize_fields"
+msgid "localize_fields (!human)"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields/copy_i18n_field
+msgctxt "module:localize_fields"
+msgid "i18n_field (!human)"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields/copy_i18n_field
+msgctxt "module:localize_fields"
+msgid "Copy translations"
+msgstr ""
+
 #: /et/admin/modules/list/confirm
 msgctxt "module:localize_fields:module:i18n_field"
 msgid "Field translation"
@@ -35807,6 +36219,52 @@ msgstr ""
 #: /et/admin/structure/taxonomy/fields/fields/field_icon_choice
 msgctxt "module:localize_fields_ui"
 msgid "removed source and translations of old sources '!sources'"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields_ui"
+msgid "Field user interface"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields_ui"
+msgid ""
+"Clear translation cache for affected languages for every change in the "
+"Field user interface"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields_ui"
+msgid ""
+"Not advisable for a high traffic live site, but otherwise a "
+"translation editor won't be able to test/confirm changes until the "
+"cache is cleared.<br/>If un-checked, the editor may check the next "
+"option (and press 'Save configuration') at the end of work."
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields_ui"
+msgid "Clear translation cache of all languages !emphnow!_emph!"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields_ui"
+msgid "Log and display translation changes"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields_ui"
+msgid "Don't log nor display"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields_ui"
+msgid "Log only"
+msgstr ""
+
+#: /et/admin/config/regional/localize_fields
+msgctxt "module:localize_fields_ui"
+msgid "Log and display"
 msgstr ""
 
 #: /et/admin/structure/taxonomy/fields/fields/field_icon_choice
@@ -45523,7 +45981,7 @@ msgstr "koolitoit"
 
 #: /et/admin/hitsa/translation_importer_settings
 msgid "Trainings"
-msgstr "Täiendusõpe"
+msgstr "Koolitused"
 
 #: /et/admin/hitsa/translation_importer_settings
 msgid "trainings"
@@ -46031,7 +46489,7 @@ msgstr "toetused"
 
 #: /et/admin/hitsa/translation_importer_settings
 msgid "Catering"
-msgstr "Toitlustamine"
+msgstr "Nädalamenüü"
 
 #: /et/admin/hitsa/translation_importer_settings
 msgid "catering"
@@ -67492,6 +67950,10 @@ msgstr "Periood, millal sündmus aset leiab"
 msgid "Event"
 msgstr "Sündmus"
 
+#: /et/node/add/event
+msgid "Training"
+msgstr "Koolitus"
+
 #: /et/calendar
 msgid "Time: "
 msgstr "Kell:"
@@ -68792,6 +69254,16 @@ msgstr ""
 "arvu ja keskmist. Rohkem komponente saate lisada \"Lisa analüüsimis "
 "komonente\" alt."
 
+#: /et/api/search?category=event&query=s%C3%BCnd
+msgid "Events"
+msgstr "Sündmused"
+
+#: /et/admin/modules
+msgid "Converts non-latin text to US-ASCII and sanitizes file names."
+msgstr ""
+"Teisendab mitte-ladina teksti US-ASCII kodeeringusse ja puhastab "
+"failinimed."
+
 msgctxt "ampm"
 msgid "am"
 msgstr "am"
@@ -69292,6 +69764,11 @@ msgctxt "field_instance:field_catering_wednesday-field_food_subcategory:label"
 msgid "Food subcategory"
 msgstr "Toidu alamkategooria"
 
+#: /et/node/1188/edit?destination=admin/content
+msgctxt "field_instance:gallery-gallery_images:label"
+msgid "Gallery Images"
+msgstr "Galerii pildid"
+
 #: /
 msgctxt "field_instance:image-field_file_image_alt_text:label"
 msgid "Alt Text"
@@ -69402,3 +69879,4 @@ msgstr "Numbrite järgi sortimine"
 msgctxt "Sort order"
 msgid "Alphabetical"
 msgstr "Tähestikuline sortimine"
+

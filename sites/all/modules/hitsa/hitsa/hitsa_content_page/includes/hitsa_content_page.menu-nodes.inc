@@ -181,16 +181,15 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links)
       ),
       'cp_type' => 'cp_specialities',
     ),
-    /*
+
     array(
       'title' => array('et' => 'Toitlustamine', 'ru' => 'Питание', 'en' => 'Catering'),
       'menu' => array(
         'plid' => $main_menu_links['Student Life'],
         'weight' => 3,
       ),
-      // Madis
+      'cp_type' => 'cp_specialities',
     ),
-    */
     array(
       'title' => array('et' => 'Raamatukogu', 'ru' => 'Библиотека', 'en' => 'Library'),
       'menu' => array(

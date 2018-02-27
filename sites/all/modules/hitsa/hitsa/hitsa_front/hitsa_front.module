@@ -178,7 +178,7 @@ function hitsa_front_block_view($delta = '')
 function hitsa_front_theme()
 {
     $items = array();
-
+    
     $items['hitsa_front_hours_breaks'] = array(
     'render element' => 'hitsa_front_hours_breaks',
     'template' => 'hitsa_front_hours_breaks',

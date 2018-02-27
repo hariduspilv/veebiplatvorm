@@ -426,7 +426,7 @@ function hitsa_core_search_page($filter = false)
             $result['entity']->body[LANGUAGE_NONE][0]['value']
           );
         }
-        
+
         $found = FALSE;
         if(!empty($query['category']) && $query['category'] !== 'all') {
           $categories = explode(',', $query['category']);
@@ -445,7 +445,7 @@ function hitsa_core_search_page($filter = false)
               $found = TRUE;
             }
           }
-          
+
         }
       }
       if(!isset($found) || !$found) {

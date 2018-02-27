@@ -52,7 +52,7 @@
   <meta name="Author" content="Trinidad-Wiseman Oü  www.twn.ee"/>
   <meta name="format-detection" content="telephone=no">
   <?php
-  
+
   ?>
   <?php print $head; ?>
   <title><?php print $head_title; ?></title>
