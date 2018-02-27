@@ -448,7 +448,7 @@ function hitsa_core_search_page($filter = false)
           
         }
       }
-      if(!$found) {
+      if(isset($found) && !$found) {
         $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
       }
       $authors[$result['entity']->uid] = $result['entity']->uid;
