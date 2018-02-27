@@ -426,12 +426,31 @@ function hitsa_core_search_page($filter = false)
             $result['entity']->body[LANGUAGE_NONE][0]['value']
           );
         }
-        if (!empty($result['entity']->field_event_type) && $result['entity']->field_event_type[LANGUAGE_NONE][0]['value'] === 'training') {
-          $result['entity']->type = 'training';
+        
+        $found = FALSE;
+        if(!empty($query['category']) && $query['category'] !== 'all') {
+          $categories = explode(',', $query['category']);
+        } else {
+          $categories = 'all';
+        }
+        if (!empty($result['entity']->field_event_type) && $result['entity']->field_event_type[LANGUAGE_NONE][0]) {
+          foreach($result['entity']->field_event_type[LANGUAGE_NONE] as $event_type) {
+            if($event_type['value'] === 'training' && ($categories === 'all' || in_array('training', $categories))) {
+              $t_entity = $result['entity'];
+              $t_entity->type = 'training';
+              $results_rendered[$t_entity->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
+              $found = TRUE;
+            } else if($event_type['value'] === 'event' && ($categories === 'all' || in_array('event', $categories))) {
+              $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
+              $found = TRUE;
+            }
+          }
+          
         }
       }
-
-      $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
+      if(!$found) {
+        $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
+      }
       $authors[$result['entity']->uid] = $result['entity']->uid;
     }
 
