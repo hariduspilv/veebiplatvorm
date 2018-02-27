@@ -167,19 +167,24 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
     switch ($form_id) {
         case 'event_node_form':
             $school_type = hitsa_core_get_school_type();
+            $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_periods');
+            $time_periods = taxonomy_get_tree($time_periods_vocabulary->vid);
+            if(empty($time_periods)){
+              drupal_set_message(t('No periods has been added').t('click this link to add periods').' '.l(t('time periods'),'admin/structure/taxonomy/time_periods/add',array('attributes'=>array('target' => '_blank'))),'error');
+            }
             if (!empty($form['body'][LANGUAGE_NONE])) {
                 $form['body']['und'][0]['summary']['#access'] = false;
             }
             $form['period']['#access'] = false;
             hitsa_events_add_types(variable_get('school_type'));
             if (!empty($form['event_tags'])) {
-              if(isset($form['event_tags']['und'])){
-                $options = $form['event_tags']['und']['#options'];
-                if (isset($options['_none'])) {
-                    unset($options['_none']);
-                    $form['event_tags']['und']['#options'] = $options;
+                if (isset($form['event_tags']['und'])) {
+                    $options = $form['event_tags']['und']['#options'];
+                    if (isset($options['_none'])) {
+                        unset($options['_none']);
+                        $form['event_tags']['und']['#options'] = $options;
+                    }
                 }
-              }
             }
             if (!empty($school_type)) {
                 if ($school_type == 1) {
@@ -196,6 +201,7 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
             if (!empty($form['field_time_period_dates'])) {
                 $form['field_time_period_dates']['#access'] = false;
             }
+            $form['#validate'][] = 'hitsa_events_validate_semesters';
             break;
 
         default:
@@ -203,7 +209,30 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
             break;
     }
 }
-
+function hitsa_events_validate_semesters($form, &$form_state)
+{
+    if (!empty($form_state['values'])) {
+        if (!empty($form_state['values']['event_date']['und'][0]['value'])&&!empty($form_state['values']['event_date']['und'][0]['value2'])) {
+            $event_date = $form_state['values']['event_date']['und'][0]['value'];
+        }
+        $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_periods');
+        $time_periods = taxonomy_get_tree($time_periods_vocabulary->vid);
+        foreach ($time_periods as $time_period) {
+            $loaded_period = taxonomy_term_load($time_period->tid);
+            if (!empty($loaded_period->field_time_period_dates)) {
+                $period_start = $loaded_period->field_time_period_dates['und'][0]['value'];
+                $period_end = $loaded_period->field_time_period_dates['und'][0]['value2'];
+                if ($event_date >= $period_start && $event_date <= $period_end) {
+                    $time_period_tid = $loaded_period->tid;
+                }
+            }
+        }
+    }
+    if(empty($time_period_tid)){
+      form_set_error( 'event_date',t('Event falls on period where is no time period click here to add time period  ').'>'.l(t('time periods'),'admin/structure/taxonomy/time_periods/add',array('attributes'=>array('target' => '_blank'))));
+    }
+    // exit();
+}
 function hitsa_events_add_types($school_type)
 {
     $vocab = taxonomy_vocabulary_machine_name_load($school_type);
@@ -870,7 +899,6 @@ function hitsa_events_get_time_periods()
 
 function hitsa_events_front_page_block()
 {
-
     global $language;
     $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'event'));
     $school_type = hitsa_core_get_school_type();
@@ -982,9 +1010,9 @@ function hitsa_events_front_page_block()
                 $output .= '                         <span class="object-footer">';
                 $output .= (!empty($location)) ? '                     ' . t('Location') . ': ' . $location : '';
                 if ($start_readable_time !== '00:00') {
-                  if(!empty($location)){
-                    $output.=', ';
-                  }
+                    if (!empty($location)) {
+                        $output.=', ';
+                    }
                     $output .= t('Time') . ' ' . $start_readable_time . '<br />';
                 }
                 $output .= '                            <a href="/events/calendar/api/add/' . $event->nid . '/' . $start . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>';

@@ -331,10 +331,10 @@ function _hitsa_events_vocabularies()
     ),
     'terms' => array(
       (object)array(
-        'name' => t('Studies'),
+        'name' => t('Õppetöö'),
       ),
       (object)array(
-        'name' => t('Hobby activity'),
+        'name' => t('Huvitegevus'),
       ),
     ),
   );
@@ -848,7 +848,7 @@ function _hitsa_events_add_field_instances()
     'bundle' => 'event',
     'deleted' => 0,
     'description' => 'Date period when event takes place
-When user enter 01:15 then time will not appear in calendar',
+      When user enter 00:00 then time will not appear in calendar',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -884,7 +884,7 @@ When user enter 01:15 then time will not appear in calendar',
     'settings' => array(
       'default_value' => 'strtotime',
       'default_value2' => 'sync',
-      'default_value_code' => 'Today 01:15',
+      'default_value_code' => 'Today 00:00',
       'default_value_code2' => '',
       'entity_translation_sync' => false,
       'user_register_form' => false,
