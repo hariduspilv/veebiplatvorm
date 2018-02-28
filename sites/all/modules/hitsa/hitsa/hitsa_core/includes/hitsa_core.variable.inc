@@ -14,6 +14,7 @@ function hitsa_core_variable_info($options) {
   $variable['hitsa_google_api_key'] = array(
     'title' => t('Google API key'),
     'group' => 'general_variables',
+    'default' => 'AIzaSyBQW5d3aaKFwt_7LaKW683Q8VAcJjv7SbU',
   );
   $variable['dds_endpoint_url'] = array(
     'title' => t('DigiDocService (Mobile ID) Endpoint URL'),
