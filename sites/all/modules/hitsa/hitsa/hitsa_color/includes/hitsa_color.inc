@@ -36,15 +36,16 @@ function hitsa_color_change_form($form, &$form_state)
                 continue;
             }
             $row_value = explode(':', $site_theme_row);
+            $row_value[0] = preg_replace( "/\r|\n/", "", $row_value[0] );
             $form_state['storage']['classes'][]=$row_value[0];
             $description = '';
-            if ($row_value[0]=='@highlight-1') {
+            if ($row_value[0]=='highlight-1') {
                 $description = 'Lehe põhivärvitoon, millest genereeritakse ülejäänud värvitoonid';
             }
-            if (strpos($row_value[0], '@border-radius')!=false) {
+            if (strpos($row_value[0], 'border-radius')!=false) {
                 $description = 'Nuppude raadius 999px tähendab ümarat 0px tähendab kandilist';
             }
-            if (strpos($row_value[0], '@block-border-radius')!=false) {
+            if (strpos($row_value[0], 'block-border-radius')!=false) {
                 $description = 'Kastide raadius 2pxi tähendab ümarat 0pxi tähendab kandilist';
             }
 
@@ -52,6 +53,8 @@ function hitsa_color_change_form($form, &$form_state)
                 '#title'=> $row_value[0] . ':',
                 '#type' => 'textfield',
                 '#size' => 10,
+                '#id' => $row_value[0],
+                '#name' => $row_value[0],
                 '#description' => $description,
                 '#default_value' => $row_value[1],
             );
@@ -70,7 +73,7 @@ function hitsa_color_change_form($form, &$form_state)
               '#type' => 'submit',
               '#value' =>'import_css',
             );
-        }
+        }   
         return $form;
     } else {
         drupal_set_message('Vajalikku faili ei eksisteeri');
@@ -90,7 +93,6 @@ function hitsa_color_change($form, &$form_state)
         //dpm($class);
         if (!empty($form_state['values'][$class])) {
             $output .= $class . ':' . $form_state['values'][$class] . ';';
-            //dpm($form_state['values']);
         }
     }
 
