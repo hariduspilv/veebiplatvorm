@@ -104,19 +104,18 @@ function hitsa_catering_node_validate($node, $form, &$form_state)
             } // code...
         }
         $monday = date('d/m/Y', strtotime('this week monday', $start_date));
-        $sunday = date('d/m/Y', strtotime('this week sunday', $start_date));
-        $alias = t('catering') . '/' . $monday . '-' . $sunday;
+        $sunday = date('d/m/Y', strtotime('this week friday', $start_date));
+        $alias = t('catering'). '/' . $monday . '-' . $sunday;
         if (!empty($catering_provder_name)) {
             $alias .= '/' . $catering_provder_name;
         }
-        $lookup = drupal_lookup_path('source', $alias, $node->language);
+        $lookup = drupal_lookup_path('source', $alias,$node->language);
         if ($lookup) {
             if ($node->path['alias'] != $alias) {
                 form_set_error('field_catering_provider', t('This catering provider has got menu already for this week'));
             }
         }
     }
-    //  exit();
 }
 
 function hitsa_catering_week_page()
@@ -158,6 +157,7 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
 {
     switch ($form_id) {
         case 'catering_node_form':
+            $form['#validate'][] = 'hitsa_catering_validate_dates';
             if (!empty($form['field_catering_provider'])) {
                 $catering_options = $form['field_catering_provider']['und']['#options'];
                 if (count($catering_options) == 0) {
@@ -209,7 +209,25 @@ function hitsa_catering_form_alter(&$form, &$form_state, $form_id)
 
   return $items;
 }*/
-
+function hitsa_catering_validate_dates($form,&$form_state){
+    if(!empty($form_state['values'])){
+        if(!empty($form_state['values']['field_date'])){
+            if(!empty($form_state['values']['field_date']['und'][0]['value'])){
+                $monday_date = $form_state['values']['field_date']['und'][0]['value'];
+                $monday_day = date('N',$monday_date);
+                if($monday_day!=1){
+                    form_set_error('field_date',t('You have to choose date'));
+                }
+                if($form_state['values']['field_date']['und'][0]['value']==$form_state['values']['field_date']['und'][0]['value2']){
+                    form_set_error('field_date',t('You have to choose date'));
+                }
+            }
+        }
+        else{
+            form_set_error('field_date',t('You have to choose date'));
+        }
+    }
+}
 function hitsa_catering_get_all_catering_dates()
 {
     $nids = array();
@@ -401,6 +419,7 @@ function hitsa_catering_week($start_date = null)
     }
     //krumo($start_date);
     $monday = date("U", strtotime('this week monday', $start_date));
+    
     $sunday = date("U", strtotime('sunday this week', $start_date));
 //    krumo($monday);
 //    krumo($sunday);
@@ -599,11 +618,11 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
     $friday_date = '';
     if (!empty($loaded_menu->field_date)) {
         $start_date = $loaded_menu->field_date['und'][0]['value'];
-        $monday_date = date('d.m', strtotime('monday midnight', $start_date));
-        $tuesday_date = date('d.m', strtotime('tuesday midnight', $start_date));
-        $wednesday_date = date('d.m', strtotime('wednesday midnight', $start_date));
-        $thursday_date = date('d.m', strtotime('thursday midnight', $start_date));
-        $friday_date = date('d.m', strtotime('friday midnight', $start_date));
+        $monday_date = date('d.m', strtotime('monday midnight this week', $start_date));
+        $tuesday_date = date('d.m', strtotime('tuesday midnight  this week', $start_date));
+        $wednesday_date = date('d.m', strtotime('wednesday midnight  this week', $start_date));
+        $thursday_date = date('d.m', strtotime('thursday midnight  this week', $start_date));
+        $friday_date = date('d.m', strtotime('friday midnight  this week', $start_date));
     }
     if (!empty($meals_array)) {
         $output = '<div class="table_wrapper" data-plugin="responsiveTable">';
