@@ -58,7 +58,7 @@ function hitsa_core_menu()
         'title' => 'Sitemap',
         'type' => MENU_NORMAL_ITEM,
         'menu_name' => 'hitsa-footer-menu',
-        'weight' => 1,
+        'weight' => 2,
         'page callback' => 'hitsa_core_render_sitemap',
         'access callback' => true,
     );

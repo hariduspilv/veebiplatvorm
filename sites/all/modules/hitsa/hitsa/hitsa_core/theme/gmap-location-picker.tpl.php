@@ -104,7 +104,7 @@
       map: map,
       anchorPoint: new google.maps.Point(0, -29)
     });
-    console.log(autocomplete);
+
     autocomplete.addListener('place_changed', function() {
       infowindow.close();
       marker.setVisible(false);
@@ -116,7 +116,6 @@
         return;
       }
       // Set HITSA Place ID
-      console.log();
       hitsaSchoolPlaceIdElement.value = place.name + ', ' + place.formatted_address;
       hitsaSchoolPlaceCoordsElement.value = place.geometry.location.lat() + ',' + place.geometry.location.lng();
       
