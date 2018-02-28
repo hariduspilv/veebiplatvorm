@@ -14,6 +14,7 @@ function hitsa_content_page_install() {
 
   variable_set('language_content_type_content_page', TRANSLATION_ENABLED); // Make multilingual
   variable_set('i18n_node_options_content_page', array('required')); // Disable language neutral option
+  variable_set('menu_options_content_page', array('hitsa-main-menu')); // Set node menu as HITSA main menu.
 }
 
 /*

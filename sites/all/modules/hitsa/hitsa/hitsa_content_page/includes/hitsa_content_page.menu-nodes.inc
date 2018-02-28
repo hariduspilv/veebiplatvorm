@@ -378,7 +378,7 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links)
       'cp_type' => 'cp_simple',
     ),
     array(
-      'title' => array('et' => 'Eeskirjad', 'ru' => 'Eeskirjad RU', 'en' => 'Eeskirjad EN'),
+      'title' => array('et' => 'Eeskirjad', 'ru' => 'Документы', 'en' => 'Documents'),
       'menu' => array(
         'plid' => $main_menu_links['About us'],
         'weight' => 15,
@@ -386,7 +386,7 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links)
       'cp_type' => 'cp_simple',
     ),
     array(
-      'title' => array('et' => 'Töötasustamise alused', 'ru' => 'Töötasustamise alused RU', 'en' => 'Töötasustamise alused EN'),
+      'title' => array('et' => 'Töötasustamise alused', 'ru' => 'Заработная плата', 'en' => 'Salary'),
       'menu' => array(
         'plid' => $main_menu_links['About us'],
         'weight' => 16,
@@ -473,7 +473,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links)
       'cp_type' => 'cp_simple',
     ),
     array(
-      'title' => array('et' => 'Mittestatsionaarne õpe', 'ru' => 'Mittestatsionaarne õpe RU', 'en' => 'Mittestatsionaarne õpe EN'),
+      'title' => array('et' => 'Mittestatsionaarne õpe', 'ru' => 'Hестационарной формы обучения', 'en' => 'Non-stationary studies'),
       'menu' => array(
         'plid' => $main_menu_links['Admission'],
         'weight' => 6,
@@ -516,7 +516,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links)
       'cp_type' => 'cp_simple',
     ),
     array(
-      'title' => array('et' => 'Lõpetamine', 'ru' => 'Lõpetamine RU', 'en' => 'Lõpetamine EN'),
+      'title' => array('et' => 'Lõpetamine', 'ru' => 'Градуировать', 'en' => 'Graduation'),
       'menu' => array(
         'plid' => $main_menu_links['Studies'],
         'weight' => 3,
@@ -833,7 +833,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links)
       'cp_type' => 'cp_simple',
     ),
     array(
-      'title' => array('et' => 'Eeskirjad', 'ru' => 'Eeskirjad RU', 'en' => 'Eeskirjad EN'),
+      'title' => array('et' => 'Eeskirjad', 'ru' => 'Документы', 'en' => 'Documents'),
       'menu' => array(
         'plid' => $main_menu_links['About us'],
         'weight' => 15,
