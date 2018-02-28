@@ -1395,7 +1395,7 @@ function hitsa_events_training_calendar()
 }
 
 function hitsa_events_front_page_training_block()
-{
+{   
     return hitsa_events_for_services();
 }
 

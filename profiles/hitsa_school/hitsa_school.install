@@ -673,7 +673,6 @@ function hitsa_school_csv_import(){
   foreach ($files as $key => $file) {
     if($file->filename=='hitsa_translations_csv.csv'){
       module_load_include('inc','hitsa_translation_importer','includes/hitsa_translation_importer.admin');
-      $loaded_file = file_load($file_id);
       $read_text = file_get_contents($file->uri);
       $data = array_map("str_getcsv", preg_split('/\r*\n+|\r+/', $read_text));
       $translatable_array=array();

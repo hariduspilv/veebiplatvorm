@@ -8,6 +8,7 @@ dependencies[] = date
 dependencies[] = entityreference
 dependencies[] = field_group
 dependencies[] = paragraphs
+dependencies[] = i18n_taxonomy
 dependencies[] = taxonomy
 dependencies[] = email
 dependencies[] = geolocation
