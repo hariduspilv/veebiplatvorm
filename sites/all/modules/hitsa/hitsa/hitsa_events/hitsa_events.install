@@ -1625,13 +1625,14 @@ function hitsa_events_create_menu_links($school_type = null)
     'menu_name' => 'hitsa_main_menu',
     'customized' => 1,
   );
-  $menu_links[] = array(
-    'link_path' => 'training-calendar',
-    'link_title' => 'Training calendar',
-    'menu_name' => 'hitsa_main_menu',
-    'customized' => 1,
-  );
-
+  if ($school_type == 1) {
+    $menu_links[] = array(
+      'link_path' => 'training-calendar',
+      'link_title' => 'Training calendar',
+      'menu_name' => 'hitsa_main_menu',
+      'customized' => 1,
+    );
+  }
   $menu_links_old = menu_load_links('hitsa-main-menu');
   foreach ($menu_links as $menu_link) {
     if ($menu_link['link_title'] == 'Training calendar') {
@@ -1675,7 +1676,7 @@ function hitsa_events_create_menu_links($school_type = null)
       }
     }
   }
-  
+
   $translations = array(
     'Studies calendar' => array(
       'et' => 'Õppetöö kalender',
