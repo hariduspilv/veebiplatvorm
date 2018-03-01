@@ -1211,7 +1211,7 @@ function hitsa_catering_front_page_block()
                                        <span class="object-date_month">' . $food[$random_food]['subcategory'] . '</span>
                                     </a><!--/object-date-->
                                     <span class="object-content object-content_center">
-                                       <a href="" class="object-title">' . $food[$random_food]['name'] . '</a>
+                                      ' . $food[$random_food]['name'] . '
                                     </span><!--/object-content-->
                                  </div><!--/object-inner-->
                               </div><!--/object-->
@@ -1232,7 +1232,7 @@ function hitsa_catering_front_page_block()
                                        <span class="object-date_month">' . $food[0]['subcategory'] . '</span>
                                     </a><!--/object-date-->
                                     <span class="object-content object-content_center">
-                                       <a href="" class="object-title">' . $food[0]['name'] . '</a>
+                                       ' . $food[0]['name'] . '
                                     </span><!--/object-content-->
                                  </div><!--/object-inner-->
                               </div><!--/object-->
