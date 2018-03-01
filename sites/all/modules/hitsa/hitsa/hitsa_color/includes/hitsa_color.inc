@@ -43,10 +43,10 @@ function hitsa_color_change_form($form, &$form_state)
                 $description = 'Lehe põhivärvitoon, millest genereeritakse ülejäänud värvitoonid';
             }
             if (strpos($row_value[0], 'border-radius')!=false) {
-                $description = 'Nuppude raadius 999px tähendab ümarat 0px tähendab kandilist';
+                $description = 'Nuppude raadius 999px tähendab ümarat 0px tähendab kandilist 0px-80px tähendab kandilist nuppu ümarate nurkadega';
             }
             if (strpos($row_value[0], 'block-border-radius')!=false) {
-                $description = 'Kastide raadius 2pxi tähendab ümarat 0pxi tähendab kandilist';
+                $description = 'Kastide raadius 2pxi tähendab ümarat 0pxi tähendab kandilist 0px-80px tähendab kandilist nuppu ümarate nurkadega';
             }
 
             $form[$row_value[0]] = array(
