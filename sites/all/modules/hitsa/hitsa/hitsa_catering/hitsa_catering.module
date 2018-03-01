@@ -640,7 +640,12 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                     foreach ($food as $food_item_key => $food_item) {
                         if (is_array($food_item)) {
                             if ($food_item['type'] == 'dessert') {
-                                $meals_correct_array[$food_key]['dessert_location'] = $meals_correct_array[$food_key]['dessert_location'] < $dessert_location ? $dessert_location : $meals_correct_array[$food_key]['dessert_location'];
+                                if(isset($meals_correct_array[$food_key]['dessert_location'])){
+                                    $meals_correct_array[$food_key]['dessert_location'] = $meals_correct_array[$food_key]['dessert_location'] < $dessert_location ? $dessert_location : $meals_correct_array[$food_key]['dessert_location'];
+                                }
+                                else{
+                                    $meals_correct_array[$food_key]['dessert_location']=$dessert_location;
+                                }
                                 $dessert_count++;
                                 if(isset($meals_correct_array[$food_key]['des_count'] )){
                                     $meals_correct_array[$food_key]['des_count'] = $meals_correct_array[$food_key]['des_count'] < $dessert_count ? $dessert_count : $meals_correct_array[$food_key]['des_count'];
