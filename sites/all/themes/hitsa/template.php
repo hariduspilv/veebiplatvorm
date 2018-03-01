@@ -651,6 +651,9 @@ function hitsa_menu_link__hitsa_footer_menu($variables)
     if ($element['#below']) {
         $sub_menu = drupal_render($element['#below']);
     }
+    if(isset($element['#localized_options']['attributes']['title'])) {
+        unset($element['#localized_options']['attributes']['title']);
+    }
     $output = l($element['#title'], $element['#href'], $element['#localized_options']);
     return $output . $sub_menu;
 }

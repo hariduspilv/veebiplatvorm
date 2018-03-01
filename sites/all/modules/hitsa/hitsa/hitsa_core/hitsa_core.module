@@ -55,7 +55,7 @@ function hitsa_core_menu()
         'weight' => 1,
     );
     $items['sitemap'] = array(
-        'title' => 'Sitemap',
+        'title' => 'Sisukaart',
         'type' => MENU_NORMAL_ITEM,
         'menu_name' => 'hitsa-footer-menu',
         'weight' => 2,
