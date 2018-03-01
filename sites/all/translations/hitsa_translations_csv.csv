@@ -157,8 +157,8 @@ Filtreeri,Filter,
 Kõik,All,
 Juhatus,Managing board,
 Rohkem valikuid,More choices,
-Otsi kontakti,Search for person,
-Vali kategooria,Select category,
+Otsi kontakti,Search for person,Поиск человека
+Vali kategooria,Select category,Выбрать категорию
 Vastuvõtuajad,Reception times,
 Ees- ja perekonnanimi,Your name,
 E-mail,Your e-mail,
@@ -593,3 +593,5 @@ E-posti aadressile saatmisel tekkis probleem:,There was problem sending e-mail t
 Kalendri .ics faili allalaadimiseks kliki siia,To download calendar .ics file click here,
 Järgmisel esmaspäeval,Next Monday,
 Koostöö ja partnerid,Cooperation and partners,
+Ametikoht,Job position,Должность
+Ees- ja perekonnanimi,First and surname,Имя и фамилия
