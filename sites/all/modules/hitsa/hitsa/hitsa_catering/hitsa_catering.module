@@ -642,7 +642,12 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                             if ($food_item['type'] == 'dessert') {
                                 $meals_correct_array[$food_key]['dessert_location'] = $meals_correct_array[$food_key]['dessert_location'] < $dessert_location ? $dessert_location : $meals_correct_array[$food_key]['dessert_location'];
                                 $dessert_count++;
-                                $meals_correct_array[$food_key]['des_count'] = $meals_correct_array[$food_key]['des_count'] < $dessert_count ? $dessert_count : $meals_correct_array[$food_key]['des_count'];
+                                if(isset($meals_correct_array[$food_key]['des_count'] )){
+                                    $meals_correct_array[$food_key]['des_count'] = $meals_correct_array[$food_key]['des_count'] < $dessert_count ? $dessert_count : $meals_correct_array[$food_key]['des_count'];
+                                }
+                                else{
+                                    $meals_correct_array[$food_key]['des_count'] = $dessert_count;
+                                }
                             }
                         }
 
