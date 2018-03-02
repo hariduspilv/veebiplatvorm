@@ -149,7 +149,6 @@ function hitsa_curriculum_add_custom_paragraphs_bundle()
 }
 function hitsa_curriculum_add_custom_paragraphs_fields()
 {
-  
     foreach (_hitsa_curriculum_installed_paragraphs_fields() as $field) {
         $field_test = field_info_field($field['field_name']);
         if (empty($field_test)) {
@@ -158,7 +157,10 @@ function hitsa_curriculum_add_custom_paragraphs_fields()
     }
 
     foreach (_hitsa_curriculum_installed_paragraphs_instances() as $field_instance) {
-        field_create_instance($field_instance);
+        $instance = field_info_instance($field_instance['entity_type'],$field_instance['field_name'],$field_instance['bundle']);
+        if(!$instance){
+            field_create_instance($field_instance);
+        }
     }
 }
 function _hitsa_curriculum_installed_paragraphs_fields()

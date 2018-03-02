@@ -927,7 +927,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
         if (!empty($content)) {
             $id_block = 'id="' . $content->title . '"';
         }
-        $output .= hitsa_curriculum_mobile_menu($real_content, $type, $active_id);
+        $mobile_block = hitsa_curriculum_mobile_menu($real_content, $type, $active_id);
         $output .= '<div class="block no-padding" ' . $id_block . '>';
         $output .= '<div class="row">';
         if ($content_count > 1) {
@@ -947,6 +947,9 @@ function hitsa_curriculum_custom_block($curriculum_type)
         $output .= '</div><!--/row-->';
 
         $output .= '</div><!--/block-->';
+    }
+    if(!empty($mobile_block)){
+        $output = $mobile_block.$output;
     }
     return $output;
 }
