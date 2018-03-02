@@ -345,7 +345,10 @@ function hitsa_core_favicon_validate($form, &$form_state) {
 function hitsa_core_favicon_submit($form, &$form_state) {
   if(!empty($form_state['favicon_uploaded'])) {
     $favicon = $form_state['favicon_uploaded'];
-
+    
+    $favicon->status = 1;
+    file_save($favicon);
+    
     $theme_settings = $form_state['theme_settings'];
     
     $favicon_settings = array(

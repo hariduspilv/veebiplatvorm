@@ -276,6 +276,7 @@ function hitsa_content_page_node_insert($node) {
         $menu_link['link_title'] = $node->title;
         $menu_link['plid'] = $service_menu_mlid;
         $menu_link['menu_name'] = 'hitsa-main-menu';
+        $menu_link['language'] = $node->language;
         menu_link_save($menu_link);
       }
     }
