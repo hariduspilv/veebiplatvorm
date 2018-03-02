@@ -54,7 +54,6 @@ function hitsa_core_add_fields($installed_fields = array(), $module = NULL) {
               'sport-facilities' => 'Sport facilities',
               'training-scholarships' => 'Training Scholarships',
               'e-course' => 'E-Course',
-              'catering' => 'Catering',
               'ordered-trainings' => 'Ordered trainings',
               'certification-exams' => 'Certification exams',
               'cooperation-and-partners' => 'Cooperation and projects',
@@ -69,6 +68,7 @@ function hitsa_core_add_fields($installed_fields = array(), $module = NULL) {
           );
       }
       $subtypes['vacancies'] = 'Vacancies';
+      $subtypes['catering'] = 'Catering';
       $subtypes['publications'] = 'Publications';
       $subtypes['preparatory-courses'] = 'Preparatory courses';
       $subtypes['publications'] = 'Publications';
