@@ -140,6 +140,10 @@ function hitsa_front_block_view($delta = '')
       if (!empty($hours_tree || !empty($breaks))) {
           return $block;
       }
+      else{
+          $block['content'] = '<div class="row-spacer-xs"></div>';
+          return $block;
+      }
       break;
     case 'hitsa_front_hero_for_school':
       $front_page_image = variable_get_value('hitsa_fp_image_fid');
