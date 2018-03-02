@@ -611,7 +611,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links)
         'plid' => $main_menu_links['Student Life'],
         'weight' => 2,
       ),
-      // Madis
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Raamatukogu', 'ru' => 'Библиотека', 'en' => 'Library'),
