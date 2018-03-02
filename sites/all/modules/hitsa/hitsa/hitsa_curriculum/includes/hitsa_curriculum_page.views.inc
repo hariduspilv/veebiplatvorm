@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Implements hook_views_api().
  */
@@ -24,26 +25,26 @@ function hitsa_curriculum_views_default_views()
     $view->human_name = 'Administration: Tabbed content pages';
     $view->core = 7;
     $view->api_version = '3.0';
-    $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+    $view->disabled = false; /* Edit this to true to make a default view disabled initially */
 
-    /* Display: Master */
+/* Display: Master */
     $handler = $view->new_display('default', 'Master', 'default');
     $handler->display->display_options['title'] = 'Sisulehed';
-    $handler->display->display_options['use_ajax'] = TRUE;
-    $handler->display->display_options['use_more_always'] = FALSE;
+    $handler->display->display_options['use_ajax'] = true;
+    $handler->display->display_options['use_more_always'] = false;
     $handler->display->display_options['use_more_text'] = 'veel';
     $handler->display->display_options['access']['type'] = 'menu';
     $handler->display->display_options['cache']['type'] = 'none';
     $handler->display->display_options['query']['type'] = 'views_query';
     $handler->display->display_options['exposed_form']['type'] = 'basic';
     $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Rakenda';
-    $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+    $handler->display->display_options['exposed_form']['options']['reset_button'] = true;
     $handler->display->display_options['exposed_form']['options']['reset_button_label'] = 'Lähtesta';
     $handler->display->display_options['exposed_form']['options']['exposed_sorts_label'] = 'Sorteeri';
     $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Kasvavalt';
     $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Kahanevalt';
     $handler->display->display_options['pager']['type'] = 'full';
-    $handler->display->display_options['pager']['options']['items_per_page'] = '50';
+    $handler->display->display_options['pager']['options']['items_per_page'] = '25';
     $handler->display->display_options['pager']['options']['offset'] = '0';
     $handler->display->display_options['pager']['options']['id'] = '0';
     $handler->display->display_options['pager']['options']['quantity'] = '9';
@@ -140,23 +141,23 @@ function hitsa_curriculum_views_default_views()
             'empty_column' => 0,
         ),
     );
-    $handler->display->display_options['style_options']['empty_table'] = TRUE;
-    /* Käitumine, kui tulemusi pole: Globaalne: Filtreerimata tekst */
+    $handler->display->display_options['style_options']['empty_table'] = true;
+/* Käitumine, kui tulemusi pole: Globaalne: Filtreerimata tekst */
     $handler->display->display_options['empty']['area_text_custom']['id'] = 'area_text_custom';
     $handler->display->display_options['empty']['area_text_custom']['table'] = 'views';
     $handler->display->display_options['empty']['area_text_custom']['field'] = 'area_text_custom';
-    $handler->display->display_options['empty']['area_text_custom']['empty'] = TRUE;
+    $handler->display->display_options['empty']['area_text_custom']['empty'] = true;
     $handler->display->display_options['empty']['area_text_custom']['content'] = 'No books available.';
-    /* Seos: Sisu: Autor */
+/* Seos: Sisu: Autor */
     $handler->display->display_options['relationships']['uid']['id'] = 'uid';
     $handler->display->display_options['relationships']['uid']['table'] = 'node';
     $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-    /* Valdkond: Masstegevused: Sisu */
+/* Valdkond: Masstegevused: Sisu */
     $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
     $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
     $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
     $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
-    $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
+    $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = false;
     $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
     $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
     $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
@@ -204,90 +205,90 @@ function hitsa_curriculum_views_default_views()
             'postpone_processing' => 0,
         ),
     );
-    /* Valdkond: Sisu: Nid */
+/* Valdkond: Sisu: Nid */
     $handler->display->display_options['fields']['nid']['id'] = 'nid';
     $handler->display->display_options['fields']['nid']['table'] = 'node';
     $handler->display->display_options['fields']['nid']['field'] = 'nid';
     $handler->display->display_options['fields']['nid']['label'] = '';
-    $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
-    $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-    /* Valdkond: Sisu: Pealkiri */
+    $handler->display->display_options['fields']['nid']['exclude'] = true;
+    $handler->display->display_options['fields']['nid']['element_label_colon'] = false;
+/* Valdkond: Sisu: Pealkiri */
     $handler->display->display_options['fields']['title']['id'] = 'title';
     $handler->display->display_options['fields']['title']['table'] = 'node';
     $handler->display->display_options['fields']['title']['field'] = 'title';
-    $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-    $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-    /* Valdkond: Sisu: Content Page Type */
+    $handler->display->display_options['fields']['title']['alter']['word_boundary'] = false;
+    $handler->display->display_options['fields']['title']['alter']['ellipsis'] = false;
+/* Valdkond: Sisu: Tabbed content page type */
     $handler->display->display_options['fields']['field_school_selections']['id'] = 'field_school_selections';
     $handler->display->display_options['fields']['field_school_selections']['table'] = 'field_data_field_school_selections';
     $handler->display->display_options['fields']['field_school_selections']['field'] = 'field_school_selections';
     $handler->display->display_options['fields']['field_school_selections']['label'] = 'Sakkidega sisulehe tüüp';
-    /* Valdkond: Sisu: Sisaldab uut sisu */
+/* Valdkond: Sisu: Sisaldab uut sisu */
     $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
     $handler->display->display_options['fields']['timestamp']['table'] = 'history';
     $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
     $handler->display->display_options['fields']['timestamp']['label'] = '';
-    $handler->display->display_options['fields']['timestamp']['element_label_colon'] = FALSE;
-    /* Valdkond: Kasutaja: Nimi */
+    $handler->display->display_options['fields']['timestamp']['element_label_colon'] = false;
+/* Valdkond: Kasutaja: Nimi */
     $handler->display->display_options['fields']['name']['id'] = 'name';
     $handler->display->display_options['fields']['name']['table'] = 'users';
     $handler->display->display_options['fields']['name']['field'] = 'name';
     $handler->display->display_options['fields']['name']['relationship'] = 'uid';
     $handler->display->display_options['fields']['name']['label'] = 'Autor';
-    /* Valdkond: Sisu: Postituse kuupäev */
+/* Valdkond: Sisu: Postituse kuupäev */
     $handler->display->display_options['fields']['created']['id'] = 'created';
     $handler->display->display_options['fields']['created']['table'] = 'node';
     $handler->display->display_options['fields']['created']['field'] = 'created';
     $handler->display->display_options['fields']['created']['date_format'] = 'short';
-    /* Valdkond: Sisu: Viimati uuendatud */
+/* Valdkond: Sisu: Viimati uuendatud */
     $handler->display->display_options['fields']['changed']['id'] = 'changed';
     $handler->display->display_options['fields']['changed']['table'] = 'node';
     $handler->display->display_options['fields']['changed']['field'] = 'changed';
     $handler->display->display_options['fields']['changed']['date_format'] = 'time ago';
-    /* Valdkond: Sisu: Avaldatud */
+/* Valdkond: Sisu: Avaldatud */
     $handler->display->display_options['fields']['status']['id'] = 'status';
     $handler->display->display_options['fields']['status']['table'] = 'node';
     $handler->display->display_options['fields']['status']['field'] = 'status';
     $handler->display->display_options['fields']['status']['label'] = 'Status';
     $handler->display->display_options['fields']['status']['type'] = 'published-notpublished';
     $handler->display->display_options['fields']['status']['not'] = 0;
-    /* Valdkond: Sisu: Muutmise link */
+/* Valdkond: Sisu: Muutmise link */
     $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
     $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
     $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
     $handler->display->display_options['fields']['edit_node']['label'] = 'TEGEVUSED';
-    $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-    /* Valdkond: Sisu: Kustutamise link */
+    $handler->display->display_options['fields']['edit_node']['element_label_colon'] = false;
+/* Valdkond: Sisu: Kustutamise link */
     $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
     $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
     $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
     $handler->display->display_options['fields']['delete_node']['label'] = '';
-    $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
-    /* Lühike kriteerium: Sisu: Postituse kuupäev */
+    $handler->display->display_options['fields']['delete_node']['element_label_colon'] = false;
+/* Lühike kriteerium: Sisu: Postituse kuupäev */
     $handler->display->display_options['sorts']['created']['id'] = 'created';
     $handler->display->display_options['sorts']['created']['table'] = 'node';
     $handler->display->display_options['sorts']['created']['field'] = 'created';
     $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-    /* Filtri kriteeriumid: Sisu: Avaldatud */
+/* Filtri kriteeriumid: Sisu: Avaldatud */
     $handler->display->display_options['filters']['status']['id'] = 'status';
     $handler->display->display_options['filters']['status']['table'] = 'node';
     $handler->display->display_options['filters']['status']['field'] = 'status';
     $handler->display->display_options['filters']['status']['value'] = 1;
     $handler->display->display_options['filters']['status']['group'] = 1;
-    $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-    /* Filtri kriteeriumid: Globaalne: Combine fields filter */
+    $handler->display->display_options['filters']['status']['expose']['operator'] = false;
+/* Filtri kriteeriumid: Globaalne: Combine fields filter */
     $handler->display->display_options['filters']['combine']['id'] = 'combine';
     $handler->display->display_options['filters']['combine']['table'] = 'views';
     $handler->display->display_options['filters']['combine']['field'] = 'combine';
     $handler->display->display_options['filters']['combine']['operator'] = 'contains';
     $handler->display->display_options['filters']['combine']['group'] = 1;
-    $handler->display->display_options['filters']['combine']['exposed'] = TRUE;
+    $handler->display->display_options['filters']['combine']['exposed'] = true;
     $handler->display->display_options['filters']['combine']['expose']['operator_id'] = 'combine_op';
     $handler->display->display_options['filters']['combine']['expose']['label'] = 'Pealkiri/node ID';
     $handler->display->display_options['filters']['combine']['expose']['description'] = 'Search by the node\'s title or ID.';
     $handler->display->display_options['filters']['combine']['expose']['operator'] = 'combine_op';
     $handler->display->display_options['filters']['combine']['expose']['identifier'] = 'combine';
-    $handler->display->display_options['filters']['combine']['expose']['remember'] = TRUE;
+    $handler->display->display_options['filters']['combine']['expose']['remember'] = true;
     $handler->display->display_options['filters']['combine']['expose']['remember_roles'] = array(
         2 => '2',
         1 => 0,
@@ -299,14 +300,14 @@ function hitsa_curriculum_views_default_views()
         'nid' => 'nid',
         'title' => 'title',
     );
-    /* Filtri kriteeriumid: Kasutaja: Nimi */
+/* Filtri kriteeriumid: Kasutaja: Nimi */
     $handler->display->display_options['filters']['uid']['id'] = 'uid';
     $handler->display->display_options['filters']['uid']['table'] = 'users';
     $handler->display->display_options['filters']['uid']['field'] = 'uid';
     $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
     $handler->display->display_options['filters']['uid']['value'] = '';
     $handler->display->display_options['filters']['uid']['group'] = 1;
-    $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+    $handler->display->display_options['filters']['uid']['exposed'] = true;
     $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
     $handler->display->display_options['filters']['uid']['expose']['label'] = 'Autor';
     $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
@@ -318,50 +319,47 @@ function hitsa_curriculum_views_default_views()
         26 => 0,
         27 => 0,
     );
-    /* Filtri kriteeriumid: Sisu: Avaldatud */
+/* Filtri kriteeriumid: Sisu: Avaldatud */
     $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
     $handler->display->display_options['filters']['status_1']['table'] = 'node';
     $handler->display->display_options['filters']['status_1']['field'] = 'status';
     $handler->display->display_options['filters']['status_1']['value'] = 'All';
-    $handler->display->display_options['filters']['status_1']['exposed'] = TRUE;
+    $handler->display->display_options['filters']['status_1']['exposed'] = true;
     $handler->display->display_options['filters']['status_1']['expose']['operator_id'] = '';
     $handler->display->display_options['filters']['status_1']['expose']['label'] = 'Published';
     $handler->display->display_options['filters']['status_1']['expose']['operator'] = 'status_1_op';
     $handler->display->display_options['filters']['status_1']['expose']['identifier'] = 'status_1';
-    $handler->display->display_options['filters']['status_1']['expose']['remember'] = TRUE;
-    /* Filtri kriteeriumid: Sisu: Tüüp */
+    $handler->display->display_options['filters']['status_1']['expose']['remember'] = true;
+/* Filtri kriteeriumid: Sisu: Tüüp */
     $handler->display->display_options['filters']['type']['id'] = 'type';
     $handler->display->display_options['filters']['type']['table'] = 'node';
     $handler->display->display_options['filters']['type']['field'] = 'type';
     $handler->display->display_options['filters']['type']['value'] = array(
         'curriculum' => 'curriculum',
     );
-    /* Filtri kriteeriumid: Sisu: Content Page Type (field_school_selections) (translated) */
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['id'] = 'field_school_selections_value_i18n';
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['table'] = 'field_data_field_school_selections';
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['field'] = 'field_school_selections_value_i18n';
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['exposed'] = TRUE;
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['expose']['operator_id'] = 'field_school_selections_value_i18n_op';
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['expose']['label'] = 'Lehe tüüp';
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['expose']['operator'] = 'field_school_selections_value_i18n_op';
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['expose']['identifier'] = 'field_school_selections_value_i18n';
-    $handler->display->display_options['filters']['field_school_selections_value_i18n']['expose']['remember_roles'] = array(
+/* Filtri kriteeriumid: Sisu: Tabbed content page type (field_school_selections) */
+    $handler->display->display_options['filters']['field_school_selections_value']['id'] = 'field_school_selections_value';
+    $handler->display->display_options['filters']['field_school_selections_value']['table'] = 'field_data_field_school_selections';
+    $handler->display->display_options['filters']['field_school_selections_value']['field'] = 'field_school_selections_value';
+    $handler->display->display_options['filters']['field_school_selections_value']['exposed'] = true;
+    $handler->display->display_options['filters']['field_school_selections_value']['expose']['operator_id'] = 'field_school_selections_value_op';
+    $handler->display->display_options['filters']['field_school_selections_value']['expose']['label'] = 'Lehe tüüp';
+    $handler->display->display_options['filters']['field_school_selections_value']['expose']['operator'] = 'field_school_selections_value_op';
+    $handler->display->display_options['filters']['field_school_selections_value']['expose']['identifier'] = 'field_school_selections_value';
+    $handler->display->display_options['filters']['field_school_selections_value']['expose']['remember_roles'] = array(
         2 => '2',
         1 => 0,
-        3 => 0,
-        9 => 0,
-        10 => 0,
+        5 => 0,
+        6 => 0,
+        7 => 0,
     );
 
-    /* Display: System */
+/* Display: System */
     $handler = $view->new_display('system', 'System', 'system_tabbed_content_pages');
-    $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-    $handler->display->display_options['hide_admin_links'] = TRUE;
-    $handler->display->display_options['defaults']['access'] = FALSE;
+    $handler->display->display_options['defaults']['hide_admin_links'] = false;
+    $handler->display->display_options['hide_admin_links'] = true;
+    $handler->display->display_options['defaults']['access'] = false;
     $handler->display->display_options['path'] = 'admin/content/tabbed-content-pages';
-
-
-
     $views[$view->name] = $view;
     return $views;
 
