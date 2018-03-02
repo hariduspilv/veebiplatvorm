@@ -420,6 +420,7 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
             &:after, &:before {left: 100%;margin-left:@gridGutter*2;top: 50%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
             &:after {border-color: rgba(255,255,255,0);border-left-color: @base-2;border-width: 12px;margin-top: -12px;}
             &:before {border-color: rgba(0, 0, 0, 0);border-left-color: @border-1;border-width: 15px;margin-top: -15px;}
+				
          }
       }
       ul {display: none; padding-left: 20px;
@@ -427,7 +428,7 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
             &:last-child{border-bottom: none;}
             a {font-size: 16px;}
             &.active{
-               a {color: @text-1; font-weight: 500;}
+               a {color: @text-1; font-weight: 500; text-decoration:none;}
             }
          }
       }
@@ -442,7 +443,7 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
    .swiper-button-prev{left:10px;}
    .swiper-button-next{right:10px;}
 }
-.gallery-thumbs{display: flex; flex-wrap: wrap; margin:-5px;
+.gallery-thumbs{display: flex; flex-wrap: wrap; margin:-14px -5px -5px -5px;
    li{width:33%; padding:5px;
       a{display:block; background:center center no-repeat; background-size:cover; position: relative; box-shadow:0 0 0 0 @highlight-1; transition:box-shadow 0.25s;
          img{display:block; width:100%;}
