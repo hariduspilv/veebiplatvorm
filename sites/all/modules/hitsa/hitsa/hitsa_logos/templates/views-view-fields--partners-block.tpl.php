@@ -26,7 +26,7 @@
 ?>
 <?php if(!empty($fields['logo_link'])):?>
   <a href="<?php print $fields['logo_link']->content; ?>" target="_blank" rel="nofollow">
-    <?php if(!empty($fileds['banner_image'])):?>
+    <?php if(!empty($fields['banner_image'])):?>
       <img src="<?php print $fields['banner_image']->content; ?>" alt="<?php print $fields['title']->content; ?>" />
     <?php endif?>
   </a>
