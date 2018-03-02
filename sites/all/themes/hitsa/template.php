@@ -48,6 +48,13 @@ function hitsa_preprocess_page(&$variables)
             theme_get_suggestions($args, $type)
         );
     }
+    
+    // IE Favicon compatibility
+    if (theme_get_setting('toggle_favicon')) {
+        $favicon = theme_get_setting('favicon');
+        $type = theme_get_setting('favicon_mimetype');
+        drupal_add_html_head_link(array('rel' => 'icon', 'href' => drupal_strip_dangerous_protocols($favicon), 'type' => $type));
+    }
 }
 
 function hitsa_preprocess_hitsa_front_content(&$variables)
