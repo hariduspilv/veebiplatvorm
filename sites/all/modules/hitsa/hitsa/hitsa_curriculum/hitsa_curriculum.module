@@ -198,27 +198,27 @@ function hitsa_curriculum_node_insert($node)
                     $language = $language_list[$language];
                 }
             }
-            if (!($lookup_main)) {
-                $path_main = array(
-                    'source' => $selection,
-                    'alias' => $main_source,
-                    'pid' => null,
-                    'language' => $language->language,
-                    'pathauto' => 0,
-                );
-                path_save($path_main);
-            }
+            // if (!($lookup_main)) {
+            //     $path_main = array(
+            //         'source' => $selection,
+            //         'alias' => $main_source,
+            //         'pid' => null,
+            //         'language' => $language->language,
+            //         'pathauto' => 0,
+            //     );
+            //     path_save($path_main);
+            // }
 
-            if (!($lookup_main_translated)) {
-                $path_main_translated = array(
-                    'source' => $selection,
-                    'alias' => $main_source,
-                    'pid' => null,
-                    'language' => $language->language,
-                    'pathauto' => 0,
-                );
-                path_save($path_main_translated);
-            }
+            // if (!($lookup_main_translated)) {
+            //     $path_main_translated = array(
+            //         'source' => $selection,
+            //         'alias' => $main_source,
+            //         'pid' => null,
+            //         'language' => $language->language,
+            //         'pathauto' => 0,
+            //     );
+            //     path_save($path_main_translated);
+            // }
             hitsa_curriculum_check_block_visibility($main_source, $selection);
             $source = 'node/' . $node->nid;
             $alias = $main_source . '/' . hitsa_curriculum_url_friendly_strings($node->title);
@@ -323,26 +323,26 @@ function hitsa_curriculum_node_presave($node)
                         $language = $language_list[$language];
                     }
                 }
-                if (!($lookup_main)) {
-                    $path_main = array(
-                        'source' => $selection,
-                        'alias' => $main_source,
-                        'pid' => null,
-                        'language' => $language->language,
-                        'pathauto' => 0,
-                    );
-                    path_save($path_main);
-                }
-                if (!($lookup_main_translated)) {
-                    $path_main_translated = array(
-                        'source' => $selection,
-                        'alias' => $main_source,
-                        'pid' => null,
-                        'language' => $language->language,
-                        'pathauto' => 0,
-                    );
-                    path_save($path_main_translated);
-                }
+                // if (!($lookup_main)) {
+                //     $path_main = array(
+                //         'source' => $selection,
+                //         'alias' => $main_source,
+                //         'pid' => null,
+                //         'language' => $language->language,
+                //         'pathauto' => 0,
+                //     );
+                //     path_save($path_main);
+                // }
+                // if (!($lookup_main_translated)) {
+                //     $path_main_translated = array(
+                //         'source' => $selection,
+                //         'alias' => $main_source,
+                //         'pid' => null,
+                //         'language' => $language->language,
+                //         'pathauto' => 0,
+                //     );
+                //     path_save($path_main_translated);
+                // }
                 $source = 'node/' . $node->nid;
                 $title = hitsa_curriculum_url_friendly_strings($node->title);
                 hitsa_curriculum_check_block_visibility($main_source, $selection);
