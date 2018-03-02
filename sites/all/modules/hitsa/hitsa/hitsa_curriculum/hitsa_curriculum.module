@@ -906,7 +906,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
             }
         }
         if (!empty($real_content)) {
-            if (!empty($active_id) && $active_id==1&&$user->uid==0) {
+            if (!empty($active_id) && node_load($active_id)->type!='curriculum') {
                 foreach ($real_content as $real_key => $real_value) {
                     $active_id = $real_key;
                     break;
