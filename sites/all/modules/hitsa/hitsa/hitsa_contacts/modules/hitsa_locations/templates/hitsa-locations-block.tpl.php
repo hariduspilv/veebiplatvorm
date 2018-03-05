@@ -56,12 +56,16 @@
                       
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
-      
       <?php if(!empty($location->location_coordinates)): ?>
       <div class="accordion-entry">
         <div class="accordion-title"><?php print t('Map'); ?></div>
         <div class="accordion-content">
-          <a href="http://maps.google.com" class="map-wrapper">
+        <?php if(!empty($location->address_link)):?>
+        <a target="_blank" href="<?php print $location->address_link ?>" class="map-wrapper">
+        <?php else:?>
+        <a href="http://maps.google.com" class="map-wrapper">
+        <?php endif;?>
+          
 						<div class="map" data-plugin="googleMaps" data-coords="<?php 
 						print sprintf('%s,%s', $location->location_coordinates[LANGUAGE_NONE][0]['lat'], 
 						$location->location_coordinates[LANGUAGE_NONE][0]['lng']); ?>" 
