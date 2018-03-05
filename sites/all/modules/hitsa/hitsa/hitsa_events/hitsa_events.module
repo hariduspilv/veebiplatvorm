@@ -684,6 +684,14 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
 //        $period = i18n_taxonomy_localize_terms($period);
     }
 //    dpm($period);
+    if(!empty($_REQUEST)){
+        if(!empty($_REQUEST['type'])){
+            $type=$_REQUEST['type'];
+        }
+    }
+    if(empty($type)){
+        $type='event';
+    }
     $output = '';
     $object_class = '';
     if (!empty($event->event_date)) {
@@ -801,7 +809,10 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<br />';
 //        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
         if ($start_date_date > time()) {
-            $output .= ($type == 'training' || $type == 'event') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
+            if($type=='training'||$type=='event'){
+                $output.='<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>';
+            }
+            // $output .= ($type == 'training' || $type == 'event') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
             if (!empty($reg_form_id)) {
                 $output .= ($type == 'training' || $type == 'event') ? '<br><a href="training-calendar/register/' . $event->nid . '/' . $reg_form_id . '/' . $start_date_date . '" data-plugin="modal" class="before-register">' . t('Register to ' . $type) . '</a>' : '';
             }
