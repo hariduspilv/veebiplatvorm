@@ -169,8 +169,8 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
             $school_type = hitsa_core_get_school_type();
             $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_periods');
             $time_periods = taxonomy_get_tree($time_periods_vocabulary->vid);
-            if(empty($time_periods)){
-              drupal_set_message(t('No periods has been added').' '.t('click this link to add periods').' '.l(t('time periods'),'admin/structure/taxonomy/time_periods/add',array('attributes'=>array('target' => '_blank'))),'error');
+            if (empty($time_periods)) {
+                drupal_set_message(t('No periods has been added') . ' ' . t('click this link to add periods') . ' ' . l(t('time periods'), 'admin/structure/taxonomy/time_periods/add', array('attributes' => array('target' => '_blank'))), 'error');
             }
             if (!empty($form['body'][LANGUAGE_NONE])) {
                 $form['body']['und'][0]['summary']['#access'] = false;
@@ -212,7 +212,7 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
 function hitsa_events_validate_semesters($form, &$form_state)
 {
     if (!empty($form_state['values'])) {
-        if (!empty($form_state['values']['event_date']['und'][0]['value'])&&!empty($form_state['values']['event_date']['und'][0]['value2'])) {
+        if (!empty($form_state['values']['event_date']['und'][0]['value']) && !empty($form_state['values']['event_date']['und'][0]['value2'])) {
             $event_date = $form_state['values']['event_date']['und'][0]['value'];
         }
         $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_periods');
@@ -228,8 +228,8 @@ function hitsa_events_validate_semesters($form, &$form_state)
             }
         }
     }
-    if(empty($time_period_tid)){
-      form_set_error( 'event_date',t('Event falls on period where is no time period click here to add time period  ').'>'.l(t('time periods'),'admin/structure/taxonomy/time_periods/add',array('attributes'=>array('target' => '_blank'))));
+    if (empty($time_period_tid)) {
+        form_set_error('event_date', t('Event falls on period where is no time period click here to add time period  ') . '>' . l(t('time periods'), 'admin/structure/taxonomy/time_periods/add', array('attributes' => array('target' => '_blank'))));
     }
     // exit();
 }
@@ -684,13 +684,13 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
 //        $period = i18n_taxonomy_localize_terms($period);
     }
 //    dpm($period);
-    if(!empty($_REQUEST)){
-        if(!empty($_REQUEST['type'])){
-            $type=$_REQUEST['type'];
+    if (!empty($_REQUEST)) {
+        if (!empty($_REQUEST['type'])) {
+            $type = $_REQUEST['type'];
         }
     }
-    if(empty($type)){
-        $type='event';
+    if (empty($type)) {
+        $type = 'event';
     }
     $output = '';
     $object_class = '';
@@ -806,11 +806,13 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= (!empty($time_hours_minutes_all)) ? $time_hours_minutes_all . ' ' : '';
         $output .= (!empty($time_hours_minutes)) ? $time_hours_minutes . '' : '';
         $output .= ($type == 'training' && !empty($training_cost)) ? ' ' . $training_cost . ' ' : '';
-        $output .= '<br />';
 //        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
+        if (!empty($time_hours_minutes_all) || !empty($time_hours_minutes) || !empty($location_ready)) {
+            $output .= '<br />';
+        }
         if ($start_date_date > time()) {
-            if($type=='training'||$type=='event'){
-                $output.='<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>';
+            if ($type == 'training' || $type == 'event') {
+                $output .= '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>';
             }
             // $output .= ($type == 'training' || $type == 'event') ? '<a href="/events/calendar/api/add/' . $event->nid . '/' . $start_date_date . '" data-plugin="modal" class="before-calendar">' . t('Add to calendar') . '</a>' : '';
             if (!empty($reg_form_id)) {
@@ -885,9 +887,9 @@ function hitsa_events_get_time_periods()
             $time_period_end = $time_period->field_time_period_dates_info['und'][0]['value2'];
         }
         $dated_start = (!empty($time_period_start)) ? strftime('%d', $time_period_start) : null;
-        $dated_start .= (!empty($time_period_start)) ?'. '. t(strftime('%B', $time_period_start)) : null;
+        $dated_start .= (!empty($time_period_start)) ? '. ' . t(strftime('%B', $time_period_start)) : null;
         $dated_end = (!empty($time_period_end)) ? strftime('%d', $time_period_end) : null;
-        $dated_end .= (!empty($time_period_end)) ?'. '.  t(strftime('%B', $time_period_end)) : null;
+        $dated_end .= (!empty($time_period_end)) ? '. ' . t(strftime('%B', $time_period_end)) : null;
         $output .= '          <div class="col-12">';
         $output .= '             <a href="" class="object object-small object-horizontal object-inactive">';
         $output .= '                <span class="object-inner">';
@@ -910,8 +912,8 @@ function hitsa_events_get_time_periods()
 
 function hitsa_events_front_page_block()
 {
-  
-    
+
+
     global $language;
     $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'event'));
     $school_type = hitsa_core_get_school_type();
@@ -1024,7 +1026,7 @@ function hitsa_events_front_page_block()
                 $output .= (!empty($location)) ? '                     ' . t('Location') . ': ' . $location : '';
                 if ($start_readable_time !== '00:00') {
                     if (!empty($location)) {
-                        $output.=', ';
+                        $output .= ', ';
                     }
                     $output .= t('Time') . ' ' . $start_readable_time . '<br />';
                 }
@@ -1074,7 +1076,7 @@ function hitsa_events_front_page_block()
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
             if (isset($school_type)) {
-                if ($school_type==1) {
+                if ($school_type == 1) {
                     $output .= '            <div class="align-center">';
                 } else {
                     $output .= '            <div class="">';
@@ -1406,7 +1408,7 @@ function hitsa_events_training_calendar()
 }
 
 function hitsa_events_front_page_training_block()
-{   
+{
     return hitsa_events_for_services();
 }
 
