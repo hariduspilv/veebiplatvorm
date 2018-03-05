@@ -183,7 +183,7 @@ function _hitsa_core_menus() {
       'menu_name' => 'hitsa-footer-menu',
       'title' => $t('Footer menu'),
       'description' => $t('HITSA Footer menu.'),
-      'i18n_mode' => I18N_MODE_LOCALIZE,
+      'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
   );
 }
@@ -230,6 +230,14 @@ function _hitsa_core_menu_links() {
         );
         break;
     }
+    
+    $menu_links[] = array(
+      'link_path' => '<front>',
+      'link_title' => 'Homepage',
+      'menu_name' => $hitsa_main_menu,
+      'weight' => -11,
+      'hitsa_menu_type' => 'homepage',
+    );
 
     $menu_links[] = array(
       'link_path' => '<front>',

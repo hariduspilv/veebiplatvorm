@@ -393,23 +393,40 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     $sub_menu = '';
     $element['#attributes']['class'] = array();
     $service_menu_mlid = variable_get('hitsa_services_mlid');
+    $homepage_menu_mlid = variable_get('hitsa_homepage_mlid');
     $element['#title'] = t($element['#title']);
+
     if ($element['#original_link']['mlid'] === $service_menu_mlid) {
         $sub_menu = theme('service_menu_tree__hitsa_main_menu', array('element' => $element));
         $services_available = false;
         foreach ($element['#below'] as $service_subtype) {
             if (!empty($service_subtype['#below'])) {
                 $services_available = true;
+                foreach($service_subtype['#below'] as $service_link) {
+                    if(!empty($service_link['#href']) && current_path() === $service_link['#href']) {
+                        // If child element is open, set the main menu link to active.
+                        $element['#attributes']['class'][] = 'active';
+                    }
+                }
             }
         }
         if (!$services_available) {
             return ''; // No services available, hide menu.
         }
+    } else if( // Front page link or active link without submenu
+        ($element['#original_link']['mlid'] == $homepage_menu_mlid && drupal_is_front_page())
+        || ($element['#href'] !== '<front>' && $element['#href'] === current_path())
+    ) {
+        $element['#attributes']['class'][] = 'active';
     } else if ($element['#below']) {
         $children_mids = array_fill_keys(element_children($element['#below']), true);
         $children = array();
         foreach ($element['#below'] as $key => $el) {
             if (isset($children_mids[$key])) {
+                if(current_path() === $el['#href']) {
+                    // If child element is open, set the main menu link to active.
+                    $element['#attributes']['class'][] = 'active';
+                }
                 $children[$key] = $el;
             }
         }
@@ -509,6 +526,10 @@ function hitsa_links__locale_block($variables)
             if (!empty($link['attributes']['xml:lang'])) {
                 $link['attributes']['lang'] = $link['attributes']['xml:lang'];
             }
+            
+            if(!empty($link['attributes']['title'])) { // Remove title attribute
+                unset($link['attributes']['title']);
+            }
 
             // Add first, last and active classes to the list of links to help out
             // themers.
@@ -584,6 +605,10 @@ function hitsa_links__mobile_locale_block($variables)
 
             if (!empty($link['attributes']['xml:lang'])) {
                 $link['attributes']['lang'] = $link['attributes']['xml:lang'];
+            }
+            
+            if(!empty($link['attributes']['title'])) { // Remove title attribute
+                unset($link['attributes']['title']);
             }
 
             // Add first, last and active classes to the list of links to help out
