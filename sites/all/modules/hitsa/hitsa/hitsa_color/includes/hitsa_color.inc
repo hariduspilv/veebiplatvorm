@@ -61,7 +61,7 @@ function hitsa_color_change_form($form, &$form_state)
         }
         if (!empty($my_color)) {
             $form['submit'] = array(
-                '#submit' => array('hitsa_color_change'),
+                '#submit' => array('hitsa_import_css','hitsa_color_change'),
                 '#type' => 'submit',
                 '#value' => t('Vaheta värvi')
             );
