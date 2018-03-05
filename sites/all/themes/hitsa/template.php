@@ -448,7 +448,9 @@ function hitsa_menu_link__hitsa_main_menu($variables)
                 'plid' => $element['#original_link']['plid']
             )
         );
-    } else if ($element['#href'] === '<front>' && $element['#original_link']['depth'] === '1') {
+    } else if ($element['#href'] === '<front>' && $element['#original_link']['depth'] === '1'
+        && $element['#original_link']['mlid'] != $homepage_menu_mlid
+    ) {
         // Hide first level main menu elements without set link and children.
         return '';
     }
