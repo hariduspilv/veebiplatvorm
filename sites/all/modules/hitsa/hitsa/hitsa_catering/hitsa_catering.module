@@ -867,7 +867,7 @@ function hitsa_catering_provider_side_menu($providers)
                     $class = '';
                 }
             }
-            if (!empty($provider['provider'])) {
+            if (!empty($provider['provider'])&&!empty($provider['provider']->field_catering_provider_big_name)) {
                 $provider_name = $provider['provider']->field_catering_provider_big_name['und'][0]['value'];
             } else {
                 $provider_name = $provider['provider']->name;

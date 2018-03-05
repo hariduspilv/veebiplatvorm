@@ -141,7 +141,7 @@ function hitsa_front_block_view($delta = '')
           return $block;
       }
       else{
-          $block['content'] = '<div class="row-spacer-xs"></div>';
+          $block['content'] = '<div class="row-spacer"></div>';
           return $block;
       }
       break;

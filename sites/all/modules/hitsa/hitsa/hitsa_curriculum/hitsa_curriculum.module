@@ -905,6 +905,14 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 $output .= $tabs;
             }
         }
+        if (!empty($real_content)) {
+            if (!empty($active_id) && node_load($active_id)->type!='curriculum') {
+                foreach ($real_content as $real_key => $real_value) {
+                    $active_id = $real_key;
+                    break;
+            }
+        }
+        }
         $left_side = hitsa_curriculum_generate_left_custom_titles($real_content, $type, $active_id);
         $content = null;
         if (!empty($active_id)) {
