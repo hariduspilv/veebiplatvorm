@@ -567,7 +567,7 @@ function hitsa_catering_week($start_date = null)
         $build['catering']['#theme_wrappers'] = array();
         $build['catering']['catering_table']['#markup'] = $catering_header . $catering_table . $catering_html;
         if (!empty($catering_mobile)) {
-            $build['catering']['#prefix'] = $catering_mobile . $build['catering']['#prefix'];
+            $build['catering_header']['#prefix'] = $catering_mobile ;
         }
     }
     return $build;
