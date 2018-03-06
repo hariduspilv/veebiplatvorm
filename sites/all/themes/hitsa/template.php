@@ -421,16 +421,9 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     } else if ($element['#below']) {
         $children_mids = array_fill_keys(element_children($element['#below']), true);
         $children = array();
-        dpm(current_path());
         foreach ($element['#below'] as $key => $el) {
-            if($element['#title'] === 'Vastuvõtt') {
-                dpm($el);
-                dpm($key);
-                
-            }
             if (isset($children_mids[$key])) {
                 if(current_path() === $el['#href']) {
-                    dpm('ok');
                     // If child element is open, set the main menu link to active.
                     $element['#attributes']['class'][] = 'active';
                 }
