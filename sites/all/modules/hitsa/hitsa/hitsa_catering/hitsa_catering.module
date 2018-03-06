@@ -914,7 +914,13 @@ function hitsa_catering_provider_side_menu($providers = null, $active = null)
                 } else {
                     $provider_name = $provider['provider']->name;
                 }
-                $output .= '<li class="' . $class . '"><a href="' . $link . '">' . $provider_name . '</a>';
+                if(empty($class)){
+                    $link = 'href="'.$link.'"';
+                }
+                else{
+                    $link='';
+                }
+                $output .= '<li class="' . $class . '"><a '.$link.'>' . $provider_name . '</a>';
             }
             $output .= '</ul>';
             return $output;
