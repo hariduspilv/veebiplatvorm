@@ -389,7 +389,7 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     global $language;
 
     $element = $variables['element'];
-
+    
     $sub_menu = '';
     $element['#attributes']['class'] = array();
     $service_menu_mlid = variable_get('hitsa_services_mlid');
@@ -419,6 +419,7 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     ) {
         $element['#attributes']['class'][] = 'active';
     } else if ($element['#below']) {
+        dpm($element);
         $children_mids = array_fill_keys(element_children($element['#below']), true);
         $children = array();
         foreach ($element['#below'] as $key => $el) {

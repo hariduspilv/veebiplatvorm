@@ -6,6 +6,7 @@ function hitsa_locations_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_locations', 'install');
   variable_set('comment_contact_location', '0'); // Disable commenting
+  variable_set('geolocation_googlemaps_api_key', 'AIzaSyBQW5d3aaKFwt_7LaKW683Q8VAcJjv7SbU'); // Geolocation field variable
 }
 
 /*
