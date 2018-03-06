@@ -419,14 +419,18 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     ) {
         $element['#attributes']['class'][] = 'active';
     } else if ($element['#below']) {
-        dpm($element);
         $children_mids = array_fill_keys(element_children($element['#below']), true);
         $children = array();
-        dpm($children_mids);
+        dpm(current_path());
         foreach ($element['#below'] as $key => $el) {
+            if($element['#title'] === 'Vastuvõtt') {
+                dpm($el);
+                dpm($key);
+                
+            }
             if (isset($children_mids[$key])) {
                 if(current_path() === $el['#href']) {
-                    dpm(current_path());
+                    dpm('ok');
                     // If child element is open, set the main menu link to active.
                     $element['#attributes']['class'][] = 'active';
                 }
