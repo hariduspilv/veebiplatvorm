@@ -724,4 +724,3 @@ $(function(){
    $("body").append("<ul>"+galleryHTML+"</ul>");
 	*/
 });
-
