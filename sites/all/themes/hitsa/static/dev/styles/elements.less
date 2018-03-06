@@ -409,7 +409,7 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
    & > li{border-bottom:@border-2 1pxi solid; display: block; position: relative;
       &:last-child{border-bottom:none;}
       a{display:block; padding:17px 0; font-size:18px; color:@highlight-1; text-decoration: none; position: relative;
-         &:hover{text-decoration: underline;}
+         &[href]:hover{text-decoration: underline;}
       }
       &.open{
          [class*='before-']{transform: rotate(180deg);}
