@@ -1614,7 +1614,7 @@ function hitsa_events_create_menu_links($school_type = null)
     'customized' => 1,
   );
   $menu_links[] = array(
-    'link_path' => 'calendar',
+    'link_path' => 'studies-calendar',
     'options' => array(
       'query' => array(
         'category' => $stud_cat,

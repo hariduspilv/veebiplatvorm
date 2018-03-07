@@ -405,8 +405,13 @@ function hitsa_curriculum_node_presave($node)
 }
 
 function hitsa_curriculum_form_alter(&$form, &$form_state, $form_id)
-{
+{   
     switch ($form_id) {
+
+        case 'taxonomy_form_term':
+            drupal_set_message('Ploki pealkirja seadistamiseks minge järgmisele lingile: '.l('Ploki pealkirja seadistamine','/admin/hitsa/event_settings'),'warning');
+            return $form;
+            break;
         case 'curriculum_node_form':
 //            $form['field_header_information'] = array(
 //                '#type' => 'container',
