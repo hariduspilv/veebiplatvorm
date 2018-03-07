@@ -19,6 +19,11 @@ function hitsa_events_menu()
         'page callback' => 'hitsa_events_training_calendar',
         'access arguments' => array('access content'),
     );
+    $items['studies-calendar'] = array(
+        'title' => '',
+        'page callback' => 'hitsa_events_calendar_page',
+        'access arguments' => array('access content'),
+    );
     $items['api/events'] = array(
         'title' => check_plain(t('Calendar')),
         'page callback' => 'hitsa_events_endpoint',
