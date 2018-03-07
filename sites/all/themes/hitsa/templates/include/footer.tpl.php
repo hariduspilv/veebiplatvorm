@@ -23,8 +23,8 @@
 </div><!--/inline-->
 
 <?php if(!empty($hitsa_school_place_coords) && !empty($google_api_key)): ?>
-<div class="map" data-plugin="googleMaps" data-coords="<?php print check_plain($hitsa_school_place_coords); ?>" data-icon="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/mapIcon.png'; ?>">
-</div><!--/map-->
+  <a href="<?php if(!empty($hitsa_school_place_address)) print $hitsa_school_place_address; ?>" target="_blank" class="map" data-plugin="googleMaps" data-coords="<?php print check_plain($hitsa_school_place_coords); ?>" data-icon="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/mapIcon.png'; ?>">
+</a><!--/map-->
 <?php endif; ?>
    
 <div class="inline">

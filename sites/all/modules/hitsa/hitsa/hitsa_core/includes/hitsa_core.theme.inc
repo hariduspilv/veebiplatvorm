@@ -328,6 +328,20 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
   // School Location Map
   $variables['google_api_key'] = variable_get_value('hitsa_google_api_key');
   $variables['hitsa_school_place_coords'] = variable_get_value('hitsa_school_place_coords');
+  
+  // Footer map address
+  if (!empty($variables['hitsa_school_place_coords'])) {
+    $coordinates = explode(',', $variables['hitsa_school_place_coords']);
+    $options['language'] = 'et';
+    module_load_include('inc', 'geocoder', 'google');
+    $actual_address = geocoder_reverse_google($coordinates[0], $coordinates[1], $options);
+    if (!empty($actual_address)) {
+      $actual_address = $actual_address->address;
+      $address_link = url('https://www.google.com/maps/search/', array('query' => array('api' => 1, 'query' => $actual_address)));
+      $variables['hitsa_school_place_address'] = $address_link;
+    }
+  }
+  
 }
 
 function hitsa_core_menu_overview_form($variables)
