@@ -994,7 +994,13 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                         $link = url($source, array('language' => $language));
                     }
                 }
-                $output .= '<li class="' . $class . '"><a href="' . $link . '#' . $area->title . '">' . $area->title . '</a></li>';
+                if($class!='active'){
+                    $point_link = 'href="' . $link . '#' . $area->title . '"';
+                }
+                else{
+                    $point_link = '';
+                }
+                $output .= '<li class="' . $class . '"><a '.$point_link.'>' . $area->title . '</a></li>';
                 unset($class);
             }
             $output .= '</ul>';
@@ -1041,7 +1047,13 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                 $class = ($fields_value['active']) ? 'active' : '';
                 $list_item = '<li class="' . $class . '">';
                 if (!empty($fields_value['name'])) {
-                    $list_item .= '<a href="javascript:void(0);">' . $fields_value['name'] . '</a>';
+                    if($class=='active'){
+                        $javascript_link = "";
+                    }
+                    else{
+                        $javascript_link = 'href="javascript:void(0);"';
+                    }
+                    $list_item .= '<a '.$javascript_link.'>' . $fields_value['name'] . '</a>';
                 }
                 if (!empty($fields_value['subpoints'])) {
                     $list_item .= '<ul>';
@@ -1051,7 +1063,13 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                         $subpoint_url = url($source);
                         $class = ($subpoint->active == true) ? 'active' : '';
                         $list_item .= '<li class="' . $class . '">';
-                        $list_item .= '<a href="' . $subpoint_url . '#' . $subpoint->title . '">' . $subpoint->title . '</a>';
+                        if($class!="active"){
+                            $subpoint_link=' href="' . $subpoint_url . '#' . $subpoint->title . '"';
+                        }
+                            else{
+                                $subpoint_link='';
+                            }
+                        $list_item .= '<a '.$subpoint_link.'>' . $subpoint->title . '</a>';
                         $list_item .= '</li>';
                     }
                     $list_item .= '</ul>';
