@@ -835,18 +835,18 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 $header_nids = array_keys($header_content['node']);
                 $header = entity_load('node', $header_nids);
                 foreach ($header as $header_key => $header_value) {
+                    menu_set_active_item('node/'.$header_value->nid);
                     $header_content_html = hitsa_curriculum_generate_header($header_value);
                     break;
                 }
             }
         }
     }
-
     $output = '';
     if (!empty($header_content_html)) {
         $output .= $header_content_html;
     }
-
+    
     if (module_exists('hitsa_core')) {
         $content = hitsa_core_get_content_by_type('node', 'curriculum', $language->language, array('cur_type' => $type));
     }
