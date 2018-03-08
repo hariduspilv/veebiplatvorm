@@ -727,7 +727,7 @@ function hitsa_curriculum_contacts($contacts)
 function hitsa_curriculum_generate_left_f_titles($areas)
 {
     if (is_array($areas)) {
-        $output = '<div class="col-3 d-flex">';
+        $output = '<div class="col-3 d-flex no-print">';
         $output .= '<ul class="side-menu">';
         $current_path = current_path();
         if (!empty($_REQUEST)) {
@@ -944,7 +944,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
         $output .= '<div class="block no-padding" ' . $id_block . '>';
         $output .= '<div class="row">';
         if ($content_count > 1) {
-            $output .= '<div class="col-3 d-flex sm-hide">';
+            $output .= '<div class="col-3 d-flex sm-hide no-print">';
             $output .= $left_side;
             $output .= '</div><!--/col-3-->';
         }
