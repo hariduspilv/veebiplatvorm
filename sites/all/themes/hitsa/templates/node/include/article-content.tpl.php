@@ -146,7 +146,7 @@
             
 				  </div>
 				  
-		      <div class="col-4 sm-12 no-print col-offset-1 sm-offset-0">
+		      <div class="col-4 sm-12 col-offset-1 sm-offset-0">
             
             <div class="btn-bar align-right sm-hide">
               <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
@@ -160,7 +160,7 @@
                 <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>"
                 data-plugin="modal" data-modal="image-<?php print $image['fid']; ?>" 
                 data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>"
-                <?php if(!empty($image['field_file_image_title_text'])) print ' title="' . check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) . '"'; ?>>
+                <?php if(!empty($image['field_file_image_title_text'])) print ' data-title="' . check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) . '"'; ?>>
                   <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
                   alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
                 </a>
@@ -170,10 +170,10 @@
             <?php if(!empty($article_video)): ?>
             <figure>
               <a href="<?php print file_create_url($article_video[0]['uri']); ?>" 
-              title="<?php print check_plain($article_video[0]['filename']); ?>" 
+              data-title="<?php print check_plain($article_video[0]['filename']); ?>" 
               data-plugin="modal" data-modal="video-<?php print $article_video[0]['fid']; ?>" data-closebutton="<?php print t('Close'); ?>"
               data-heading="<?php print check_plain($article_video[0]['filename']); ?>"
-              <?php if(!empty($image['field_file_image_title_text'])) print ' title="' . check_plain($article_video[0]['filename']) . '"'; ?>>
+              <?php if(!empty($image['field_file_image_title_text'])) print ' data-title="' . check_plain($article_video[0]['filename']) . '"'; ?>>
                 <?php if(!empty($video_thumbnail)): ?>
                 <img src="<?php print $video_thumbnail; ?>" 
                 alt="<?php print check_plain($article_video[0]['filename']); ?>">
@@ -188,7 +188,7 @@
             <figure>
               <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
               data-plugin="modal" data-modal="image-<?php print $image['fid']; ?>" data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>"
-              <?php if(!empty($image['field_file_image_title_text'])) print ' title="' . check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) . '"'; ?>>
+              <?php if(!empty($image['field_file_image_title_text'])) print ' data-title="' . check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) . '"'; ?>>
                 <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
                 alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
               </a>
