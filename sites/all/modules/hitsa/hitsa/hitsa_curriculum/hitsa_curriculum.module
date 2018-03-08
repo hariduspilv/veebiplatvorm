@@ -1703,7 +1703,7 @@ function hitsa_curriculu_fp_mobile_fields()
         }
     }
 
-    $output = '<div class="block sm-show">
+    $output = '<div class="block sm-show no-print">
     <h3 class="block-title">' . t('Subject fields') . '</h3>
 
     <div class="hero-mini">
@@ -1820,7 +1820,7 @@ function hitsa_curriculum_mobile_menu($areas, $type, $id = null)
 
     $get_menu = hitsa_curriculum_generate_left_custom_titles($areas, $type, $id);
     $output = '';
-    $output .= '<div class="row sm-show">';
+    $output .= '<div class="row sm-show no-print">';
     $output .= '		<div class="col-12">';
     $output .= '			<div class="accordion" data-plugin="accordion" data-allClosed="true">';
     $output .= '				<div class="accordion-entry">';
