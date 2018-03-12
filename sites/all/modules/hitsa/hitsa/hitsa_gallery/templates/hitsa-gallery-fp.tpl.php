@@ -27,6 +27,7 @@
      <?php endif; ?>
   </div><!--/row-->
   
+  <?php if(count($nodes) > 1): ?>
   <div class="row-spacer"></div>
   
   <div class="row">
@@ -54,6 +55,7 @@
      </div><!--/col-6-->
     <?php endforeach; ?>
   </div><!--/row-->
+  <?php endif; ?>
   
   <div class="row-spacer-m"></div>
   
