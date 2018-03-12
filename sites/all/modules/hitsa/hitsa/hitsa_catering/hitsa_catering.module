@@ -1368,7 +1368,7 @@ function hitsa_catering_front_page_block()
         $output .= '
         </div>
                         <hr>
-
+                        <div class="row-spacer-xs"></div>
                         <div class="row">
                            <div class="col-12">
                               <div class="align-center">
