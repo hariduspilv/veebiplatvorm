@@ -1078,7 +1078,8 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                         $class = ($subpoint->active == true) ? 'active' : '';
                         $list_item .= '<li class="' . $class . '">';
                         if($class!="active"){
-                            $subpoint_link=' href="' . $subpoint_url . '#' . $subpoint->title . '"';
+                            $title_trans = transliteration_clean_filename($subpoint->title);
+                            $subpoint_link=' href="' . $subpoint_url . '#' . $title_trans . '"';
                         }
                             else{
                                 $subpoint_link='';
