@@ -395,7 +395,7 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     $service_menu_mlid = variable_get('hitsa_services_mlid');
     $homepage_menu_mlid = variable_get('hitsa_homepage_mlid');
     $element['#title'] = t($element['#title']);
-
+    
     if ($element['#original_link']['mlid'] === $service_menu_mlid) {
         $sub_menu = theme('service_menu_tree__hitsa_main_menu', array('element' => $element));
         $services_available = false;

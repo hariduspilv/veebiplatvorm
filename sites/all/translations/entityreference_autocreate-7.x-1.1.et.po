@@ -1,0 +1,22 @@
+# Estonian translation of Entityreference Autocreate (7.x-1.1)
+# Copyright (c) 2017 by the Estonian translation team
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Entityreference Autocreate (7.x-1.1)\n"
+"POT-Creation-Date: 2017-01-30 11:38+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Language-Team: Estonian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+msgid "Fields"
+msgstr "Väljad"
+msgid "Authored by"
+msgstr "Autor"
+msgid "Anonymous"
+msgstr "Anonüümne"
+msgid "Published status"
+msgstr "Avaldamise staatus"
