@@ -1,4 +1,5 @@
-<div class="block">
+
+<div class="block<?php if(!empty($hide_main_block)) print ' sm-hide'; ?>">
   <?php if(!empty($article_type) && !empty($article_types_list[$article_type[0]['value']])): 
   $heading_title = check_plain($article_types_list[$article_type[0]['value']]);
   ?>
