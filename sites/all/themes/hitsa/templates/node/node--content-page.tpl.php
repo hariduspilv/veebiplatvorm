@@ -81,8 +81,6 @@
  */
 ?>
 <?php if($view_mode === 'full'): ?>
-<div class="row">
-  <div class="col-12">
             
     <?php include('include/article-content.tpl.php'); ?>
     
@@ -114,8 +112,6 @@
       <?php print $subpages; ?>
     <?php endif; ?>
     
-  </div><!--/col-12-->
-</div>
 <?php else: ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
