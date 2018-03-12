@@ -1,10 +1,10 @@
 <div class="highlight-bg-1">
    <div class="inline">
       <div class="row">
-        <div class="col-8">
+        <div class="col-6">
           <?php print render($quicklinks_menu); ?>
         </div><!--/col-6-->
-        <div class="col-4 flex-right">
+        <div class="col-6 flex-right">
           <?php if(!empty($language_switcher)): ?>
             <?php print $language_switcher; ?>
           <?php endif; ?>
