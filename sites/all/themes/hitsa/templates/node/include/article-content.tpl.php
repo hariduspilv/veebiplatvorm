@@ -154,7 +154,7 @@
               <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
             </div>
             
-            <div class="row-spacer-xl no-print"></div>
+            <div class="row-spacer-xl no-print sm-hide"></div>
             
             <?php if(!empty($subpage_images) || (!empty($cp_image) && $subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
               <figure>
