@@ -1343,7 +1343,7 @@ function hitsa_catering_front_page_block()
                         <div class="row">
                            <div class="col-12">
                               <div class="align-center">
-                                 <a href="' . $catering_link . '" class="btn btn-filled">' . t('Weekly menu') . '</a>
+                                 <a href="' . $catering_link . '" class="btn btn-filled sm-strech">' . t('Weekly menu') . '</a>
 										</div><!--/align-center-->
                            </div><!--/col-12-->
                         </div><!--/row-->
@@ -1372,7 +1372,7 @@ function hitsa_catering_front_page_block()
                         <div class="row">
                            <div class="col-12">
                               <div class="align-center">
-                                  <a href="' . $catering_link_tomorrow . '" class="btn btn-filled">' . t('Weekly menu') . '</a>
+                                  <a href="' . $catering_link_tomorrow . '" class="btn btn-filled  sm-strech">' . t('Weekly menu') . '</a>
 										</div><!--/align-center-->
                            </div><!--/col-12-->
                         </div><!--/row-->
