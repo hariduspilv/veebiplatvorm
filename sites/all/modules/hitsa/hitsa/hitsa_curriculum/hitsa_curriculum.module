@@ -910,10 +910,12 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 $output .= $tabs;
             }
         }
+        $base_page=FALSE;
         if (!empty($real_content)) {
             if (!empty($active_id) && node_load($active_id)->type!='curriculum') {
                 foreach ($real_content as $real_key => $real_value) {
                     $active_id = $real_key;
+                    $base_page=TRUE;
                     break;
             }
         }
@@ -934,6 +936,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
             }
         }
         $right_side = hitsa_curriculum_generate_right_custom_side($content, $type);
+        
     }
     if (!empty($left_side) || !empty($right_side)) {
         $id_block = '';
@@ -941,6 +944,10 @@ function hitsa_curriculum_custom_block($curriculum_type)
             $id_block = 'id="' . $content->title . '"';
         }
         $mobile_block = hitsa_curriculum_mobile_menu($real_content, $type, $active_id);
+
+        if($base_page){
+            $output.='<div class="row-spacer"></div>';
+        }
         $output .= '<div class="block no-padding" ' . $id_block . '>';
         $output .= '<div class="row">';
         if ($content_count > 1) {
