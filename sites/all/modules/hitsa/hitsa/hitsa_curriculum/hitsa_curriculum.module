@@ -1670,6 +1670,9 @@ function hitsa_curriculu_fp_mobile_fields()
                         $loaded_speciality = node_load($node_value->nid);
                     }
                 }
+                else{
+                    continue;
+                }
                 $image_url = '';
                 if (!empty($loaded_speciality->field_pictures)) {
                     $picture = $loaded_speciality->field_pictures['und'][0];
@@ -1702,7 +1705,7 @@ function hitsa_curriculu_fp_mobile_fields()
             }
         }
     }
-
+    if(!empty($output_slides)){
     $output = '<div class="block sm-show no-print">
     <h3 class="block-title">' . t('Subject fields') . '</h3>
 
@@ -1722,7 +1725,10 @@ function hitsa_curriculu_fp_mobile_fields()
     </div><!--/hero-mini-->
 
  </div><!--/block sm-show-->';
-
+    }
+    else{
+        $output='';
+    }
 
     return $output;
 }
