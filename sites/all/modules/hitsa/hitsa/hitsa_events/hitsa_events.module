@@ -1911,8 +1911,8 @@ function hitsa_events_generate_ics($post)
             header('Content-type: text/calendar; charset=utf-8');
             header('Content-Disposition: attachment; filename=invite.ics');
             if (!empty($event->event_date)) {
-                $start_date = date('Y-m-d g:iA', $event->event_date['und'][0]['value']);
-                $end_date = date('Y-m-d g:iA', $event->event_date['und'][0]['value2']);
+                $start_date = gmdate('Y-m-d g:iA', $event->event_date['und'][0]['value']);
+                $end_date = gmdate('Y-m-d g:iA', $event->event_date['und'][0]['value2']);
             }
             if (!empty($event->body)) {
                 $description = strip_tags($event->body['und'][0]['safe_value']);
@@ -1927,7 +1927,6 @@ function hitsa_events_generate_ics($post)
                 'summary' => $event->title,
                 'url' => url('calendar')
             ));
-
             $file_contents = $ics->to_string();
             $calendar_location = 'public://calendars';
             file_prepare_directory($calendar_location, $options = FILE_CREATE_DIRECTORY);
