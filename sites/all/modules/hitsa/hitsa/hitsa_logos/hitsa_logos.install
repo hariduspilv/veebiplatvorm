@@ -117,6 +117,7 @@ function _hitsa_logos_field_instances() {
       'settings' => array(
         'title' => 'none',
       ),
+      'required' => 1,
     ),
   );
 }

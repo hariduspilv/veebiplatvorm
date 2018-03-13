@@ -105,7 +105,6 @@ function hitsa_core_menu()
 }
 function hitsa_core_menu_alter(&$items)
 {
-    dpm($items);
     $items['search'] = array(
         'title' => 'Search',
         'page callback' => 'hitsa_core_search_page',

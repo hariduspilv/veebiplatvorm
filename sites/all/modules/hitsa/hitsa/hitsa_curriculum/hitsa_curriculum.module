@@ -1624,7 +1624,7 @@ function hitsa_curriculum_fp_subject_fields()
         $site_logo_fid = variable_get_value('hitsa_fp_image_fid');
         $file = $site_logo_fid !== null ? file_load($site_logo_fid) : false;
         if (!empty($file->uri)) {
-            $file_url = file_create_url($file->uri);
+            $file_url = image_style_url('hitsa_hero_banner', $file->uri);
         }
         if (!empty($file_url)) {
             $output .= '

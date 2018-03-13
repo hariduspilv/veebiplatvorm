@@ -339,6 +339,20 @@ function _hitsa_core_image_styles() {
 		    ),
 		  ),
 		),
+		array(
+		  'style' => array(
+		    'name' => 'hitsa_hero_banner',
+		    'label' => 'Hero Banner (x420)'
+		  ),
+      'effect' => array(
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => '',
+          'height' => 420,
+          'upscale' => 1,
+        ),
+      ),
+    ),
   );
 
   return $image_styles;
