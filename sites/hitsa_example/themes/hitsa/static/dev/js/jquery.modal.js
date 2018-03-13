@@ -5,7 +5,7 @@ $.fn.modal = function(){
 	var xhr = false;
 	var visible = false;
    var type = "html";
-	var title = main.attr("title") || false;
+	var title = main.attr("title") || main.attr("data-title");
 	var heading = main.attr("data-heading") || "";
 	
 	main.bind("click", function(e){

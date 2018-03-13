@@ -65,10 +65,11 @@ header.main{background:@base-2; position: relative; z-index: 100;
          .row .row{margin:0 -@gridGutter/2;}
          ul{border-left:@border-2 1px solid; padding:0 23px; margin-top:25px;
             li{
-               a{color:@highlight-1; text-decoration: none; display: block; margin-bottom:24px;
+               a{color:@highlight-1; text-decoration: none; display: block; margin-bottom:24px; font-weight: normal;
                   &:hover{text-decoration: underline;}
                }
                &:last-child a{margin-bottom:0;}
+					&.active a{text-decoration:underline;}
             }
          }
          h3{font-size:24px; font-weight: 500;}

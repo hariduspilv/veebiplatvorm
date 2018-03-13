@@ -409,7 +409,7 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
    & > li{border-bottom:@border-2 1pxi solid; display: block; position: relative;
       &:last-child{border-bottom:none;}
       a{display:block; padding:17px 0; font-size:18px; color:@highlight-1; text-decoration: none; position: relative;
-         &:hover{text-decoration: underline;}
+         &[href]:hover{text-decoration: underline;}
       }
       &.open{
          [class*='before-']{transform: rotate(180deg);}
@@ -581,6 +581,15 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
 		.tooltipster-arrow-background {
 			border-right-color: @base-1;
 			left: 1px;
+			top: 0px;
+		}
+	}
+	&.tooltipster-left{
+		.tooltipster-arrow{left:100%; margin-left:-9pxi;}
+		.tooltipster-arrow-border{border-left-color: @border-2; box-shadow: 0 -2px 4px 0 rgba(161,161,161,0.5); left:0px; right:auto;}
+		.tooltipster-arrow-background {
+			border-left-color: @base-1;
+			left: -2px;
 			top: 0px;
 		}
 	}
