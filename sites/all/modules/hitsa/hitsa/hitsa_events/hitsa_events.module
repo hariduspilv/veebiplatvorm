@@ -704,11 +704,13 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $end_date = !empty($event->event_date['und'][0]['value2']) ? $event->event_date['und'][0]['value2'] : null;
         $start_time_hours = date('H:i', $start_date);
         $end_time_hours = date('H:i', $end_date);
-        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '00:00') ? '<span>' . t('Time') . ': ' . $start_time_hours . ',</span>' : null;
+        $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '00:00') ? '<span>' . t('Time') . ': ' . $start_time_hours . '</span>' : null;
         if (!empty($end_time_hours)) {
             if(!empty($time_hours_minutes_all)){
                 if($start_time_hours!='00:00'){
-                    $time_hours_minutes_all = '<span>' . t('Time') . ': ' . $start_time_hours . ' - '.$end_time_hours.',</span>';
+                    if($start_time_hours!=$end_time_hours){
+                        $time_hours_minutes_all = '<span>' . t('Time') . ': ' . $start_time_hours . ' - '.$end_time_hours.'</span>';
+                    }
                 }
             }
         }
