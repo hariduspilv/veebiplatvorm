@@ -815,6 +815,11 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= $event->title;
         $output .= '</a>';
         $output .= '<div class="object-footer">';
+        if(empty($time_hours_minutes_all)){
+            if(!empty($location_ready)){
+                $location_ready = str_replace(',</span>','</span>',$location_ready);
+            }
+        }
         if ($type != 'training') {
             $output .= (!empty($location_ready)) ? $location_ready . ' ' : '';
         } else {
