@@ -703,8 +703,18 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $start_date = !empty($event->event_date['und'][0]['value']) ? $event->event_date['und'][0]['value'] : null;
         $end_date = !empty($event->event_date['und'][0]['value2']) ? $event->event_date['und'][0]['value2'] : null;
         $start_time_hours = date('H:i', $start_date);
+        $end_time_hours = date('H:i', $end_date);
         $time_hours_minutes_all = (!empty($start_time_hours) && $start_time_hours != '00:00') ? '<span>' . t('Time') . ': ' . $start_time_hours . ',</span>' : null;
-
+        if (!empty($end_time_hours)) {
+            if(!empty($time_hours_minutes_all)){
+                if($start_time_hours!='00:00'){
+                    $time_hours_minutes_all = '<span>' . t('Time') . ': ' . $start_time_hours . ' - '.$end_time_hours.',</span>';
+                }
+            }
+        }
+        if($start_time_hours=='00:00'&&$end_time_hours=='00:00'){
+            $time_hours_minutes_all=null;
+        }
         if ($type == 'training') {
             $time_hours_minutes = '<span class="before-calendar">' . date('j.m', $start_date) . ' - ' . date('j.m', $end_date) . '</span>';
         }
