@@ -709,7 +709,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
             if(!empty($time_hours_minutes_all)){
                 if($start_time_hours!='00:00'){
                     if($start_time_hours!=$end_time_hours){
-                        $time_hours_minutes_all = '<span>' . t('Time') . ': ' . $start_time_hours . ' - '.$end_time_hours.'</span>';
+                        if($end_time_hours!='00:00'){
+                            $time_hours_minutes_all = '<span>' . t('Time') . ': ' . $start_time_hours . ' - '.$end_time_hours.'</span>';
+                        }
                     }
                 }
             }
