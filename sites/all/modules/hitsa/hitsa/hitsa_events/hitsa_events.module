@@ -1067,14 +1067,12 @@ function hitsa_events_front_page_block()
 
                 if ($i == 1 || $i == 3 || $i == $event_type_count - 1) {
                     $output .= ' <hr />';
-                    $output .= ' <div class="row-spacer-xs"></div>';
                 }
                 if ($school_type == 2 && $i == 0) {
                     $output .= '<hr class="sm-show">';
                 }
                 if ($school_type == 1 && $i == 0 && $i != $event_type_count - 1) {
                     $output .= ' <hr />';
-                    $output .= ' <div class="row-spacer-xs"></div>';
                 }
                 if ($i == 3 || $i == $event_type_count - 1) {
                 }
