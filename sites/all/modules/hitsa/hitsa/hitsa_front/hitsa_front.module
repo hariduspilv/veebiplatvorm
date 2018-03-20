@@ -149,10 +149,13 @@ function hitsa_front_block_view($delta = '')
       $front_page_image = variable_get_value('hitsa_fp_image_fid');
       if (!empty($front_page_image)) {
           $front_page_image = file_load($front_page_image);
-          $front_page_image = image_style_url('hitsa_hero_banner', $front_page_image->uri);
-          $block = array();
-          $block['content'] = theme('hitsa_front_hero_block', array('image_link'=>$front_page_image));
-          return $block;
+          if(!empty($front_page_image)){
+            $front_page_image = image_style_url('hitsa_hero_banner', $front_page_image->uri);
+            $block = array();
+            $block['content'] = theme('hitsa_front_hero_block', array('image_link'=>$front_page_image));
+
+            return $block;
+          }
       }
         break;
     case 'hitsa_front_services_block':

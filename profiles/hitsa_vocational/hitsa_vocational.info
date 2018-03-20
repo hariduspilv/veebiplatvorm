@@ -41,6 +41,7 @@ dependencies[] = i18n_node
 dependencies[] = i18nviews
 dependencies[] = i18n_taxonomy
 dependencies[] = geocoder
+dependencies[] = googleanalytics
 dependencies[] = hitsa_core
 dependencies[] = hitsa_contacts
 dependencies[] = hitsa_locations
