@@ -1633,7 +1633,7 @@ function hitsa_curriculum_fp_subject_fields()
         if (!empty($file_url)) {
             $output .= '
         <div class="hero sm-hide">
-        <img src="' . $file_url . '" alt="" />
+        <div class="hero-image" style="background-image:url(' . $file_url . ');"></div>
         <div class="inline">
         <div class="row">
            <div class="col-12">
@@ -1652,9 +1652,8 @@ function hitsa_curriculum_fp_subject_fields()
 
            </div><!--/col-12-->
         </div><!--/row-->
-
-     </div><!--/inline-->
-     </div>';
+        </div>
+     </div><!--/inline-->';
         }
     }
 
