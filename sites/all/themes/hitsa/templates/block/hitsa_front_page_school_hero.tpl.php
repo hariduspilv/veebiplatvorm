@@ -1,3 +1,3 @@
 <div class="hero sm-hide">
-    <img src="<?php print($image_link)?>" alt="" />
+    <div class="hero-image" style="background-image:url(<?php print($image_link)?>);"></div>
  </div><!--/hero-->
