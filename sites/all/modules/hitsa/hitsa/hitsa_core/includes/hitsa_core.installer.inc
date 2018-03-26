@@ -182,10 +182,8 @@ function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
         $node->tnid = $tnid;
         $node->path['pathauto'] = "1";
 
-        $node->status = 0; // Unpublished by default.
-        if($lang=='et'){
-          $node->status = 1;
-        }
+        $node->status = 1; // Published by default.
+
         // Content pages
         if($node_data['type'] === 'content_page') {
           if(!empty($node_data['cp_type'])) {
@@ -204,12 +202,14 @@ function hitsa_core_add_nodes($installed_nodes = array(), $module = NULL) {
         // Add to menu translation set
         if(!empty($node->menu['mlid'])) {
           $item = menu_link_load($node->menu['mlid']);
+          $item['language'] = $lang;
           $translation_set->add_item($item, $lang);
           $item['i18n_tsid'] = $translation_set->tsid;
+          $item['customized'] = 1;
           menu_link_save($item);
         }
       }
-      $translation_set->save(TRUE);
+      $translation_set->save();
     } else {
       $node = (object) $node_data;
       node_object_prepare($node);
