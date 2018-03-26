@@ -322,7 +322,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
   $hitsa_footer_menu_name = variable_get('hitsa_footer_menu_name');
   if (!empty($hitsa_footer_menu_name)) {
     $footer_menu = menu_tree_all_data($hitsa_footer_menu_name);
-    $variables['footer_menu'] = menu_tree_output($footer_menu);
+    $variables['footer_menu'] = menu_tree_output(i18n_menu_localize_tree($footer_menu));
   }
 
   // School Location Map
