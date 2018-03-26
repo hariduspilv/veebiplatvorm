@@ -199,6 +199,7 @@ function _hitsa_core_menu_links() {
     $menu_links[] = array(
       'link_path' => '<front>',
       'link_title' => 'Avaleht',
+      'customized' => 1,
       'menu_name' => $hitsa_footer_menu,
       'weight' => 1,
     );
