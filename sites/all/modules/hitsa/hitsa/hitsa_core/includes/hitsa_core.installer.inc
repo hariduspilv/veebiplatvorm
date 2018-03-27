@@ -134,7 +134,19 @@ function hitsa_core_add_vocabularies($installed_vocabularies = array(), $module 
       // Add generic terms
       foreach($v['terms'] as $term) {
         $term->vid = $vocab->vid;
+        
+        if(!empty($term->translations)) {
+         $term_translations = $term->translations;
+         unset($term->translations);
+        }
+        
         taxonomy_term_save($term);
+        
+        if(!empty($term_translations)) {
+          foreach($term_translations as $lang => $t)  {
+            _hitsa_core_profile_create_term_translation($term, $lang, $t);
+          }
+        }
       }
     }
   }
@@ -285,7 +297,18 @@ function hitsa_core_add_menu_links($installed_menu_links = array(), $module = NU
       $menu_type = $link['hitsa_menu_type'];
       unset($link['hitsa_menu_type']);
     }
+    if(!empty($link['translations'])) {
+      $translations = $link['translations'];
+      unset($link['translations']);
+    }
+    
     $mlid = menu_link_save($link);
+    
+    if(!empty($translations)) {
+      foreach($translations as $lang => $t) {
+        _hitsa_core_profile_create_menu_translation($mlid, $lang, $t);
+      }
+    }
     if($mlid) {
       $menu_mlids[] = $mlid;
     }
@@ -400,4 +423,19 @@ function hitsa_core_add_path_aliases($installed_path_aliases = array(), $module 
 }
 
 function hitsa_core_delete_path_aliases($installed_path_aliases = array(), $module = NULL) {
+}
+
+function _hitsa_core_profile_create_term_translation($term, $langcode, $translation, $property = 'name') {
+  $context = array(
+        'term',
+    $term->tid,
+    $property,
+  );
+  $textgroup = 'taxonomy';
+  i18n_string_textgroup($textgroup)->update_translation($context, $langcode, $translation);
+}
+
+function _hitsa_core_profile_create_menu_translation($mlid, $langcode, $translation, $property = 'title') {
+  $context = 'menu:item:' . $mlid . ':' . $property;
+  i18n_string_translation_update($context, $translation, $langcode);
 }

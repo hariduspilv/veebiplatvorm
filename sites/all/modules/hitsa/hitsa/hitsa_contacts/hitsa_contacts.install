@@ -11,6 +11,13 @@ function hitsa_contacts_install() {
   hitsa_contacts_add_contact_form();
   
   variable_set("language_content_type_contact", ENTITY_TRANSLATION_ENABLED); // Add field translation
+  
+  // Add taxonomy term translations
+  
+}
+
+function hitsa_contacts_enable() {
+
 }
 
 /*
@@ -494,19 +501,39 @@ function _hitsa_contacts_vocabularies() {
       ),
       'terms' => array(
         (object) array(
-         'name' => t('Headmaster'),
+         'name' => 'Direktor',
+         'translations' => array(
+            'en' => 'Director',
+            'ru' => 'Директор',
+          ),
         ),
         (object) array(
-         'name' => t('Development Manager'),
+         'name' => 'Arendusjuht',
+         'translations' => array(
+            'en' => 'Development manager',
+            'ru' => 'Менеджер по развитию',
+          ),
         ),
         (object) array(
-         'name' => t('Study counselor'),
+         'name' => 'Õppenõustaja',
+         'translations' => array(
+            'en' => 'Learning Advisor',
+            'ru' => 'Советник обучения',
+          ),
         ),
         (object) array(
-         'name' => t('Mathematics'),
+         'name' => 'Matemaatika',
+         'translations' => array(
+            'en' => 'Mathematics',
+            'ru' => 'Математика',
+          ),
         ),
         (object) array(
-         'name' => t('History'),
+         'name' => 'Ajalugu',
+         'translations' => array(
+            'en' => 'History',
+            'ru' => 'История',
+          ),
         ),
       ),
     );
@@ -521,16 +548,32 @@ function _hitsa_contacts_vocabularies() {
       ),
       'terms' => array(
         (object) array(
-         'name' => t('Management'),
+         'name' => 'Juhtkond',
+         'translations' => array(
+            'en' => 'Management',
+            'ru' => 'Администрация',
+          ),
         ),
         (object) array(
-         'name' => t('Teachers'),
+         'name' => 'Õpetajad',
+         'translations' => array(
+            'en' => 'Teachers',
+            'ru' => 'Учителя',
+          ),
         ),
         (object) array(
-         'name' => t('Managing board'),
+         'name' => 'Õppenõukogu',
+         'translations' => array(
+            'en' => 'Study Council',
+            'ru' => 'Учебный совет',
+          ),
         ),
         (object) array(
-         'name' => t('Employees'),
+         'name' => 'Töötajad',
+         'translations' => array(
+            'en' => 'Employees',
+            'ru' => 'Персонал',
+          ),
         ),
       ),
     );
@@ -691,4 +734,14 @@ function hitsa_contacts_delete_contact_form() {
   $contact_us_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
   node_delete($contact_us_nid);
   variable_del('hitsa_contacts_contact_us_webform_nid');
+}
+
+function _hitsa_contacts_profile_create_term_translation($term, $langcode, $translation, $property = 'name') {
+  $context = array(
+        'term',
+    $term->tid,
+    $property,
+  );
+  $textgroup = 'taxonomy';
+  i18n_string_textgroup($textgroup)->update_translation($context, $langcode, $translation);
 }

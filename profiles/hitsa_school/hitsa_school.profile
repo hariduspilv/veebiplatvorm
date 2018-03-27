@@ -80,6 +80,7 @@ function hitsa_set_system_defaults()
 {
     hitsa_set_default_language();
     hitsa_set_language_detection_rules();
+    hitsa_translate_webform();
 }
 
 function hitsa_set_default_language()
@@ -128,4 +129,45 @@ function hitsa_school_install_tasks_alter(&$tasks, $install_state){
 // local callback function
 function _hitsa_school_locale_selection(&$install_state){
     $install_state['parameters']['locale'] = 'en';
+}
+
+function hitsa_translate_webform() {
+    $webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
+
+	$node = node_load($webform_nid);
+
+	foreach($node->webform['components'] as &$component) {
+		webform_localization_component_update_translation_strings($component);
+	}
+	webform_localization_translate_strings($node);
+	node_save($node);
+
+	$translations = array(
+		1 => array(
+			'en' => 'First and surname',
+			'ru' => 'Имя и фамилия',
+		),
+		2 => array(
+			'en' => 'E-mail',
+			'ru' => 'Эл. почта',
+		),
+		3 => array(
+			'en' => 'Message',
+			'ru' => 'Сообщение',
+		),
+	);
+
+	// Add translations
+	foreach($node->webform['components'] as $delta => $component) {
+		$context = 'webform:' . $node->nid . ':' . $delta . ':#title';
+		i18n_string_translation_update($context, $translations[$delta]['en'], 'en');
+		i18n_string_translation_update($context, $translations[$delta]['ru'], 'ru');
+	}
+	i18n_string_translation_update('webform:' . $node->nid . ':3:#description', '* Marked fields are required', 'en' );
+	i18n_string_translation_update('webform:' . $node->nid . ':3:#description', '* Отмеченные поля обязательны для заполнения', 'ru');
+	
+	i18n_string_translation_update('webform:' . $node->nid . ':confirmation', "Thank you! We've received your message.", 'en' );
+	i18n_string_translation_update('webform:' . $node->nid . ':confirmation', 'Спасибо! Мы получили ваше сообщение.', 'ru' );
+
+	variable_set('hitsa_contacts_translations_added', TRUE);
 }
