@@ -81,6 +81,7 @@ function hitsa_set_system_defaults()
     hitsa_set_default_language();
     hitsa_set_language_detection_rules();
     hitsa_translate_webform();
+    hitsa_bulk_update_path_aliases();
 }
 
 function hitsa_set_default_language()
@@ -170,4 +171,25 @@ function hitsa_translate_webform() {
 	i18n_string_translation_update('webform:' . $node->nid . ':confirmation', 'Спасибо! Мы получили ваше сообщение.', 'ru' );
 
 	variable_set('hitsa_contacts_translations_added', TRUE);
+}
+
+function hitsa_bulk_update_path_aliases() {
+  module_load_include('inc', 'pathauto');
+  module_load_include('inc', 'pathauto.pathauto');
+
+  // Get all nodes that need to be updated
+  $query = db_select('node', 'n');
+  $query->addField('n', 'nid');
+  $query->condition('n.type', array('content_page'), 'IN');
+
+  $nids = $query->execute()->fetchCol();
+
+  // Save current action for new aliases and change it to delete old one.
+  $alias_action = variable_get('pathauto_update_action', 0);
+  variable_set('pathauto_update_action', PATHAUTO_UPDATE_ACTION_DELETE);
+
+  pathauto_node_update_alias_multiple($nids, 'bulkupdate');
+
+  // Restore original action for new aliases.
+  variable_set('pathauto_update_action', $alias_action);
 }
