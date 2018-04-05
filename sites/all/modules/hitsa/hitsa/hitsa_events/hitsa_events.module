@@ -441,7 +441,7 @@ function hitsa_events_calendar_page_html()
                   <div class="col-12">
                      <div class="form-item-row">
 
-                        <div class="form-item after-search form-item_rounded">
+                        <div class="form-item after-search form-item_rounded form-item-stretch">
                            <div class="form-item_title">Otsitav sündmus</div>
                            <input type="text" name="event-title" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
                         </div><!--/form-item-->
@@ -1326,7 +1326,7 @@ function hitsa_events_training_calendar()
                   <div class="col-12">
                      <div class="form-item-row">
 
-                        <div class="form-item after-search form-item_rounded">
+                        <div class="form-item after-search form-item_rounded form-item-stretch">
                            <div class="form-item_title">Otsitav sündmus</div>
                            <input type="text" name="event-title" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
                         </div><!--/form-item-->
