@@ -150,3 +150,31 @@ function hitsa_import_css($form, &$form_state)
         }
     }
 }
+function hitsa_import_css_update()
+{
+    $files = array(
+        'article.less','build.less','buttons.less','elements.less','footer.less','form.less','grid.less','header.less','print.less','reset.less','responsive.less','sumoSelect.less','swiper.less','theme.less','tooltipster.bundle.less'
+      );
+    $files_location = 'sites/all/themes/hitsa/static/dev/styles';
+    $conf_path = conf_path();
+    $conf_path = str_replace('sites/', '', $conf_path);
+    if ($conf_path!='default') {
+        $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/styles';
+    } else {
+        $site_theme_location=false;
+    }
+    foreach ($files as $key => $file_name) {
+        $file_content = file_get_contents($files_location.'/'.$file_name);
+        if (!empty($file_content)) {
+            if (!$site_theme_location) {
+                break;
+            }
+            $file =fopen($site_theme_location.'/'.$file_name, 'w');
+            fwrite($file, $file_content);
+            fclose($file);
+        }
+    }
+    $conf_path = conf_path();
+    $conf_path = str_replace('sites/', '', $conf_path);
+    var_dump(shell_exec('cd '.$_SERVER['DOCUMENT_ROOT'].'/'.'sites'.'/'.$conf_path.'/themes/hitsa/static && grunt compile 2>&1'));
+}
