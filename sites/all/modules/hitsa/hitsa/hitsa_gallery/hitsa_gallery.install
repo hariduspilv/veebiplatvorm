@@ -6,7 +6,7 @@
 function hitsa_gallery_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_gallery', 'install');
-  
+  hitsa_gallery_set_menu_translations();
   variable_set('language_content_type_gallery', TRANSLATION_ENABLED); // Make multilingual
   variable_set('comment_gallery', '0'); // Disable commenting
   variable_set('i18n_node_options_gallery', array('required')); // Disable language neutral option
@@ -190,4 +190,73 @@ function _hitsa_gallery_path_aliases() {
   );
   
   return $path_aliases;
+}
+
+function _hitsa_gallery_menu_links() {
+  $t = get_t();
+
+  $main_menu_tree = menu_tree_all_data('hitsa-main-menu', NULL, 1);
+  $main_menu_links = array();
+  foreach($main_menu_tree as $link) {
+    $main_menu_links[$link['link']['title']] = $link['link']['mlid'];
+  }
+  
+  $menu_links = array();
+  
+  $menu_links[] = array(
+    'link_path' => 'gallery',
+    'link_title' => 'Galerii',
+    'menu_name' => 'hitsa-main-menu',
+    'plid' => $main_menu_links['About us'],
+    'customized' => 1,
+    'language' => LANGUAGE_NONE,
+    'weight' => 5,
+  );
+  
+  return $menu_links;
+}
+
+function hitsa_gallery_update_7000() {
+  // Delete old gallery content page node.
+  $result = db_select('node', 'n')
+  ->fields('n', array('nid'))
+  ->condition('n.title', array('Galerii', 'Gallery', 'Галерея'), 'IN')
+  ->condition('n.type', 'content_page','=')
+  ->execute()
+  ->fetchCol();
+  
+  if(!empty($result)) {
+    node_delete_multiple($result);
+    
+    $menu_link = _hitsa_gallery_menu_links();
+    
+    $m_link = reset($menu_link);
+    $mlid = menu_link_save($m_link);
+    variable_set('hitsa_gallery_mlid', $mlid);
+    hitsa_gallery_set_menu_translations();
+  }
+}
+
+function hitsa_gallery_set_menu_translations() {
+  $translation = array(
+    'en' => 'Gallery',
+    'ru' => 'Галерея',
+  );
+  
+  $mlid = variable_get('hitsa_gallery_mlid', NULL);
+  
+  if(empty($mlid)) {
+    $mlids = variable_get('hitsa_gallery_mlids', NULL);
+    
+    if(!empty($mlids)) {
+      $mlid = reset($mlids);
+    }
+  }
+  
+  $property = 'title';
+  foreach($translation as $lang => $translation) {
+    $context = 'menu:item:' . $mlid . ':' . $property;
+  i18n_string_translation_update($context, $translation, $lang);
+  }
+  
 }

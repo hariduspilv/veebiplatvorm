@@ -753,14 +753,6 @@ function _hitsa_content_page_vocational_nodes($main_menu_links)
       'cp_type' => 'cp_simple',
     ),
     array(
-      'title' => array('et' => 'Galerii', 'ru' => 'Галерея', 'en' => 'Gallery'),
-      'menu' => array(
-        'plid' => $main_menu_links['About us'],
-        'weight' => 5,
-      ),
-      // Madis
-    ),
-    array(
       'title' => array('et' => 'Tunnustused', 'ru' => 'Почетное признание', 'en' => 'Recognitions'),
       'menu' => array(
         'plid' => $main_menu_links['About us'],

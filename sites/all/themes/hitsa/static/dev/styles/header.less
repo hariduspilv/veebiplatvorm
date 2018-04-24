@@ -21,14 +21,15 @@ header.main{background:@base-2; position: relative; z-index: 100;
       button{position: absolute; top:0; right:0; line-height:40px; height:40px; padding:0; border:none; background:none; .before-search; color:@text-2; font-size:20px; width:50px; text-align: center; cursor: pointer;}
    }
    
-   .header-logo{margin:4px @gridGutter*2; display: flex; height:94px; align-items: center;
+   .header-logo{margin:4px @gridGutter*2; display: inline-flex; height:94px; align-items: center;
       &:hover{
          img{transform:scale(1.05);}
       }
       img{display:block; transition:transform 0.25s; width:auto !important; height:auto !important; max-height:94px;}
    }
    
-   .bullet-links{min-height:100%; display: flex; justify-content: center; flex-direction: column;
+   .bullet-links-wrapper{display:flex; justify-content: flex-end; }
+   .bullet-links{min-height:100%; display: flex; justify-content: center; flex-direction: column; padding-right:90px;
       a{margin:5px 0;}
    }
    .col-5 .bullet-links{flex-direction: row; flex-wrap: wrap; justify-content: left; align-items: center;
