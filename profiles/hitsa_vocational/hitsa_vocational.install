@@ -14,6 +14,8 @@
 function hitsa_vocational_install()
 {
     include_once DRUPAL_ROOT . '/profiles/hitsa_school/hitsa_school.install';
+
+    variable_set('user_register',0);
     hitsa_install();
     hitsa_vocational_install_themes();
     hitsa_vocational_disable_modules();

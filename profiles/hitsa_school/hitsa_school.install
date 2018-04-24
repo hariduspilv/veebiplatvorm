@@ -14,6 +14,7 @@
 function hitsa_school_install()
 {
     variable_set('hitsa_school_type', 1);
+    variable_set('user_register',0);
     hitsa_install();
     hitsa_disable__mods();
     hitsa_enable_translations();

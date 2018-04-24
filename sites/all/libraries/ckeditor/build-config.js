@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -13,10 +13,10 @@
  * (1) http://ckeditor.com/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) http://ckeditor.com/builder/23ed3212d6042e4604090836d4134d73
+ * (2) http://ckeditor.com/builder/812ac9ca890ae7a71cbc7383caf4841b
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) http://ckeditor.com/builder/download/23ed3212d6042e4604090836d4134d73
+ * (3) http://ckeditor.com/builder/download/812ac9ca890ae7a71cbc7383caf4841b
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -25,7 +25,7 @@
  */
 
 var CKBUILDER_CONFIG = {
-	skin: 'moono-lisa',
+	skin: 'moono',
 	preset: 'full',
 	ignore: [
 		'.DS_Store',
@@ -67,7 +67,6 @@ var CKBUILDER_CONFIG = {
 		'enterkey' : 1,
 		'entities' : 1,
 		'filebrowser' : 1,
-		'filetools' : 1,
 		'find' : 1,
 		'flash' : 1,
 		'floatingspace' : 1,
@@ -111,13 +110,13 @@ var CKBUILDER_CONFIG = {
 		'templates' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
-		'uploadcare' : 1,
-		'uploadfile' : 1,
+		'uploadimage' : 1,
 		'wsc' : 1,
 		'wysiwygarea' : 1,
 		'youtube' : 1
 	},
 	languages : {
-		'en' : 1
+		'en' : 1,
+		'et' : 1
 	}
 };
