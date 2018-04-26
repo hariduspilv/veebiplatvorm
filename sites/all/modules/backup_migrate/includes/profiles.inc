@@ -32,12 +32,7 @@ function backup_migrate_backup_migrate_profile_subtypes() {
  */
 function backup_migrate_get_profiles() {
   backup_migrate_include('filters');
-  $profiles = &drupal_static('backup_migrate_get_profiles', NULL);
-
-  // Get the list of profiles and cache them locally.
-  if ($profiles === NULL) {
-    $profiles = backup_migrate_crud_get_items('profile');
-  }
+  $profiles = backup_migrate_crud_get_items('profile');
   return $profiles;
 }
 
@@ -126,14 +121,19 @@ function _backup_migrate_ui_backup_settings_form($profile) {
   }
 
   $form['file']['append_timestamp'] = array(
-    "#type" => "checkbox",
-    "#title" => t("Append a timestamp."),
+    "#type" => "radios",
+    '#options' => array(
+      0 => t('Create separate backups if `Backup file name` already exists'),
+      2 => t('Overwrite the existing backup file'),
+      1 => t('Append the timestamp'),
+    ),
+    "#title" => t("Save mode"),
     "#default_value" => $profile->append_timestamp,
   );
   $form['file']['timestamp_format_wrapper'] = array(
     '#type' => 'backup_migrate_dependent',
     '#dependencies' => array(
-      'append_timestamp' => TRUE,
+      'append_timestamp' => 1,
     ),
   );
   $form['file']['timestamp_format_wrapper']['timestamp_format'] = array(
@@ -385,4 +385,3 @@ class backup_migrate_profile extends backup_migrate_item {
     return t('Are you sure you want to delete the profile %name? Any schedules using this profile will be disabled.', array('%name' => $this->get('name')));
   }
 }
-
