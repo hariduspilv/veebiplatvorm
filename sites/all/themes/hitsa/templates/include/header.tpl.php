@@ -7,6 +7,17 @@
         <div class="col-6 flex-right">
           <?php if(!empty($language_switcher)): ?>
             <?php print $language_switcher; ?>
+          <?php else: ?>
+          <ul class="header-quicklinks">
+            <li>
+              <form method="get" action="<?php print url('search'); ?>">
+                <div class="header-search">
+                  <input type="text" name="query" placeholder="<?php print t('Search'); ?>">
+                  <button></button>
+                </div>
+              </form>
+            </li>
+          </ul>
           <?php endif; ?>
         </div><!--/col-6-->
       </div><!--/row-->

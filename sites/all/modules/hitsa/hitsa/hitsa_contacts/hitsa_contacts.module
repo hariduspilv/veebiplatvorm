@@ -368,6 +368,7 @@ function _hitsa_contacts_get_department_node_values() {
 }
 
 function _hitsa_contacts_group_by_department($nids_array) {
+  global $language;
   $nodes_grouped = array();
   if(!empty($nids_array)) {
     $nids = array_keys($nids_array['node']);
@@ -382,7 +383,7 @@ function _hitsa_contacts_group_by_department($nids_array) {
           while(isset($nodes_grouped[$department_node_value->department_tid][$weight])) {
             $weight++; // Avoid duplicate weights
           }
-          $nodes_grouped[$department_node_value->department_tid][$weight] = node_view($node);
+          $nodes_grouped[$department_node_value->department_tid][$weight] = node_view($node, 'full', $language->language);
         }
       }
     }

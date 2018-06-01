@@ -9,11 +9,14 @@
   ?>
   <h2 class="block-title"><?php print $heading_title; ?></h2>
   <?php else: 
-  $heading_title = $title;
+    $active_menu_trail = menu_get_active_trail(); // Set active menu trail
+    if(count($active_menu_trail) === 3) {
+      $heading_title = t($active_menu_trail[1]['link_title']);
+    }
   ?>
     <h2 class="block-title"><?php print $heading_title; ?></h2>
   <?php endif; ?>
-  
+
   <?php if(!empty($contact_filter)): ?>
     <?php print $contact_filter; ?>
   <?php endif; ?>

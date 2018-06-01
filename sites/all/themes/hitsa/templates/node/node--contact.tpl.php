@@ -88,6 +88,7 @@
   </ul>          
 </div>
 <?php endif; ?>
+
 <div class="object object-horizontal">
   <div class="object-inner">
     
@@ -98,7 +99,10 @@
     <div class="object-content">
       <div class="object-content_col">
         <p>
-          <b><?php print $node->title; // Name ?> 
+          <b><?php print sprintf('%s %s', 
+            !empty($content['first_name'][0]['#markup']) ? $content['first_name'][0]['#markup'] : '', 
+            !empty($content['last_name'][0]['#markup']) ? $content['last_name'][0]['#markup'] : ''
+            ); // Name ?> 
           <?php 
           $attachment_type = !empty($content['cv_attachment_type']) ? $content['cv_attachment_type']['#items'][0]['value'] : NULL;
           if(!empty($content[$attachment_type])): // Contact CV ?>
