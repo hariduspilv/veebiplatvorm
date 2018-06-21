@@ -11,7 +11,7 @@
   <div data-target="search" class="mobile-search">
      <form method="get" action="<?php print url('search'); ?>">
         <div class="form-item">
-           <input type="text" placeholder="<?php print t('Search'); ?>..."/>
+           <input name="query" type="text" placeholder="<?php print t('Search'); ?>..."/>
            <button type="submit"></button>
         </div><!--/form-item-->
      </form>
