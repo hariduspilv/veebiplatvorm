@@ -153,7 +153,6 @@ function hitsa_front_block_view($delta = '')
             $front_page_image = image_style_url('hitsa_hero_banner', $front_page_image->uri);
             $block = array();
             $block['content'] = theme('hitsa_front_hero_block', array('image_link'=>$front_page_image));
-
             return $block;
           }
       }

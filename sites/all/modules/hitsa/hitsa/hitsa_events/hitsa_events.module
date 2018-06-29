@@ -945,7 +945,6 @@ function hitsa_events_front_page_block()
         $events = entity_load('node', $event_nids);
     }
     $time = time();
-
     foreach ($events as $key => $event) {
         if (!empty($event->field_event_type)) {
             if ($event->field_event_type['und'][0]['value'] != 'training') {
@@ -985,8 +984,9 @@ function hitsa_events_front_page_block()
             if (!empty($event->event_tags)) {
                 foreach ($event->event_tags[$language->language] as $tags) {
                     $loaded_tag = taxonomy_term_load($tags['tid']);
+                    $loaded_tag_org_name = $loaded_tag->name;
                     $loaded_tag = i18n_taxonomy_localize_terms($loaded_tag);
-                    $events_array[$loaded_tag->name][] = $event;
+                    $events_array[$loaded_tag_org_name][] = $event;
                     $categories[$loaded_tag->name] = $loaded_tag->tid;
                 }
             }
@@ -1112,7 +1112,16 @@ function hitsa_events_front_page_block()
             } else {
                 $output .= '           <div class="align-center">';
             }
-            $output .= '             <a  href="' . $link . '" class="btn btn-filled sm-stretch">' . t(':key calendar', array(':key' => $key)) . '</a>';
+            if($key =='Huvitegevus'){
+                $cal_link = '<a  href="' . $link . '" class="btn btn-filled sm-stretch">' . t('Hobby calendar') . '</a>';
+            }
+            elseif($key == 'Õppetöö'){
+                $cal_link = '<a  href="' . $link . '" class="btn btn-filled sm-stretch">' . t('Study calendar') . '</a>';
+            }
+            else{
+                $cal_link = ' <a  href="' . $link . '" class="btn btn-filled sm-stretch">' . t(':key calendar', array(':key' => $key)) . '</a>';
+            }            
+            $output .= $cal_link;
             $output .= '            </div><!--/col-12-->';
             $output .= '          </div><!--/col-12-->';
             $output .= '       </div><!--/row-->';

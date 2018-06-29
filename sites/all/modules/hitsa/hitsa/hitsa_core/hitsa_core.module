@@ -2,6 +2,7 @@
 module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.theme');
 module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.variable');
 module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.views');
+module_load_include('inc', 'hitsa_core', 'includes/hitsa_core_block_alter');
 
 define('HITSA_SCHOOL_GYMNASIUM', 1);
 define('HITSA_SCHOOL_VOCATIONAL', 2);

@@ -88,9 +88,18 @@ function hitsa_curriculum_block_info()
                 if ($lang_key != 'en') {
                     $translated = $t($allowed_key, array(), array('langcode' => $lang_key));
                     $pages .= "\n" . $translated . "\n" . $translated . '/*';
+                    
                 }
             }
         }
+        $pages =  str_replace('õ','o',$pages);
+        $pages =  str_replace('Õ','O',$pages);
+        $pages =  str_replace('ä','a',$pages);
+        $pages =  str_replace('ü','u',$pages);
+        $pages =  str_replace('Ü','U',$pages);
+        $pages =  str_replace('Ä','A',$pages);
+        $pages =  str_replace('Ö','O',$pages);
+        $pages =  str_replace('ö','o',$pages);
         $blocks[$allowed_key] = array(
             'info' => t($allowed_title . ' block'),
             'region' => 'content',
@@ -1457,7 +1466,7 @@ function hitsa_curriculum_generate_header($header)
     if (!empty($edit_links)) {
         $output .= $edit_links;
     }
-    $output .= '<div class="block sm-hide">
+    $output .= '<div class="block">
 
     <h2 class="block-title">' . $header->title . '</h2>
 
