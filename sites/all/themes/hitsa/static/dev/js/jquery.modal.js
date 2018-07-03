@@ -1,6 +1,7 @@
 $.fn.modal = function(){
 	var main = $(this);
 	var href = main.attr("href");
+	var downloadLink = main.attr("data-download") || href;
 	var html, overlay;
 	var xhr = false;
 	var visible = false;
@@ -177,7 +178,7 @@ $.fn.modal = function(){
 			output+=	'<div class="block">';
 
 				output+= '<div class="block-title">'+heading+'&nbsp;<a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">'+main.attr("data-closeButton")+'</a></div>';
-				output+= '<div class="btn-bar align-right"> <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a> <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a> <a href="'+href+'" id="download-link" target="_blank" class="btn-circle before-download"></a></div><div class="row-spacer">&nbsp;</div>';
+				output+= '<div class="btn-bar align-right"> <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a> <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a> <a href="'+downloadLink+'" id="download-link" target="_blank" class="btn-circle before-download"></a></div><div class="row-spacer">&nbsp;</div>';
 				output+= '<figure><img src="'+href+'" /><figcaption>'+title+'</figcaption></figure>';
 			output+= '</div><!--/block-->';
 		}

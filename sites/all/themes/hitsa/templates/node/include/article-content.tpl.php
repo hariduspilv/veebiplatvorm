@@ -162,6 +162,7 @@
             <?php if(!empty($subpage_images) || (!empty($cp_image) && $subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
               <figure>
                 <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>"
+                data-download="<?php print file_create_url($image['uri']); ?>"
                 data-plugin="modal" data-modal="image-<?php print $image['fid']; ?>" 
                 data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>"
                 <?php if(!empty($image['field_file_image_title_text'])) print ' data-title="' . check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) . '"'; ?>>
@@ -191,6 +192,7 @@
             <?php elseif(!empty($subpage_images[1])): $image = $subpage_images[1]; ?>
             <figure>
               <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
+              data-download="<?php print file_create_url($image['uri']); ?>" 
               data-plugin="modal" data-modal="image-<?php print $image['fid']; ?>" data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>"
               <?php if(!empty($image['field_file_image_title_text'])) print ' data-title="' . check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) . '"'; ?>>
                 <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
