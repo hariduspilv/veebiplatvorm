@@ -9,7 +9,7 @@ function hitsa_front_form_alter(&$form, &$form_state, $form_id)
     case 'taxonomy_form_term':
 
       if ($form['vocabulary_machine_name']['#value'] == 'hitsa_breaks' || $form['vocabulary_machine_name']['#value'] == 'hitsa_hour_times') {
-          $form['#metatags']['#access'] = false;
+          //$form['#metatags']['#access'] = false;
           $form['relations']['#access'] = false;
       }
       break;

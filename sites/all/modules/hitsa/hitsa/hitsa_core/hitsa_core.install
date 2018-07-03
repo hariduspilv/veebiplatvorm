@@ -606,6 +606,7 @@ function hitsa_core_set_default_variables() {
   variable_set('pathauto_node_gallery_en_pattern',$t('galleries/').'[node:title]');
   variable_set('pathauto_node_gallery_et_pattern',$t('galeriid/').'[node:title]');
   variable_set('error_level', 0); // Disable error message display
+  variable_set('metatag_enable_taxonomy_term', FALSE); // Disable metatags for taxonomy terms
 }
 
 function hitsa_core_set_default_patterns(){
@@ -698,4 +699,8 @@ function hitsa_core_update_7004() {
   // Let HITSA admin translate
   $role = user_role_load_by_name('hitsa admin');
   user_role_grant_permissions($role->rid, array('translate interface'));
+}
+
+function hitsa_core_update_7005() {
+  variable_set('metatag_enable_taxonomy_term', FALSE); // Disable metatags for taxonomy terms
 }
