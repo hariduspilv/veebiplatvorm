@@ -209,7 +209,7 @@ function hitsa_core_preprocess_hitsa_header(&$variables)
   // Load header menu
   $hitsa_header_menu_name = variable_get('hitsa_header_menu_name');
   if (!empty($hitsa_header_menu_name)) {
-    $header_menu = menu_tree_all_data($hitsa_header_menu_name);
+    $header_menu = i18n_menu_localize_tree(menu_tree_all_data($hitsa_header_menu_name));
     $header_count = count($header_menu);
     if ($header_count > 3) {
       $header_menus = array_chunk($header_menu, 3, true);
@@ -225,7 +225,7 @@ function hitsa_core_preprocess_hitsa_header(&$variables)
   // Quicklinks menu
   $hitsa_quicklinks_menu_name = variable_get('hitsa_quicklinks_menu_name');
   if (!empty($hitsa_quicklinks_menu_name)) {
-    $quicklinks_menu = menu_tree_all_data($hitsa_quicklinks_menu_name);
+    $quicklinks_menu = i18n_menu_localize_tree(menu_tree_all_data($hitsa_quicklinks_menu_name));
     $variables['quicklinks_menu'] = menu_tree_output($quicklinks_menu);
     $variables['quicklinks_menu']['#theme_wrappers'] = array('quicklinks_menu_tree__hitsa_quicklinks_menu');
   }
@@ -260,7 +260,7 @@ function hitsa_core_preprocess_hitsa_header_mobile(&$variables)
   // Quicklinks menu
   $hitsa_quicklinks_menu_name = variable_get('hitsa_quicklinks_menu_name');
   if (!empty($hitsa_quicklinks_menu_name)) {
-    $quicklinks_menu = menu_tree_all_data($hitsa_quicklinks_menu_name);
+    $quicklinks_menu = i18n_menu_localize_tree(menu_tree_all_data($hitsa_quicklinks_menu_name));
     $variables['quicklinks_menu'] = menu_tree_output($quicklinks_menu);
     $variables['quicklinks_menu']['#theme_wrappers'] = array('quicklinks_menu_tree__hitsa_quicklinks_mobile_menu');
   }

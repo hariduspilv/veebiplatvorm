@@ -173,11 +173,13 @@ function _hitsa_core_menus() {
       'menu_name' => 'hitsa-header-menu',
       'title' => $t('Header menu'),
       'description' => $t('HITSA Header menu.'),
+      'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_quicklinks_menu' => array(
       'menu_name' => 'hitsa-quicklinks-menu',
       'title' => $t('Quicklinks'),
       'description' => $t('HITSA Quicklinks menu.'),
+      'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_footer_menu' => array(
       'menu_name' => 'hitsa-footer-menu',
@@ -678,4 +680,15 @@ function hitsa_core_update_7002() {
   // Restore original action for new aliases.
   variable_set('pathauto_update_action', $alias_action);
   cache_clear_all();
+}
+
+function hitsa_core_update_7003() {
+  // Set quicklink menus to localize
+  $menu = menu_load('hitsa-header-menu');
+  $menu['i18n_mode'] = I18N_MODE_MULTIPLE;
+  menu_save($menu);
+  
+  $menu = menu_load('hitsa-quicklinks-menu');
+  $menu['i18n_mode'] = I18N_MODE_MULTIPLE;
+  menu_save($menu);
 }
