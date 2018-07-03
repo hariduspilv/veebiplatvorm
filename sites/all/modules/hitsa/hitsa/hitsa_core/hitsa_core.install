@@ -429,6 +429,7 @@ function _hitsa_core_roles() {
       'view the administration theme',
       'access media browser',
       'administer hitsa page settings',
+      'translate interface',
     ),
     'hitsa editor' => array(
       'access administration menu',
@@ -691,4 +692,10 @@ function hitsa_core_update_7003() {
   $menu = menu_load('hitsa-quicklinks-menu');
   $menu['i18n_mode'] = I18N_MODE_MULTIPLE;
   menu_save($menu);
+}
+
+function hitsa_core_update_7004() {
+  // Let HITSA admin translate
+  $role = user_role_load_by_name('hitsa admin');
+  user_role_grant_permissions($role->rid, array('translate interface'));
 }
