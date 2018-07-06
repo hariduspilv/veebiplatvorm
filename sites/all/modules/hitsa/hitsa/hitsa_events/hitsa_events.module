@@ -2351,7 +2351,6 @@ function hitsa_events_registration_processing($post)
         }
         array_unshift($form, $errors);
         $form = drupal_render($form);
-        dpm($form);
         return $form;
     }
     if ($registration) {
