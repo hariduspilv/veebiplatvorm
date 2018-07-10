@@ -1118,7 +1118,7 @@ function hitsa_events_front_page_block()
                 $link = url('calendar');
             }
             if (!empty($categories[$key])) {
-                $link = url('calendar', array('query' => array('category' => $categories[$key])));
+                $link = url('calendar', array('query' => array('category' => $categories[$key],'type' => 'event')));
             }
             $output .= ' <div class="row">';
             $output .= '          <div class="col-12">';
