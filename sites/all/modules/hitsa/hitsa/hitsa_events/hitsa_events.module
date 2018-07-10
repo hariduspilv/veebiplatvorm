@@ -821,7 +821,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         if (empty($start_date_date)) {
             $start_date_date = $start_date;
         }
-        $output .= '<div id="' . rawurlencode($event->title) . '" class="object object-event ' . $object_class . '">';
+        $output .= '<div id="' . rawurlencode($event->nid) . '" class="object object-event ' . $object_class . '">';
         $output .= '<div class="object-inner">';
         $output .= '<a href="#" onclick="event.preventDefault();" class="object-date">';
         $output .= '<span class="object-date_day">';
@@ -1070,7 +1070,7 @@ function hitsa_events_front_page_block()
                 $output .= '                         <span class="object-date_month">' . $start_readable_month . '</span>';
                 $output .= '                      </a><!--/object-date-->';
                 $output .= '                      <span class="object-content">';
-                $output .= '                         <a href="' . url('calendar') . '#' . rawurlencode($event->title) . '" class="object-title">' . $event->title . '</a>';
+                $output .= '                         <a href="' . url('calendar') . '#' . rawurlencode($event->nid) . '" class="object-title">' . $event->title . '</a>';
                 $output .= '                         <span class="object-footer">';
                 $output .= (!empty($location)) ? '                     ' . t('Location') . ': ' . $location : '';
                 if ($start_readable_time !== '00:00') {
@@ -1524,7 +1524,7 @@ function hitsa_events_for_services()
                 $price = $event->field_training_cost['und'][0]['value'];
             }
             $output .= '<div class="col-12">';
-            $output .= '   <a href="' . url('training-calendar') . '#' . rawurlencode($event->title) . '" class="object object-small object-horizontal">';
+            $output .= '   <a href="' . url('training-calendar') . '#' . rawurlencode($event->nid) . '" class="object object-small object-horizontal">';
             $output .= '      <span class="object-inner">';
             $output .= '         <span class="object-content">';
             $output .= '            <span class="object-title">' . $event->title . '</span>';
