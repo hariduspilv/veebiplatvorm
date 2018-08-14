@@ -607,6 +607,13 @@ function hitsa_core_set_default_variables() {
   variable_set('pathauto_node_gallery_et_pattern',$t('galeriid/').'[node:title]');
   variable_set('error_level', 0); // Disable error message display
   variable_set('metatag_enable_taxonomy_term', FALSE); // Disable metatags for taxonomy terms
+  
+  // Default captcha settings
+  variable_set('image_captcha_bilinear_interpolation', 1);
+  variable_set('image_captcha_distortion_amplitude', '5');
+  variable_set('image_captcha_dot_noise', 1);
+  variable_set('image_captcha_line_noise', 1);
+  variable_set('image_captcha_noise_level', '2');
 }
 
 function hitsa_core_set_default_patterns(){
@@ -703,4 +710,12 @@ function hitsa_core_update_7004() {
 
 function hitsa_core_update_7005() {
   variable_set('metatag_enable_taxonomy_term', FALSE); // Disable metatags for taxonomy terms
+}
+
+function hitsa_core_update_7006() {
+  variable_set('image_captcha_bilinear_interpolation', 1);
+  variable_set('image_captcha_distortion_amplitude', '5');
+  variable_set('image_captcha_dot_noise', 1);
+  variable_set('image_captcha_line_noise', 1);
+  variable_set('image_captcha_noise_level', '2');
 }
