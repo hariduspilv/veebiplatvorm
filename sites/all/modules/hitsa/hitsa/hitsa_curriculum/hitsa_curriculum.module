@@ -1362,7 +1362,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                         $output .= $output_elements['table'];
                     }
                     if (!empty($output_elements['body_element'])) {
-                        $output .= $output_elements['body_element'];
+                        // $output .= $output_elements['body_element'];
                     }
                     if (!empty($output_elements['jobs'])) {
                         $output .= $output_elements['jobs'];
@@ -1401,7 +1401,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                         $output .= $output_elements['contacts'];
                     }
                 } else {
-                    if (!empty($output_elements['body_element']) && $curriculum_type != 'preparatory-courses' && $curriculum_type != 'hobby-activity' && $curriculum_type != 'hobby-groups') {
+                    if (!empty($output_elements['body_element']) && $curriculum_type != 'preparatory-courses' && $curriculum_type != 'hobby-activity' && $curriculum_type != 'hobby-groups' && $curriculum_type!='elective-subjects') {
                         $output .= $output_elements['body_element'];
                     }
                     if (!empty($output_elements['documents'])) {
