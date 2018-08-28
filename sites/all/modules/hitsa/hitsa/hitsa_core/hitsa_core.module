@@ -286,6 +286,9 @@ function hitsa_core_block_view($delta = '')
             if (module_exists('hitsa_events') and module_exists('hitsa_catering') && $school_type == 1) {
                 $events_block = (hitsa_events_front_page_block());
                 $catering_block = hitsa_catering_front_page_block();
+                if(empty($catering_block)){
+                    $events_block = hitsa_events_front_page_block();
+                }
                 $block = array();
                 $block['content'] = theme('hitsa_front_page_events_catering', array(
                     'events' => $events_block,
