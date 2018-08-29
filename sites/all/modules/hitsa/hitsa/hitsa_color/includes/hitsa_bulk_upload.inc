@@ -94,5 +94,7 @@
         $list_array = array_merge($field['settings']['allowed_values'],$new_list_values);
         $field['settings']['allowed_values'] = $list_array;
         field_update_field($field);
+        drupal_set_message('Icons uploaded and should be usable in fields','status');
+        drupal_goto('admin/appearance/hitsa_bulk_upload_icons');
         
     }
