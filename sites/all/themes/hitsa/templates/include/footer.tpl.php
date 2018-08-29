@@ -19,7 +19,9 @@
       </table>
       <?php endif; ?>
       <?php if(!empty($footer_text_area)):?>
+      <?php if(!empty($important_contacts)):?>
       <div class="row-spacer"></div>
+      <?php endif?>
       <?php if(!empty($footer_text_area_title)):?>
       <h3><?php print $footer_text_area_title ?></h3>
       <?php endif?>
