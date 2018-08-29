@@ -302,6 +302,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
     spamspan(check_plain($general_contact_email))
   );
 
+
   // Important contacts
   $important_contacts = '';
   for ($i = 1; $i < 5; $i++) {
@@ -312,7 +313,10 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
     }
   }
   $variables['important_contacts'] = $important_contacts;
-
+  $text_area_content_title = variable_get('footer_text_area_title');
+  $variables['footer_text_area_title'] = $text_area_content_title;
+  $text_area_content = variable_get('footer_text_area');
+  $variables['footer_text_area'] = $text_area_content['value'];
   // Copyright notice
   $copyright_notice = variable_get_value('footer_copyright_notice');
   if (!empty($copyright_notice)) {

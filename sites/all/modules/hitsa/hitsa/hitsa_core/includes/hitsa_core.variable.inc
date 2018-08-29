@@ -78,6 +78,14 @@ function hitsa_core_variable_info($options) {
     'title' => t('Copyright Notice'),
     'group' => 'header_footer_variables',
   );
+  $variable['footer_text_area_title'] = array(
+    'title' => t('Footer text area title'),
+    'group' => 'header_footer_variables',
+  );
+  $variable['footer_text_area'] = array(
+    'title' => t('Footer text area'),
+    'group' => 'header_footer_variables',
+  );
   $variable['hitsa_site_logo_fid'] = array(
     'title' => t('HITSA Site Logo FID'),
     'group' => 'header_footer_variables',
@@ -162,6 +170,18 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
       $form['important_contacts']['important_contact_phone_' . $i]['#suffix'] = '</div>';
       unset($form['important_contact_name_' . $i]);
       unset($form['important_contact_phone_' . $i]);
+    }
+    if(isset($form['footer_text_area'])){
+      $form['footer_text_area']['#type'] = 'text_format';
+      $text_area_content = variable_get('footer_text_area');
+      if(!empty($text_area_content['value'])){
+        $area_value = $text_area_content['value'];
+      }
+      else{
+        $area_value='';
+      }
+      $form['footer_text_area']['#default_value'] = $area_value;
+      $form['#submit'][] = 'footer_text_area_submit';
     }
     drupal_add_css('.contact-row > * {display:inline-block;} .img-stretch {max-width: 100%;}', 'inline');
     
@@ -360,5 +380,10 @@ function hitsa_core_favicon_submit($form, &$form_state) {
     $theme_settings = array_merge($theme_settings, $favicon_settings);
     
     variable_set('theme_settings', $theme_settings);
+  }
+}
+function footer_text_area_submit($form,&$form_state){
+  if(!empty($form_state['values']['footer_text_area'])){
+    variable_set('footer_text_area',$form_state['values']['footer_text_area']);
   }
 }

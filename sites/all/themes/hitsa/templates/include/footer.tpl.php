@@ -18,6 +18,12 @@
         </tbody>
       </table>
       <?php endif; ?>
+      <?php if(!empty($footer_text_area)):?>
+      <?php if(!empty($footer_text_area_title)):?>
+      <h3><?php print $footer_text_area_title ?></h3>
+      <?php endif?>
+      <?php print $footer_text_area?>
+      <?php endif;?>
     </div><!--/col-4-->
   </div><!--/row-->
 </div><!--/inline-->
