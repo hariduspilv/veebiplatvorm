@@ -19,6 +19,7 @@
       </table>
       <?php endif; ?>
       <?php if(!empty($footer_text_area)):?>
+      <div class="row-spacer"></div>
       <?php if(!empty($footer_text_area_title)):?>
       <h3><?php print $footer_text_area_title ?></h3>
       <?php endif?>
