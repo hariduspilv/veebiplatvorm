@@ -237,6 +237,16 @@ $.fn.caroussel = function(){
       paginationClickable: true,
       loop: true
    });
+   var duplicateSlides = main.find("[class*='swiper-slide-duplicate']").length;
+   var allSlides = mySwiper.slides.length;
+   console.log(allSlides);
+   console.log(duplicateSlides);
+   
+   if (allSlides == duplicateSlides) {
+      main.find(".swiper-pagination").addClass("d-none");
+      main.find(".swiper-button-prev:first").addClass("d-none");
+      main.find(".swiper-button-next:first").addClass("d-none");
+   }
 }
 
 
@@ -516,9 +526,11 @@ $.fn.dropdownMenu = function(){
 	var li = main.find("li");
 	
 	li.each(function(){
-		var obj = $(this);
+      var obj = $(this);
+      var anchorTag = obj.children("a");
+      console.log(anchorTag);
 		if( obj.children("ul").size() > 0 ){
-			obj.append('<span class="before-arrow_down"></span>');
+			anchorTag.append('<span class="before-arrow_down"></span>');
 			obj.children("a, span").bind("click", function(e){
 				e.preventDefault();
 				obj.toggleClass("open");

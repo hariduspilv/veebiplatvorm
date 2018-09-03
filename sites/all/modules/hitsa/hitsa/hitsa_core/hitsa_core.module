@@ -101,7 +101,7 @@ function hitsa_core_menu()
         'file' => 'includes/hitsa_core.login.inc',     // don't forget to add the file and path
         'file path' => drupal_get_path('module', 'hitsa_core'),
     );
-
+    
     return $items;
 }
 function hitsa_core_menu_alter(&$items)
