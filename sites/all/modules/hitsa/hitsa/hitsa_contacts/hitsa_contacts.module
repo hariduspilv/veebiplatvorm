@@ -108,7 +108,9 @@ function hitsa_contacts_page_view() {
   $hitsa_contacts_contact_us_webform_nid = variable_get('hitsa_contacts_contact_us_webform_nid');
   if(!empty($hitsa_contacts_contact_us_webform_nid)) {
     $wnode = node_load($hitsa_contacts_contact_us_webform_nid);
-    $contact_form = drupal_get_form('webform_client_form_' . $hitsa_contacts_contact_us_webform_nid, $wnode, array());
+    if($wnode->status) { // Contact form published
+      $contact_form = drupal_get_form('webform_client_form_' . $hitsa_contacts_contact_us_webform_nid, $wnode, array());
+    }
   }
 
   // Nodes grouped by department
@@ -127,7 +129,7 @@ function hitsa_contacts_page_view() {
     array(
       'contact_accordion' => $contact_accordion,
       'nodes' => $nodes_grouped,
-      'contact_form' => $contact_form,
+      'contact_form' => !empty($contact_form) ? $contact_form : NULL,
       'contact_departments' => $contact_departments,
       'job_positions' => !empty($job_positions) ? $job_positions : array(),
       'locations' => isset($locations) ? $locations : NULL,
