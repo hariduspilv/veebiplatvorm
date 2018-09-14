@@ -64,6 +64,7 @@ function hitsa_events_menu()
 function hitsa_events_block_info()
 {
     // This example comes from node.module.
+    
     if (hitsa_core_get_school_type() == 2) {
         $blocks['fornt_page_events'] = array(
             'info' => t('Front page calendar events'),
@@ -74,6 +75,7 @@ function hitsa_events_block_info()
             'status' => 1,
         );
     }
+    
 
     $blocks['fornt_page_training'] = array(
         'info' => t('Front training events'),
@@ -953,7 +955,7 @@ function hitsa_events_get_time_periods()
     return $output;
 }
 
-function hitsa_events_front_page_block()
+function hitsa_events_front_page_block($type_override=null)
 {
 
     global $language;
@@ -1027,7 +1029,8 @@ function hitsa_events_front_page_block()
 
         foreach ($events_array as $key => $event_type) {
             $i = 0;
-            $output .= '<div data-tab="tab-' . $j . '">';
+            
+            $output .= '<div data-tab="tab-' . $j . '" >';
 
             usort($event_type, function ($a, $b) {
                 return $a->event_date['und'][0]['value'] - $b->event_date['und'][0]['value'];
@@ -1058,9 +1061,12 @@ function hitsa_events_front_page_block()
                     $start_readable_time = strftime('%H:%M', $start);
                     $end = $event->event_date['und'][0]['value2'];
                 }
-                if ($school_type == 1) {
+                if($type_override=='hkutseongymn') {
+                    $output .= '<div class="col-6 sm-12">';
+                }elseif ($school_type == 1) {
                     $output .= '<div class="col-12">';
-                } else {
+                }
+                else{
                     $output .= '<div class="col-6 sm-12">';
                 }
                 $output .= '                <div class="object object-event">';
@@ -1096,13 +1102,21 @@ function hitsa_events_front_page_block()
                 if ($school_type == 2 && $i == 0) {
                     $output .= '<hr class="sm-show">';
                 }
-                if ($school_type == 1 && $i == 0 && $i != $event_type_count - 1) {
+                if($type_override=='hkutseongymn'){
+
+                }
+                elseif ($school_type == 1 && $i == 0 && $i != $event_type_count - 1) {
                     $output .= ' <hr />';
                 }
                 if ($i == 3 || $i == $event_type_count - 1) {
                 }
                 $i++;
-                if ($school_type == 1) {
+                if($type_override=='hkutseongymn'){
+                    if($i==4){
+                        break;
+                    }
+                }
+                elseif ($school_type == 1) {
                     if ($i == 2) {
                         break;
                     }

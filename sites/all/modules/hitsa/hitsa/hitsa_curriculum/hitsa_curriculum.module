@@ -1351,7 +1351,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                         $output .= $output_elements['textbooks'];
                     }
                 }
-                if ($curriculum_type == 'specialities') {
+                elseif ($curriculum_type == 'specialities') {
                     if (!empty($output_elements['short_description'])) {
                         $output .= $output_elements['short_description'];
                     }
@@ -1362,7 +1362,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                         $output .= $output_elements['table'];
                     }
                     if (!empty($output_elements['body_element'])) {
-                        // $output .= $output_elements['body_element'];
+                        $output .= $output_elements['body_element'];
                     }
                     if (!empty($output_elements['jobs'])) {
                         $output .= $output_elements['jobs'];

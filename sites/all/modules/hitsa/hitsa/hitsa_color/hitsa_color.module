@@ -21,5 +21,14 @@ function hitsa_color_menu(){
 		'file path' => drupal_get_path('module', 'hitsa_color'),
 	  'access arguments' => array('use hitsa_color_change'),
 	);
+	//Page to bulk upload images
+	$items['admin/appearance/hitsa_bulk_upload_icons'] = array(
+		'title' => t('Lae ikoone üles'),
+		'description' => t('Ikoonide üleslaadimine'),
+	  'page callback' => 'hitsa_bulk_upload_icons',
+      'file' => 'includes/hitsa_bulk_upload.inc',
+		'file path' => drupal_get_path('module', 'hitsa_color'),
+	  'access arguments' => array('use hitsa_color_change'),
+	);
 	return $items;
 }

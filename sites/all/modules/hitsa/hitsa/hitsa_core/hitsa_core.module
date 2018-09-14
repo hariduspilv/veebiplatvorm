@@ -101,7 +101,7 @@ function hitsa_core_menu()
         'file' => 'includes/hitsa_core.login.inc',     // don't forget to add the file and path
         'file path' => drupal_get_path('module', 'hitsa_core'),
     );
-
+    
     return $items;
 }
 function hitsa_core_menu_alter(&$items)
@@ -287,7 +287,7 @@ function hitsa_core_block_view($delta = '')
                 $events_block = (hitsa_events_front_page_block());
                 $catering_block = hitsa_catering_front_page_block();
                 if(empty($catering_block)){
-                    $events_block = hitsa_events_front_page_block();
+                    $events_block = hitsa_events_front_page_block('hkutseongymn');
                 }
                 $block = array();
                 $block['content'] = theme('hitsa_front_page_events_catering', array(
