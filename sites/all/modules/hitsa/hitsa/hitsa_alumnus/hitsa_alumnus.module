@@ -1,0 +1,226 @@
+<?php
+
+/**
+ * Implements hook_node_info().
+ */
+function hitsa_alumnus_create_node()
+{
+    $types = array(
+        array(
+            'name' => t('Alumnus'),
+            'base' => 'node_content',
+            'description' => '',
+            'type' => 'alumnus',
+            'custom' => 1,
+            'modified' => 1,
+            'locked' => 0,
+            'has_title' => 1,
+            'title_label' => t('Title'),
+            'help' => '',
+        ),
+    );
+    variable_set('language_content_type_alumnus', TRANSLATION_ENABLED);
+    variable_set('i18n_node_options_alumnus', array('required'));
+    foreach ($types as $type) {
+        $type = node_type_set_defaults($type);
+        node_type_save($type);
+    }
+    return true;
+}
+/**
+ * Implements hook_theme().
+ */
+function hitsa_alumnus_theme($existing, $type, $theme, $path)
+{
+    $theme_path = drupal_get_path('theme', 'hitsa');
+    $items['hitsa_alumnus_filters'] = array(
+        'template' => 'hitsa-alumnus-filters',
+        'path' => $theme_path . '/templates/parts',
+
+    );
+    $items['hitsa_alumnus_content_container'] = array(
+        'template' => 'hitsa-alumnus-content-container',
+        'path' => $theme_path . '/templates/parts',
+
+    );
+    $items['hitsa_alumnus_accordions'] = array(
+        'template' => 'hitsa-alumnus-accordions',
+        'path' => $theme_path . '/templates/parts',
+
+    );
+    return $items;
+}
+/**
+ * Implements hook_menu().
+ * 
+ * This link will be for alumnus display
+ */
+function hitsa_alumnus_menu()
+{
+    $items = array();
+    $items['alumnus'] = array(
+        'title' => t(''),
+        'page callback' => 'hitsa_alumnus_page',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+    $items['api/alumnus_autocomplete'] = array(
+        'title' => t(''),
+        'page callback' => 'hitsa_alumnus_autocomplete',
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+    $items['api/filterAlumnus'] = array(
+        'title' => t(''),
+        'page callback' => 'hitsa_alumnus_content',
+        'page arguments' => array(0=>TRUE),
+        'access arguments' => array('access content'),
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+function hitsa_alumnus_page()
+{
+    $build = array();
+    $build['page_container'] = array(
+        '#prefix' => '<div class="block">',
+        '#suffix' => '</div>'
+    );
+    $build['page_container']['filters'] = array(
+        '#markup' => hitsa_alumnus_filters(),
+    );
+
+    $build['page_container']['content'] = array(
+        '#markup' => theme('hitsa_alumnus_content_container', array('content' => hitsa_alumnus_content())),
+    );
+
+    return $build;
+}
+function hitsa_alumnus_filters()
+{
+
+    return theme('hitsa_alumnus_filters');
+}
+function hitsa_alumnus_autocomplete()
+{
+
+    global $language;
+    $q = db_select('field_data_field_full_name', 'alumnus_full_name');
+    $q->fields('alumnus_full_name');
+    if (!empty($_REQUEST)) {
+        if (!empty($_REQUEST['search'])) {
+            $q->condition('alumnus_full_name.field_full_name_value', '%' . $_REQUEST['search'] . '%', 'LIKE');
+        }
+    }
+    $results = $q->execute();
+    $data = array();
+    $data['list'] = array();
+    foreach ($results as $person) {
+        $data['list'][] = array('title' => $person->field_full_name_value);
+    }
+
+    if (!empty($data['list'])) {
+        $json = json_encode($data);
+        print($json);
+    }
+
+}
+function hitsa_alumnus_content($ajax=FALSE)
+{   
+    
+    // krumo($path_check);
+    // krumo($path_check_et);
+    $nodes = array();
+    if (!empty($_REQUEST) && !empty($_REQUEST['name'])) {
+        $q = db_select('field_data_field_full_name', 'alumnus_full_name');
+        $q->fields('alumnus_full_name');
+        $q->join('field_data_field_person','person_field','alumnus_full_name.entity_id=person_field.field_person_value');
+        $q->fields('person_field');
+        $q->addField('person_field', 'entity_id', 'node_id');
+        if (!empty($_REQUEST)) {
+            if (!empty($_REQUEST['name'])) {
+                $name = strtolower($_REQUEST['name']);
+                $q->condition('alumnus_full_name.field_full_name_value', '%' . $name . '%', 'LIKE');
+            }
+        }
+        $results = $q->execute();
+        foreach($results as $result){
+            $nodes[$result->node_id] = $result->node_id;
+        }
+        
+    } else {
+        $q = db_select('node', 'n');
+        $q->condition('n.type', 'alumnus', '=');
+        $q->fields('n');
+        $results = $q->execute();
+        foreach ($results as $result) {
+            $nodes[] = $result->nid;
+        }
+    }
+    if (!empty($nodes)) {
+        $nodes = node_load_multiple($nodes);
+        $usable_array = array();
+        if (!empty($nodes)) {
+            foreach ($nodes as $nid => $node) {
+                $usable_array[$nid]['Name'] = $node->title;
+                if(!empty($node->field_order_number)){
+                    $usable_array[$nid]['order'] = $node->field_order_number['und'][0]['value'];
+                }
+                else{
+                    $usable_array[$nid]['order'] = 0;
+                }
+                $usable_array[$nid]['persons'] = array();
+                if (!empty($node->field_person)) {
+                    foreach ($node->field_person['und'] as $paragraph_id) {
+                        $person = entity_load_single('paragraphs_item', $paragraph_id);
+                        if (!empty($person->field_full_name)) {
+                            if(!empty($_REQUEST) && !empty($_REQUEST['name'])){
+                                if (strpos(strtolower($person->field_full_name['und'][0]['value']), strtolower($_REQUEST['name'])) !== false) {
+                                    
+                                }
+                                else{
+                                    continue;
+                                }
+                            }
+                            $usable_array[$nid]['persons'][] = array(
+                                'name' => $person->field_full_name['und'][0]['value'],
+                                'extra_information' => !empty($person->field_extra_information) ? $person->field_extra_information['und'][0]['value'] : '',
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+    foreach ($usable_array as $nid => $finishers) {
+        if(empty($finishers['persons'])){
+            unset($usable_array[$nid]);
+            continue;
+        }
+        $last_one_key = end(array_keys($finishers['persons']));
+        $usable_array[$nid]['persons'][$last_one_key]['end']="TRUE";
+    }
+    usort($usable_array, function($a, $b) {
+        return $b['order'] <=> $a['order'];
+    });
+    if(empty($usable_array)){
+        $values = array('error' => t('Searched person was not found'));
+    }
+    else{
+        $values = $usable_array;
+    }
+    if($ajax==TRUE){
+
+        if(!empty($values)){
+            $themed = theme('hitsa_alumnus_accordions',array('values'=>$values,'openAll'=>TRUE));
+        }
+        print $themed;
+    }
+    else{
+
+        if(!empty($values)){
+            $themed = theme('hitsa_alumnus_accordions',array('values'=>$values));
+        }
+        return $themed;
+    }
+}

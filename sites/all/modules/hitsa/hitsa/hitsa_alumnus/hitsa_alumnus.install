@@ -1,0 +1,118 @@
+<?php
+include('extras/fields.install.inc');
+/**
+ * Implements hook_install().
+ */
+function hitsa_alumnus_install()
+{   
+    ///// Create node type//////
+    echo "/////////////Creating node type/////////////<br>";
+    
+    hitsa_alumnus_create_node();
+
+    echo "/////////////Created node type///////////// ";
+
+    
+    echo "/////////////Adding paragraph bundle///////////// ";
+
+    hitsa_alumnus_add_paragraph_bundle();
+
+    echo "/////////////Added paragraph bundle///////////// ";
+    
+    echo "/////////////Adding fields///////////// ";
+
+    hitsa_alumnus_add_fields();
+
+    echo "/////////////Added fields///////////// ";
+
+    
+    echo "/////////////Adding Menu links///////////// ";
+
+    hitsa_alumnus_add_menu_links();
+
+    echo "/////////////Added Menu links///////////// ";
+
+    
+    
+}
+function hitsa_alumnus_add_paragraph_bundle(){
+
+    $bundle = new stdClass();
+    $bundle->name = t('Alumnus person'); // user friendly label
+    $bundle->bundle = 'alumnus_person'; // machine name
+    $bundle->locked = 1;
+    $status = paragraphs_bundle_save($bundle);
+}
+/**
+ * Implements hook_uninstall().
+ */
+function hitsa_alumnus_uninstall()
+{
+    $node_type = 'alumnus';
+    $paragraphs_bundles = array(
+        'alumnus_person'
+    );
+
+
+    $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+    $result = db_query($sql, array(':type' => $node_type));
+    $node_ids = array();
+    foreach ($result as $row) {
+        $node_ids[] = $row->nid;
+    }
+    node_delete_multiple($node_ids); // Delete all catering nodes
+    node_type_delete($node_type); // Delete contact content type
+    foreach ($paragraphs_bundles as $key => $paragraphs_bundle) {
+        paragraphs_bundle_delete($paragraphs_bundle); // Delete paragraphs bundle
+    }
+}
+function hitsa_alumnus_add_menu_links(){
+    $mlids = variable_get('hitsa_core_mlids');
+    $links = menu_tree_all_data('hitsa-main-menu',$menu_link);
+    $about_link=null;
+    foreach ($links as $link) {
+        if($link['link']['link_title']=='About us'){
+            $about_link=$link['below'];
+        }
+    }    
+    if(!empty($about_link)){
+        foreach ($about_link as $alink) {
+            if($alink['link']['link_title']=='Vilistlased' || $alink['link']['link_title']=='Graduates'|| $alink['link']['link_title']=='Выпускники'){
+                $weight = $alink['link']['weight'];
+                $alink['link']['link_path'] = 'alumnus';
+                $alink['link']['hidden'] = 0;
+                menu_link_save($alink['link']);
+            }
+        }
+    }
+    $path_check_en = drupal_lookup_path('source', 'graduates', 'en');
+    $path_check_et = drupal_lookup_path('source', 'vilistlased', 'et');
+    $path_check_et = drupal_lookup_path('source', 'vypuskniki', 'ru');
+    $path_check_en = path_load($path_check_en);
+    $path_check_en = path_delete($path_check_en['pid']);
+    $path_check_et = path_load($path_check_et);
+    $path_check_et = path_delete($path_check_et['pid']);
+    $path = array(
+        'source' => 'alumnus',
+        'alias' => 'vilistlased',
+        'pid' => null,
+        'language' => 'et',
+    );
+    path_save($path);
+    $path_check_ru = path_load($path_check_ru);
+    $path_check_ru = path_delete($path_check_ru['pid']);
+    $path = array(
+        'source' => 'alumnus',
+        'alias' => 'vypuskniki',
+        'pid' => null,
+        'language' => 'ru',
+    );
+    path_save($path);
+    $path = array(
+        'source' => 'alumnus',
+        'alias' => 'Graduates',
+        'pid' => null,
+        'language' => 'en',
+    );
+    path_save($path);
+}

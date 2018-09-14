@@ -59,6 +59,7 @@ dependencies[] = hitsa_ckeditor
 dependencies[] = hitsa_catering
 dependencies[] = hitsa_color
 dependencies[] = hitsa_front
+dependencies[] = hitsa_alumnus
 
 
 ; Information added by Drupal.org packaging script on 2017-06-21

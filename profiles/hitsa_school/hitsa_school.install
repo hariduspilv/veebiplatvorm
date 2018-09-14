@@ -763,3 +763,59 @@ function hitsa_school_update_7002()
 function hitsa_school_update_7003(){
   hitsa_school_csv_import();
 }
+/**
+ * See uuendus paigaldab vilistlaste mooduli
+ */
+function hitsa_school_update_7004(){
+    if (!module_exists('hitsa_alumnus')) {
+        module_enable(array('hitsa_alumnus'));
+    }
+    $mlids = variable_get('hitsa_core_mlids');
+    $links = menu_tree_all_data('hitsa-main-menu',$menu_link);
+    $about_link=null;
+    foreach ($links as $link) {
+        if($link['link']['link_title']=='About us'){
+            $about_link=$link['below'];
+        }
+    }    
+    if(!empty($about_link)){
+        foreach ($about_link as $alink) {
+            if($alink['link']['link_title']=='Vilistlased' || $alink['link']['link_title']=='Graduates'|| $alink['link']['link_title']=='Выпускники'){
+                $weight = $alink['link']['weight'];
+                $alink['link']['link_path'] = 'alumnus';
+                $alink['link']['hidden'] = 0;
+                menu_link_save($alink['link']);
+            }
+        }
+    }
+    $path_check_en = drupal_lookup_path('source', 'graduates', 'en');
+    $path_check_et = drupal_lookup_path('source', 'vilistlased', 'et');
+    $path_check_et = drupal_lookup_path('source', 'vypuskniki', 'ru');
+    $path_check_en = path_load($path_check_en);
+    $path_check_en = path_delete($path_check_en['pid']);
+    $path_check_et = path_load($path_check_et);
+    $path_check_et = path_delete($path_check_et['pid']);
+    $path = array(
+        'source' => 'alumnus',
+        'alias' => 'vilistlased',
+        'pid' => null,
+        'language' => 'et',
+    );
+    path_save($path);
+    $path_check_ru = path_load($path_check_ru);
+    $path_check_ru = path_delete($path_check_ru['pid']);
+    $path = array(
+        'source' => 'alumnus',
+        'alias' => 'vypuskniki',
+        'pid' => null,
+        'language' => 'ru',
+    );
+    path_save($path);
+    $path = array(
+        'source' => 'alumnus',
+        'alias' => 'Graduates',
+        'pid' => null,
+        'language' => 'en',
+    );
+    path_save($path);
+}
