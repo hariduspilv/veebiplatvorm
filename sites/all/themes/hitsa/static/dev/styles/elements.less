@@ -120,13 +120,14 @@ a.block{text-decoration: none;}
 .caroussel_profession{text-align: center; display: flex; height:100%; flex-direction: column;
    .caroussel_profession-icon{display: block; margin:0 auto; border:@border-2 1px solid; width:120px; height:120px; border-radius:999px; color:@highlight-1; font-size:64px; text-align: center; line-height:120px; transition:border 0.25s, color 0.25s, background 0.25s; flex-shrink: 0;}
    .caroussel_profession-title{display: flex; font-size:22px; font-weight: 500; color:@text-1; margin-top:16px; text-align: center; line-height:120%; flex-grow: 1; flex-direction: column; justify-content: center; align-content: center;}
+   .caroussel_profession-btn_wrapper{display: flex; padding: 0 2.5rem;}
    .btn{margin-top:30px; flex-shrink: 0;}
 }
 
 .swiper-holder{margin:(-@gridGutter/2)-5px 0 23px 0; position: relative;
 	.swiper-wrapper{padding:5px 0; margin-bottom:-@gridGutter;}
    .swiper-slide{height:auto; display: flex; flex-direction: column; flex-grow: 1;
-      .block{height:100%; flex-grow: 1;
+      .block{height:100%; flex-grow: 1; padding: 2.5rem 0;
          .btn{min-width:100%;}
       }
    }

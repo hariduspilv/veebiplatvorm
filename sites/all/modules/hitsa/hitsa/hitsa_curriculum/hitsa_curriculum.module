@@ -1597,7 +1597,9 @@ function hitsa_curriculum_fp_subject_fields()
                        <span class="caroussel_profession">
                           <span class="caroussel_profession-icon ' . $class . '"></span>
                           <span class="caroussel_profession-title">' . $term->name . '</span>
+                          <div class="caroussel_profession-btn_wrapper">
                           <span class="btn">' . t('Look at specialities') . '</span>
+                          </div><!--caroussel_profession-btn_wrapper-->
                        </span><!--/caroussel_profession-->
                     </a><!--/block-->
                  </div><!--/col-3-->';

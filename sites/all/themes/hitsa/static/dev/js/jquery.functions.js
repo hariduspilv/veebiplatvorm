@@ -1,3 +1,9 @@
+$(document).ready(function(){
+   setTimeout(function() {
+      $(window).anchorScroll();
+   }, 0);
+});
+
 if ('addEventListener' in document) {
 	document.addEventListener('DOMContentLoaded', function() {
 		FastClick.attach(document.body);
@@ -239,8 +245,6 @@ $.fn.caroussel = function(){
    });
    var duplicateSlides = main.find("[class*='swiper-slide-duplicate']").length;
    var allSlides = mySwiper.slides.length;
-   console.log(allSlides);
-   console.log(duplicateSlides);
    
    if (allSlides == duplicateSlides) {
       main.find(".swiper-pagination").addClass("d-none");
@@ -506,18 +510,34 @@ $.fn.anchorScroll = function(){
 	$(window).bind("hashchange", function(e){
 		if( window.location.hash.match("anchor=") ){
 			e.preventDefault();
-			var header = $(window).width() <= 375 ? $("header.mobile:first") : $(".header-nav:first");
-			var id = getParameters(window.location.hash).anchor;
-			var destObj = $("#"+id);
+         var header = $(window).width() <= 375 ? $("header.mobile:first") : $(".header-nav:first");
+         var id = getParameters(window.location.hash).anchor;
+         var destObj = $("#"+id);
+         //console.log(destObj);
+         if( destObj.size() == 0 ){ return false; }
+         //var objOffset = destObj.offset();
 			
-			if( destObj.size() == 0 ){ return false; }
+         //console.log(destObj.offset().top);
+         var accordion = destObj.parents(".accordion");
+         var accordionEntry = accordion.children(".accordion-entry");
+         var objLocation = accordionEntry.find(destObj);
+
+         
+         if (objLocation.length > 0) {
+            accordionEntry.removeClass("accordion-active");
+            objLocation.parents(accordionEntry).addClass("accordion-active");
+         }
+         
+         /* var destObj2 = $("#"+id);
+         console.log(destObj2);
+         console.log(destObj2.offset().top); */
+         var scrollTop = destObj.offset().top - header.outerHeight() - 30;
+         
+            $("html, body").animate({scrollTop: scrollTop}, {duration:500, queue:false});
+         
 			
-			var scrollTop = destObj.offset().top - header.outerHeight() - 30;
 			
-			$("html, body").animate({scrollTop: scrollTop}, {duration:500, queue:false});
-			
-			
-		}
+      }
 	}).trigger("hashchange");
 };
 
@@ -708,7 +728,7 @@ $.fn.notification = function(){
 
 $(function(){
    
-	$(window).anchorScroll();
+	
    
 	/*
 	

@@ -1076,7 +1076,7 @@ function hitsa_events_front_page_block($type_override=null)
                 $output .= '                         <span class="object-date_month">' . $start_readable_month . '</span>';
                 $output .= '                      </a><!--/object-date-->';
                 $output .= '                      <span class="object-content">';
-                $output .= '                         <a href="' . url('calendar') . '#' . rawurlencode($event->nid) . '" class="object-title">' . $event->title . '</a>';
+                $output .= '                         <a href="' . url('calendar') . '#anchor=' . rawurlencode($event->nid) . '" class="object-title">' . $event->title . '</a>';
                 $output .= '                         <span class="object-footer">';
                 $output .= (!empty($location)) ? '                     ' . t('Location') . ': ' . $location : '';
                 if ($start_readable_time !== '00:00') {
