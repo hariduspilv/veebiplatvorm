@@ -578,7 +578,7 @@ function hitsa_catering_week($start_date = null)
  *
  */
 function hitsa_catering_paragraphs__create_table($loaded_menu)
-{
+{   
     $monday = (!empty($loaded_menu->field_catering_monday) ? $loaded_menu->field_catering_monday['und'] : null);
     $tuesday = (!empty($loaded_menu->field_catering_tuesday) ? $loaded_menu->field_catering_tuesday['und'] : null);
     $wednesday = (!empty($loaded_menu->field_catering_wednesday) ? $loaded_menu->field_catering_wednesday['und'] : null);
@@ -805,6 +805,10 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         $output .= '</div><!--/table-wrapper-->';
         if (!empty($pictures)) {
             $output .= hitsa_catering_pictures_generator($pictures);
+        }
+
+        if(!empty($loaded_menu->changed)){
+            $output.= '<span class="article-date"><i>' . t('Last modified') . ':' . date('d.m.Y', $loaded_menu->changed) . '</i></span>';
         }
         return $output;
     }
