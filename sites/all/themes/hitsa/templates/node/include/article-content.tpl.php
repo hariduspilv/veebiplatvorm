@@ -141,12 +141,10 @@
             </ul>
             <?php endif; ?>
             
-            <?php if($node->type === 'article'): ?>
-              <div class="row-spacer-xs"></div>
-              <span class="article-date sm-hide">
-                <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
-              </span>
-            <?php endif; ?>
+            <div class="row-spacer-xs"></div>
+            <span class="article-date sm-hide">
+              <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
+            </span>
             
 				  </div>
 				  
@@ -202,11 +200,9 @@
             </figure>
             <?php endif; ?>
             
-            <?php if($node->type === 'article'): ?>
-              <span class="article-date sm-show">
-                <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
-              </span>
-            <?php endif; ?>
+            <span class="article-date sm-show">
+              <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
+            </span>
             
           </div><!--/col-4-->
           
