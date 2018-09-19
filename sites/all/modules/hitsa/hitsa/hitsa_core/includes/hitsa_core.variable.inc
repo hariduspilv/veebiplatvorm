@@ -94,12 +94,85 @@ function hitsa_core_variable_info($options) {
     'title' => t('HITSA Front Page Image FID'),
     'group' => 'header_footer_variables',
   );
+
+//////////Blokkide pealkirjad
+
+  $variable['front_news_title'] = array(
+    'title' => t('News title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['front_our_stories_title'] = array(
+    'title' => t('Our stories title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['front_events_title'] = array(
+    'title' => t('Front page events title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['front_catering_title'] = array(
+    'title' => t('Front page catering title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['front_services_title'] = array(
+    'title' => t('Front page services title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['front_gallery_title'] = array(
+    'title' => t('Front page gallery title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['footer_left_title'] = array(
+    'title' => t('Footer left box title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['footer_middle_title'] = array(
+    'title' => t('Footer middle box title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['front_confirmation_title'] = array(
+    'title' => t('Front page confirmation box title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['footer_right_title'] = array(
+    'title' => t('Footer right box title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
+
+  $variable['contact_contact_us_title'] = array(
+    'title' => t('Contact page contact title'),
+    'group' => 'block_titles',
+    'localize'=> TRUE,
+  );
   return $variable;
 }
 
 function hitsa_core_variable_group_info() {
   $groups['general_variables'] = array(
     'title' => t('General variables'),
+    'access' => 'administer hitsa page settings',
+    'path' => array('admin/hitsa/variables/general'),
+  );
+  $groups['block_titles'] = array(
+    'title' => t('Block titles'),
     'access' => 'administer hitsa page settings',
     'path' => array('admin/hitsa/variables/general'),
   );

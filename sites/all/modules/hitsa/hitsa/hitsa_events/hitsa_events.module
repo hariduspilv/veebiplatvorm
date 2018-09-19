@@ -101,7 +101,9 @@ function hitsa_events_block_view($delta = '')
     switch ($delta) {
         case 'fornt_page_events':
             if (hitsa_core_get_school_type() == 2) {
-                $block['subject'] = t('');
+                $content = render($block['content']);
+                // Get the language variable controller.
+                $block['subject'] = t('assa');
                 $block['content'] = array(
                     '#markup' => hitsa_events_front_page_block(),
                 );
@@ -1012,8 +1014,12 @@ function hitsa_events_front_page_block($type_override=null)
                 }
             }
         }
+        $block_title = variable_get('front_events_title');
+        if(empty($block_title)){
+            $block_title = t('Events calendar');
+        }
         $output = '<div class="block" data-plugin="tabs">';
-        $output .= '<h2 class="block-title">' . t('Events calendar') . '</h2>';
+        $output .= '<h2 class="block-title">' . $block_title. '</h2>';
         $output .= '           ';
         $output .= '           <div class="row pull-up">';
         $output .= '              <div class="col-12">';

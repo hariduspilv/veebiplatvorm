@@ -384,7 +384,11 @@ function hitsa_front_get_services()
             $i++;
         }
         if (!empty($services)) {
-            $services_block = theme('hitsa_front_right_content_block', array('services'=>$services,'block_title'=>t('Services')));
+            $block_title = variable_get('front_services_title');
+            if(empty($block_title)){
+                $block_title = t('Services');
+            }
+            $services_block = theme('hitsa_front_right_content_block', array('services'=>$services,'block_title'=>$block_title));
             return $services_block;
         }
     }

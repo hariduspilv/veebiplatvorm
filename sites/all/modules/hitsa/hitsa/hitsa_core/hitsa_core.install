@@ -15,6 +15,8 @@ function hitsa_core_install() {
   hitsa_core_search_server_add_index();
   hitsa_core_set_default_variables();
   hitsa_core_set_default_patterns();
+
+  hitsa_core_set_translatable_variables();
 }
 
 function hitsa_core_uninstall() {
@@ -632,6 +634,41 @@ function hitsa_core_set_default_patterns(){
     }
    }
 }
+function hitsa_core_set_translatable_variables(){
+
+  $translated_variables = variable_get('variable_realm_list_language');
+  $variables_new = array(
+      'front_news_title'=> 'News',
+      'front_our_stories_title' => 'Our stories',
+      'front_events_title' => 'Events calendar',
+      'front_catering_title' => 'Catering',
+      'front_services_title' => 'Services',
+      'front_gallery_title' => 'Gallery',
+      'footer_left_title' => 'Cooperation partners',
+      'footer_middle_title' => 'Contact',
+      'front_confirmation_title' => 'Confirmations',
+      'footer_right_title' => 'Important contacts',
+      'contact_contact_us_title' => 'Contact us',
+  );
+  $new_variables_for_entering = $variables_new;
+  foreach ($translated_variables as  $variable) {
+      if(isset($variables_new[$variable])){
+          unset($variables_new[$variable]);
+      }
+  }
+  if(!empty($variables_new)){
+      foreach($variables_new as $key =>  $new_variable){
+          $variable_array =  variable_get('variable_realm_list_language');
+          $variable_array[] = $key;
+          variable_set('variable_realm_list_language',$variable_array);
+      }
+  }
+  if(!empty($new_variables_for_entering)){
+      foreach($new_variables_for_entering as $key => $new_variable){
+          variable_set($key,$new_variable);
+      }
+  }
+}
 /**
  *
  * Update to make site pathauto working and also remove non english characters
@@ -728,4 +765,10 @@ function hitsa_core_update_7007(){
     $enable_dependencies = TRUE;
     module_enable($modules,$enable_dependencies); 
   }
+}
+/**
+ * Update to make block titles customizable.
+ */
+function hitsa_core_update_7008(){
+  hitsa_core_set_translatable_variables();
 }

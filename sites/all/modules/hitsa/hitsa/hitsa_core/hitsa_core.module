@@ -35,11 +35,29 @@ function hitsa_core_menu()
         'access callback' => 'user_access',
         'access arguments' => array('administer hitsa page settings'),
     );
+    $items['admin/hitsa/block-titles'] = array(
+        'title' => 'Block titles',
+        'type' => MENU_NORMAL_ITEM,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('variable_group_form', 'block_titles'),
+        'access callback' => 'user_access',
+        'access arguments' => array('administer hitsa page settings'),
+    );
 
     $items['admin/hitsa/variables/general'] = array(
         'title' => 'General',
         'page callback' => 'drupal_get_form',
         'page arguments' => array('variable_group_form', 'general_variables'),
+        'type' => MENU_LOCAL_TASK,
+        'access callback' => 'user_access',
+        'access arguments' => array('administer hitsa page settings'),
+        'weight' => 0,
+    );
+
+    $items['admin/hitsa/variables/block-titles'] = array(
+        'title' => 'Block titles',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('variable_group_form', 'block_titles'),
         'type' => MENU_LOCAL_TASK,
         'access callback' => 'user_access',
         'access arguments' => array('administer hitsa page settings'),
@@ -259,9 +277,15 @@ function hitsa_core_block_view($delta = '')
             if (module_exists('hitsa_content_page')) {
                 $services_content = hitsa_content_page_services_block();
             }
+            $block_title = variable_get('front_services_title');
+            if(empty($block_title)){
+                $block_title = t('Services');
+            }
             $content = theme('hitsa_services_events', array(
                 'events' => !empty($events_content) ? $events_content : null,
                 'services' => !empty($services_content) ? $services_content : null,
+                'block_title' => $block_title,
+            
             ));
             $output = array('subject' => null, 'content' => $content);
             break;

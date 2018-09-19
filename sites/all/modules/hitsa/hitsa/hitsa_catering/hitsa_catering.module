@@ -1309,10 +1309,14 @@ function hitsa_catering_front_page_block()
     $monday = date('d/m/Y', strtotime('this week monday', $today));
     $sunday = date('d/m/Y', strtotime('this week sunday', $today));
     if (!empty($foods_selected) || !empty($foods_selected_tomorrow)) {
+        $block_title = variable_get('front_catering_title');
+        if(empty($block_title)){
+            $block_title = t('Catering');
+        }
         $output .= '
 
                   <div class="block block-stretch flex-grow" data-plugin="tabs">
-                     <h2 class="block-title">' . t('Catering') . '</h2>
+                     <h2 class="block-title">' . $block_title. '</h2>
 
                      <div class="row pull-up">
                         <div class="col-12">
