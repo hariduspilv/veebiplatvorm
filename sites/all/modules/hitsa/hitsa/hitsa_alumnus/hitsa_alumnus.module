@@ -19,7 +19,7 @@ function hitsa_alumnus_create_node()
             'help' => '',
         ),
     );
-    variable_set('language_content_type_alumnus', TRANSLATION_ENABLED);
+    variable_set('language_content_type_alumnus', 'TRANSLATION_ENABLED');
     variable_set('i18n_node_options_alumnus', array('required'));
     foreach ($types as $type) {
         $type = node_type_set_defaults($type);
