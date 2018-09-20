@@ -68,7 +68,7 @@ function hitsa_alumnus_uninstall()
 }
 function hitsa_alumnus_add_menu_links(){
     $mlids = variable_get('hitsa_core_mlids');
-    $links = menu_tree_all_data('hitsa-main-menu',$menu_link);
+    $links = menu_tree_all_data('hitsa-main-menu');
     $about_link=null;
     foreach ($links as $link) {
         if($link['link']['link_title']=='About us'){
@@ -87,7 +87,7 @@ function hitsa_alumnus_add_menu_links(){
     }
     $path_check_en = drupal_lookup_path('source', 'graduates', 'en');
     $path_check_et = drupal_lookup_path('source', 'vilistlased', 'et');
-    $path_check_et = drupal_lookup_path('source', 'vypuskniki', 'ru');
+    $path_check_ru = drupal_lookup_path('source', 'vypuskniki', 'ru');
     $path_check_en = path_load($path_check_en);
     $path_check_en = path_delete($path_check_en['pid']);
     $path_check_et = path_load($path_check_et);
