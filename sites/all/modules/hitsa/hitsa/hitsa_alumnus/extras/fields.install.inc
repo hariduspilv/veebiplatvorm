@@ -2,7 +2,7 @@
 
 function hitsa_alumnus_add_fields()
 {
-  foreach (hitsa_alumnus_field_bases($school_type) as $field) {
+  foreach (hitsa_alumnus_field_bases() as $field) {
 
     $field_test = field_info_field($field['field_name']);
     if (empty($field_test)) {
