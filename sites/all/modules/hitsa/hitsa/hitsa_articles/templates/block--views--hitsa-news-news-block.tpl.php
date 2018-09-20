@@ -46,8 +46,8 @@
 ?>
 <?php if(!empty($content)): ?>
 <div class="block">
-  <?php if ($block->subject): ?>
-    <h2 class="block-title"><?php print $block->subject ?></h2>
+  <?php if ($news_block_title = variable_get_value('front_news_title', array('default' => t('News')))): ?>
+    <h2 class="block-title"><?php print $news_block_title ?></h2>
   <?php endif;?>
   <?php print $content ?>
 </div>

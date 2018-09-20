@@ -1,5 +1,7 @@
 <div class="block block-narrow">
-  <h2 class="block-title"><?php print t('Our stories'); ?></h2>
+  <?php if($our_stories_title = variable_get_value('front_our_stories_title', array('default' => t('Our stories')))): ?>
+  <h2 class="block-title"><?php print $our_stories_title; ?></h2>
+  <?php endif; ?>
   <div class="row pull-up">
     
     <?php foreach($nodes as $node): ?>

@@ -136,6 +136,25 @@ function _hitsa_contacts_fields() {
       'label' => 'Töötaja järjestus osakonnas',
       'type' => 'number_integer',
     ),
+    'field_contact_education' => array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_contact_education',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+      ),
+      'translatable' => 0,
+      'type' => 'text_long',
+    ),
     // Reception times (Paragraph)
     /*
     'reception_weekdays' => array(
@@ -426,6 +445,49 @@ function _hitsa_contacts_field_instances() {
         ),
       ),
       'default_value' => 1,
+    ),
+    'field_contact_education' => array(
+      'bundle' => 'contact',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 12,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_contact_education',
+      'label' => 'Education',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'maxlength_js' => '',
+          'maxlength_js_enforce' => 0,
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+          'maxlength_js_truncate_html' => 0,
+          'rows' => 5,
+        ),
+        'type' => 'text_textarea',
+        'weight' => 8,
+      ),
     ),
     // Reception times (Paragraph)
     /*
@@ -744,4 +806,13 @@ function _hitsa_contacts_profile_create_term_translation($term, $langcode, $tran
   );
   $textgroup = 'taxonomy';
   i18n_string_textgroup($textgroup)->update_translation($context, $langcode, $translation);
+}
+
+function hitsa_contacts_update_7000() {
+  // Add new contact education field
+  $contact_fields = _hitsa_contacts_fields();
+  $contact_field_instances = _hitsa_contacts_field_instances();
+  
+  field_create_field($contact_fields['field_contact_education']);
+  field_create_instance($contact_field_instances['field_contact_education']);
 }

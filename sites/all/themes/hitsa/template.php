@@ -27,6 +27,13 @@ function hitsa_preprocess_page(&$variables)
     // Include the front page template
     if (drupal_is_front_page()) {
         $variables['front_content'] = theme('hitsa_front_content');
+        if($height_percentage = variable_get_value('hitsa_fp_image_height')) {
+            $default_height = 26.25;
+            $calculated_height = ($height_percentage / 100) * $default_height;
+            if($calculated_height !== $default_height) {
+                drupal_add_css('.hero .hero-image {height:' . $calculated_height . 'rem}', array('type' => 'inline'));
+            }
+        }
     }
     if (isset($variables['node'])) {
 

@@ -94,6 +94,13 @@ function hitsa_core_variable_info($options) {
     'title' => t('HITSA Front Page Image FID'),
     'group' => 'header_footer_variables',
   );
+  $variable['hitsa_fp_image_height'] = array(
+    'title' => t('Front Page Image Area Height'),
+    'group' => 'header_footer_variables',
+    'type' => 'number',
+    'default' => 100,
+    'description' => t('Allowed range: 50-100%'),
+  );
 
 //////////Blokkide pealkirjad
 
@@ -101,12 +108,14 @@ function hitsa_core_variable_info($options) {
     'title' => t('News title'),
     'group' => 'block_titles',
     'localize'=> TRUE,
+    'default' => t('News'),
   );
 
   $variable['front_our_stories_title'] = array(
     'title' => t('Our stories title'),
     'group' => 'block_titles',
     'localize'=> TRUE,
+    'default' => t('Our stories'),
   );
 
   $variable['front_events_title'] = array(
@@ -131,18 +140,21 @@ function hitsa_core_variable_info($options) {
     'title' => t('Front page gallery title'),
     'group' => 'block_titles',
     'localize'=> TRUE,
+    'default' => t('Gallery'),
   );
 
   $variable['footer_left_title'] = array(
     'title' => t('Footer left box title'),
     'group' => 'block_titles',
     'localize'=> TRUE,
+    'default' => t('Partners'),
   );
 
   $variable['footer_middle_title'] = array(
     'title' => t('Footer middle box title'),
     'group' => 'block_titles',
     'localize'=> TRUE,
+    'default' => t('General contact'),
   );
 
   $variable['front_confirmation_title'] = array(
@@ -155,12 +167,14 @@ function hitsa_core_variable_info($options) {
     'title' => t('Footer right box title'),
     'group' => 'block_titles',
     'localize'=> TRUE,
+    'default' => t('Important contacts'),
   );
 
   $variable['contact_contact_us_title'] = array(
     'title' => t('Contact page contact title'),
     'group' => 'block_titles',
     'localize'=> TRUE,
+    'default' => t('Contact us'),
   );
   return $variable;
 }
@@ -207,8 +221,6 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
   if($form['#variable_group_form'] === 'header_footer_variables') {
     _hitsa_core_add_logo_upload_element($form, $form_state); // Site Logo
     _hitsa_core_add_fp_image_upload_element($form, $form_state); // FP Image
-    
-    
     // General contact fieldset
     $form['general_contact'] = array(
       '#type' => 'fieldset', 
@@ -272,6 +284,19 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
     $form['hitsa_school_place_coords']['#attributes']['style'] = 'display:none;';
     $form['hitsa_school_place_coords']['#title_display'] = 'invisible';
     $form['hitsa_school_place_coords']['#theme_wrappers'] = array();
+    
+    // Front page hero banner height
+    if(isset($form['hitsa_fp_image_height'])) {
+      //dpm($form);
+      $form['hitsa_fp_image_height']['#attributes'] = array(
+        ' type' => 'number',
+        ' min' => 50,
+        ' max' => 100,
+      );
+      $form['hitsa_fp_image_height']['#field_suffix'] = '<span class="field-suffix">%</span>';
+      
+      $form['hitsa_fp_image_height']['#weight'] = $form['hitsa_fp_image_widget']['#weight'] + 1;
+    }
   }
   if($form['#variable_group_form'] === 'general_variables') {
     _hitsa_core_add_favicon_upload_element($form, $form_state);

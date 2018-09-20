@@ -28,7 +28,11 @@
  */
 ?>
 <div class="col-4 sm-hide">
-  <h3><?php print t('Partners'); ?></h3>
+  
+  <?php if($partners_title = variable_get_value('footer_left_title', array('default' =>  t('Partners')))): ?>
+  <h3><?php print $partners_title; ?></h3>
+  <?php endif; ?>
+  
   <?php if ($rows): ?>
     <?php print $rows; ?>
   <?php endif; ?>

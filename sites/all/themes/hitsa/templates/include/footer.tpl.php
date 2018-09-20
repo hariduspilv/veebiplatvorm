@@ -5,13 +5,21 @@
     <?php endif; ?>
     <div class="col-4 sm-12">
       <?php if(!empty($footer_general_contact)): ?>
-      <h3><?php print t('General contact'); ?></h3>
+      
+        <?php if($general_contact_title = variable_get_value('footer_middle_title', array('default' => t('General contact')))): ?>
+        <h3><?php print $general_contact_title; ?></h3>
+        <?php endif; ?>
+      
         <p><?php print $footer_general_contact; ?></p>
       <?php endif; ?>
     </div><!--/col-4-->
     <div class="col-<?php if(!empty($partners) && !empty($footer_general_contact)) {print 4;}else{print 8;}; ?> sm-12">
       <?php if(!empty($important_contacts)): ?>
-      <h3><?php print t('Important contacts'); ?></h3>
+      
+      <?php if($contacts_title = variable_get_value('footer_right_title', array('default' => t('Contact')))): ?>
+      <h3><?php print $contacts_title; ?></h3>
+      <?php endif; ?>
+      
       <table>
         <tbody>
         <?php print $important_contacts; ?>

@@ -74,7 +74,10 @@
 <?php if(!empty($contact_form)): ?>     
 <div class="block sm-hide">
   
-  <h2 class="block-title"><?php print t('Contact us'); ?></h2>
+  <?php if($contact_us_title = variable_get_value('contact_contact_us_title', array('default' => t('Contact us')))): ?>
+  <h2 class="block-title"><?php print $contact_us_title; ?></h2>
+  <?php endif; ?>
+  
   <?php print render($contact_form); ?>
 </div><!--/block-->
 <?php endif; ?>

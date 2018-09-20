@@ -120,6 +120,11 @@
           <?php if(!empty($node->e_mail[LANGUAGE_NONE][0]['email'])): // E-mail ?>
           <?php print spamspan(check_plain($node->e_mail[LANGUAGE_NONE][0]['email'])); ?>
           <?php endif; ?>
+          <?php if(!empty($node->field_contact_education[LANGUAGE_NONE][0]['value'])): // Education info ?>
+            <p>
+              <b><?php print t('Education');  ?>:</b>
+              <p><?php print nl2br(check_plain($node->field_contact_education[LANGUAGE_NONE][0]['value'])); ?></p>
+          <?php endif; ?>
         </p>
       </div><!--/object-content_col-->
       <div class="object-content_col">
