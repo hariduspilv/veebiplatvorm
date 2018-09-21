@@ -6,8 +6,10 @@ version = "7.x-dev"
 
 dependencies[] = hitsa_core
 dependencies[] = media
+dependencies[] = media_browser_plus
 dependencies[] = email
 dependencies[] = views
+dependencies[] = views_tree
 dependencies[] = number
 dependencies[] = webform
 dependencies[] = webform_localization
