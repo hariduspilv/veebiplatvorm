@@ -488,7 +488,7 @@ Palun oota...,Please wait...,
 Vaade,View,
 Viimati muudeti,Last modified,
 Artikli tüüp,Article type,
-Uudised,News,
+Uudised,News,Новости
 Oluline,Important,
 Õppeaasta,Academic year,
 Sulge,Close,
@@ -598,3 +598,8 @@ Ametikoht,Job position,Должность
 Ees- ja perekonnanimi,First and surname,Имя и фамилия
 Tunnustused, Awards,Почетное признание
 Vaata erialasid, Look at specialities, Специальности
+Haridus,Education,Образование
+Esilehe bänneri ala kõrgus,Front Page Image Area Height,Высота площади баннера главной страницы
+Lubatud vahemik 50-100%,Allowed range: 50-100%,Allowed range: 50-100%,Допустимый диапазон: 50-100%
+Ploki pealkirjad,Block titles,Заголовки блоков
+Uudised pealkiri,News title,Заголовок новости

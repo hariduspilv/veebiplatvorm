@@ -17,6 +17,7 @@ function hitsa_core_install() {
   hitsa_core_set_default_patterns();
 
   hitsa_core_set_translatable_variables();
+  hitsa_core_set_variable_translations();
 }
 
 function hitsa_core_uninstall() {
@@ -638,7 +639,7 @@ function hitsa_core_set_translatable_variables(){
 
   $translated_variables = variable_get('variable_realm_list_language');
   $variables_new = array(
-      'front_news_title'=> 'Uudised',
+      'front_news_title'=> 'News',
       'front_our_stories_title' => 'Our stories',
       'front_events_title' => 'Events calendar',
       'front_catering_title' => 'Catering',
@@ -669,6 +670,49 @@ function hitsa_core_set_translatable_variables(){
       }
   }
 }
+
+function hitsa_core_set_variable_translations() {
+  $translations = array(
+    'front_news_title' => array(
+      'et' => 'Uudised',
+      'ru' => 'Новости',
+    ),
+    'front_our_stories_title' => array(
+      'et' => 'Meie lood',
+      'ru' => 'Наши истории',
+    ),
+    'front_gallery_title' => array(
+      'et' => 'Galerii',
+      'ru' => 'Галерея',
+    ),
+    'footer_left_title' => array(
+      'et' => 'Koostööpartnerid',
+      'ru' => 'Партнеры по сотрудничеству',
+    ),
+    'footer_middle_title' => array(
+      'et' => 'Üldkontakt',
+      'ru' => 'Общий контакт',
+    ),
+    'footer_right_title' => array(
+      'et' => 'Olulised kontaktid',
+      'ru' => 'Важные контакты',
+    ),
+    'contact_contact_us_title' => array(
+      'et' => 'Võta meiega ühendust',
+      'ru' => 'Свяжитесь с нами',
+    ),
+  );
+  
+  foreach($translations as $var => $t) {
+    foreach($t as $lang => $translation) {
+      if(!empty($translation)) {
+        $realm = variable_realm('language', $lang);
+        variable_set_value($var, $translation,  array('realm' => $realm));
+      }
+    }
+  }
+}
+
 /**
  *
  * Update to make site pathauto working and also remove non english characters
@@ -771,4 +815,5 @@ function hitsa_core_update_7007(){
  */
 function hitsa_core_update_7008(){
   hitsa_core_set_translatable_variables();
+  hitsa_core_set_variable_translations();
 }

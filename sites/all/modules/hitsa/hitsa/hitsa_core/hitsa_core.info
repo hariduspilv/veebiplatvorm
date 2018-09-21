@@ -17,6 +17,7 @@ dependencies[] = search_api_views
 dependencies[] = search_api_facetapi
 dependencies[] = spamspan
 dependencies[] = maxlength
+dependencies[] = number
 dependencies[] = admin_menu
 dependencies[] = webform
 dependencies[] = captcha
