@@ -8,6 +8,7 @@ dependencies[] = hitsa_core
 dependencies[] = media
 dependencies[] = email
 dependencies[] = views
+dependencies[] = number
 dependencies[] = webform
 dependencies[] = webform_localization
 dependencies[] = paragraphs
