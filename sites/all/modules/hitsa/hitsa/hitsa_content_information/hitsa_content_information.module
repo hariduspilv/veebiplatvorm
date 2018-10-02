@@ -81,9 +81,12 @@
                       'video' => 0,
                     ),
                     'browser_plugins' => array(
+                      'upload' => 'upload',
+                      'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+                      'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
                       'media_default--media_browser_1' => 0,
                       'media_default--media_browser_my_files' => 0,
-                      'upload' => 'upload',
+                      'media_internet' => 0,
                     ),
                   ),
                   'type' => 'media_generic',

@@ -18,6 +18,7 @@ function hitsa_core_install() {
 
   hitsa_core_set_translatable_variables();
   hitsa_core_set_variable_translations();
+  hitsa_core_add_media_folder_terms();
 }
 
 function hitsa_core_uninstall() {
@@ -729,7 +730,7 @@ function hitsa_core_add_media_folder_terms() {
   
   // Make media folder localizable
   $v_media_folders->i18n_mode = 1;
-  //taxonomy_vocabulary_save($v_media_folders);
+  taxonomy_vocabulary_save($v_media_folders);
   
   $terms = array(
     'gallery' => array('name' => 'Gallery', 
@@ -916,6 +917,11 @@ function hitsa_core_update_7009() {
     ),
     array(
       'entity_type' => 'node',
+      'field_name' => 'field_attachments',
+      'bundle_name' => 'curriculum',
+    ),
+    array(
+      'entity_type' => 'node',
       'field_name' => 'cp_image',
       'bundle_name' => 'content-page',
     ),
@@ -933,6 +939,11 @@ function hitsa_core_update_7009() {
       'entity_type' => 'node',
       'field_name' => 'banner_image',
       'bundle_name' => 'logo',
+    ),
+    array(
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'information_image',
+      'bundle_name' => 'content_information',
     ),
   );
   

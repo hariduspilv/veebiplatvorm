@@ -308,8 +308,10 @@ function _hitsa_content_page_field_instances() {
         'settings' => array(
           'browser_plugins' => array(
             'upload' => 'upload',
-            'media_default--media_browser_1' => 'media_default--media_browser_1',
-            'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
+            'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+            'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
+            'media_default--media_browser_1' => 0,
+            'media_default--media_browser_my_files' => 0,
             'media_internet' => 0,
           ),
         ),
