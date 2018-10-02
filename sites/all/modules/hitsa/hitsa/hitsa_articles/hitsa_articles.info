@@ -7,5 +7,6 @@ version = "7.x-dev"
 dependencies[] = hitsa_core
 dependencies[] = hitsa_content_page
 dependencies[] = media
+dependencies[] = media_browser_plus
 dependencies[] = image_url_formatter
 dependencies[] = ckeditor

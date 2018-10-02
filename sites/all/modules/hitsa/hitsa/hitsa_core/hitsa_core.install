@@ -617,6 +617,17 @@ function hitsa_core_set_default_variables() {
   variable_set('image_captcha_dot_noise', 1);
   variable_set('image_captcha_line_noise', 1);
   variable_set('image_captcha_noise_level', '2');
+  
+  // Set WYSIWYG media popup settings
+  variable_set(
+    'media_wysiwyg_wysiwyg_browser_plugins', 
+    array(
+      'upload', 
+      'media_browser_plus--media_browser_thumbnails',
+      'media_browser_plus--media_browser_my_files',
+      'media_internet',
+    )
+  );
 }
 
 function hitsa_core_set_default_patterns(){
@@ -709,6 +720,54 @@ function hitsa_core_set_variable_translations() {
         $realm = variable_realm('language', $lang);
         variable_set_value($var, $translation,  array('realm' => $realm));
       }
+    }
+  }
+}
+
+function hitsa_core_add_media_folder_terms() {
+  $v_media_folders = taxonomy_vocabulary_machine_name_load('media_folders');
+  
+  // Make media folder localizable
+  $v_media_folders->i18n_mode = 1;
+  //taxonomy_vocabulary_save($v_media_folders);
+  
+  $terms = array(
+    'gallery' => array('name' => 'Gallery', 
+      'translations' => array('et' => 'Galerii', 'ru' => 'Галерея'),
+    ),
+    'articles' => array('name' => 'Articles',
+      'translations' => array('et' => 'Artiklid', 'ru' => 'Статьи'),
+    ),
+    'content_pages' => array('name' => 'Content pages',
+      'translations' => array('et' => 'Sisulehed', 'ru' => 'Страницы'),
+    ),
+    'contacts' => array('name' => 'Contacts',
+      'translations' => array('et' => 'Kontaktid', 'ru' => 'Контакты'),
+    ),
+    'catering' => array('name' => 'Catering',
+      'translations' => array('et' => 'Toitlustamine', 'ru' => 'Питание'),
+    ),
+    'curriculum' => array('name' => 'Curriculum',
+      'translations' => array('et' => 'Erialad', 'ru' => 'Специальности'),
+    ),
+    'banners' => array('name' => 'Banners',
+      'translations' => array('et' => 'Bännerid', 'ru' => 'Баннеры'),
+    ),
+  );
+  
+  foreach($terms as $key => $val) {
+    $term = new stdClass();
+    
+    $term->name = $val['name'];
+    $term->vid = $v_media_folders->vid;
+    
+    taxonomy_term_save($term);
+    
+    variable_set('hitsa_media_folders_' . $key . '_tid', $term->tid);
+    
+    // Add media folder term translations
+    foreach($val['translations'] as $lang => $t) {
+      i18n_string_translation_update(array('taxonomy', 'term', $term->tid, 'name'), $t, $lang, $val['name']);
     }
   }
 }
@@ -816,4 +875,83 @@ function hitsa_core_update_7007(){
 function hitsa_core_update_7008(){
   hitsa_core_set_translatable_variables();
   hitsa_core_set_variable_translations();
+}
+
+/**
+* Add support for media folders
+*/
+function hitsa_core_update_7009() {
+  // Enable "Media Browser Plus" module
+  if(!module_exists('media_browser_plus')) {
+    module_enable('media_browser_plus');
+  }
+  
+  // Set WYSIWYG media popup settings
+  variable_set(
+    'media_wysiwyg_wysiwyg_browser_plugins', 
+    array(
+      'upload', 
+      'media_browser_plus--media_browser_thumbnails',
+      'media_browser_plus--media_browser_my_files',
+      'media_internet',
+    )
+  );
+  
+  // Enable Media Browser Plus options on media fields
+  $fields = array(
+    array(
+      'entity_type' => 'node',
+      'field_name' => 'gallery_images',
+      'bundle_name' => 'gallery',
+    ),
+    array(
+      'entity_type' => 'node',
+      'field_name' => 'contact_image',
+      'bundle_name' => 'contact',
+    ),
+    array(
+      'entity_type' => 'node',
+      'field_name' => 'field_pictures',
+      'bundle_name' => 'curriculum',
+    ),
+    array(
+      'entity_type' => 'node',
+      'field_name' => 'cp_image',
+      'bundle_name' => 'content-page',
+    ),
+    array(
+      'entity_type' => 'node',
+      'field_name' => 'subpage_images',
+      'bundle_name' => 'article',
+    ),
+    array(
+      'entity_type' => 'node',
+      'field_name' => 'field_catering_pictures',
+      'bundle_name' => 'catering',
+    ),
+    array(
+      'entity_type' => 'node',
+      'field_name' => 'banner_image',
+      'bundle_name' => 'logo',
+    ),
+  );
+  
+  foreach($fields as $fi) {
+    $field_instance = field_info_instance($f['entity_type'], $f['field_name'], $f['bundle_name']);
+    
+    if(!empty($field_instance)) {
+      $field_instance['widget']['settings']['browser_plugins'] = array(
+        'upload' => 'upload',
+        'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+        'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
+        'media_default--media_browser_1' => 0,
+        'media_default--media_browser_my_files' => 0,
+        'media_internet' => 0,
+      );
+      
+      field_update_field($field_instance);
+    }
+    
+  }
+  hitsa_core_add_media_folder_terms();
 }

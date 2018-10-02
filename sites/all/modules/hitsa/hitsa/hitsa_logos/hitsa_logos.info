@@ -7,4 +7,5 @@ version = "7.x-dev"
 dependencies[] = hitsa_core
 dependencies[] = link
 dependencies[] = media
+dependencies[] = media_browser_plus
 dependencies[] = draggableviews
