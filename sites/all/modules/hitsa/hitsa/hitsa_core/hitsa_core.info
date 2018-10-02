@@ -6,6 +6,7 @@ dependencies[] = i18n_variable
 dependencies[] = i18n_menu
 dependencies[] = i18n_node
 dependencies[] = i18nviews
+dependencies[] = i18n_taxonomy
 dependencies[] = entity_translation
 dependencies[] = date
 dependencies[] = paragraphs
