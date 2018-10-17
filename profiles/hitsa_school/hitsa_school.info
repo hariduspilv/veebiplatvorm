@@ -44,6 +44,7 @@ dependencies[] = i18n_taxonomy
 dependencies[] = geocoder
 dependencies[] = googleanalytics
 dependencies[] = google_tag
+dependencies[] = site_verify
 dependencies[] = hitsa_core
 dependencies[] = hitsa_contacts
 dependencies[] = hitsa_locations

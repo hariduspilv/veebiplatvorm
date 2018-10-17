@@ -966,3 +966,11 @@ function hitsa_core_update_7009() {
   }
   hitsa_core_add_media_folder_terms();
 }
+/**
+ * Update to enable site verify .
+ */
+function hitsa_core_update_7010(){
+  if (!module_exists('site_verify')) {
+    module_enable(array('site_verify'));
+  }
+}
