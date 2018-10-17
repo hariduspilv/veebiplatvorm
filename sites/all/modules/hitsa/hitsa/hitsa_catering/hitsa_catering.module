@@ -480,7 +480,8 @@ function hitsa_catering_week($start_date = null)
     $provider_to_htmlize = array();
     if (!empty($providers) and count($providers) > 1) {
         $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers);
-
+        
+        if(!empty($catering_providers_sidemenu)){
         $catering_mobile = hitsa_catering_provider_side_menu($providers);
         $catering_mobile = '<div class="row sm-show no-print">
     <div class="col-12">
@@ -493,8 +494,10 @@ function hitsa_catering_week($start_date = null)
             </div><!--/accordion-->
         </div><!--/col-12-->
     </div><!--/row-->';
+        }
         $build['catering']['catering_provider']['#prefix'] = '<div class="col-3 sm-hide no-print d-flex">';
         $build['catering']['catering_provider']['#suffix'] = '</div>';
+        
         $build['catering']['catering_provider']['#markup'] = $catering_providers_sidemenu;
         $build['catering']['catering_table']['#prefix'] = '<div class="col-9 sm-12"><article>';
         $build['catering']['catering_table']['#suffix'] = '</div></article>';
@@ -537,6 +540,7 @@ function hitsa_catering_week($start_date = null)
             $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers, $loaded_menu->nid);
             $build['catering']['catering_provider']['#markup'] = $catering_providers_sidemenu;
             $catering_mobile = hitsa_catering_provider_side_menu($providers, $loaded_menu->nid);
+            if(!empty($catering_mobile)){
             $catering_mobile = '<div class="row sm-show no-print">
     <div class="col-12">
         <div class="accordion" data-plugin="accordion" data-allClosed="true">
@@ -548,6 +552,7 @@ function hitsa_catering_week($start_date = null)
             </div><!--/accordion-->
         </div><!--/col-12-->
     </div><!--/row-->';
+            }
         }
     }
 
@@ -569,7 +574,9 @@ function hitsa_catering_week($start_date = null)
         if (!empty($catering_mobile)) {
             $build['catering_header']['#prefix'] = $catering_mobile ;
         }
+        
     }
+    
     return $build;
 }
 
@@ -902,7 +909,7 @@ function hitsa_catering_provider_side_menu($providers = null, $active = null)
     $current_path = current_path();
     if (!empty($providers) && is_array($providers)) {
         $count = count($providers);
-        if ($count > 0) {
+        if ($count > 1) {
             $output .= '<ul class="side-menu" data-plugin="dropdownMenu">';
             foreach ($providers as $provider) {
                 if (!empty($provider['menu'])) {
