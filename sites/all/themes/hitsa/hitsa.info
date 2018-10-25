@@ -18,5 +18,5 @@ regions[footer] = Footer
 settings[shortcut_module_link] = 0
 
 
-scripts[] = static/assets/js/main.js
+;scripts[] = static/assets/js/main.js
 

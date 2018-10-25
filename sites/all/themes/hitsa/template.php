@@ -1416,11 +1416,19 @@ function hitsa_preprocess_html(&$variables){
         $conf_path = 'all';
     }
     $css_location = 'sites/'.$conf_path.'/themes/hitsa/static/assets/styles/default.css';
+    $js_location = 'sites/'.$conf_path.'/themes/hitsa/static/assets/js/main.js';
     if (file_exists($css_location)) {
       drupal_add_css($css_location, array('type'=>'file','group' => CSS_SYSTEM, 'every_page' => TRUE));
     }
     else{
       $css_location = 'sites/all/themes/hitsa/static/assets/styles/default.css';
       drupal_add_css($css_location,array('type'=>'file','group' => CSS_SYSTEM, 'every_page' => TRUE));
+    }
+    if (file_exists($js_location)) {
+      drupal_add_js($js_location, array('type'=>'file','group' => JS_THEME, 'every_page' => TRUE));
+    }
+    else{
+      $css_location = 'sites/all/themes/hitsa/static/assets/js/main.js';
+      drupal_add_css($js_location,array('type'=>'file','group' => JS_THEME, 'every_page' => TRUE));
     }
 }

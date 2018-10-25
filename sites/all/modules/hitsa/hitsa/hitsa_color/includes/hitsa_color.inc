@@ -61,7 +61,7 @@ function hitsa_color_change_form($form, &$form_state)
         }
         if (!empty($my_color)) {
             $form['submit'] = array(
-                '#submit' => array('hitsa_import_css','hitsa_color_change'),
+                '#submit' => array('hitsa_import_js','hitsa_import_css','hitsa_color_change'),
                 '#type' => 'submit',
                 '#value' => t('Vaheta värvi')
             );
@@ -124,6 +124,45 @@ function hitsa_color_change($form, &$form_state)
     var_dump(shell_exec('cd '.$_SERVER['DOCUMENT_ROOT'].'/'.'sites'.'/'.$conf_path.'/themes/hitsa/static && grunt compile 2>&1'));
     //$file = file_save_data($output, 'private://'. 'site-theme.less',FILE_EXISTS_REPLACE);
     return $file;
+}
+function hitsa_import_js($form,&$form_state){
+    
+    $files = array(
+        'device.min.js',
+        'fastclick.js',
+        'jquery-1.10.2.min.js',
+        'jquery.daterangepicker.js',
+        'jquery.filter.js',
+        'jquery.functions.js',
+        'jquery.gallery.js',
+        'jquery.modal.js',
+        'jquery.sumoselect.min.js',
+        'map.js',
+        'moment.min.js',
+        'swiper.jquery.js',
+        'tooltipster.bundle.js',
+        'translations.js',
+        'wpm.js'
+      );
+    $files_location = 'sites/all/themes/hitsa/static/dev/js';
+    $conf_path = conf_path();
+    $conf_path = str_replace('sites/', '', $conf_path);
+    if ($conf_path!='default') {
+        $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/js';
+    } else {
+        $site_theme_location=false;
+    }
+    foreach ($files as $key => $file_name) {
+        $file_content = file_get_contents($files_location.'/'.$file_name);
+        if (!empty($file_content)) {
+            if (!$site_theme_location) {
+                break;
+            }
+            $file =fopen($site_theme_location.'/'.$file_name, 'w');
+            fwrite($file, $file_content);
+            fclose($file);
+        }
+    }
 }
 function hitsa_import_css($form, &$form_state)
 {
