@@ -30,6 +30,11 @@ function hitsa_core_variable_info($options) {
     'description' => t('Will be displayed to users mobile phones screen during signing process'),
     'default' => 'Testimine',
   );
+  $variable['hitsa_initial_path'] = array(
+    'title' => t('Hitsa inital path'),
+    'group' => 'general_variables',
+    'description' => t('Hitsa esialgne domeeni nimi ennem vahetamist peaks olema kujul sites/domeeninimi'),
+  );
   $variable['period_title'] = array(
     'title' => t('Period title'),
     'localize' => TRUE,

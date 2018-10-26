@@ -19,6 +19,7 @@ function hitsa_core_install() {
   hitsa_core_set_translatable_variables();
   hitsa_core_set_variable_translations();
   hitsa_core_add_media_folder_terms();
+  hitsa_core_set_initial_domain_path();
 }
 
 function hitsa_core_uninstall() {
@@ -973,4 +974,8 @@ function hitsa_core_update_7010(){
   if (!module_exists('site_verify')) {
     module_enable(array('site_verify'));
   }
+}
+
+function hitsa_core_set_initial_domain_path(){
+  variable_set('hitsa_inital_path',conf_path());
 }

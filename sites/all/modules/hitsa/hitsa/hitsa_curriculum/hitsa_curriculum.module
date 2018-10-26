@@ -1103,6 +1103,7 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                 $output .= $list_item;
             }
             $output .= '</ul>';
+
             return $output;
         }
     }
@@ -1281,6 +1282,11 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     if(!empty($output_elements['body_element'])){
         $output_elements['body_element'] = str_replace('<table','<div class="table_wrapper" data-plugin="responsiveTable"><table',$output_elements['body_element']);
         $output_elements['body_element'] = str_replace('</table>','</table></div>',$output_elements['body_element']);
+    }
+
+    $inital_path = variable_get('hitsa_initial_path');
+    if(!empty($inital_path)){
+        $output_elements['body_element'] = str_replace($inital_path,conf_path(),$output_elements['body_element']);
     }
     if (!empty($content->field_jobs_pretext) && !empty($content->field_jobs)) {
         $output_elements['jobs'] = '<h5>' . t('Jobs in the future') . '</h5>';
