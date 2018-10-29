@@ -423,7 +423,7 @@ function hitsa_core_fp_image_submit($form, &$form_state) {
 
 // Favicon upload
 function _hitsa_core_add_favicon_upload_element(&$form, &$form_state) {
-  $theme_settings = variable_get('theme_settings', array());
+  $theme_settings = variable_get('theme_hitsa_settings', array());
   $form_state['theme_settings'] = $theme_settings;
   
   $form['favicon'] = array(
