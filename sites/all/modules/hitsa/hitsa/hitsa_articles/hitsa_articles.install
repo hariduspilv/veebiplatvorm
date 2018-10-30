@@ -221,12 +221,22 @@ function hitsa_articles_update_7000(){
   $field_author_custom = _hitsa_articles_fields()['field_author_custom'];
   $field_instance_author_custom = _hitsa_articles_field_instances()['field_author_custom'];
   
-  field_create_field($field_author_custom);
-  field_create_instance($field_instance_author_custom);
+  // Check if field already exists
+  if(empty(field_info_field('field_author_custom'))) {
+    field_create_field($field_author_custom);
+  }
+  
+  // Check if field instance already exists
+  if(empty(field_info_instance('node', 'field_author_custom', 'article'))) {
+    field_create_instance($field_instance_author_custom);
+  }
   
   // Revert the news block view so that we can add the new custom author field.
   $view = views_get_view('hitsa_news');
   if($view) {
-    views_revert_view($view);
+    $view->delete();
+    // Clear its cache.
+    ctools_include('object-cache');
+    ctools_object_cache_clear('view', $view->name);
   }
 }
