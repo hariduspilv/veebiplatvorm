@@ -23,8 +23,11 @@
         <span class="object-title"><?php print check_plain($node->title); ?></span>
         <span class="object-footer">
           <span class="before-calendar"><?php print format_date($node->created, 'hitsa_date_month'); ?></span>
-          <?php if(!empty($author->name)): ?>
-          <span class="before-user"><?php print $author->name; ?></span>
+          <?php $author_name = !empty($node->field_author_custom) ?
+              $node->field_author_custom[LANGUAGE_NONE][0]['value'] : $author->name;
+            if(!empty($author_name)):
+          ?>
+          <span class="before-user"><?php print $author_name; ?></span>
           <?php endif; ?>
         </span><!--/object-footer-->
       </span><!--/object-content-->

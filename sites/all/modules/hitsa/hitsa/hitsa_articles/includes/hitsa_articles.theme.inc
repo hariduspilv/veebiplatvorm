@@ -98,9 +98,13 @@ function hitsa_articles_preprocess_node(&$variables) {
       $variables['more_articles_link'] = sprintf('<a href="%s" class="btn sm-stretch">%s</a>', $link, $article_type === 'our_stories' ? t('All stories') : t('All news'));
       
       // Set author and publish date
-      $author = user_load($variables['uid']);
-      if(!empty($author->name)) {
-        $variables['author_name'] = $author->name;
+      if(!empty($variables['field_author_custom'])) {
+        $variables['author_name'] = $variables['field_author_custom'][0]['safe_value'];
+      } else {
+        $author = user_load($variables['uid']);
+        if(!empty($author->name)) {
+          $variables['author_name'] = $author->name;
+        }
       }
     }
   }

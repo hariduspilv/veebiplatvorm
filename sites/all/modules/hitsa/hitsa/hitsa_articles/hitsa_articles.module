@@ -190,6 +190,14 @@ function hitsa_articles_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   if($form_id === 'article_node_form') {
+    if(!empty($form['field_author_custom'])) { 
+      // Move custom author name field under the author fieldset
+      $author_custom_field = $form['field_author_custom'];
+      unset($form['field_author_custom']);
+      $author_custom_field['#weight'] = $form['author']['name']['#weight'] + 1;
+      
+      $form['author']['field_author_custom'] = $author_custom_field;
+    }
     if(!empty($form['body'][LANGUAGE_NONE][0]['summary'])) {
       $form['body'][LANGUAGE_NONE][0]['summary']['#maxlength'] = 300;
       $form['body'][LANGUAGE_NONE][0]['summary']['#maxlength_js'] = TRUE;

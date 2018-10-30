@@ -51,7 +51,11 @@
         <span class="object-title"><?php print $fields['title']->content; ?></span>
         <span class="object-footer">
           <span class="before-calendar"><?php print $fields['created']->content; ?></span>
-          <span class="before-user"><?php print $fields['name']->content; ?></span>
+          <?php $author_name = !empty($fields['field_author_custom']->content) ? 
+              $fields['field_author_custom']->content : $fields['name']->content;
+          if(!empty($author_name)):?>
+          <span class="before-user"><?php print $author_name; ?></span>
+          <?php endif; ?>
         </span><!--/object-footer-->
       </span><!--/object-content-->
     </span>
