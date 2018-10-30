@@ -992,6 +992,10 @@ function hitsa_core_update_7009()
     module_enable('media_browser_plus');
   }
   
+  if(!module_exists('views_tree')) {
+    module_enable('views_tree');
+  }
+  
   // Set WYSIWYG media popup settings
   variable_set(
     'media_wysiwyg_wysiwyg_browser_plugins',
