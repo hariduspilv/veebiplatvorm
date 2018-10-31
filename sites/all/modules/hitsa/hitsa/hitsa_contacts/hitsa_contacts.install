@@ -740,11 +740,13 @@ function _hitsa_contacts_image_styles() {
 		    'label' => 'Contacts Page Image (100 x 100)'
 		  ),
 		  'effect' => array(
-		    'name' => 'manualcrop_crop_and_scale',
+		    'name' => 'manualcrop_crop',
 		    'data' => array(
 		      'width' => 100,
 		      'height' => 100,
 		      'upscale' => FALSE,
+		      'keepproportions' => 1,
+		      'style_name' => 'hitsa_contacts_page_image',
 		    ),
 		  ),
 		),
