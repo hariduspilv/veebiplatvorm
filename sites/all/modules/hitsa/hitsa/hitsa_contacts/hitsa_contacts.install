@@ -253,30 +253,84 @@ function _hitsa_contacts_field_instances() {
       )
     ),
     'contact_image' => array(
-      'field_name' => 'contact_image',
       'bundle' => 'contact',
-      'entity_type' => 'node',
-      'label' => $t('Image'),
-      'widget' => array(
-        'type' => 'media_generic',
-        'module' => 'media',
-        'settings' => array(
-          'browser_plugins' => array(
-            'upload' => 'upload',
-            'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
-            'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
-            'media_default--media_browser_1' => 0,
-            'media_default--media_browser_my_files' => 0,
-            'media_internet' => 0,
-          ),
-        ),
-      ),
+      'deleted' => 0,
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => 'hitsa_contacts_page_image',
+          ),
           'type' => 'image',
-        )
-      )
+          'weight' => 3,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'contact_image',
+      'label' => 'Pilt',
+      'required' => 0,
+      'settings' => array(
+        'alt_field' => 0,
+        'default_image' => 0,
+        'entity_translation_sync' => FALSE,
+        'file_directory' => '',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '',
+        'max_resolution' => '',
+        'min_resolution' => '',
+        'title_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'media',
+        'settings' => array(
+          'allowed_schemes' => array(
+            'public' => 'public',
+            'vimeo' => 0,
+            'youtube' => 0,
+          ),
+          'allowed_types' => array(
+            'audio' => 0,
+            'document' => 0,
+            'image' => 'image',
+            'video' => 0,
+          ),
+          'browser_plugins' => array(
+            'media_browser_plus--media_browser_my_files' => 0,
+            'media_browser_plus--media_browser_thumbnails' => 0,
+            'media_default--media_browser_1' => 0,
+            'media_default--media_browser_my_files' => 0,
+            'media_internet' => 0,
+            'upload' => 0,
+          ),
+          'manualcrop_crop_info' => 1,
+          'manualcrop_default_crop_area' => 1,
+          'manualcrop_enable' => 1,
+          'manualcrop_inline_crop' => 0,
+          'manualcrop_instant_crop' => FALSE,
+          'manualcrop_instant_preview' => 1,
+          'manualcrop_keyboard' => 1,
+          'manualcrop_maximize_default_crop_area' => 0,
+          'manualcrop_require_cropping' => array(),
+          'manualcrop_styles_list' => array(
+            'hitsa_contacts_page_image' => 'hitsa_contacts_page_image',
+          ),
+          'manualcrop_styles_mode' => 'include',
+          'manualcrop_thumblist' => 0,
+        ),
+        'type' => 'media_generic',
+        'weight' => 4,
+      ),
     ),
     'job_position' => array(
       'field_name' => 'job_position',
@@ -685,7 +739,7 @@ function _hitsa_contacts_image_styles() {
 		    'label' => 'Contacts Page Image (100 x 100)'
 		  ),
 		  'effect' => array(
-		    'name' => 'image_scale_and_crop',
+		    'name' => 'manualcrop_crop_and_scale',
 		    'data' => array(
 		      'width' => 100,
 		      'height' => 100,
@@ -825,4 +879,32 @@ function hitsa_contacts_update_7000() {
   
   field_create_field($contact_fields['field_contact_education']);
   field_create_instance($contact_field_instances['field_contact_education']);
+}
+
+/**
+ * Add contact image crop and resize functionality.
+ */
+function hitsa_contacts_update_7001() {
+  // Update the contact image style effects
+  $style = image_style_load('hitsa_contacts_page_image');
+  $isid = $style['isid'];
+  
+  // Delete the current effect.
+  foreach($style['effects'] as $effect) {
+    image_effect_delete($effect);
+  }
+  
+  // Add the new manual crop effect instead
+  foreach(_hitsa_contacts_image_styles() as $s) {
+    if($s['style']['name'] === 'hitsa_contacts_page_image') {
+      $manual_crop = $s['effect'];
+      $manual_crop['isid'] = $isid;
+      image_effect_save($manual_crop);
+      break;
+    }
+  }
+  
+  // Update the contact image field instance to allow manual cropping.
+  $field_instance = _hitsa_contacts_field_instances()['contact_image'];
+  field_update_instance($field_instance);
 }

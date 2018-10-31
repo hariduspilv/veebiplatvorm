@@ -18,7 +18,13 @@
 				<span class="object-title"><?php print $result_item['entity']->title; ?></span>
 				<span class="object-footer">
 					<span class="before-calendar"><?php print format_date($result_item['entity']->created, 'hitsa_date_month'); ?></span>
-					<span class="before-user">Haldur</span>
+					<?php 
+					$author_name = !empty($result_item['entity']->field_author_custom) ? 
+						$result_item['entity']->field_author_custom[LANGUAGE_NONE][0]['safe_value'] : NULL;
+						
+					if(!empty($author_name)): ?>
+					<span class="before-user"><?php print $author_name; ?></span>
+					<?php endif; ?>
 				</span><!--/object-footer-->
 				<span class="object-description">
 					<?php if(!empty($result_item['excerpt'])) print $result_item['excerpt']; ?>
