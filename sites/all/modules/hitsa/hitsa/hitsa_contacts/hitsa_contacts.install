@@ -78,6 +78,7 @@ function _hitsa_contacts_fields() {
       'field_name' => 'phone_nr',
       'label' => $t('Phone Nr.'),
       'type' => 'text',
+      'cardinality' => 2,
     ),
     'e_mail' => array(
       'field_name' => 'e_mail',
@@ -883,6 +884,7 @@ function hitsa_contacts_update_7000() {
 
 /**
  * Add contact image crop and resize functionality.
+ * Add an extra phone number slot
  */
 function hitsa_contacts_update_7001() {
   // Update the contact image style effects
@@ -907,4 +909,11 @@ function hitsa_contacts_update_7001() {
   // Update the contact image field instance to allow manual cropping.
   $field_instance = _hitsa_contacts_field_instances()['contact_image'];
   field_update_instance($field_instance);
+  
+  // Update contact phone nr field to support two phone nrs.
+  $field = field_info_field('phone_nr');
+  if(!empty($field)) {
+    $field['cardinality'] = 2;
+    field_update_field($field);
+  }
 }

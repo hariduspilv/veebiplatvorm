@@ -114,9 +114,10 @@
           <?php if($job_position_field = field_get_items('node', $node, 'job_position')): // Job position ?>
             <?php $job_position = field_view_value('node', $node, 'job_position', $job_position_field[0]); print render($job_position); ?><br />
           <?php endif; ?>
-          <?php if($phone_nr = field_get_items('node', $node, 'phone_nr')): // Phone Nr ?>
-            <?php print check_plain($node->phone_nr[LANGUAGE_NONE][0]['safe_value']); ?><br />
-          <?php endif; ?>
+          <?php if($phone_nrs = field_get_items('node', $node, 'phone_nr')): // Phone Nrs
+            foreach($phone_nrs as $p): ?>
+            <?php print check_plain($p['safe_value']); ?><br />
+          <?php endforeach; endif; ?>
           <?php if(!empty($node->e_mail[LANGUAGE_NONE][0]['email'])): // E-mail ?>
           <?php print spamspan(check_plain($node->e_mail[LANGUAGE_NONE][0]['email'])); ?>
           <?php endif; ?>
