@@ -210,6 +210,26 @@ function hitsa_core_preprocess_hitsa_header(&$variables)
   $hitsa_header_menu_name = variable_get('hitsa_header_menu_name');
   if (!empty($hitsa_header_menu_name)) {
     $header_menu = i18n_menu_localize_tree(menu_tree_all_data($hitsa_header_menu_name));
+    foreach ($header_menu as $menu_item_key => $menu_item) {
+      if (!empty($menu_item['link'])) {
+        if (!empty($menu_item['link']['options'])) {
+          if (!empty($menu_item['link']['options']['attributes'])) {
+            if(isset($menu_item['link']['options']['attributes']['title'])){
+              unset($header_menu[$menu_item_key]['link']['options']['attributes']['title']);
+            }
+          }
+        }
+      }
+      if (!empty($menu_item['link'])) {
+        if (!empty($menu_item['link']['localized_options'])) {
+          if (!empty($menu_item['link']['localized_options']['attributes'])) {
+            if(isset($menu_item['link']['localized_options']['attributes']['title'])){
+              unset($header_menu[$menu_item_key]['link']['localized_options']['attributes']['title']);
+            }
+          }
+        }
+      }
+    }
     $header_count = count($header_menu);
     if ($header_count > 3) {
       $header_menus = array_chunk($header_menu, 3, true);
@@ -236,12 +256,12 @@ function hitsa_core_preprocess_hitsa_header(&$variables)
   }
   // Main logo
   $site_logo_fid = variable_get_value('hitsa_site_logo_fid');
-  if($site_logo_fid){
-  $logo_file = file_load($site_logo_fid);
-  if ($logo_file) {
-    $variables['site_logo'] = image_style_url('hitsa_core_logo', $logo_file->uri);
+  if ($site_logo_fid) {
+    $logo_file = file_load($site_logo_fid);
+    if ($logo_file) {
+      $variables['site_logo'] = image_style_url('hitsa_core_logo', $logo_file->uri);
+    }
   }
-}
 }
 
 /**
@@ -345,7 +365,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
       $variables['hitsa_school_place_address'] = $address_link;
     }
   }
-  
+
 }
 
 function hitsa_core_menu_overview_form($variables)
@@ -445,28 +465,28 @@ function hitsa_core_search_page($filter = false)
           );
         }
 
-        $found = FALSE;
-        if(!empty($query['category']) && $query['category'] !== 'all') {
+        $found = false;
+        if (!empty($query['category']) && $query['category'] !== 'all') {
           $categories = explode(',', $query['category']);
         } else {
           $categories = 'all';
         }
         if (!empty($result['entity']->field_event_type) && $result['entity']->field_event_type[LANGUAGE_NONE][0]) {
-          foreach($result['entity']->field_event_type[LANGUAGE_NONE] as $event_type) {
-            if($event_type['value'] === 'training' && ($categories === 'all' || in_array('training', $categories))) {
+          foreach ($result['entity']->field_event_type[LANGUAGE_NONE] as $event_type) {
+            if ($event_type['value'] === 'training' && ($categories === 'all' || in_array('training', $categories))) {
               $t_entity = $result['entity'];
               $t_entity->type = 'training';
               $results_rendered[$t_entity->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
-              $found = TRUE;
-            } else if($event_type['value'] === 'event' && ($categories === 'all' || in_array('event', $categories))) {
+              $found = true;
+            } else if ($event_type['value'] === 'event' && ($categories === 'all' || in_array('event', $categories))) {
               $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
-              $found = TRUE;
+              $found = true;
             }
           }
 
         }
       }
-      if(!isset($found) || !$found) {
+      if (!isset($found) || !$found) {
         $results_rendered[$result['entity']->type][] = theme('hitsa_search_result_item', array('result_item' => $result));
       }
       $authors[$result['entity']->uid] = $result['entity']->uid;
