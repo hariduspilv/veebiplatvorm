@@ -50,6 +50,26 @@ function _hitsa_articles_fields() {
         ),
       ),
     ),
+    'field_author_custom' => array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_author_custom',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
+    ),
   );
 }
 
@@ -131,6 +151,47 @@ function _hitsa_articles_field_instances() {
       ),
       'required' => 1,
     ),
+    'field_author_custom' => array(
+      'bundle' => 'article',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => $t("Will be displayed instead of author's username"),
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 5,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_author_custom',
+      'label' => $t('Displayed author name'),
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'maxlength_js' => 0,
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 41,
+      ),
+    ),
   );
 }
 
@@ -151,4 +212,31 @@ function _hitsa_articles_path_aliases() {
   );
   
   return $path_aliases;
+}
+
+/**
+ * Add custom name field for article authorship
+ */
+function hitsa_articles_update_7000(){
+  $field_author_custom = _hitsa_articles_fields()['field_author_custom'];
+  $field_instance_author_custom = _hitsa_articles_field_instances()['field_author_custom'];
+  
+  // Check if field already exists
+  if(empty(field_info_field('field_author_custom'))) {
+    field_create_field($field_author_custom);
+  }
+  
+  // Check if field instance already exists
+  if(empty(field_info_instance('node', 'field_author_custom', 'article'))) {
+    field_create_instance($field_instance_author_custom);
+  }
+  
+  // Revert the news block view so that we can add the new custom author field.
+  $view = views_get_view('hitsa_news');
+  if($view) {
+    $view->delete();
+    // Clear its cache.
+    ctools_include('object-cache');
+    ctools_object_cache_clear('view', $view->name);
+  }
 }

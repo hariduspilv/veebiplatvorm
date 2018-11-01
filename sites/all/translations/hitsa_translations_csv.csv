@@ -603,3 +603,7 @@ Esilehe bänneri ala kõrgus,Front Page Image Area Height,Высота площ�
 Lubatud vahemik 50-100%,Allowed range: 50-100%,Allowed range: 50-100%,Допустимый диапазон: 50-100%
 Ploki pealkirjad,Block titles,Заголовки блоков
 Uudised pealkiri,News title,Заголовок новости
+Kuvatav autori nimi,Displayed author name,Отображаемое имя автора
+Kuvatakse autori kasutajanime asemel,Will be displayed instead of author's username,Будет отображаться вместо имени пользователя автора
+Kaust,Folder,Папка
+Määrab kausta kuhu üleslaaditud failid salvestatakse,Defines the folder where the uploaded files will be saved,Определяет папку в которою будут сохранены загруженные файлы

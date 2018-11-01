@@ -29,8 +29,13 @@
         <span class="object-title"><?php print check_plain($node->title); ?></span>
         <span class="object-footer">
           <span class="before-calendar"><?php print format_date($node->created, 'hitsa_date_month'); ?></span>
-          <?php if(!empty($author->name && $node->type === 'article')): ?>
-          <span class="before-user"><?php print $author->name; ?></span>
+          <?php if($node->type === 'article'): 
+            $author_name = !empty($node->field_author_custom) ?
+              $node->field_author_custom[LANGUAGE_NONE][0]['value'] : $author->name;
+          ?>
+            <?php if(!empty($author_name)): ?>
+              <span class="before-user"><?php print $author_name; ?></span>
+            <?php endif; ?>
           <?php elseif($node->type === 'gallery' && !empty($node->gallery_author)): ?>
           <span class="before-user"><?php print check_plain($node->gallery_author[LANGUAGE_NONE][0]['value']); ?></span>
           <?php endif; ?>
