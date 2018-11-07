@@ -39,7 +39,7 @@ function hitsa_color_change_form($form, &$form_state)
             $row_value[0] = preg_replace( "/\r|\n/", "", $row_value[0] );
             $form_state['storage']['classes'][]=$row_value[0];
             $description = '';
-            if ($row_value[0]=='highlight-1') {
+            if (strpos($row_value[0], 'highlight-1')!=false) {
                 $description = 'Lehe põhivärvitoon, millest genereeritakse ülejäänud värvitoonid';
             }
             if (strpos($row_value[0], 'border-radius')!=false) {
@@ -95,7 +95,12 @@ function hitsa_color_change($form, &$form_state)
             $output .= $class . ':' . $form_state['values'][$class] . ';';
         }
     }
-
+    if (strpos($output, 'highlight-1') !== false) {
+        
+    }
+    else{
+        $output ='@highlight-1:;'.$output;
+    }
     //exec($_SERVER['DOCUMENT_ROOT'].'/sites/all/themes/hitsa/static/Gruntfile.js');
     //putenv('PATH=' . getenv('PATH') . '/home/ubuntu/nodejs /home/ubuntu/workspace/sites/all/themes/hitsa/static/Gruntfile.js');
     //exec(' cd /sites/all/themes/hitsa/static && grunt 2>&1');
@@ -216,4 +221,14 @@ function hitsa_import_css_update()
     $conf_path = conf_path();
     $conf_path = str_replace('sites/', '', $conf_path);
     var_dump(shell_exec('cd '.$_SERVER['DOCUMENT_ROOT'].'/'.'sites'.'/'.$conf_path.'/themes/hitsa/static && grunt compile 2>&1'));
+}
+function hitsa_color_grunt_runner(){
+    $var = '';
+    hitsa_import_js($var,$var);
+    hitsa_import_css($var,$var);
+
+    $conf_path = conf_path();
+    $conf_path = str_replace('sites/', '', $conf_path);
+    var_dump(shell_exec('cd '.$_SERVER['DOCUMENT_ROOT'].'/'.'sites'.'/'.$conf_path.'/themes/hitsa/static && grunt compile 2>&1'));
+
 }

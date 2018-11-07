@@ -879,9 +879,13 @@ function hitsa_contacts_update_7000() {
   // Add new contact education field
   $contact_fields = _hitsa_contacts_fields();
   $contact_field_instances = _hitsa_contacts_field_instances();
-  
-  field_create_field($contact_fields['field_contact_education']);
-  field_create_instance($contact_field_instances['field_contact_education']);
+  $field_test = field_info_field($contact_fields['field_contact_education']['field_name']);
+    if (empty($field_test)) {
+      field_create_field($contact_fields['field_contact_education']);
+    }
+    if (empty(field_info_instance($contact_field_instances['field_contact_education']['entity_type'], $contact_field_instances['field_contact_education']['field_name'], $contact_field_instances['field_contact_education']['bundle']))) {
+      field_create_instance($contact_field_instances['field_contact_education']);
+    }
 }
 
 /**
