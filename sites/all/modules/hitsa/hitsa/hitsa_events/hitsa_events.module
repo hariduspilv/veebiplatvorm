@@ -197,7 +197,7 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
             }
             if (!empty($school_type)) {
                 if ($school_type == 1) {
-                    $form['field_event_type']['#access'] = false;
+                    $form['field_event_type']['#attributes']['style'] = 'display:none;';
                 }
             }
             if (!empty($form['field_event_type'])) {
