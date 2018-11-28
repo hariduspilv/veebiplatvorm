@@ -5,14 +5,13 @@
  */
 function hitsa_curriculum_install()
 {
-    module_load_include('module','hitsa_core','hitsa_core');
+    module_load_include('module', 'hitsa_core', 'hitsa_core');
     $school_type = '';
     if (empty(variable_get('hitsa_school_type'))) {
         variable_set('hitsa_school_type', 1);
         $school_type = 1;
-    }
-    else{
-      $school_type =  variable_get('hitsa_school_type');
+    } else {
+        $school_type = variable_get('hitsa_school_type');
     }
     hitsa_curriculum_create_node();
 
@@ -45,7 +44,7 @@ function hitsa_curriculum_uninstall()
     foreach ($result as $row) {
         $node_ids[] = $row->nid;
     }
-    module_load_include('module','hitsa_core','hitsa_core');
+    module_load_include('module', 'hitsa_core', 'hitsa_core');
     $school_type = hitsa_core_get_school_type();
     if (empty(variable_get('hitsa_school_type'))) {
         variable_set('hitsa_school_type', 1);
@@ -157,8 +156,8 @@ function hitsa_curriculum_add_custom_paragraphs_fields()
     }
 
     foreach (_hitsa_curriculum_installed_paragraphs_instances() as $field_instance) {
-        $instance = field_info_instance($field_instance['entity_type'],$field_instance['field_name'],$field_instance['bundle']);
-        if(!$instance){
+        $instance = field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']);
+        if (!$instance) {
             field_create_instance($field_instance);
         }
     }
@@ -288,40 +287,40 @@ function _hitsa_curriculum_installed_paragraphs_fields()
         'entity_types' => array(),
         'field_name' => 'field_job',
         'indexes' => array(
-          'format' => array(
-            0 => 'format',
-          ),
+            'format' => array(
+                0 => 'format',
+            ),
         ),
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-          'entity_translation_sync' => FALSE,
-          'max_length' => 255,
+            'entity_translation_sync' => false,
+            'max_length' => 255,
         ),
         'translatable' => 0,
         'type' => 'text',
-      );
+    );
     
       // Exported field_base: 'field_job_description'.
-      $field_bases['field_job_description'] = array(
+    $field_bases['field_job_description'] = array(
         'active' => 1,
         'cardinality' => 1,
         'deleted' => 0,
         'entity_types' => array(),
         'field_name' => 'field_job_description',
         'indexes' => array(
-          'format' => array(
-            0 => 'format',
-          ),
+            'format' => array(
+                0 => 'format',
+            ),
         ),
         'locked' => 0,
         'module' => 'text',
         'settings' => array(
-          'entity_translation_sync' => FALSE,
+            'entity_translation_sync' => false,
         ),
         'translatable' => 0,
         'type' => 'text_long',
-      );
+    );
     return $field_bases;
 
 }
@@ -551,90 +550,90 @@ function _hitsa_curriculum_installed_paragraphs_instances()
         ),
     );
     // Exported field_instance: 'paragraphs_item-jobs-field_job'.
-  $field_instances['paragraphs_item-jobs-field_job'] = array(
-    'bundle' => 'jobs',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 0,
-      ),
-      'paragraphs_editor_preview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_job',
-    'label' => 'Job',
-    'required' => 0,
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 1,
-    ),
-  );
+    $field_instances['paragraphs_item-jobs-field_job'] = array(
+        'bundle' => 'jobs',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'text',
+                'settings' => array(),
+                'type' => 'text_default',
+                'weight' => 0,
+            ),
+            'paragraphs_editor_preview' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_job',
+        'label' => 'Job',
+        'required' => 0,
+        'settings' => array(
+            'entity_translation_sync' => false,
+            'text_processing' => 0,
+            'user_register_form' => false,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'text',
+            'settings' => array(
+                'size' => 60,
+            ),
+            'type' => 'text_textfield',
+            'weight' => 1,
+        ),
+    );
 
   // Exported field_instance: 'paragraphs_item-jobs-field_job_description'.
-  $field_instances['paragraphs_item-jobs-field_job_description'] = array(
-    'bundle' => 'jobs',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 1,
-      ),
-      'paragraphs_editor_preview' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'paragraphs_item',
-    'field_name' => 'field_job_description',
-    'label' => 'Description',
-    'required' => FALSE,
-    'settings' => array(
-      'entity_translation_sync' => FALSE,
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 2,
-    ),
-  );
+    $field_instances['paragraphs_item-jobs-field_job_description'] = array(
+        'bundle' => 'jobs',
+        'default_value' => null,
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'text',
+                'settings' => array(),
+                'type' => 'text_default',
+                'weight' => 1,
+            ),
+            'paragraphs_editor_preview' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'paragraphs_item',
+        'field_name' => 'field_job_description',
+        'label' => 'Description',
+        'required' => false,
+        'settings' => array(
+            'entity_translation_sync' => false,
+            'text_processing' => 0,
+            'user_register_form' => false,
+        ),
+        'widget' => array(
+            'module' => 'text',
+            'settings' => array(
+                'rows' => 5,
+            ),
+            'type' => 'text_textarea',
+            'weight' => 2,
+        ),
+    );
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Description');
-  t('Job');
+    t('Description');
+    t('Job');
     // Translatables
     // Included for use with string extractors like potx.
     t('+372 000000');
@@ -1814,83 +1813,83 @@ function _hitsa_curriculum_installed_node_instances()
     );
 
    // Exported field_instance: 'node-curriculum-field_pictures'.
-  $field_instances['node-curriculum-field_pictures'] = array(
-    'bundle' => 'curriculum',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'image',
+    $field_instances['node-curriculum-field_pictures'] = array(
+        'bundle' => 'curriculum',
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'image',
+                'settings' => array(
+                    'image_link' => '',
+                    'image_style' => '',
+                ),
+                'type' => 'image',
+                'weight' => 4,
+            ),
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
+        ),
+        'entity_type' => 'node',
+        'field_name' => 'field_pictures',
+        'label' => 'Pictures',
+        'required' => 0,
         'settings' => array(
-          'image_link' => '',
-          'image_style' => '',
+            'alt_field' => 0,
+            'default_image' => 0,
+            'entity_translation_sync' => false,
+            'file_directory' => 'curriculum_pictures',
+            'file_extensions' => 'png gif jpg jpeg',
+            'max_filesize' => '',
+            'max_resolution' => '',
+            'min_resolution' => '',
+            'title_field' => 0,
+            'user_register_form' => false,
         ),
-        'type' => 'image',
-        'weight' => 4,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_pictures',
-    'label' => 'Pictures',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'default_image' => 0,
-      'entity_translation_sync' => FALSE,
-      'file_directory' => 'curriculum_pictures',
-      'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '',
-      'title_field' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'public' => 'public',
-          'youtube' => 0,
+        'widget' => array(
+            'active' => 1,
+            'module' => 'media',
+            'settings' => array(
+                'allowed_schemes' => array(
+                    'public' => 'public',
+                    'youtube' => 0,
+                ),
+                'allowed_types' => array(
+                    'audio' => 0,
+                    'document' => 0,
+                    'image' => 'image',
+                    'video' => 0,
+                ),
+                'browser_plugins' => array(
+                    'upload' => 'upload',
+                    'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+                    'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
+                    'media_default--media_browser_1' => 0,
+                    'media_default--media_browser_my_files' => 0,
+                    'media_internet' => 0,
+                ),
+                'manualcrop_crop_info' => 1,
+                'manualcrop_default_crop_area' => 1,
+                'manualcrop_enable' => 0,
+                'manualcrop_inline_crop' => 0,
+                'manualcrop_instant_crop' => false,
+                'manualcrop_instant_preview' => 1,
+                'manualcrop_keyboard' => 1,
+                'manualcrop_maximize_default_crop_area' => 0,
+                'manualcrop_require_cropping' => array(),
+                'manualcrop_styles_list' => array(),
+                'manualcrop_styles_mode' => 'include',
+                'manualcrop_thumblist' => 0,
+            ),
+            'type' => 'media_generic',
+            'weight' => 23,
         ),
-        'allowed_types' => array(
-          'audio' => 0,
-          'document' => 0,
-          'image' => 'image',
-          'video' => 0,
-        ),
-        'browser_plugins' => array(
-            'upload' => 'upload',
-            'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
-            'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
-            'media_default--media_browser_1' => 0,
-            'media_default--media_browser_my_files' => 0,
-            'media_internet' => 0,
-        ),
-        'manualcrop_crop_info' => 1,
-        'manualcrop_default_crop_area' => 1,
-        'manualcrop_enable' => 0,
-        'manualcrop_inline_crop' => 0,
-        'manualcrop_instant_crop' => FALSE,
-        'manualcrop_instant_preview' => 1,
-        'manualcrop_keyboard' => 1,
-        'manualcrop_maximize_default_crop_area' => 0,
-        'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(),
-        'manualcrop_styles_mode' => 'include',
-        'manualcrop_thumblist' => 0,
-      ),
-      'type' => 'media_generic',
-      'weight' => 23,
-    ),
-  );
+    );
 
     // Exported field_instance: 'node-curriculum-field_premise'.
     $field_instances['node-curriculum-field_premise'] = array(
@@ -2873,7 +2872,7 @@ function _hitsa_curriculum_conditional_fields()
                 5 => 'hobby-activity',
                 6 => 'elective-courses',
                 7 => 'specialities',
-                8 => 'subject-field'
+                8 => 'subject-fields'
             ),
             'value' => array(),
         ),
@@ -3911,7 +3910,7 @@ function _hitsa_curriculum_conditional_fields()
             'values_set' => 3,
             'value_form' => '_none',
             'values' => array(
-                0 => 'subject-field',
+                0 => 'subject-fields',
                 1 => 'specialities',
             ),
             'value' => array(),
@@ -4079,7 +4078,7 @@ function _hitsa_curriculum_conditional_fields()
             'value_form' => 'subject-field',
             'value' => array(
                 0 => array(
-                    'value' => 'subject-field',
+                    'value' => 'subject-fields',
                 ),
             ),
             'values' => array(),
@@ -4162,7 +4161,7 @@ function _hitsa_curriculum_conditional_fields()
             'values_set' => 3,
             'value_form' => '_none',
             'values' => array(
-                0 => 'subject-field',
+                0 => 'subject-fields',
                 1 => 'specialities',
             ),
             'value' => array(),
@@ -4246,7 +4245,7 @@ function _hitsa_curriculum_conditional_fields()
             'value_form' => '_none',
             'values' => array(
                 0 => 'specialities',
-                1 => 'subject-field',
+                1 => 'subject-fields',
             ),
             'value' => array(),
         ),
@@ -4582,10 +4581,11 @@ function hitsa_curriculum_add_custom_taxonomy_fields_instances()
 
     return $field_instances;
 }
-function hitsa_curriculum_update_7000(){
-    $dependencies = conditional_fields_load_dependencies('node','curriculum');
-    $id=null;
-    if(!empty($dependencies['dependents']['field_attachments'])){
+function hitsa_curriculum_update_7000()
+{
+    $dependencies = conditional_fields_load_dependencies('node', 'curriculum');
+    $id = null;
+    if (!empty($dependencies['dependents']['field_attachments'])) {
         foreach ($dependencies['dependents']['field_attachments'] as $dep_key => $dep_value) {
             $id = $dep_key;
             break;
@@ -4686,7 +4686,7 @@ function hitsa_curriculum_update_7000(){
                 5 => 'hobby-activity',
                 6 => 'elective-courses',
                 7 => 'specialities',
-                8 => 'subject-field'
+                8 => 'subject-fields'
             ),
             'value' => array(),
         ),
@@ -4695,117 +4695,161 @@ function hitsa_curriculum_update_7000(){
     $dependent = field_info_instance('node', $dependecy['dependent'], 'curriculum')['id'];
     $dependency = array(
         'id' => $id,
-        'dependee'  => $dependee,
+        'dependee' => $dependee,
         'dependent' => $dependent,
-        'options'   => $dependecy['options'],
+        'options' => $dependecy['options'],
     );
     conditional_fields_dependency_update($dependency);
 }
-function hitsa_curriculum_update_7001(){
-    $field_instance =  field_info_instance('node','field_pictures','curriculum');
-  if(empty($field_instance['widget']['settings']['browser_plugins'])){
-    $field_instance['widget']['settings']['browser_plugins']['media_internet']=0;
-    field_update_instance($field_instance);
-  }
+function hitsa_curriculum_update_7001()
+{
+    $field_instance = field_info_instance('node', 'field_pictures', 'curriculum');
+    if (empty($field_instance['widget']['settings']['browser_plugins'])) {
+        $field_instance['widget']['settings']['browser_plugins']['media_internet'] = 0;
+        field_update_instance($field_instance);
+    }
 }
-function hitsa_curriculum_update_7002(){
-    $field_instance =  field_info_instance('node','field_pictures','curriculum');
-  if(!empty($field_instance['widget']['settings']['browser_plugins'])){
-    $field_instance['widget']['settings']['browser_plugins']['media_internet']=0;
-    field_update_instance($field_instance);
-  }
+function hitsa_curriculum_update_7002()
+{
+    $field_instance = field_info_instance('node', 'field_pictures', 'curriculum');
+    if (!empty($field_instance['widget']['settings']['browser_plugins'])) {
+        $field_instance['widget']['settings']['browser_plugins']['media_internet'] = 0;
+        field_update_instance($field_instance);
+    }
 }
-function hitsa_curriculum_update_7003(){
-    $field_instance =  field_info_instance('node','field_pictures','curriculum');
-    if(!empty($field_instance['widget']['settings']['browser_plugins'])){
-      $field_instance['widget']['settings']['browser_plugins']['media_internet']=0;
+function hitsa_curriculum_update_7003()
+{
+    $field_instance = field_info_instance('node', 'field_pictures', 'curriculum');
+    if (!empty($field_instance['widget']['settings']['browser_plugins'])) {
+        $field_instance['widget']['settings']['browser_plugins']['media_internet'] = 0;
     }
     field_update_instance($field_instance);
 }
-function hitsa_curriculum_update_7004(){
-    $field_instance =  field_info_instance('node','field_pictures','curriculum');
-    if(!empty($field_instance['widget']['settings']['browser_plugins'])){
-      $field_instance['widget']['settings']['browser_plugins']['media_internet']=0;
+function hitsa_curriculum_update_7004()
+{
+    $field_instance = field_info_instance('node', 'field_pictures', 'curriculum');
+    if (!empty($field_instance['widget']['settings']['browser_plugins'])) {
+        $field_instance['widget']['settings']['browser_plugins']['media_internet'] = 0;
     }
     field_update_instance($field_instance);
 }
-function hitsa_curriculum_update_7005(){
-    $field_instance =  array(
-      'bundle' => 'curriculum',
-      'deleted' => 0,
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'image',
-          'settings' => array(
-            'image_link' => '',
-            'image_style' => '',
-          ),
-          'type' => 'image',
-          'weight' => 4,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_pictures',
-      'label' => 'Pictures',
-      'required' => 0,
-      'settings' => array(
-        'alt_field' => 0,
-        'default_image' => 0,
-        'entity_translation_sync' => FALSE,
-        'file_directory' => 'curriculum_pictures',
-        'file_extensions' => 'png gif jpg jpeg',
-        'max_filesize' => '',
-        'max_resolution' => '',
-        'min_resolution' => '',
-        'title_field' => 0,
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'media',
-        'settings' => array(
-          'allowed_schemes' => array(
-            'public' => 'public',
-            'youtube' => 0,
-          ),
-          'allowed_types' => array(
-            'audio' => 0,
-            'document' => 0,
-            'image' => 'image',
-            'video' => 0,
-          ),
-          'browser_plugins' => array(
-                'upload' => 'upload',
-                'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
-                'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
-                'media_default--media_browser_1' => 0,
-                'media_default--media_browser_my_files' => 0,
-                'media_internet' => 0,
+function hitsa_curriculum_update_7005()
+{
+    $field_instance = array(
+        'bundle' => 'curriculum',
+        'deleted' => 0,
+        'description' => '',
+        'display' => array(
+            'default' => array(
+                'label' => 'above',
+                'module' => 'image',
+                'settings' => array(
+                    'image_link' => '',
+                    'image_style' => '',
+                ),
+                'type' => 'image',
+                'weight' => 4,
             ),
-          'manualcrop_crop_info' => 1,
-          'manualcrop_default_crop_area' => 1,
-          'manualcrop_enable' => 0,
-          'manualcrop_inline_crop' => 0,
-          'manualcrop_instant_crop' => FALSE,
-          'manualcrop_instant_preview' => 1,
-          'manualcrop_keyboard' => 1,
-          'manualcrop_maximize_default_crop_area' => 0,
-          'manualcrop_require_cropping' => array(),
-          'manualcrop_styles_list' => array(),
-          'manualcrop_styles_mode' => 'include',
-          'manualcrop_thumblist' => 0,
+            'teaser' => array(
+                'label' => 'above',
+                'settings' => array(),
+                'type' => 'hidden',
+                'weight' => 0,
+            ),
         ),
-        'type' => 'media_generic',
-        'weight' => 23,
-      ),
+        'entity_type' => 'node',
+        'field_name' => 'field_pictures',
+        'label' => 'Pictures',
+        'required' => 0,
+        'settings' => array(
+            'alt_field' => 0,
+            'default_image' => 0,
+            'entity_translation_sync' => false,
+            'file_directory' => 'curriculum_pictures',
+            'file_extensions' => 'png gif jpg jpeg',
+            'max_filesize' => '',
+            'max_resolution' => '',
+            'min_resolution' => '',
+            'title_field' => 0,
+            'user_register_form' => false,
+        ),
+        'widget' => array(
+            'active' => 1,
+            'module' => 'media',
+            'settings' => array(
+                'allowed_schemes' => array(
+                    'public' => 'public',
+                    'youtube' => 0,
+                ),
+                'allowed_types' => array(
+                    'audio' => 0,
+                    'document' => 0,
+                    'image' => 'image',
+                    'video' => 0,
+                ),
+                'browser_plugins' => array(
+                    'upload' => 'upload',
+                    'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+                    'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
+                    'media_default--media_browser_1' => 0,
+                    'media_default--media_browser_my_files' => 0,
+                    'media_internet' => 0,
+                ),
+                'manualcrop_crop_info' => 1,
+                'manualcrop_default_crop_area' => 1,
+                'manualcrop_enable' => 0,
+                'manualcrop_inline_crop' => 0,
+                'manualcrop_instant_crop' => false,
+                'manualcrop_instant_preview' => 1,
+                'manualcrop_keyboard' => 1,
+                'manualcrop_maximize_default_crop_area' => 0,
+                'manualcrop_require_cropping' => array(),
+                'manualcrop_styles_list' => array(),
+                'manualcrop_styles_mode' => 'include',
+                'manualcrop_thumblist' => 0,
+            ),
+            'type' => 'media_generic',
+            'weight' => 23,
+        ),
     );
     field_update_instance($field_instance);
+}
+/**
+ * 
+ * Update to fix table showing.
+ */
+function hitsa_curriculum_update_7006()
+{
+    $dependencies = conditional_fields_load_dependencies('node', 'curriculum');
+
+    $field = field_info_field('field_school_selections');
+    $allowed = list_allowed_values($field);
+    if (isset($allowed['subject-fields'])) {
+        if (!empty($dependencies['dependents'])) {
+            $dependencies = $dependencies['dependents'];
+            foreach ($dependencies as $field_machine_name => $ids) {
+                foreach ($ids as $id => $field) {
+                    $loaded_dependency = conditional_fields_dependency_load($id);
+                    if (!empty($loaded_dependency)) {
+                        if (!empty($loaded_dependency['options'])) {
+                            if (!empty($loaded_dependency['options']['values'])) {
+                                foreach ($loaded_dependency['options']['values'] as $key => $value) {
+                                    if ($value == 'subject-field') {
+                                        $loaded_dependency['options']['values'][$key] = 'subject-fields';
+                                    }
+                                }
+                            } elseif (!empty($loaded_dependency['options']['value'])) {
+                                if ($loaded_dependency['options']['value'][0]['value'] == 'subject-field') {
+                                    unset($loaded_dependency['options']['value'][0]);
+                                    $loaded_dependency['options']['values'][] = 'subject-fields';
+
+                                }
+                            }
+                        }
+                    }
+                    conditional_fields_dependency_update($loaded_dependency);
+                }
+            }
+        }
+    }
 }

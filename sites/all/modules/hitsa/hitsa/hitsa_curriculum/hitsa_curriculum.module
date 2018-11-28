@@ -1360,6 +1360,17 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
                     if (!empty($output_elements['textbooks'])) {
                         $output .= $output_elements['textbooks'];
                     }
+
+                    if (!empty($output_elements['documents'])) {
+                        $output .= $output_elements['documents'];
+                    }
+                    if (!empty($output_elements['pictures'])) {
+                        $output .= $output_elements['pictures'];
+                    }
+
+                    if (!empty($output_elements['contacts'])) {
+                        $output .= $output_elements['contacts'];
+                    }
                 }
                 elseif ($curriculum_type == 'specialities') {
                     if (!empty($output_elements['short_description'])) {

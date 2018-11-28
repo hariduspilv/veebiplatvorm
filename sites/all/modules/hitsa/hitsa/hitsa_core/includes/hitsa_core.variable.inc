@@ -383,6 +383,7 @@ function _hitsa_core_add_fp_image_upload_element(&$form, &$form_state) {
   $form['hitsa_fp_image_widget'] = array(
     '#name' => 'files[hitsa_fp_image]',
     '#title' => t('Upload Front Page Image'),
+    '#description' => t('Front page hero banner maximum file size 10MB'),
     '#type' => 'file',
     '#weight' => -97,
   );
@@ -400,7 +401,7 @@ function hitsa_core_fp_image_validate($form, &$form_state) {
   $validators = array(
    'file_validate_is_image' => array(),
    'file_validate_extensions' => array('png jpg jpeg'),
-   'file_validate_size' => array(1024*1024),
+   'file_validate_size' => array(1024*1024*10),
   );
 	
   // Save file as temporary

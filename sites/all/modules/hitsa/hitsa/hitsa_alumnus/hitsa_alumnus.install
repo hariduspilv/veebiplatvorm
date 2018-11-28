@@ -5,32 +5,13 @@ include('extras/fields.install.inc');
  */
 function hitsa_alumnus_install()
 {   
-    ///// Create node type//////
-    //echo "/////////////Creating node type/////////////<br>";
-    
     hitsa_alumnus_create_node();
-
-    //echo "/////////////Created node type///////////// ";
-
     
-    //echo "/////////////Adding paragraph bundle///////////// ";
-
     hitsa_alumnus_add_paragraph_bundle();
-
-    //echo "/////////////Added paragraph bundle///////////// ";
-    
-    //echo "/////////////Adding fields///////////// ";
 
     hitsa_alumnus_add_fields();
 
-    //echo "/////////////Added fields///////////// ";
-
-    
-    //echo "/////////////Adding Menu links///////////// ";
-
     hitsa_alumnus_add_menu_links();
-
-    //echo "/////////////Added Menu links///////////// ";
 
     
     

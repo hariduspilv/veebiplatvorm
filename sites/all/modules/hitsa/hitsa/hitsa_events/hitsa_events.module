@@ -197,7 +197,7 @@ function hitsa_events_form_alter(&$form, &$form_state, $form_id)
             }
             if (!empty($school_type)) {
                 if ($school_type == 1) {
-                    $form['field_event_type']['#access'] = false;
+                    $form['field_event_type']['#attributes']['style'] = 'display:none;';
                 }
             }
             if (!empty($form['field_event_type'])) {
@@ -1933,13 +1933,13 @@ function hitsa_events_register_event($event, $form_id, $date)
         $form = render($form);
         $markup = ' <div class="block" data-modal="true">
 
-               <h1 class="block-title">' . t('Add to calendar') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
+               <h1 class="block-title">' . t('Register to event') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
 
 					<div class="row-spacer-xs"></div>' . $form . '</div>';
     } else {
         $markup = ' <div class="block" data-modal="true">
 
-               <h1 class="block-title">' . t('Add to calendar') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
+               <h1 class="block-title">' . t('Register to event') . ' <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">' . t('Close') . '</a></h1>
 
 					<div class="row-spacer-xs"></div></div>';
     }
