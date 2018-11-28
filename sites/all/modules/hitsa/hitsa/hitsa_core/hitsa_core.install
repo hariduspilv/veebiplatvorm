@@ -989,11 +989,11 @@ function hitsa_core_update_7009()
 {
   // Enable "Media Browser Plus" module
   if (!module_exists('media_browser_plus')) {
-    module_enable('media_browser_plus');
+    module_enable(array('media_browser_plus'));
   }
   
   if(!module_exists('views_tree')) {
-    module_enable('views_tree');
+    module_enable(array('views_tree'));
   }
   
   // Set WYSIWYG media popup settings
