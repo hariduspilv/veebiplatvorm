@@ -868,6 +868,10 @@ function hitsa_core_add_media_folder_terms()
   }
 }
 
+function hitsa_core_set_initial_domain_path()
+{
+  variable_set('hitsa_inital_path', conf_path());
+}
 /**
  *
  * Update to make site pathauto working and also remove non english characters
@@ -1091,7 +1095,64 @@ function hitsa_core_update_7011()
 {
   hitsa_core_set_variable_translations(true);
 }
-function hitsa_core_set_initial_domain_path()
-{
-  variable_set('hitsa_inital_path', conf_path());
+/**
+ * Update to fix date formats
+ *
+ */
+function hitsa_core_update_7012(){
+
+  $instances = array(
+    'taxonomy_term-time_periods-field_time_period_dates'=>array(
+      'name' =>'field_time_period_dates',
+      'bundle' => 'time_periods',
+      'entity_type' => 'taxonomy_term'
+    ),
+    'taxonomy_term-time_periods-field_time_period_dates_info' => array(
+      'name' => 'field_time_period_dates_info',
+      'bundle' => 'time_period_info',
+      'entity_type' => 'taxonomy_term'
+    ),
+    'taxonomy_term-academic_years-academic_years-academic_year_period'=>array(
+      'name' => 'academic_year_period',
+      'bundle' => 'academic_years',
+      'entity_type' => 'taxonomy_term'
+    ),
+    'node-event-field_time_period_dates'=>array(
+      'name' => 'field_time_period_dates',
+      'bundle' => 'event',
+      'entity_type' => 'node'
+    ),
+    'node-curriculum-field_curriculum_length'=>array(
+      'name' => 'field_curriculum_length',
+      'bundle' => 'curriculum',
+      'entity_type' => 'node'
+    ),
+    'node-curriculum-field_curriculum_start'=>array(
+      'name' => 'field_curriculum_start',
+      'bundle' => 'curriculum',
+      'entity_type' => 'node'
+    ),
+    'node-catering-field_date'=>array(
+      'name' => 'field_date',
+      'bundle' => 'catering',
+      'entity_type' => 'node'
+    ),
+  );
+  foreach ($instances as $instance){
+    $field_instance = (field_info_instance($instance['entity_type'],$instance['name'],$instance['bundle']));
+    if (!empty($field_instance)){
+      if (!empty($field_instance['widget'])){
+        if($field_instance['widget']['module'] == 'date'){
+          if(!empty($field_instance['widget']['settings'])){
+            if(!empty($field_instance['widget']['settings']['input_format'])){
+              $input_format = $field_instance['widget']['settings']['input_format'];
+              $input_format = str_replace('m/d/Y','d/m/Y',$input_format);
+              $field_instance['widget']['settings']['input_format'] = $input_format;
+            }
+          }
+        }
+      }
+    }
+    field_update_instance($field_instance);
+  }
 }
