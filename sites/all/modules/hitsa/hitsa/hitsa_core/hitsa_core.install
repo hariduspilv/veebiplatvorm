@@ -1174,3 +1174,23 @@ function hitsa_core_update_7013(){
   module_load_include('inc','hitsa_translation_importer','/includes/hitsa_translation_importer.admin');
   hitsa_translations_importer_translations($words);
 }
+
+/**
+ * Update for image style
+ *
+ */
+function hitsa_core_update_7014(){
+  $image_style = image_style_load('hitsa_article_modal_view');
+  if(!empty($image_style['effects'])){
+    foreach ($image_style['effects'] as $effect_key => $effect){
+      if($effect['name']=='image_scale'){
+        $image_effect = image_effect_load($effect_key,'hitsa_article_modal_view');
+        if(!empty($image_effect['data'])){
+          $image_effect['data']['width'] = '1440';
+          $image_effect['data']['height'] = '810';
+        }
+        image_effect_save($image_effect);
+      }
+    }
+  }
+}
