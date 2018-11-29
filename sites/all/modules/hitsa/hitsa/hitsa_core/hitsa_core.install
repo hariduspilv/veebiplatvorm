@@ -1156,3 +1156,21 @@ function hitsa_core_update_7012(){
     field_update_instance($field_instance);
   }
 }
+
+/**
+ * Function to update some translations.
+ */
+function hitsa_core_update_7013(){
+  $words = array(
+    'Searchable event' => array(
+      'et' => 'Otsitav sündmus',
+      'ru' => 'Мероприятие, которое вы ищете'
+    ),
+    'Search for an event' => array(
+      'et' => 'Otsi sündmust',
+      'ru' => 'Поиск события'
+    ),
+  );
+  module_load_include('inc','hitsa_translation_importer','/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+}

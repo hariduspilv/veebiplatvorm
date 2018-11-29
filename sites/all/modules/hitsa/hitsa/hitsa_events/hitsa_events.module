@@ -466,8 +466,8 @@ function hitsa_events_calendar_page_html()
                      <div class="form-item-row">
 
                         <div class="form-item after-search form-item_rounded form-item-stretch">
-                           <div class="form-item_title">Otsitav sündmus</div>
-                           <input type="text" name="event-title" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
+                           <div class="form-item_title">'.t('Searchable event').'</div>
+                           <input type="text" name="event-title" placeholder="'.t('Search for an event').'" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
                         </div><!--/form-item-->
 
                         <div class="form-item form-item_rounded after-calendar form-item-stretch">
@@ -477,7 +477,7 @@ function hitsa_events_calendar_page_html()
 
                         <div class="form-item">
                            <div class="form-item_title">&nbsp;</div>
-                           <button class="btn btn-filled">Otsi</button>
+                           <button class="btn btn-filled">'.t('Search').'</button>
                         </div><!--/form-item-->
 
                      </div><!--/form-item-row-->
