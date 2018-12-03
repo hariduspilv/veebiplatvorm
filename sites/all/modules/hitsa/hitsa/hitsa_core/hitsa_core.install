@@ -363,14 +363,14 @@ function _hitsa_core_image_styles()
     array(
       'style' => array(
         'name' => 'hitsa_hero_banner',
-        'label' => 'Hero Banner (x420)'
+        'label' => 'Hero Banner (1920x)'
       ),
       'effect' => array(
         'name' => 'image_scale',
         'data' => array(
-          'width' => '',
-          'height' => 420,
-          'upscale' => 1,
+          'width' => 1920,
+          'height' => '',
+          'upscale' => 0,
         ),
       ),
     ),
@@ -1094,4 +1094,22 @@ function hitsa_core_update_7011()
 function hitsa_core_set_initial_domain_path()
 {
   variable_set('hitsa_inital_path', conf_path());
+}
+
+/**
+ * Update hero banner image display.
+ */
+function hitsa_core_update_7012() {
+  $style = image_style_load('hitsa_hero_banner');
+
+  if(!empty($style['effects'])) {
+    $ieid = key($style['effects']);
+    $effect = image_effect_load($ieid, 'hitsa_hero_banner');
+    
+    if(!empty($effect)) {
+      $effect['data'] = array('width' => 1920, 'height' => '', 'upscale' => 0);
+      image_effect_save($effect);
+    }
+  }
+  image_style_flush('hitsa_hero_banner');
 }
