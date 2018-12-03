@@ -714,8 +714,8 @@ function _hitsa_content_page_image_styles() {
 		  'effect' => array(
 		    'name' => 'image_scale_and_crop',
 		    'data' => array(
-		      'width' => 380,
-		      'height' => 214,
+		      'width' => 720,
+		      'height' => 428,
 		      'upscale' => FALSE,
 		    ),
 		  ),
@@ -728,8 +728,8 @@ function _hitsa_content_page_image_styles() {
 		  'effect' => array(
 		    'name' => 'image_scale_and_crop',
 		    'data' => array(
-		      'width' => 110,
-		      'height' => 110,
+		      'width' => 220,
+		      'height' => 220,
 		      'upscale' => FALSE,
 		    ),
 		  ),
@@ -742,8 +742,8 @@ function _hitsa_content_page_image_styles() {
 		  'effect' => array(
 		    'name' => 'image_scale',
 		    'data' => array(
-		      'width' => 720,
-		      'height' => 405,
+		      'width' => 1440,
+		      'height' => 810,
 		      'upscale' => FALSE,
 		    ),
 		  ),

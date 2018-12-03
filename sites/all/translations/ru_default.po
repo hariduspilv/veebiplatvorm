@@ -54504,6 +54504,25 @@ msgstr ""
 msgid "Error: missing argument."
 msgstr "Ошибка: аргумент не найден."
 
+
+#: /et/studies-calendar?category=23&type=event
+msgid "Searchable event"
+msgstr "Мероприятие, которое вы ищете"
+
+#: /et/studies-calendar?category=23&type=event
+msgid "Search for an event"
+msgstr "Поиск события"
+
+
+#: /et/studies-calendar?category=23&type=event
+msgid "Searchable event"
+msgstr "Otsitav sündmus"
+
+#: /et/studies-calendar?category=23&type=event
+msgid "Search for an event"
+msgstr "Otsi sündmust"
+
+
 msgid "Context identifier"
 msgstr "Идентификатор контекста"
 

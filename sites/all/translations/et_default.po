@@ -21,6 +21,16 @@ msgstr ""
 msgid "Remote videos hosted on the YouTube video-sharing website."
 msgstr ""
 
+
+#: /et/studies-calendar?category=23&type=event
+msgid "Searchable event"
+msgstr "Otsitav sündmus"
+
+#: /et/studies-calendar?category=23&type=event
+msgid "Search for an event"
+msgstr "Otsi sündmust"
+
+
 #: /install.php?profile=hitsa_vocational&locale=et&op=start&id=2
 msgid "Search facets - Years"
 msgstr ""

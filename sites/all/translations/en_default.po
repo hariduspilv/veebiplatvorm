@@ -54711,6 +54711,14 @@ msgstr ""
 msgid "Texas"
 msgstr ""
 
+#: /et/studies-calendar?category=23&type=event
+msgid "Searchable event"
+msgstr ""
+
+#: /et/studies-calendar?category=23&type=event
+msgid "Search for an event"
+msgstr ""
+
 msgid "Utah"
 msgstr ""
 
