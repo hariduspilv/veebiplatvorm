@@ -1095,10 +1095,6 @@ function hitsa_core_update_7011()
 {
   hitsa_core_set_variable_translations(true);
 }
-function hitsa_core_set_initial_domain_path()
-{
-  variable_set('hitsa_inital_path', conf_path());
-}
 
 /**
  * Update to fix date formats
@@ -1215,5 +1211,6 @@ function hitsa_core_update_7015() {
       image_effect_save($effect);
     }
   }
-  image_style_flush('hitsa_hero_banner');
+  $image_style = image_style_load('hitsa_hero_banner');
+  image_style_flush($image_style);
 }
