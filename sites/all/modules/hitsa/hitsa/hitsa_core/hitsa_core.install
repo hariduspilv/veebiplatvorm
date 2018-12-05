@@ -1214,3 +1214,11 @@ function hitsa_core_update_7015() {
   $image_style = image_style_load('hitsa_hero_banner');
   image_style_flush($image_style);
 }
+/**
+ *
+ */
+function hitsa_core_update_7016(){
+  if (!module_exists('ultimate_cron')) {
+    module_enable(array('ultimate_cron','hitsa_cron'));
+  }
+}
