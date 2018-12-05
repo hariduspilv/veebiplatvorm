@@ -1,0 +1,7 @@
+name = Hitsa Erinevad Cronid
+description = "Hitsa nii kujunduse kompileerimise corn kui ka asjade uuenduste cron"
+dependencies[] = ultimate_cron
+dependencies[] = hitsa_color
+core = 7.x
+package = HITSA
+version = "7.x-dev"

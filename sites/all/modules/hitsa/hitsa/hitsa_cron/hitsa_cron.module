@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * Implements hook_cronapi().
+ */
+
+function hitsa_cron_cronapi() {
+
+  $items = [];
+  $random_time = variable_get('hitsa_cron_random_time');
+  if (empty($random_time)) {
+    $random_time = rand(1, 60);
+    variable_set('hitsa_cron_random_time', $random_time);
+  }
+  $items['hitsa_cron_grunt_runner'] = [
+    'title' => t('Grunt runner'),
+    'description' => 'Grunt compiler and runner',
+    'callback' => 'hitsa_cron_run_grunt',
+    'scheduler' => [
+      'name' => 'crontab',
+      'crontab' => [
+        'rules' => [strval($random_time) . ' 2 * * *'],
+      ],
+    ],
+  ];
+  $items['hitsa_cron_update_runner'] = [
+    'title' => t('Update runner'),
+    'description' => 'Update runner',
+    'callback' => 'hitsa_cron_run_update',
+    'scheduler' => [
+      'name' => 'crontab',
+      'crontab' => [
+        'rules' => [strval($random_time) . ' 3 * * *'],
+      ],
+    ],
+  ];
+  return $items;
+}
+
+/* Hitsa cron grunt runner.
+ *
+*/
+
+function hitsa_cron_run_grunt() {
+  module_load_include('inc','hitsa_color','includes/hitsa_color');
+  hitsa_color_grunt_runner();
+}
+
+/**
+ * Hitsa update script
+ */
+function hitsa_cron_run_update() {
+  //Siia kirjutada update number
+  $updates = [
+    '1',
+  ];
+  if (!empty($updates)) {
+    $updated = variable_get('hitsa_updated');
+    $updated = explode(',', $updated);
+    foreach ($updates as $update) {
+      $to_update = TRUE;
+      foreach ($updated as $uptodate) {
+        if ($update == $uptodate) {
+          $to_update = FALSE;
+        }
+      }
+      if ($to_update) {
+        $function_name = 'hitsa_cron_update_' . strval($update);
+        if (function_exists($function_name)) {
+          call_user_func($function_name, $update);
+        }
+      }
+    }
+  }
+}
+
+//
+//Update naidis
+//
+//function hitsa_cron_update_1($update) {
+//
+//  $updated = variable_get('hitsa_updated');
+//  if(empty($updated)){
+//    variable_set('updated',$update);
+//  }
+//  else{
+//    variable_set('updated',$updated.','.$update);
+//  }
+//}
+function hitsa_cron_update_1($update) {
+  $image_style = image_style_load('hitsa_article_modal_view');
+  if (!empty($image_style['effects'])) {
+    foreach ($image_style['effects'] as $effect_key => $effect) {
+      if ($effect['name'] == 'image_scale') {
+        $image_effect = image_effect_load($effect_key, 'hitsa_article_modal_view');
+        if (!empty($image_effect['data'])) {
+          $image_effect['data']['width'] = '1440';
+          $image_effect['data']['height'] = '810';
+        }
+        image_effect_save($image_effect);
+      }
+    }
+  }
+  $updated = variable_get('hitsa_updated');
+  if (empty($updated)) {
+    variable_set('updated', $update);
+  }
+  else {
+    variable_set('updated', $updated . ',' . $update);
+  }
+}
