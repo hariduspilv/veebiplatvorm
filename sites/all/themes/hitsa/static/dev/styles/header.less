@@ -1,4 +1,4 @@
-
+.menu-mask{position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 10;}
 header.main{background:@base-2; position: relative; z-index: 100;
    
    .highlight-bg-1{
@@ -36,7 +36,7 @@ header.main{background:@base-2; position: relative; z-index: 100;
       li{width:50%;}
    }
    
-   .header-nav{background:@base-1; box-shadow: 0 2px 4px 0 rgba(161,161,161,0.5); position: relative;
+   .header-nav{background:@base-1; box-shadow: 0 2px 4px 0 rgba(161,161,161,0.5); position: relative; z-index: 12;
       .row, [class*="col-"]{padding-top:0; padding-bottom:0;}
       .header-nav_main{line-height:100%; display: flex; align-content: space-between; justify-content: space-between; font-size:18px; padding:0 @gridGutter*2;
          & > li{
@@ -46,7 +46,7 @@ header.main{background:@base-2; position: relative; z-index: 100;
             &:first-child > a{padding-left:0;}
             &:last-child > a{padding-right:0;}
             
-            &.active, &:hover{font-weight: 500;
+            &.active, &.dynamic-active, &:hover{font-weight: 500;
                & > a{color:@text-1;}
                & > a:before{content:" "; display: block; position: absolute; bottom:0; left:20px; right:20px; height:3px; background:@highlight-1;}
                &:first-child > a:before{left:0;}
@@ -54,13 +54,14 @@ header.main{background:@base-2; position: relative; z-index: 100;
             }
             
             &:hover{font-weight: normal;
-               &.active{font-weight: 500;}
-               .header-nav_dropdown{display: block;}
+               &.active,&.dynamic-active{font-weight: 500;}
+               //.header-nav_dropdown{display: block;}
             }
          }
       }
       
       .header-nav_dropdown{position: absolute; top:100%; left:0; right:0; background:@base-1; padding:40px 0; box-shadow: 0 2px 4px 0 rgba(161,161,161,0.5); border-top:@border-3 1px solid; display: none;
+         &.active{display: block;}
          .inline{padding:0 @gridGutter*2;}
          .row{margin:0 @gridGutter/2;}
          .row .row{margin:0 -@gridGutter/2;}
