@@ -216,3 +216,6 @@
   </div><!--/row-->
   
 </div><!--/block-->
+<?php if(!empty($bottom_block)):?>
+<?php print $bottom_block?>
+<?php endif?>

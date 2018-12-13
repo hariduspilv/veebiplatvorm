@@ -140,7 +140,6 @@ function hitsa_content_page_prepare_subpage_block($subpage_arrays, $display_styl
 function hitsa_content_page_services_block()
 {
   $services_menu_mlid = variable_get('hitsa_services_mlid');
-
   $output = '';
   
   if (!empty($services_menu_mlid)) {
@@ -150,16 +149,19 @@ function hitsa_content_page_services_block()
         $services_menu = $child;
         $no_services = true;
         foreach ($services_menu['below'] as $service_subtype) {
-          if (!empty($service_subtype['below'])) $no_services = false;
+          if (!empty($service_subtype['below'])) {
+            $no_services = false;
+          }
         }
         if ($no_services) {
-          return ''; // No active services, don't render the block.
+          // No active services, don't render the block.
+          return '';
         }
         break;
       }
     }
   }
-  if (!empty($service_menu)) {
+  if (!empty($services_menu)) {
     $services_menu_render = menu_tree_output($services_menu['below']);
     $services_menu_render['#theme_wrappers'] = array('menu_tree__hitsa_services_block');
     $output .= render($services_menu_render);

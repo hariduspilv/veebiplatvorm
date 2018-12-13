@@ -1625,7 +1625,7 @@ function hitsa_events_create_menu_links($school_type = null)
     'menu_name' => 'hitsa_main_menu',
     'customized' => 1,
   );
-  if ($school_type == 1) {
+  if ($school_type == 2) {
     $menu_links[] = array(
       'link_path' => 'training-calendar',
       'link_title' => 'Training calendar',
@@ -1637,7 +1637,7 @@ function hitsa_events_create_menu_links($school_type = null)
   foreach ($menu_links as $menu_link) {
     if ($menu_link['link_title'] == 'Training calendar') {
       foreach ($menu_links_old as $key => $menu_old_link) {
-        if ($menu_old_link['link_title'] == 'Student Life') {
+        if ($menu_old_link['link_title'] == 'Trainings') {
           if ($menu_old_link['depth'] == 1) {
             $menu_link['plid'] = $menu_old_link['mlid'];
           }
@@ -1666,6 +1666,10 @@ function hitsa_events_create_menu_links($school_type = null)
     $have = false;
     foreach ($menu_links_old as $key => $menu_old_link) {
       if ($menu_old_link['link_path'] == $menu_link['link_path']) {
+        if($menu_link['plid']!=$menu_old_link['plid']){
+          $menu_old_link['plid'] = $menu_link['plid'];
+          menu_link_save($menu_old_link);
+        }
         $have = true;
         break;
       }

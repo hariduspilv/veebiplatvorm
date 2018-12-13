@@ -1327,7 +1327,7 @@ function _hitsa_curriculum_installed_node_fields($school_type = null)
     // Exported field_base: 'field_specialitiy_table'.
     $field_bases['field_specialitiy_table'] = array(
         'active' => 1,
-        'cardinality' => 1,
+        'cardinality' => -1,
         'deleted' => 0,
         'entity_types' => array(),
         'field_name' => 'field_specialitiy_table',
@@ -5271,4 +5271,10 @@ function hitsa_curriculum_update_7007(){
       field_create_instance($field_instance);
     }
   }
+}
+
+function hitsa_curriculum_update_7008(){
+  $field = field_info_field('field_specialitiy_table');
+  $field['cardinality'] = -1;
+  field_update_field($field);
 }

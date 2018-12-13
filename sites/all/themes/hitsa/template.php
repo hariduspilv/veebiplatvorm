@@ -137,7 +137,6 @@ function hitsa_submenu_tree__hitsa_main_menu($variables)
     $output .= '<div class="header-nav_dropdown"><div class="inline"><div class="row"><div class="col-' . (!empty($gallery_teaser) ? '9' : '12') . '">';
     $output .= '<h3>' . t($variables['parent']) . '</h3>';
     $output .= '<div class="row">';
-
     foreach ($variables['submenu'] as $submenu_column) {
         $output .= '<div class="col-3"><ul>';
         foreach ($submenu_column as $submenu_link) {
@@ -402,14 +401,15 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     $service_menu_mlid = variable_get('hitsa_services_mlid');
     $homepage_menu_mlid = variable_get('hitsa_homepage_mlid');
     $element['#title'] = t($element['#title']);
-    
     if ($element['#original_link']['mlid'] === $service_menu_mlid) {
         $sub_menu = theme('service_menu_tree__hitsa_main_menu', array('element' => $element));
         $services_available = false;
+
         foreach ($element['#below'] as $service_subtype) {
             if (!empty($service_subtype['#below'])) {
                 $services_available = true;
                 foreach($service_subtype['#below'] as $service_link) {
+
                     if(!empty($service_link['#href']) && current_path() === $service_link['#href']) {
                         // If child element is open, set the main menu link to active.
                         $element['#attributes']['class'][] = 'active';
@@ -426,6 +426,14 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     ) {
         $element['#attributes']['class'][] = 'active';
     } else if ($element['#below']) {
+
+//      $current_path = current_path();
+//      $menu_items = menu_get_item($current_path);
+//      if(!empty($menu_items)){
+//        if(!empty($menu_items['page_arguments'])){
+//          $page_type = $menu_items['page_arguments'][0]->type;
+//        }
+//      }
         $children_mids = array_fill_keys(element_children($element['#below']), true);
         $children = array();
         foreach ($element['#below'] as $key => $el) {
@@ -434,6 +442,12 @@ function hitsa_menu_link__hitsa_main_menu($variables)
                     // If child element is open, set the main menu link to active.
                     $element['#attributes']['class'][] = 'active';
                 }
+//                if(isset($page_type) && $page_type == 'curriculum'){
+//                  $active_parent = (variable_get('hitsa_active_curriculum_parent'));
+//                  if($active_parent == $el['#href']){
+//                    $element['#attributes']['class'][] = 'active';
+//                  }
+//                }
                 $children[$key] = $el;
             }
         }
@@ -1431,4 +1445,17 @@ function hitsa_preprocess_html(&$variables){
       $css_location = 'sites/all/themes/hitsa/static/assets/js/main.js';
       drupal_add_css($js_location,array('type'=>'file','group' => JS_THEME, 'every_page' => TRUE));
     }
+}
+
+function hitsa_preprocess_node(&$variables){
+
+  if (!empty($variables['field_school_selections'])){
+    $page_type = $variables['field_school_selections'][0]['value'];
+    if (module_exists('hitsa_curriculum')){
+      if(function_exists('hitsa_curriculum_get_bottom_block')) {
+        $bottom_block = hitsa_curriculum_get_bottom_block($page_type);
+        $variables['bottom_block'] = $bottom_block;
+      }
+    }
+  }
 }

@@ -183,11 +183,8 @@ function hitsa_core_redirect_content_type($node)
             }
             break;
         case 'alumnus':
-            if (!empty($node->path)) {
-                return node_page_view($node);
-            } else {
                 drupal_goto('alumnus');
-            }
+
             break;
         default:
             return node_page_view($node);
