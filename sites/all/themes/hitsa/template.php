@@ -118,6 +118,7 @@ function hitsa_preprocess_views_view_unformatted(&$vars)
 /* Main menu render functions */
 function hitsa_menu_tree__hitsa_main_menu($variables)
 {
+
     return '<ul class="header-nav_main">' . $variables['tree'] . '</ul>';
 }
 
@@ -393,6 +394,7 @@ function hitsa_menu_link__hitsa_sitemap__service(array $variables)
 function hitsa_menu_link__hitsa_main_menu($variables)
 {
     global $language;
+//    dpm('HERE');
 
     $element = $variables['element'];
     
@@ -401,6 +403,8 @@ function hitsa_menu_link__hitsa_main_menu($variables)
     $service_menu_mlid = variable_get('hitsa_services_mlid');
     $homepage_menu_mlid = variable_get('hitsa_homepage_mlid');
     $element['#title'] = t($element['#title']);
+
+  $curriculum_parent = variable_get('curriculum_parent');
     if ($element['#original_link']['mlid'] === $service_menu_mlid) {
         $sub_menu = theme('service_menu_tree__hitsa_main_menu', array('element' => $element));
         $services_available = false;
@@ -441,6 +445,11 @@ function hitsa_menu_link__hitsa_main_menu($variables)
                 if(current_path() === $el['#href']) {
                     // If child element is open, set the main menu link to active.
                     $element['#attributes']['class'][] = 'active';
+                }
+                if(!empty($curriculum_parent)){
+                  if($curriculum_parent == $el['#href']){
+                    $element['#attributes']['class'][] = 'active';
+                  }
                 }
 //                if(isset($page_type) && $page_type == 'curriculum'){
 //                  $active_parent = (variable_get('hitsa_active_curriculum_parent'));
@@ -1424,6 +1433,7 @@ function hitsa_status_messages($variables)
 }
 function hitsa_preprocess_html(&$variables){
     global $base_path;
+
     $conf_path = conf_path();
     $conf_path = str_replace('sites/','',$conf_path);
     if($conf_path=='default'){

@@ -201,6 +201,22 @@ function hitsa_core_preprocess_hitsa_header(&$variables)
 {
   global $language;
   // Load main menu
+  $menu_item = menu_get_item(current_path());
+  $curriculum_set = FALSE;
+  if(!empty($menu_item['page_arguments'])){
+    if(!empty($menu_item['page_arguments'][0])){
+      if(!empty($menu_item['page_arguments'][0]->type)){
+        if($menu_item['page_arguments'][0]->type == 'curriculum'){
+          $parent = hitsa_curriculum_get_parent($menu_item['page_arguments'][0]);
+          variable_set('curriculum_parent',$parent);
+          $curriculum_set = TRUE;
+        }
+      }
+    }
+  }
+  if(!$curriculum_set){
+    variable_set('curriculum_parent','');
+  }
   $hitsa_main_menu_name = variable_get('hitsa_main_menu_name');
   if (!empty($hitsa_main_menu_name)) {
     $main_menu = i18n_menu_localize_tree(menu_tree_all_data($hitsa_main_menu_name));

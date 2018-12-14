@@ -813,7 +813,6 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 $header = entity_load('node', $header_nids);
                 foreach ($header as $header_key => $header_value) {
                     menu_set_active_item('node/'.$header_value->nid);
-                    //TODO: Active trail loogika korda teha
                     $header_content_html = hitsa_curriculum_generate_header($header_value);
                     break;
                 }
@@ -2066,4 +2065,22 @@ function hitsa_curriculum_find_trail($menu = null,$url = null){
       }
   }
   return $trail;
+}
+function hitsa_curriculum_get_parent($node=null){
+  global $language;
+  if(!empty($node)){
+    if(!empty($node->field_school_selections)){
+      $type = $node->field_school_selections['und'][0]['value'];
+      if(!empty($type)){
+        $header_content = hitsa_core_get_content_by_type('node', 'content_page', $language->language, array('cur_type' => $type));
+        if (!empty($header_content)) {
+          $header_nids = array_keys($header_content['node']);
+          if(!empty($header_nids[0])){
+            return 'node/'.$header_nids[0];
+          }
+        }
+
+      }
+    }
+  }
 }
