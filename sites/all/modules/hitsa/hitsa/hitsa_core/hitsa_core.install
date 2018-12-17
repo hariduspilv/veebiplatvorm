@@ -1153,8 +1153,8 @@ function hitsa_core_update_7012(){
           }
         }
       }
+      field_update_instance($field_instance);
     }
-    field_update_instance($field_instance);
   }
 }
 
