@@ -104,7 +104,7 @@ function hitsa_translations_importer_settings_form_validate($form, &$form_state)
     return true;
 }
 function hitsa_translations_importer_translations($translations)
-{   
+{
     if (!empty($translations)) {
         foreach ($translations as $string => $values) {
             $source = db_query('SELECT lid, source, context, textgroup, location FROM {locales_source} WHERE source = :string', array(':string' => $string))->fetchObject();

@@ -76,14 +76,20 @@ function hitsa_core_add_fields($installed_fields = array(), $module = NULL) {
       $field['settings']['allowed_values'] = $subtypes;
     }
     $field['locked'] = !empty($field['locked']) ? $field['locked'] : TRUE;
-    field_create_field($field);
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+      field_create_field($field);
+    }
   }
 }
 
 function hitsa_core_add_field_instances($installed_instances = array(), $module = NULL) {
   foreach ($installed_instances as $field_instance) {
     $field_instance['entity_type'] = !empty($field_instance['entity_type']) ? $field_instance['entity_type'] : 'node';
-    field_create_instance($field_instance);
+    $instance = field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']);
+    if (!$instance) {
+      field_create_instance($field_instance);
+    }
   }
 }
 
