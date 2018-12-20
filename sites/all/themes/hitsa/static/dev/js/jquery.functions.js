@@ -219,7 +219,6 @@ $.fn.accordion = function(){
    
    entries.find(".accordion-title").bind("click", function(e){
       var parent = $(this).parents(".accordion-entry:first");
-      parent.toggleClass("accordion-active");
 		parent.find(".map").trigger("dynamic:resize");
    });
 	

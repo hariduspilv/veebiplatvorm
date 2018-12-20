@@ -393,20 +393,20 @@ function adminimal_table($variables)
   }
 
   // Format the table header:
-  if (count($header)) {
-    $ts = tablesort_init($header);
-    // HTML requires that the thead tag has tr tags in it followed by tbody
-    // tags. Using ternary operator to check and see if we have any rows.
-    $output .= (count($rows) ? ' <thead><tr>' : ' <tr>');
-    foreach ($header as $cell) {
-      $cell = tablesort_header($cell, $header, $ts);
-      $output .= _theme_table_cell($cell, true);
+    if (count($header)) {
+      $ts = tablesort_init($header);
+      // HTML requires that the thead tag has tr tags in it followed by tbody
+      // tags. Using ternary operator to check and see if we have any rows.
+      $output .= (count($rows) ? ' <thead><tr>' : ' <tr>');
+      foreach ($header as $cell) {
+        $cell = tablesort_header($cell, $header, $ts);
+        $output .= _theme_table_cell($cell, true);
+      }
+      // Using ternary operator to close the tags based on whether or not there are rows
+      $output .= (count($rows) ? " </tr></thead>\n" : "</tr>\n");
+    } else {
+      $ts = array();
     }
-    // Using ternary operator to close the tags based on whether or not there are rows
-    $output .= (count($rows) ? " </tr></thead>\n" : "</tr>\n");
-  } else {
-    $ts = array();
-  }
 
   // Format the table rows:
   if (count($rows)) {

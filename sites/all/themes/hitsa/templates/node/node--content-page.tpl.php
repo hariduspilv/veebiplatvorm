@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Default theme implementation to display a node.
@@ -81,7 +80,6 @@
  */
 ?>
 <?php if($view_mode === 'full'): ?>
-      
     <?php if(!empty($cp_type) && $cp_type[0]['value'] === 'cp_specialities') $hide_main_block = TRUE; ?>
 
     <?php include('include/article-content.tpl.php'); ?>
@@ -95,7 +93,7 @@
     
     <?php if(!empty($more_services)): ?>
     <div class="block no-print">
-      
+
       <h2 class="block-title"><?php if(!empty($more_services_title)) {print $more_services_title;} ?></h2>
       
       <div class="row row-vertical-xl">
@@ -106,7 +104,6 @@
           <?php if(!empty($more_services_link)) {print $more_services_link;} ?>
         </div><!--/col-12-->
       </div><!--/row-->
-               
     </div><!--/block-->
     <?php endif; ?>
     
