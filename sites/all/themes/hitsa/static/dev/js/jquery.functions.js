@@ -1,7 +1,7 @@
 $(document).ready(function(){
    setTimeout(function() {
       $(window).anchorScroll();
-   }, 0);
+	 }, 0);
 });
 
 if ('addEventListener' in document) {
@@ -32,6 +32,16 @@ if (hasTouch()) { // remove all :hover stylesheets
         }
     } catch (ex) {}
 }
+
+$.fn.scrollIfID = function(){
+	var main = $(this);
+	var orgScroll = main.offset().top;
+	var headerHeight = $(".header-nav").height();
+	var topScroll = orgScroll - headerHeight - 20;
+	if (window.location.hash) {
+		$("html").scrollTop(topScroll);
+	}
+};
 
 $.fn.responsiveTable = function(){
    var main = $(this);
@@ -218,8 +228,8 @@ $.fn.accordion = function(){
    
    
    entries.find(".accordion-title").bind("click", function(e){
-      var parent = $(this).parents(".accordion-entry:first");
-      parent.toggleClass("accordion-active");
+		var parent = $(this).parents(".accordion-entry:first");
+		parent.toggleClass("accordion-active");
 		parent.find(".map").trigger("dynamic:resize");
    });
 	
