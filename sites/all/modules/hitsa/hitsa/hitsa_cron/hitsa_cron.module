@@ -54,10 +54,17 @@ function hitsa_cron_run_grunt()
 function hitsa_cron_run_update()
 {
   //Siia kirjutada update number
+  $cronsettings_set = variable_get('cronsettings_set');
+  if(empty($cronsettings_set)) {
+    variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
+    variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
+    variable_set('cronsettings_set','TRUE');
+  }
   $updates = [
     '1',
     '2',
-    '3'
+    '3',
+    '4'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -275,8 +282,8 @@ function hitsa_cron_up_3($update=null){
       ),
       'default_edit_mode' => 'open',
       'entity_translation_sync' => FALSE,
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
+      'title' => 'Kontakt',
+      'title_multiple' => 'Kontakte',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -341,8 +348,8 @@ function hitsa_cron_up_3($update=null){
       ),
       'default_edit_mode' => 'open',
       'entity_translation_sync' => FALSE,
-      'title' => 'Paragraph',
-      'title_multiple' => 'Paragraphs',
+      'title' => 'Kontakt',
+      'title_multiple' => 'Kontakte',
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -353,7 +360,311 @@ function hitsa_cron_up_3($update=null){
       'weight' => 54,
     ),
   );
+  $field_instances['node-content_page-field_contacts'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'paragraphs',
+        'settings' => array(
+          'view_mode' => 'full',
+        ),
+        'type' => 'paragraphs_view',
+        'weight' => 14,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contacts',
+    'label' => 'Kontaktid',
+    'required' => 0,
+    'settings' => array(
+      'add_mode' => 'button',
+      'allowed_bundles' => array(
+        'alumnus_person' => -1,
+        'catering_food_by_day' => -1,
+        'contacts' => 'contacts',
+        'contacts_department' => -1,
+        'description' => -1,
+        'jobs' => -1,
+        'reception_time' => -1,
+        'subpage' => -1,
+        'table' => -1,
+      ),
+      'bundle_weights' => array(
+        'alumnus_person' => 2,
+        'catering_food_by_day' => 3,
+        'contacts' => 4,
+        'contacts_department' => 5,
+        'description' => 6,
+        'jobs' => 7,
+        'reception_time' => 8,
+        'subpage' => 9,
+        'table' => 10,
+      ),
+      'default_edit_mode' => 'open',
+      'entity_translation_sync' => FALSE,
+      'title' => 'Kontakt',
+      'title_multiple' => 'Kontakte',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(),
+      'type' => 'paragraphs_embed',
+      'weight' => 54,
+    ),
+  );
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Kontaktid');
 
+  foreach ($field_bases as $field) {
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+      field_create_field($field);
+    }
+  }
+
+  foreach ($field_instances as $field_instance) {
+    $instance = field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']);
+    if (!$instance) {
+      field_create_instance($field_instance);
+    }
+  }
+  return TRUE;
+}/**
+ * @param null $update
+ * @return bool
+ * @throws FieldException
+ * Update to add contacts field to news, contetnt article and events
+ */
+function hitsa_cron_up_4($update=null){
+  $field_bases = array();
+
+  // Exported field_base: 'field_contacts'.
+  $field_bases['field_contacts'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_contacts',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'paragraphs',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'paragraphs',
+  );
+
+  $field_instances = array();
+
+  // Exported field_instance: 'node-article-field_contacts'.
+  $field_instances['node-article-field_contacts'] = array(
+    'bundle' => 'article',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'paragraphs',
+        'settings' => array(
+          'view_mode' => 'full',
+        ),
+        'type' => 'paragraphs_view',
+        'weight' => 11,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contacts',
+    'label' => 'Kontaktid',
+    'required' => 0,
+    'settings' => array(
+      'add_mode' => 'select',
+      'allowed_bundles' => array(
+        'alumnus_person' => -1,
+        'catering_food_by_day' => -1,
+        'contacts' => 'contacts',
+        'contacts_department' => -1,
+        'description' => -1,
+        'jobs' => -1,
+        'reception_time' => -1,
+        'subpage' => -1,
+        'table' => -1,
+      ),
+      'bundle_weights' => array(
+        'alumnus_person' => 2,
+        'catering_food_by_day' => 3,
+        'contacts' => 4,
+        'contacts_department' => 5,
+        'description' => 6,
+        'jobs' => 7,
+        'reception_time' => 8,
+        'subpage' => 9,
+        'table' => 10,
+      ),
+      'default_edit_mode' => 'open',
+      'entity_translation_sync' => FALSE,
+      'title' => 'Kontakt',
+      'title_multiple' => 'Kontakte',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(),
+      'type' => 'paragraphs_embed',
+      'weight' => 44,
+    ),
+  );
+
+  // Exported field_instance: 'node-content_page-field_contacts'.
+  $field_instances['node-content_page-field_contacts'] = array(
+    'bundle' => 'content_page',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'paragraphs',
+        'settings' => array(
+          'view_mode' => 'full',
+        ),
+        'type' => 'paragraphs_view',
+        'weight' => 14,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contacts',
+    'label' => 'Kontaktid',
+    'required' => 0,
+    'settings' => array(
+      'add_mode' => 'button',
+      'allowed_bundles' => array(
+        'alumnus_person' => -1,
+        'catering_food_by_day' => -1,
+        'contacts' => 'contacts',
+        'contacts_department' => -1,
+        'description' => -1,
+        'jobs' => -1,
+        'reception_time' => -1,
+        'subpage' => -1,
+        'table' => -1,
+      ),
+      'bundle_weights' => array(
+        'alumnus_person' => 2,
+        'catering_food_by_day' => 3,
+        'contacts' => 4,
+        'contacts_department' => 5,
+        'description' => 6,
+        'jobs' => 7,
+        'reception_time' => 8,
+        'subpage' => 9,
+        'table' => 10,
+      ),
+      'default_edit_mode' => 'open',
+      'entity_translation_sync' => FALSE,
+      'title' => 'Kontakt',
+      'title_multiple' => 'Kontakte',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(),
+      'type' => 'paragraphs_embed',
+      'weight' => 54,
+    ),
+  );
+  $field_instances['node-content_page-field_contacts'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'paragraphs',
+        'settings' => array(
+          'view_mode' => 'full',
+        ),
+        'type' => 'paragraphs_view',
+        'weight' => 14,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_contacts',
+    'label' => 'Kontaktid',
+    'required' => 0,
+    'settings' => array(
+      'add_mode' => 'button',
+      'allowed_bundles' => array(
+        'alumnus_person' => -1,
+        'catering_food_by_day' => -1,
+        'contacts' => 'contacts',
+        'contacts_department' => -1,
+        'description' => -1,
+        'jobs' => -1,
+        'reception_time' => -1,
+        'subpage' => -1,
+        'table' => -1,
+      ),
+      'bundle_weights' => array(
+        'alumnus_person' => 2,
+        'catering_food_by_day' => 3,
+        'contacts' => 4,
+        'contacts_department' => 5,
+        'description' => 6,
+        'jobs' => 7,
+        'reception_time' => 8,
+        'subpage' => 9,
+        'table' => 10,
+      ),
+      'default_edit_mode' => 'open',
+      'entity_translation_sync' => FALSE,
+      'title' => 'Kontakt',
+      'title_multiple' => 'Kontakte',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'paragraphs',
+      'settings' => array(),
+      'type' => 'paragraphs_embed',
+      'weight' => 54,
+    ),
+  );
   // Translatables
   // Included for use with string extractors like potx.
   t('Kontaktid');
@@ -373,3 +684,4 @@ function hitsa_cron_up_3($update=null){
   }
   return TRUE;
 }
+

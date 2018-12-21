@@ -140,7 +140,9 @@
               <?php endif; ?>
             </ul>
             <?php endif; ?>
-            
+            <?php if(!empty($contacts_block)):?>
+                <?php print $contacts_block?>
+            <?php endif?>
             <div class="row-spacer-xs"></div>
             <span class="article-date sm-hide">
               <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>

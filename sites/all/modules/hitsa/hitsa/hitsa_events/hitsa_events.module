@@ -723,6 +723,11 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
     }
     $output = '';
     $object_class = '';
+    if(!empty($event->field_contacts)){
+      if(function_exists('hitsa_curriculum_contacts')){
+        $contacts_block = hitsa_curriculum_contacts($event->field_contacts['und']);
+      }
+    }
     if (!empty($event->event_date)) {
         $start_date = !empty($event->event_date['und'][0]['value']) ? $event->event_date['und'][0]['value'] : null;
         $end_date = !empty($event->event_date['und'][0]['value2']) ? $event->event_date['und'][0]['value2'] : null;
@@ -885,6 +890,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '<a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
         $output .= '<a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>';
         $output .= '<a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="sm-hide btn btn-transparent after-close">' . t('Close') . '</a>';
+
         $output .= '</div><!--/object-details_' . $event->nid . '-->';
         $output .= '</div><!--/object-button-->';
         $output .= '</div><!--/object-inner-->';
@@ -892,6 +898,11 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         //$output .= '<p>';
         $output .= (!empty($event->body)) ? $event->body['und'][0]['value'] : '';
         //$output .= '</p>';
+      if(!empty($contacts_block)){
+        $output.='<br>';
+        $output.='<br>';
+        $output.=$contacts_block;
+      }
         $output .= '<div class="row-spacer-xs sm-show"></div>
         <a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="sm-show btn btn-transparent after-close">' . t('Close') . '</a>';
         $output .= '</div>';

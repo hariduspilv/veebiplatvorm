@@ -82,6 +82,11 @@ function hitsa_content_page_preprocess_node(&$variables)
         $variables['more_services_title'] = t('More services');
         $variables['more_services_link'] = '<a href="' . url('services') . '" class="btn sm-stretch">' . t('All services') . '</a>';
       }
+      if(!empty($variables['field_contacts'])){
+        if(function_exists('hitsa_curriculum_contacts')){
+          $variables['contacts_block'] = hitsa_curriculum_contacts($variables['field_contacts']);
+        }
+      }
       // Add webform
       if (!empty($variables['cp_webform_ref'])) {
         $nid = $variables['cp_webform_ref'][0]['target_id'];

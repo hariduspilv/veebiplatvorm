@@ -72,6 +72,7 @@ function hitsa_articles_theme() {
 
 function hitsa_articles_preprocess_node(&$variables) {
   if($variables['node']->type === 'article') {
+
     if($variables['view_mode'] === 'full') {
       // Get the category title based on article type.
       $all_fields = field_info_fields();
@@ -104,6 +105,11 @@ function hitsa_articles_preprocess_node(&$variables) {
         $author = user_load($variables['uid']);
         if(!empty($author->name)) {
           $variables['author_name'] = $author->name;
+        }
+      }
+      if(!empty($variables['field_contacts'])){
+        if(function_exists('hitsa_curriculum_contacts')){
+          $variables['contacts_block'] = hitsa_curriculum_contacts($variables['field_contacts']);
         }
       }
     }
