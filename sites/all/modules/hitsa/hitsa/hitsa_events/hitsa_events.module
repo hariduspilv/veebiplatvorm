@@ -1579,7 +1579,7 @@ function hitsa_events_for_services()
 function hitsa_events_htmlize_periods($periods)
 {
     $output = '';
-    $output .= '<div class="accordion" data-plugin="accordion">';
+    $output .= '<div class="accordion" data-allClosed="TRUE" data-plugin="accordion">';
     foreach ($periods as $period) {
         if (strval($period->active) == 'TRUE') {
             $output .= '<div class="accordion-entry accordion-active">';
