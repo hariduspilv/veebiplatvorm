@@ -1607,17 +1607,8 @@ $output.='
             <div class="row-spacer-xl no-print sm-hide"></div>
 ';
   if(!empty($image)) {
-    $output .= '
-            <figure>
-              <a href="'.$image['modal_image'].'"
-                data-download="'.$image['full_url'].'"
-                data-plugin="modal" data-modal="image-7" data-heading="'.$image['title'].'" data-closebutton="'.t('Close').'">
-                <img src="'.$image['thumbnail'].'"
-                  alt="'.$image['alt'].'">
-              </a>
-              <figcaption>'.$image['alt'].'</figcaption>
-            </figure>
-            ';
+    $image_html = hitsa_core_generate_single_image_figure($image);
+    $output.= $image_html;
   }
   if(!empty($header->changed)){
   $changed_date = date('d.m.Y',$header->changed);

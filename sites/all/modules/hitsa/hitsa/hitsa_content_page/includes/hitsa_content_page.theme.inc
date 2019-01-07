@@ -87,6 +87,9 @@ function hitsa_content_page_preprocess_node(&$variables)
           $variables['contacts_block'] = hitsa_curriculum_contacts($variables['field_contacts']);
         }
       }
+      if(!empty($variables['cp_image'])){
+          $variables['image_from_template'] = hitsa_core_generate_single_image_figure($variables['cp_image'][0]);
+      }
       // Add webform
       if (!empty($variables['cp_webform_ref'])) {
         $nid = $variables['cp_webform_ref'][0]['target_id'];

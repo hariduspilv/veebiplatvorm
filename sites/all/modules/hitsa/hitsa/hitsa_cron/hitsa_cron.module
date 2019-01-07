@@ -35,6 +35,13 @@ function hitsa_cron_cronapi()
       ],
     ],
   ];
+    //Siia kirjutada update number
+  $cronsettings_set = variable_get('cronsettings_set');
+    if(empty($cronsettings_set)) {
+      variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
+      variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
+      variable_set('cronsettings_set','TRUE');
+    }
   return $items;
 }
 
@@ -53,13 +60,7 @@ function hitsa_cron_run_grunt()
  */
 function hitsa_cron_run_update()
 {
-  //Siia kirjutada update number
-  $cronsettings_set = variable_get('cronsettings_set');
-  if(empty($cronsettings_set)) {
-    variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
-    variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
-    variable_set('cronsettings_set','TRUE');
-  }
+
   $updates = [
     '1',
     '2',

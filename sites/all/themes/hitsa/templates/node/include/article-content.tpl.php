@@ -158,7 +158,6 @@
             </div>
             
             <div class="row-spacer-xl no-print sm-hide"></div>
-            
             <?php if(!empty($subpage_images) || (!empty($cp_image) && $subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
               <figure>
                 <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>"

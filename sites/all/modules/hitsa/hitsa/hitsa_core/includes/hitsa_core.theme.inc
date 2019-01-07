@@ -169,6 +169,10 @@ function hitsa_core_theme()
     'path' => drupal_get_path('module', 'hitsa_core') . '/templates',
   );
 
+  $items['hitsa_core_image_caption'] = array(
+    'template' => 'single_image_figure',
+    'path' => drupal_get_path('theme', 'hitsa') . '/templates/parts',
+  );
   return $items;
 }
 
@@ -368,7 +372,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
   // School Location Map
   $variables['google_api_key'] = variable_get_value('hitsa_google_api_key');
   $variables['hitsa_school_place_coords'] = variable_get_value('hitsa_school_place_coords');
-  
+
   // Footer map address
   if (!empty($variables['hitsa_school_place_coords'])) {
     $coordinates = explode(',', $variables['hitsa_school_place_coords']);

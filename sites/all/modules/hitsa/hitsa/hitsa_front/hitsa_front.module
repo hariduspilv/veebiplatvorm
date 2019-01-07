@@ -102,6 +102,7 @@ function hitsa_front_block_view($delta = '')
     switch ($delta) {
     case 'hitsa_services_events':
       hitsa_curriculum_fix_blocks();
+      hitsa_core_enable_cron_module();
       $hours = taxonomy_vocabulary_machine_name_load('hitsa_hour_times');
       if (!empty($hours->vid)) {
           $hours_tree = taxonomy_get_tree($hours->vid, 0, null, true);

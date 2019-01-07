@@ -119,7 +119,7 @@ function hitsa_core_menu()
         'file' => 'includes/hitsa_core.login.inc',     // don't forget to add the file and path
         'file path' => drupal_get_path('module', 'hitsa_core'),
     );
-    
+
     return $items;
 }
 function hitsa_core_menu_alter(&$items)
@@ -282,7 +282,7 @@ function hitsa_core_block_view($delta = '')
                 'events' => !empty($events_content) ? $events_content : null,
                 'services' => !empty($services_content) ? $services_content : null,
                 'block_title' => $block_title,
-            
+
             ));
             $output = array('subject' => null, 'content' => $content);
             break;
@@ -768,4 +768,39 @@ function hitsa_core_redirect_after_submit($form, &$form_state)
 {
 
     $form_state['redirect'] = 'admin/structure/taxonomy/' . $form['#bundle'];
+}
+
+/**
+ * @param null $image_file File array to get info from
+ */
+
+function hitsa_core_generate_single_image_figure($image_file=null){
+  if(empty($image_file)){
+    return FALSE;
+  }
+  $variables = array();
+  $variables['title'] = '';
+  $variables['alt_title'] = '';
+  $variables['full_url'] = '';
+  $variables['thumbnail'] = '';
+  $variables['modal_image'] = '';
+  if(!empty($image_file['field_file_image_alt_text'])){
+   $variables['alt_title'] = $image_file['field_file_image_alt_text']['und'][0]['value'];
+  }
+  if(!empty($image_file['field_file_image_title_text'])){
+   $variables['title'] = $image_file['field_file_image_title_text']['und'][0]['value'];
+  }
+  $variables['full_url'] = file_create_url($image_file['uri']);
+  $variables['thumbnail'] = image_style_url('hitsa_core_thumbnail',$image_file['uri']);
+  $variables['modal_image'] = image_style_url('hitsa_article_modal_view',$image_file['uri']);
+
+  $output = theme('hitsa_core_image_caption',$variables);
+  return $output;
+}
+function hitsa_core_enable_cron_module(){
+  $module = 'hitsa_cron';
+  global $user;
+  if(!module_exists($module)){
+      module_enable(array($module),TRUE); 
+    }
 }

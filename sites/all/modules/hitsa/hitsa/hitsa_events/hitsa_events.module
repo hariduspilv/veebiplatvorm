@@ -101,6 +101,7 @@ function hitsa_events_block_view($delta = '')
     switch ($delta) {
         case 'fornt_page_events':
             hitsa_curriculum_fix_blocks();
+            hitsa_core_enable_cron_module();
             if (hitsa_core_get_school_type() == 2) {
                 $content = render($block['content']);
                 // Get the language variable controller.
@@ -111,6 +112,8 @@ function hitsa_events_block_view($delta = '')
             }
             break;
         case 'fornt_page_training':
+
+            $block['subject'] = t('');
             $block['subject'] = t('');
             $block['content'] = array(
                 '#markup' => hitsa_events_front_page_training_block(),
@@ -899,7 +902,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= (!empty($event->body)) ? $event->body['und'][0]['value'] : '';
         //$output .= '</p>';
       if(!empty($contacts_block)){
-        $output.='<br>';
+        $output.='<br>';        
         $output.='<br>';
         $output.=$contacts_block;
       }
