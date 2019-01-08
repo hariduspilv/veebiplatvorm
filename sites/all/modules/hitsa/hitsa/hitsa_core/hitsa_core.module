@@ -748,7 +748,7 @@ function hitsa_core_search($q = null)
     return $data;
 }
 
-function hitsa_core_get_placeholder_image()
+function hitsa_core_get_placeholder_image($type=null)
 {
     $placeholder_url = &drupal_static(__FUNCTION__);
     if (!isset($placeholder_url)) {
@@ -756,11 +756,19 @@ function hitsa_core_get_placeholder_image()
         $placeholder_logo_fid = variable_get_value('hitsa_site_logo_fid');
         if(!empty($placeholder_logo_fid)){
           $placeholder_logo = file_load($placeholder_logo_fid);
+
+
           if ($placeholder_logo) {
+            if($type == 'news_articles_front'){
+              $placeholder_url= image_style_url('large',$placeholder_logo->uri);
+            }
+            else{
               $placeholder_url = file_create_url($placeholder_logo->uri);
+            }
           }
       }
     }
+
     return $placeholder_url;
 }
 
@@ -801,6 +809,6 @@ function hitsa_core_enable_cron_module(){
   $module = 'hitsa_cron';
   global $user;
   if(!module_exists($module)){
-      module_enable(array($module),TRUE); 
+      module_enable(array($module),TRUE);
     }
 }

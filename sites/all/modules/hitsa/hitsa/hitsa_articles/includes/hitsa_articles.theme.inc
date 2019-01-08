@@ -22,7 +22,7 @@ function hitsa_articles_theme_registry_alter(&$theme_registry) {
 
 function hitsa_articles_theme() {
   $items = array();
-  
+
   $items['news_page'] = array(
     'template' => 'hitsa-news-page',
     'path' => drupal_get_path('module', 'hitsa_articles') . '/templates',
@@ -30,7 +30,7 @@ function hitsa_articles_theme() {
       'nodes' => NULL,
     ),
   );
-  
+
   $items['hitsa_article_teaser'] = array(
     'template' => 'hitsa-content-page-teaser',
     'path' => drupal_get_path('module', 'hitsa_content_page') . '/templates',
@@ -40,7 +40,7 @@ function hitsa_articles_theme() {
       'placeholder_image_url' => hitsa_core_get_placeholder_image(),
     ),
   );
-  
+
   $items['hitsa_important_article'] = array(
     'template' => 'hitsa-important-article',
     'path' => drupal_get_path('module', 'hitsa_articles') . '/templates',
@@ -48,7 +48,7 @@ function hitsa_articles_theme() {
       'node' => NULL,
     ),
   );
-  
+
   $items['hitsa_our_stories_block'] = array(
     'template' => 'hitsa-our-stories-block',
     'path' => drupal_get_path('module', 'hitsa_articles') . '/templates',
@@ -56,7 +56,7 @@ function hitsa_articles_theme() {
       'node' => NULL,
     ),
   );
-  
+
   $items['hitsa_news_output'] = array(
     'template' => 'hitsa-news-output',
     'path' => drupal_get_path('module', 'hitsa_articles') . '/templates',
@@ -66,7 +66,7 @@ function hitsa_articles_theme() {
       'academic_year' => NULL,
     ),
   );
-  
+
   return $items;
 }
 
@@ -77,11 +77,11 @@ function hitsa_articles_preprocess_node(&$variables) {
       // Get the category title based on article type.
       $all_fields = field_info_fields();
       $variables['article_types_list'] = list_allowed_values($all_fields['article_type']);
-      
+
       foreach($variables['article_types_list'] as &$a_type) {
         $a_type = t($a_type);
       }
-      
+
       // Get "More articles" block nodes
       $more_articles = hitsa_articles_get_more_articles_block_nodes($variables);
       $articles_rendered = array();
@@ -90,14 +90,14 @@ function hitsa_articles_preprocess_node(&$variables) {
         $articles_rendered[] = theme('hitsa_article_teaser', array('node' => $article, 'author' => $author));
       }
       $variables['more_articles'] = $articles_rendered;
-      
+
       // Add "More articles" block title and link
       $article_type = !empty($variables['article_type'][0]['value']) ? $variables['article_type'][0]['value'] : 'news';
-      
+
       $variables['more_articles_title'] = $article_type === 'our_stories' ? t('More stories') : t('More news');
       $link = $article_type === 'our_stories' ? url('our-stories') : url('news');
       $variables['more_articles_link'] = sprintf('<a href="%s" class="btn sm-stretch">%s</a>', $link, $article_type === 'our_stories' ? t('All stories') : t('All news'));
-      
+
       // Set author and publish date
       if(!empty($variables['field_author_custom'])) {
         $variables['author_name'] = $variables['field_author_custom'][0]['safe_value'];
@@ -139,7 +139,7 @@ function hitsa_articles_preprocess_block(&$variables) {
 
 function hitsa_articles_preprocess_views_view_fields(&$vars) {
   if($vars['view']->name === 'hitsa_news') {
-    $vars['placeholder_image_url'] = hitsa_core_get_placeholder_image();
+    $vars['placeholder_image_url'] = hitsa_core_get_placeholder_image('news_articles_front');
   }
 }
 
@@ -152,6 +152,6 @@ function hitsa_articles_page_view($type, $filter = FALSE) {
   $query['bundle'] = 'article';
   $query['status'] = NODE_PUBLISHED;
   $query['order_by'] = array('parameter' => 'created', 'direction' => 'DESC');
-  
+
   return hitsa_content_page_view($query, $filter, 'news');
 }

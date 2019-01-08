@@ -42,7 +42,7 @@
       <?php else: ?>
       <span class="object-image">
 				<span class="object-placeholder">
-					<span><img src="<?php print $placeholder_image_url; ?>" /></span>
+					<img src="<?php print $placeholder_image_url; ?>" />
 				</span><!--/object-placeholder-->
 				<img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
 			</span><!--/object-image-->
@@ -51,7 +51,7 @@
         <span class="object-title"><?php print $fields['title']->content; ?></span>
         <span class="object-footer">
           <span class="before-calendar"><?php print $fields['created']->content; ?></span>
-          <?php $author_name = !empty($fields['field_author_custom']->content) ? 
+          <?php $author_name = !empty($fields['field_author_custom']->content) ?
               $fields['field_author_custom']->content : $fields['name']->content;
           if(!empty($author_name)):?>
           <span class="before-user"><?php print $author_name; ?></span>
