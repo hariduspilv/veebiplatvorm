@@ -2,7 +2,7 @@
 
 function hitsa_core_variable_info($options) {
   $variable = array();
-  
+
   $variable['hitsa_fb_link'] = array(
     'title' => t('Facebook link'),
     'group' => 'general_variables',
@@ -19,8 +19,8 @@ function hitsa_core_variable_info($options) {
   $variable['dds_endpoint_url'] = array(
     'title' => t('DigiDocService (Mobile ID) Endpoint URL'),
     'group' => 'general_variables',
-    'description' => 
-      'test-digidocservice - https://tsp.demo.sk.ee/' . '<br>' . 
+    'description' =>
+      'test-digidocservice - https://tsp.demo.sk.ee/' . '<br>' .
       'live-digidocservice (' . t('to get access, contact sales@sk.ee') . ') - https://digidocservice.sk.ee',
     'default' => 'https://tsp.demo.sk.ee/',
   );
@@ -64,13 +64,13 @@ function hitsa_core_variable_info($options) {
       'group' => 'header_footer_variables',
       'localize' => TRUE,
     );
-    
+
     $variable['important_contact_phone_' . $i] = array(
       'title' => t('Phone Nr.'),
       'group' => 'header_footer_variables',
     );
   }
-  
+
   $variable['hitsa_school_place_id'] = array(
     'title' => t('Place ID'),
     'group' => 'header_footer_variables',
@@ -195,19 +195,19 @@ function hitsa_core_variable_group_info() {
     'access' => 'administer hitsa page settings',
     'path' => array('admin/hitsa/variables/general'),
   );
-  
+
   $groups['header_footer_variables'] = array(
     'title' => t('Header & Footer variables'),
     'access' => 'administer hitsa page settings',
     'path' => array('admin/hitsa/variables/header_footer'),
   );
-  
+
   $groups['hitsa_core_translation_group'] = array(
     'title' => t('Hitsa variables translation group'),
     'access' => 'administer hitsa page settings',
     'description' => t('Here will appear all hitsa variables that are translatable'),
   );
-  
+
   return $groups;
 }
 
@@ -217,7 +217,7 @@ function hitsa_core_variable_type_info() {
     'multiple' => 'name',
     'type' => 'multiple',
   );
-  
+
   return $type;
 }
 
@@ -228,10 +228,10 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
     _hitsa_core_add_fp_image_upload_element($form, $form_state); // FP Image
     // General contact fieldset
     $form['general_contact'] = array(
-      '#type' => 'fieldset', 
-      '#title' => t('General contact'), 
-      '#weight' => 0, 
-      '#collapsible' => FALSE, 
+      '#type' => 'fieldset',
+      '#title' => t('General contact'),
+      '#weight' => 0,
+      '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     );
     // Move general contact fields under the fieldset.
@@ -243,16 +243,16 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
     unset($form['general_contact_address']);
     unset($form['general_contact_phone_nr']);
     unset($form['general_contact_email']);
-    
+
     // Important contacts fieldset
     $form['important_contacts'] = array(
-      '#type' => 'fieldset', 
-      '#title' => t('Important contacts'), 
+      '#type' => 'fieldset',
+      '#title' => t('Important contacts'),
       '#weight' => 1,
-      '#collapsible' => FALSE, 
+      '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     );
-    
+
     for($i = 1; $i < 5; $i++) {
       $form['important_contacts']['important_contact_name_' . $i] = $form['important_contact_name_' . $i];
       $form['important_contacts']['important_contact_phone_' . $i] = $form['important_contact_phone_' . $i];
@@ -274,13 +274,13 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
       $form['#submit'][] = 'footer_text_area_submit';
     }
     drupal_add_css('.contact-row > * {display:inline-block;} .img-stretch {max-width: 100%;}', 'inline');
-    
+
     // Gmap picker
     $form['gmap_picker'] = array(
       '#markup' => theme('gmap_picker'),
       '#weight' => 2,
     );
-    
+
     // Hide the school place element
     $form['hitsa_school_place_id']['#attributes']['style'] = 'display:none;';
     $form['hitsa_school_place_id']['#title_display'] = 'invisible';
@@ -289,7 +289,7 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
     $form['hitsa_school_place_coords']['#attributes']['style'] = 'display:none;';
     $form['hitsa_school_place_coords']['#title_display'] = 'invisible';
     $form['hitsa_school_place_coords']['#theme_wrappers'] = array();
-    
+
     // Front page hero banner height
     if(isset($form['hitsa_fp_image_height'])) {
       //dpm($form);
@@ -299,7 +299,7 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
         ' max' => 100,
       );
       $form['hitsa_fp_image_height']['#field_suffix'] = '<span class="field-suffix">%</span>';
-      
+
       $form['hitsa_fp_image_height']['#weight'] = $form['hitsa_fp_image_widget']['#weight'] + 1;
     }
   }
@@ -311,7 +311,7 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
 function _hitsa_core_add_logo_upload_element(&$form, &$form_state) {
   $site_logo_fid = variable_get_value('hitsa_site_logo_fid');
   $file = $site_logo_fid !== NULL ? file_load($site_logo_fid) : FALSE;
-  
+
   if($file) {
     // Logo preview
     $form['hitsa_site_logo_preview'] = array(
@@ -321,7 +321,7 @@ function _hitsa_core_add_logo_upload_element(&$form, &$form_state) {
       '#weight' => -100,
     );
   }
-  
+
   // Logo upload
   $form['hitsa_site_logo_widget'] = array(
     '#name' => 'files[hitsa_site_logo]',
@@ -339,16 +339,16 @@ function _hitsa_core_add_logo_upload_element(&$form, &$form_state) {
 }
 
 function hitsa_core_site_logo_validate($form, &$form_state) {
-  
+
   $validators = array(
    'file_validate_is_image' => array(),
    'file_validate_extensions' => array('png jpg jpeg'),
    'file_validate_size' => array(1024*1024),
   );
-	
+
   // Save file as temporary
   $file = file_save_upload('hitsa_site_logo', $validators, 'public://', FILE_EXISTS_RENAME);
-  
+
   if($file) {
     $form_state['files']['hitsa_site_logo_fid'] = $file;
   }
@@ -366,9 +366,9 @@ function hitsa_core_site_logo_submit($form, &$form_state) {
 
 function _hitsa_core_add_fp_image_upload_element(&$form, &$form_state) {
   $site_logo_fid = variable_get_value('hitsa_fp_image_fid');
-  
+
   $file = $site_logo_fid !== NULL ? file_load($site_logo_fid) : FALSE;
-  
+
   if($file) {
     // FP Image preview
     $form['hitsa_fp_image_preview'] = array(
@@ -378,7 +378,7 @@ function _hitsa_core_add_fp_image_upload_element(&$form, &$form_state) {
       '#weight' => -98,
     );
   }
-  
+
   // FP Image upload
   $form['hitsa_fp_image_widget'] = array(
     '#name' => 'files[hitsa_fp_image]',
@@ -397,16 +397,16 @@ function _hitsa_core_add_fp_image_upload_element(&$form, &$form_state) {
 }
 
 function hitsa_core_fp_image_validate($form, &$form_state) {
-  
+
   $validators = array(
    'file_validate_is_image' => array(),
    'file_validate_extensions' => array('png jpg jpeg'),
    'file_validate_size' => array(1024*1024*10),
   );
-	
+
   // Save file as temporary
   $file = file_save_upload('hitsa_fp_image', $validators, 'public://', FILE_EXISTS_RENAME);
-  
+
   if($file) {
     $form_state['files']['hitsa_fp_image_fid'] = $file;
   }
@@ -425,14 +425,15 @@ function hitsa_core_fp_image_submit($form, &$form_state) {
 // Favicon upload
 function _hitsa_core_add_favicon_upload_element(&$form, &$form_state) {
   $theme_settings = variable_get('theme_hitsa_settings', array());
+
   $form_state['theme_settings'] = $theme_settings;
-  
+
   $form['favicon'] = array(
     '#type' => 'fieldset',
     '#title' => t('Favicon'),
     '#weight' => -1,
   );
-  
+
   if(!empty($theme_settings['favicon_path']) && file_exists($theme_settings['favicon_path'])) {
     // FP Image preview
     $form['favicon']['preview'] = array(
@@ -442,7 +443,7 @@ function _hitsa_core_add_favicon_upload_element(&$form, &$form_state) {
       '#weight' => -98,
     );
   }
-  
+
   // Favicon Image upload
   $form['favicon']['upload'] = array(
     '#name' => 'files[hitsa_favicon]',
@@ -450,7 +451,7 @@ function _hitsa_core_add_favicon_upload_element(&$form, &$form_state) {
     '#type' => 'file',
     '#weight' => -97,
   );
-  
+
   $form['#validate'][] = 'hitsa_core_favicon_validate';
   $form['#submit'][] = 'hitsa_core_favicon_submit';
 }
@@ -469,21 +470,21 @@ function hitsa_core_favicon_validate($form, &$form_state) {
 function hitsa_core_favicon_submit($form, &$form_state) {
   if(!empty($form_state['favicon_uploaded'])) {
     $favicon = $form_state['favicon_uploaded'];
-    
+
     $favicon->status = 1;
     file_save($favicon);
-    
     $theme_settings = $form_state['theme_settings'];
-    
+
     $favicon_settings = array(
       'default_favicon' => 0,
+      'fid' => $favicon-> fid,
+      'toggle_favicon' => 1,
       'favicon_path' => $favicon->uri,
       'favicon_mimetype' => $favicon->filemime,
     );
-    
+
     $theme_settings = array_merge($theme_settings, $favicon_settings);
-    
-    variable_set('theme_settings', $theme_settings);
+    variable_set('theme_hitsa_settings', $theme_settings);
   }
 }
 function footer_text_area_submit($form,&$form_state){
