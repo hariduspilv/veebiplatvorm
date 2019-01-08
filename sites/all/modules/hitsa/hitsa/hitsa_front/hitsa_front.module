@@ -147,6 +147,10 @@ function hitsa_front_block_view($delta = '')
       }
       break;
     case 'hitsa_front_hero_for_school':
+/*
+ *Hero banner for vocational school is located at hitsa_curriculum.module
+ *
+ **/
       $front_page_image = variable_get_value('hitsa_fp_image_fid');
       if (!empty($front_page_image)) {
           $front_page_image = file_load($front_page_image);
@@ -185,7 +189,7 @@ function hitsa_front_block_view($delta = '')
 function hitsa_front_theme()
 {
     $items = array();
-    
+
     $items['hitsa_front_hours_breaks'] = array(
     'render element' => 'hitsa_front_hours_breaks',
     'template' => 'hitsa_front_hours_breaks',

@@ -381,7 +381,7 @@ function hitsa_curriculum_node_presave($node)
 }
 
 function hitsa_curriculum_form_alter(&$form, &$form_state, $form_id)
-{   
+{
     switch ($form_id) {
 
         case 'taxonomy_form_term':
@@ -823,7 +823,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
     if (!empty($header_content_html)) {
         $output .= $header_content_html;
     }
-    
+
     if (module_exists('hitsa_core')) {
         $content = hitsa_core_get_content_by_type('node', 'curriculum', $language->language, array('cur_type' => $type));
     }
@@ -1617,7 +1617,7 @@ $output.='
   $output.= '</span>';
 }
 $output.='
-            
+
 
           </div>
           <!--/col-4-->
@@ -1776,14 +1776,13 @@ function hitsa_curriculum_fp_subject_fields()
         }
     }
     $output = '';
-    if (!empty($output_slide_container)) {
-        $site_logo_fid = variable_get_value('hitsa_fp_image_fid');
-        $file = $site_logo_fid !== null ? file_load($site_logo_fid) : false;
-        if (!empty($file->uri)) {
-            $file_url = image_style_url('hitsa_hero_banner', $file->uri);
-        }
-        if (!empty($file_url)) {
-            $output .= '
+    $site_logo_fid = variable_get_value('hitsa_fp_image_fid');
+    $file = $site_logo_fid !== null ? file_load($site_logo_fid) : false;
+    if (!empty($file->uri)) {
+      $file_url = image_style_url('hitsa_hero_banner', $file->uri);
+    }
+    if (!empty($file_url)) {
+      $output .= '
         <div class="hero sm-hide">
         <div class="hero-image" style="background-image:url(' . $file_url . ');"></div>
         <div class="inline">
@@ -1806,7 +1805,6 @@ function hitsa_curriculum_fp_subject_fields()
         </div><!--/row-->
         </div>
      </div><!--/inline-->';
-        }
     }
 
     return $output;
