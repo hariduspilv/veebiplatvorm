@@ -70,6 +70,7 @@ function hitsa_cron_run_update()
     '5',
     '6',
     '7',
+    '8'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -734,5 +735,33 @@ function hitsa_cron_up_7()
   hitsa_events_create_menu_links();
   module_load_include('install','hitsa_alumnus','hitsa_alumnus');
   hitsa_alumnus_add_menu_links();
+  return TRUE;
+}
+function hitsa_cron_up_8(){
+  $block_query = db_select('block','b');
+  $block_query -> fields('b');
+  $block_query -> condition('b.module','hitsa_events','=');
+  $block_query -> condition('b.delta','right_side_block','=');
+  $results = $block_query->execute();
+  $blid = null;
+  $blocks =array();
+  while($result = $results->fetchAssoc()){
+    $blocks[] = $result;
+  }
+  if(!empty($blocks)){
+   foreach($blocks as $block){
+    $update = db_update('block') // Table name no longer needs {}
+      ->fields(array(
+        'pages' => "calendar\ntraining-calendar\nstudies-calendar",
+      ))
+      ->condition('bid',$block['bid'], '=')
+      ->execute();
+   }
+  }
+  block_flush_caches();
+  cache_clear_all();
+  module_load_include('install','hitsa_core','hitsa_core');
+
+  hitsa_core_set_translatable_variables();
   return TRUE;
 }

@@ -64,7 +64,7 @@ function hitsa_events_menu()
 function hitsa_events_block_info()
 {
     // This example comes from node.module.
-    
+
     if (hitsa_core_get_school_type() == 2) {
         $blocks['fornt_page_events'] = array(
             'info' => t('Front page calendar events'),
@@ -75,13 +75,13 @@ function hitsa_events_block_info()
             'status' => 1,
         );
     }
-    
+
 
     $blocks['fornt_page_training'] = array(
         'info' => t('Front training events'),
         'cache' => DRUPAL_NO_CACHE,
     );
-    $pages = "calendar\ntraining-calendar";
+    $pages = "calendar\ntraining-calendar\nstudies-calendar";
     $blocks['right_side_block'] = array(
         'info' => t('Time periods block'),
         'visibility' => BLOCK_VISIBILITY_LISTED,
@@ -120,7 +120,7 @@ function hitsa_events_block_view($delta = '')
             );
             break;
         case 'right_side_block':
-            $block['subject'] = t('');
+          $block['subject'] = t('');
             $block['content'] = array(
                 '#markup' => hitsa_events_get_time_period_block(),
 
@@ -902,7 +902,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= (!empty($event->body)) ? $event->body['und'][0]['value'] : '';
         //$output .= '</p>';
       if(!empty($contacts_block)){
-        $output.='<br>';        
+        $output.='<br>';
         $output.='<br>';
         $output.=$contacts_block;
       }
@@ -935,7 +935,6 @@ function hitsa_events_get_time_periods()
 {
     $time_periods_vocabulary = taxonomy_vocabulary_machine_name_load('time_period_info');
     $time_periods = taxonomy_get_tree($time_periods_vocabulary->vid, 0, null, true);
-
     $output = '';
     $time_periods_count = count($time_periods);
     $i = 0;
@@ -1050,7 +1049,7 @@ function hitsa_events_front_page_block($type_override=null)
 
         foreach ($events_array as $key => $event_type) {
             $i = 0;
-            
+
             $output .= '<div data-tab="tab-' . $j . '" >';
 
             usort($event_type, function ($a, $b) {
@@ -1602,7 +1601,7 @@ function hitsa_events_htmlize_periods($periods)
         }
 
         $events_count = count($period->events);
-        
+
         if (strval($period->active) == 'TRUE') {
             $events_count--;
         }
@@ -2647,7 +2646,7 @@ function hitsa_events_set_active_period($periods = null)
                         $periods[$tid]->active = 'TRUE';
                         $have_active = true;
                     } else {
-                        
+
                         $periods[$tid]->active = 'FALSE';
                     }
                 } else {

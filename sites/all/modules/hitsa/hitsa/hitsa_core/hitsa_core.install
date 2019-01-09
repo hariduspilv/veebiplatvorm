@@ -383,13 +383,13 @@ function hitsa_core_set_default_language()
 {
   locale_add_language('et', null, null, LANGUAGE_LTR, '', '', true, true);
   locale_add_language('ru', null, null, LANGUAGE_LTR, '', '', true, false);
-  
+
   // Set ET as first
   db_update('languages')
     ->fields(array('weight' => -100))
     ->condition('language', 'et')
     ->execute();
-      
+
   // Disable "Language None" option
   module_load_include('inc', 'entity_translation', 'entity_translation.admin');
   entity_translation_settings_init('node', array('exclude_language_none' => true));
@@ -630,14 +630,14 @@ function hitsa_core_set_default_variables()
   variable_set('pathauto_node_gallery_et_pattern', $t('galeriid/') . '[node:title]');
   variable_set('error_level', 0); // Disable error message display
   variable_set('metatag_enable_taxonomy_term', false); // Disable metatags for taxonomy terms
-  
+
   // Default captcha settings
   variable_set('image_captcha_bilinear_interpolation', 1);
   variable_set('image_captcha_distortion_amplitude', '5');
   variable_set('image_captcha_dot_noise', 1);
   variable_set('image_captcha_line_noise', 1);
   variable_set('image_captcha_noise_level', '2');
-  
+
   // Set WYSIWYG media popup settings
   variable_set(
     'media_wysiwyg_wysiwyg_browser_plugins',
@@ -683,6 +683,7 @@ function hitsa_core_set_translatable_variables()
     'front_confirmation_title' => 'Confirmations',
     'footer_right_title' => 'Important contacts',
     'contact_contact_us_title' => 'Contact us',
+    'period_title' => '',
   );
   $new_variables_for_entering = $variables_new;
   foreach ($translated_variables as $variable) {
@@ -815,7 +816,7 @@ function hitsa_core_set_variable_translations()
 function hitsa_core_add_media_folder_terms()
 {
   $v_media_folders = taxonomy_vocabulary_machine_name_load('media_folders');
-  
+
   // Make media folder localizable
   $v_media_folders->i18n_mode = 1;
   taxonomy_vocabulary_save($v_media_folders);
@@ -860,7 +861,7 @@ function hitsa_core_add_media_folder_terms()
     taxonomy_term_save($term);
 
     variable_set('hitsa_media_folders_' . $key . '_tid', $term->tid);
-    
+
     // Add media folder term translations
     foreach ($val['translations'] as $lang => $t) {
       i18n_string_translation_update(array('taxonomy', 'term', $term->tid, 'name'), $t, $lang, $val['name']);
@@ -995,11 +996,11 @@ function hitsa_core_update_7009()
   if (!module_exists('media_browser_plus')) {
     module_enable(array('media_browser_plus'));
   }
-  
+
   if(!module_exists('views_tree')) {
     module_enable(array('views_tree'));
   }
-  
+
   // Set WYSIWYG media popup settings
   variable_set(
     'media_wysiwyg_wysiwyg_browser_plugins',
@@ -1010,7 +1011,7 @@ function hitsa_core_update_7009()
       'media_internet',
     )
   );
-  
+
   // Enable Media Browser Plus options on media fields
   $fields = array(
     array(
@@ -1205,7 +1206,7 @@ function hitsa_core_update_7015() {
   if(!empty($style['effects'])) {
     $ieid = key($style['effects']);
     $effect = image_effect_load($ieid, 'hitsa_hero_banner');
-    
+
     if(!empty($effect)) {
       $effect['data'] = array('width' => 1920, 'height' => '', 'upscale' => 0);
       image_effect_save($effect);
