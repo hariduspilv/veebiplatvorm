@@ -37,7 +37,8 @@ function hitsa_cron_cronapi()
   ];
     //Siia kirjutada update number
   $cronsettings_set = variable_get('cronsettings_set');
-    if(empty($cronsettings_set)) {
+  watchdog('cron_tester','Reached here');
+  if(!empty($cronsettings_set)) {
       variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
       variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
       variable_set('cronsettings_set','TRUE');
@@ -65,7 +66,9 @@ function hitsa_cron_run_update()
     '1',
     '2',
     '3',
-    '4'
+    '4',
+    '5',
+    '6',
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -685,4 +688,41 @@ function hitsa_cron_up_4($update=null){
   }
   return TRUE;
 }
+function hitsa_cron_up_5($update=NULL){
+  $modules = array('image_exif_autorotate','imagecache_autorotate');
+  foreach($modules as $module){
+    if(!module_exists($module)){
+      module_enable(array($module));
+    }
+  }
+  $activated = true;
+  foreach($modules as $module){
+    if(!module_exists($module)){
+      $activated = false;
+    }
+  }
+  if($activated){
+    return TRUE;
+  }
+  else{
+    watchdog('hitsa_update_error','Modules were not enabled');
+  }
+}
 
+function hitsa_cron_up_6($update=NULL){
+
+  $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
+  $main_menu_links = array();
+  foreach($main_menu_tree as $link) {
+    $main_menu_links[$link['link']['title']] = $link;
+  }
+  if(isset($main_menu_links['About us'])){
+    foreach($main_menu_links['About us']['below'] as $about_link){
+      if($about_link['link']['link_title'] =='Galerii' || $about_link['link']['link_title'] =='Gallery' || $about_link['link']['link_title'] == 'Галерея'){
+        if($about_link['link']['link_path'] !='gallery'){
+          menu_link_delete($about_link['link']['mlid']);
+        }
+      }
+    }
+  }
+}
