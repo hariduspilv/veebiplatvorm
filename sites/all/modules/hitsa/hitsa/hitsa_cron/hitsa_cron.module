@@ -732,5 +732,7 @@ function hitsa_cron_up_7()
 {
   module_load_include('install','hitsa_events','hitsa_events');
   hitsa_events_create_menu_links();
+  module_load_include('install','hitsa_alumnus','hitsa_alumnus');
+  hitsa_alumnus_add_menu_links();
   return TRUE;
 }

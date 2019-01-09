@@ -343,15 +343,15 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links)
       'cp_type' => 'cp_specialities',
     ),
 
-//    array(
-//      'title' => array('et' => 'Vilistlased', 'ru' => 'Выпускники', 'en' => 'Graduates'),
-//      'menu' => array(
-//        'plid' => $main_menu_links['About us'],
-//        'weight' => 11,
-//      ),
-//      'cp_type' => 'cp_simple',
-//    ),
-
+   // array(
+     // 'title' => array('et' => 'Vilistlased', 'ru' => 'Выпускники', 'en' => 'Graduates'),
+     // 'menu' => array(
+       // 'plid' => $main_menu_links['About us'],
+       // 'weight' => 11,
+     // ),
+     // 'cp_type' => 'cp_simple',
+   // ),
+//
     array(
       'title' => array('et' => 'Tööpakkumised', 'ru' => 'Предложения работы', 'en' => 'Vacancies'),
       'menu' => array(

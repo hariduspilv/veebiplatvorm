@@ -4,17 +4,17 @@ include('extras/fields.install.inc');
  * Implements hook_install().
  */
 function hitsa_alumnus_install()
-{   
+{
     hitsa_alumnus_create_node();
-    
+
     hitsa_alumnus_add_paragraph_bundle();
 
     hitsa_alumnus_add_fields();
 
     hitsa_alumnus_add_menu_links();
 
-    
-    
+
+
 }
 function hitsa_alumnus_add_paragraph_bundle(){
 
@@ -53,18 +53,31 @@ function hitsa_alumnus_add_menu_links(){
     $about_link=null;
     foreach ($links as $link) {
         if($link['link']['link_title']=='About us'){
-            $about_link=$link['below'];
+          $about_link=$link['below'];
+          $plid = $link['link']['mlid'];
         }
-    }    
+    }
     if(!empty($about_link)){
-        foreach ($about_link as $alink) {
+      $have_link = false;
+      foreach ($about_link as $alink) {
             if($alink['link']['link_title']=='Vilistlased' || $alink['link']['link_title']=='Graduates'|| $alink['link']['link_title']=='Выпускники'){
                 $weight = $alink['link']['weight'];
                 $alink['link']['link_path'] = 'alumnus';
                 $alink['link']['hidden'] = 0;
                 menu_link_save($alink['link']);
+                $have_link=TRUE;
             }
         }
+    }
+    if(!$have_link){
+      $menu_link = array(
+        'plid' => $plid,
+        'weight' => 11,
+        'link_path' => 'alumnus',
+        'link_title' => 'Graduates',
+        'language' => 'und',
+      );
+      menu_link_save($menu_link);
     }
     $path_check_en = drupal_lookup_path('source', 'graduates', 'en');
     $path_check_et = drupal_lookup_path('source', 'vilistlased', 'et');
