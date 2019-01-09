@@ -55,7 +55,7 @@ function hitsa_preprocess_page(&$variables)
             theme_get_suggestions($args, $type)
         );
     }
-    
+
     // IE Favicon compatibility
     if (theme_get_setting('toggle_favicon')) {
         $favicon = theme_get_setting('favicon');
@@ -236,7 +236,6 @@ function hitsa_menu_link__hitsa_main_menu_mobile($variables)
     global $language;
 
     $element = $variables['element'];
-
     $sub_menu = '';
     $element['#attributes']['class'] = array();
     $service_menu_mlid = variable_get('hitsa_services_mlid');
@@ -276,6 +275,11 @@ function hitsa_menu_link__hitsa_main_menu_mobile($variables)
         return '';
     }
     $output = l($element['#title'], $element['#href'], $element['#localized_options']);
+    if (strpos($output, 'title=""') !== false) {
+      $output = str_replace('title=""','',$output);
+      $output = str_replace('title=" "','',$output);
+    }
+
     return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
 }
 
@@ -397,7 +401,7 @@ function hitsa_menu_link__hitsa_main_menu($variables)
 //    dpm('HERE');
 
     $element = $variables['element'];
-    
+
     $sub_menu = '';
     $element['#attributes']['class'] = array();
     $service_menu_mlid = variable_get('hitsa_services_mlid');
@@ -558,7 +562,7 @@ function hitsa_links__locale_block($variables)
             if (!empty($link['attributes']['xml:lang'])) {
                 $link['attributes']['lang'] = $link['attributes']['xml:lang'];
             }
-            
+
             if(!empty($link['attributes']['title'])) { // Remove title attribute
                 unset($link['attributes']['title']);
             }
@@ -638,7 +642,7 @@ function hitsa_links__mobile_locale_block($variables)
             if (!empty($link['attributes']['xml:lang'])) {
                 $link['attributes']['lang'] = $link['attributes']['xml:lang'];
             }
-            
+
             if(!empty($link['attributes']['title'])) { // Remove title attribute
                 unset($link['attributes']['title']);
             }
