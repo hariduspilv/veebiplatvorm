@@ -63,7 +63,8 @@ dependencies[] = hitsa_color
 dependencies[] = hitsa_front
 dependencies[] = hitsa_alumnus
 dependencies[] = hitsa_cron
-
+dependencies[] = image_exif_autorotate
+dependencies[] = imagecache_autorotate
 
 ; Information added by Drupal.org packaging script on 2017-06-21
 version = "7.56"
