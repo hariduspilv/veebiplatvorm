@@ -69,6 +69,7 @@ function hitsa_cron_run_update()
     '4',
     '5',
     '6',
+    '7',
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -725,4 +726,11 @@ function hitsa_cron_up_6($update=NULL){
       }
     }
   }
+}
+
+function hitsa_cron_up_7()
+{
+  module_load_include('install','hitsa_events','hitsa_events');
+  hitsa_events_create_menu_links();
+  return TRUE;
 }
