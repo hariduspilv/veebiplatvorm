@@ -53,7 +53,7 @@ function content_page_form($node, $form_state) {
 function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
   global $user;
 
-  if($form_id === 'views_exposed_form' && 
+  if($form_id === 'views_exposed_form' &&
   $form['#id'] === 'views-exposed-form-administration-content-pages-system-content-pages') {
     if(!empty($form['cp_type_value'])) {
       foreach($form['cp_type_value']['#options'] as $key => $option) {
@@ -63,7 +63,8 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
     }
   }
   if($form_id === 'content_page_node_form') {
-    $form['#validate'][] = 'hitsa_content_page_header_one_image_validate'; // Headers can have only one image
+	  $form['#attached']['js'][] = drupal_get_path('module', 'hitsa_content_page') . '/includes/picture.js';
+	  $form['#validate'][] = 'hitsa_content_page_header_one_image_validate'; // Headers can have only one image
     
     if($user->uid !== '1') {
       $form['cp_display_style']['#access'] = FALSE;
@@ -148,23 +149,23 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
         );
       }
       if(!empty($form['cp_image'])) {
-        $form['cp_image']['#states'] = array(
-          'visible' => array(
-            ':input[name^="cp_type"]' => array(
-              array('value' => 'cp_tabbed'),
-              array('value' => 'cp_service'),
-              array('value' => 'cp_simple'),
-              array('value' => 'cp_specialities'),
-            ),
-          ),
-          'required' => array(
-            ':input[name^="cp_type"]' => array(
-              array('value' => 'cp_tabbed'),
-              array('value' => 'cp_service'),
-              array('value' => 'cp_specialities'),
-            ),
-          ),
-        );
+	      $form['cp_image']['#states'] = array(
+		      'visible' => array(
+			      ':input[name^="cp_type"]' => array(
+				      array('value' => 'cp_tabbed'),
+				      array('value' => 'cp_service'),
+				      array('value' => 'cp_simple'),
+				      array('value' => 'cp_specialities'),
+			      ),
+		      ),
+		      'required' => array(
+			      ':input[name^="cp_type"]' => array(
+				      array('value' => 'cp_tabbed'),
+				      array('value' => 'cp_service'),
+				      array('value' => 'cp_specialities'),
+			      ),
+		      ),
+	      );
       }
       if(!empty($form['article_video'])) {
         $form['article_video']['#states'] = array(
