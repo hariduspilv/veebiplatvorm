@@ -24,6 +24,18 @@ function hitsa_cron_cronapi()
       ],
     ],
   ];
+  $items['hitsa_cron_translation_updater'] = [
+    'title' => t('Translation Updater'),
+    'description' => 'Updates translations',
+    'file' => 'hitsa_cron_translation_updater.inc',
+    'callback' => 'hitsa_cron_update_translations',
+    'scheduler' => [
+      'name' => 'crontab',
+      'crontab' => [
+        'rules' => [strval($random_time) . ' 4 * * *'],
+      ],
+    ],
+  ];
   $items['hitsa_cron_update_runner'] = [
     'title' => t('Update runner'),
     'description' => 'Update runner',
@@ -70,7 +82,8 @@ function hitsa_cron_run_update()
     '5',
     '6',
     '7',
-    '8'
+    '8',
+    '9',
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -763,5 +776,19 @@ function hitsa_cron_up_8(){
   module_load_include('install','hitsa_core','hitsa_core');
 
   hitsa_core_set_translatable_variables();
+  return TRUE;
+}
+function hitsa_cron_up_9(){
+  $words = array(
+    'Cancel user account' => array(
+      'et' => 'Tühista kasutajakonto',
+    ),
+    'Change user roles' => array(
+      'et' => 'Vaheta kasutaja rolli',
+    ),
+  );
+  module_load_include('inc','hitsa_translation_importer','/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
   return TRUE;
 }

@@ -387,6 +387,9 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
                 }
             }
             break;
+	case 'content_page_node_form':
+		
+		break;
     }
 }
 
