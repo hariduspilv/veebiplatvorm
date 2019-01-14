@@ -484,6 +484,25 @@ function adminimal_select($variables)
   _form_set_class($element, array(
     'form-select',
   ));
+  if($element['#id']=='edit-menu-parent' && $element['#value']=='hitsa-main-menu:0'){
+    global $language;
+    $element_options = $element['#options'];
+    foreach($element_options as $key => $option){
+      if (strpos($option, '--') !== false) {
+        if(strpos($option,'---')!==false){
+          continue;
+        }
+      $original_word = $option;
+      $original_word= str_replace('--','',$original_word);
+      $original_word= str_replace('(keelatud)','',$original_word);
+      $original_word= trim($original_word);
+      $new_word = t($original_word);
+      $element_options[$key] = str_replace($original_word,$new_word,$option);
+      }
+    }
+    $element['#options'] = $element_options;
+  }
+
   return '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_options($element) . '</select>';
 }
 function adminimal_textfield($variables)
