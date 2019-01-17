@@ -892,13 +892,67 @@ function hitsa_cron_up_10(){
   }
 }
 function hitsa_cron_up_11(){
-  $taxonomy = taxonomy_vocabulary_machine_name_load('catering_food_type');
-  $taxonomy = taxonomy_get_tree($taxonomy->vid);
-  foreach($taxonomy as $term){
-	  if($term->name=='Koolilõina'){
-		  $term->name='Koolilõuna';
-		taxonomy_term_save($term);
-	  }
-  }
-  return TRUE;
+	$taxonomy = taxonomy_vocabulary_machine_name_load('catering_food_type');
+	$taxonomy = taxonomy_get_tree($taxonomy->vid);
+	foreach($taxonomy as $term){
+		if($term->name=='Koolilõina'){
+			$term->name='Koolilõuna';
+			taxonomy_term_save($term);
+		}
+	}
+	return TRUE;
+}
+function hitsa_cron_up_12(){
+	$bundles = paragraphs_bundle_load();
+	foreach($bundles as $bundle){
+		if($bundle->name=='Alumnus person'){
+			$bundle->name='Vilistlane';
+		}
+		elseif($bundle->name=='Food'){
+			$bundle->name ='Toit';
+		}
+		elseif($bundle->name=='Contacts'){
+			$bundle->name = 'Kontaktid';
+		}
+		elseif($bundle->name=='Description'){
+			$bundle->name ='Kirjeldus';
+		}
+		elseif($bundle->name=='jobs'){
+			$bundle->name = 'töö';
+		}
+		elseif($bundle->name=='Reception time'){
+			$bundle->name = 'Vastuvõtu aeg';
+		}
+		elseif($bundle->name=='Table'){
+			$bundle->name = 'Tabel';
+		}
+		paragraphs_bundle_save($bundle);
+
+	}
+	return TRUE;
+
+}
+
+function hitsa_cron_up_13(){
+	$menus =  menu_get_menus();
+	foreach($menus as $key => $menu){
+		$loaded_menu = menu_load($key);
+		dpm($loaded_menu);
+	if($loaded_menu['title']=='Header menu'){
+		$loaded_menu['title'] = 'Päise menüü';
+		menu_save($loaded_menu);
+	}	
+	if($loaded_menu['title']=='Main menu' && $loaded_menu['menu_name']=='hitsa-main-menu'){
+		$loaded_menu['title'] = 'Peamenüü';
+		menu_save($loaded_menu);
+	}	
+	if($loaded_menu['title']=='Quicklinks'){
+		$loaded_menu['title'] = 'Kiirlingid';
+		menu_save($loaded_menu);
+	}	
+	if($loaded_menu['title']=='Footer menu'){
+		$loaded_menu['title'] = 'Jaluse menüü';
+		menu_save($loaded_menu);
+	}	
+	}
 }

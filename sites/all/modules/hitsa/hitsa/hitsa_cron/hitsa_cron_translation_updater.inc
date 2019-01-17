@@ -3,7 +3,8 @@
  function hitsa_cron_update_translations(){
 
    $updates = [
-     '1'
+	   '1',
+
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_translations_updated');

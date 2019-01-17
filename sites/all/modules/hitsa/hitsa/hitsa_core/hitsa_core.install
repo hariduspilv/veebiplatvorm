@@ -176,24 +176,24 @@ function _hitsa_core_menus()
   return array(
     'hitsa_main_menu' => array(
       'menu_name' => 'hitsa-main-menu',
-      'title' => $t('Main menu'),
+      'title' => $t('Peamenüü'),
       'description' => $t('HITSA Main menu for showing the primary links.'),
       'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_header_menu' => array(
-      'menu_name' => 'hitsa-header-menu',
+      'menu_name' => 'Päise menüü',
       'title' => $t('Header menu'),
       'description' => $t('HITSA Header menu.'),
       'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_quicklinks_menu' => array(
-      'menu_name' => 'hitsa-quicklinks-menu',
+      'menu_name' => 'Kiirlingid',
       'title' => $t('Quicklinks'),
       'description' => $t('HITSA Quicklinks menu.'),
       'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_footer_menu' => array(
-      'menu_name' => 'hitsa-footer-menu',
+      'menu_name' => 'Jaluse menüü',
       'title' => $t('Footer menu'),
       'description' => $t('HITSA Footer menu.'),
       'i18n_mode' => I18N_MODE_MULTIPLE,
