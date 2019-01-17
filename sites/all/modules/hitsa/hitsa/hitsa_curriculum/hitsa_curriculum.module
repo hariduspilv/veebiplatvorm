@@ -954,7 +954,6 @@ function hitsa_curriculum_custom_block($curriculum_type)
 
 function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id = null)
 {
-//    dpm('HERE');
     global $language;
     if (is_array($areas)) {
         $output = '';
@@ -1002,6 +1001,7 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                 if (!empty($area_value->field_field)) {
                     $field_id = $area_value->field_field['und'][0]['target_id'];
                     $loaded_field = taxonomy_term_load($field_id);
+                    $loaded_field= i18n_taxonomy_localize_terms($loaded_field);
                     if (empty($fields[$field_id]) && is_object($loaded_field)) {
                         $fields[$field_id] = array(
                             'name' => $loaded_field->name,
@@ -1709,7 +1709,7 @@ function hitsa_curriculum_fp_subject_fields()
     $taxonomy = taxonomy_vocabulary_machine_name_load('fields');
     global $language;
     if (!empty($taxonomy)) {
-        $taxonomy_tree = taxonomy_get_tree($taxonomy->vid);
+      $taxonomy_tree = taxonomy_get_tree($taxonomy->vid);
         $i = 0;
         $output_slides = array();
         foreach ($taxonomy_tree as $taxonomy_key => $taxonomy_value) {

@@ -300,7 +300,7 @@ function _hitsa_curriculum_installed_paragraphs_fields()
         'translatable' => 0,
         'type' => 'text',
     );
-    
+
       // Exported field_base: 'field_job_description'.
     $field_bases['field_job_description'] = array(
         'active' => 1,
@@ -4341,7 +4341,7 @@ function _hitsa_curriculum_conditional_fields()
             ),
             'selector' => '',
             'values_set' => 1,
-            'value_form' => 'subject-field',
+            'value_form' => 'subject-fields',
             'value' => array(
                 0 => array(
                     'value' => 'subject-fields',
@@ -5081,7 +5081,7 @@ function hitsa_curriculum_update_7005()
     field_update_instance($field_instance);
 }
 /**
- * 
+ *
  * Update to fix table showing.
  */
 function hitsa_curriculum_update_7006()

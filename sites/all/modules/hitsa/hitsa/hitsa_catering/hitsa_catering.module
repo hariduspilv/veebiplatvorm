@@ -410,7 +410,7 @@ function hitsa_catering_week($start_date = null)
                                     break;
                                 }
                             }
-                        
+
                     }
                 }
                 if (!empty($node->field_catering_provider)) {
@@ -480,7 +480,7 @@ function hitsa_catering_week($start_date = null)
     $provider_to_htmlize = array();
     if (!empty($providers) and count($providers) > 1) {
         $catering_providers_sidemenu = hitsa_catering_provider_side_menu($providers);
-        
+
         if(!empty($catering_providers_sidemenu)){
         $catering_mobile = hitsa_catering_provider_side_menu($providers);
         $catering_mobile = '<div class="row sm-show no-print">
@@ -497,7 +497,7 @@ function hitsa_catering_week($start_date = null)
         }
         $build['catering']['catering_provider']['#prefix'] = '<div class="col-3 sm-hide no-print d-flex">';
         $build['catering']['catering_provider']['#suffix'] = '</div>';
-        
+
         $build['catering']['catering_provider']['#markup'] = $catering_providers_sidemenu;
         $build['catering']['catering_table']['#prefix'] = '<div class="col-9 sm-12"><article>';
         $build['catering']['catering_table']['#suffix'] = '</div></article>';
@@ -574,9 +574,9 @@ function hitsa_catering_week($start_date = null)
         if (!empty($catering_mobile)) {
             $build['catering_header']['#prefix'] = $catering_mobile ;
         }
-        
+
     }
-    
+
     return $build;
 }
 
@@ -585,7 +585,7 @@ function hitsa_catering_week($start_date = null)
  *
  */
 function hitsa_catering_paragraphs__create_table($loaded_menu)
-{   
+{
     $monday = (!empty($loaded_menu->field_catering_monday) ? $loaded_menu->field_catering_monday['und'] : null);
     $tuesday = (!empty($loaded_menu->field_catering_tuesday) ? $loaded_menu->field_catering_tuesday['und'] : null);
     $wednesday = (!empty($loaded_menu->field_catering_wednesday) ? $loaded_menu->field_catering_wednesday['und'] : null);
@@ -677,15 +677,20 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         $output = '<div class="table_wrapper" data-plugin="responsiveTable">';
         $meals_correct_array = array();
         foreach ($day_meals as $day_key => $day_foods) {
-            if (!empty($day_foods)) {
+          if (!empty($day_foods)) {
+
                 foreach ($day_foods as $food_key => $food) {
                     $meals_correct_array[$food_key][$day_key] = $food;
+                    if (!isset($meals_correct_array[$food_key]['reg_count'])) {
+                        $meals_correct_array[$food_key]['reg_count'] = 0;
+                    }
                     if (!isset($meals_correct_array[$food_key]['count'])) {
                         $meals_correct_array[$food_key]['count'] = 0;
                     }
                     $meals_correct_array[$food_key]['count'] = (count($food) > $meals_correct_array[$food_key]['count']) ? count($food) : $meals_correct_array[$food_key]['count'];
                     $dessert_location = 0;
                     $dessert_count = 0;
+                    $reg_count = 0;
                     foreach ($food as $food_item_key => $food_item) {
                         if (is_array($food_item)) {
                             if ($food_item['type'] == 'dessert') {
@@ -702,7 +707,12 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                                 }
                             }
                         }
-
+                        else{
+                          $reg_count++;
+                          if($reg_count>$meals_correct_array[$food_key]['reg_count']){
+                            $meals_correct_array[$food_key]['reg_count']=$reg_count;
+                          }
+                        }
                         $dessert_location++;
                     }
                     if (isset($meals_correct_array[$food_key]['des_count'])) {
@@ -750,6 +760,11 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
         foreach ($meals_correct_array as $meal_key => $meal_days) {
             $output .= '<tbody>';
             $desserts_started = false;
+            $correct_count = $meal_days['reg_count']+$meal_days['des_count'];
+            if($meal_days['count'] < $correct_count){
+              $meal_days['count'] = $correct_count;
+              $meal_days['dessert_location'] = $meal_days['reg_count'];
+            }
             for ($i = 0; $i < $meal_days['count']; $i++) {
                 if (isset($meal_days['dessert_location']) && $i == ($meal_days['dessert_location'])) {
                     $desserts_started = true;

@@ -81,7 +81,7 @@ function _hitsa_catering_vocabularies()
         ),
         'terms' => array(
             (object)array(
-                'name' => t('Koolilõina'),
+                'name' => t('Koolilõuna'),
             ),
             (object)array(
                 'name' => t('Taimetoit'),
@@ -1855,6 +1855,6 @@ function hitsa_catering_update_7003(){
           'weight' => 11,
         ),
       );
-    
+
     field_update_instance($field_instance);
 }
