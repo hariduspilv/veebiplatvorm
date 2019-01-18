@@ -372,14 +372,14 @@ function hitsa_front_get_services()
     if (!empty($nodes)) {
         $nodes= $nodes['node'];
         $services = array();
-        $i=0;
+	$i=0;
         foreach ($nodes as $node_key => $node) {
             if ($i==6) {
                 break;
             }
             $node = node_load($node->nid);
             $url = url('node/'.$node->nid);
-            $title = $node->title;
+	    $title = $node->title;
             if (!empty($node->body) && !empty($node->body['und'][0]['safe_summary'])) {
                 $service_summary = $node->body['und'][0]['safe_summary'];
             } elseif (!empty($node->body)) {

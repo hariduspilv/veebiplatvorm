@@ -4,6 +4,8 @@
 
    $updates = [
 	   '1',
+     '2',
+     '3'
 
   ];
   if (!empty($updates)) {
@@ -127,4 +129,82 @@ function hitsa_cron_trans_up_1(){
   hitsa_translations_importer_translations($words);
   drupal_flush_all_caches();
   return TRUE;
+}
+
+function hitsa_cron_trans_up_2(){
+	$words = array(
+		'Front Page Image'=> array(
+			'et' => 'Esilehe pilt kuvatud',
+		),
+		'Upload Logo Image'=> array(
+			'et' => 'Lehe logo',
+		),
+		'Upload Front Page Image' => array(
+			'et' => 'Lae üles esilehe pilt',
+		),
+
+		'Contact page contact title' => array(
+			'et' => 'Kontakti lehe kontakti pealkiri',
+		),
+		'Footer right box title' => array(
+			'et' => 'Jaluse parema ploki pealkiri',
+		),
+		'Front page confirmation box title' => array(
+			'et' => 'Esilehe tunnustuste ploki pealkiri',
+		),
+		'Footer middle box title' => array(
+			'et' => 'Jaluse keskmise ploki pealkiri',
+		),
+		'Footer left box title' => array(
+			'et' => 'Jaluse vasaku ploki pealkiri',
+		),
+		'Front page gallery title' => array(
+			'et' => 'Esilehe galerii pealkiri',
+		),
+		'Front page services title' => array(
+			'et' => 'Esilehe teenuste pealkiri',
+		),
+		'Front page catering title' => array(
+			'et' => 'Esilehe toitlustuse ploki pealkiri',
+		),
+		'Front page events title' => array(
+			'et' => 'Esilehe sündmuste pealkiri',
+		),
+		'Our stories title' => array(
+			'et' => 'Meie lood pealkiri esilehel',
+		),
+		'Period title shown in calendar' => array(
+			'et' => 'Vaheaegade ploki pealkiri kalendris',
+		),
+		'Footer text area' => array(
+			'et' => 'Jaluse tekstiala',
+		),
+		'Footer text area title' => array(
+			'et' => 'Jaluse tekstiala pealkiri',
+		),
+		'Copyright Notice' => array(
+			'et' => 'Kasutusõiguste märkus',
+		),
+		'Phone Nr' => array(
+			'et' => 'Telefoni number',
+		),
+		'Name of institution' => array(
+			'et' => 'Asutuse nimi',
+		),
+		'multilingual' => array(
+			'et' => 'mitmekeelne'
+		),
+		'Front page hero banner maximum file size 10MB' => array(
+			'et'=> 'Esilehe bänneri maksimaalne faili suurus on 10MB'
+    ),
+    'Search for an event' => array(
+      'et' => 'Otsi sündmust',
+      'ru' => 'Поиск события'
+    ),
+	);
+
+    module_load_include('inc','hitsa_translation_importer','/includes/hitsa_translation_importer.admin');
+    hitsa_translations_importer_translations($words);
+    drupal_flush_all_caches();
+    return TRUE;
 }

@@ -85,6 +85,11 @@ function hitsa_cron_run_update()
     '8',
     '9',
     '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -955,4 +960,40 @@ function hitsa_cron_up_13(){
 		menu_save($loaded_menu);
 	}	
 	}
+}
+function hitsa_cron_up_14(){
+    $field = field_info_instance('node', 'field_image', 'article');
+    field_delete_instance($field);
+    return TRUE;
+}
+function hitsa_cron_up_15(){
+  $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
+  $main_menu_links = array();
+  foreach($main_menu_tree as $link) {
+    $main_menu_links[$link['link']['title']] = $link;
+  }
+  if(isset($main_menu_links['Student Life'])){
+    foreach ($main_menu_links['Student Life']['below'] as $link_key => $link) {
+      if(!empty($link['link'])){
+        if($link['link']['link_title']=='Sport'){
+          if (strpos($link['link']['link_path'], 'node/') !== false) {
+            $path_alias = (drupal_get_path_alias($link['link']['link_path']));
+            $path_old = path_load(array(
+              'source' => $link['link']['link_path'],
+              'alias' => $path_alias
+            )              );
+            $path_alias_check = path_load( array('source' => 'sport','alias'=>'sport'));
+            if (strpos($path_alias, 'sport-') !== false) {
+              $alias = array(
+                'source' => $link['link']['link_path'],
+                'alias' => 'sport',
+                );
+              path_save($alias);
+              
+            }
+          }
+        }
+      }
+    }
+  }
 }

@@ -15,6 +15,7 @@ function hitsa_articles_install() {
   variable_set('language_content_type_article', TRANSLATION_ENABLED); // Make multilingual
   variable_set('comment_article', '0'); // Disable commenting
   variable_set('i18n_node_options_article', array('required')); // Disable language neutral option
+  hitsa_articles_delete_unwanted_field();
 }
 
 /*
@@ -382,4 +383,9 @@ function hitsa_articles_update_7000(){
     ctools_include('object-cache');
     ctools_object_cache_clear('view', $view->name);
   }
+}
+function hitsa_articles_delete_unwanted_field(){
+
+    $field = field_info_instance('node', 'field_image', 'article');
+	field_delete_instance($field);
 }

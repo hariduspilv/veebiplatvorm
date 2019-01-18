@@ -131,7 +131,6 @@ function hitsa_submenu_tree__hitsa_main_menu($variables)
         $about_us_mlid = variable_get('hitsa_about_us_mlid');
         if (!empty($about_us_mlid) && $about_us_mlid == $variables['mlid']) {
             $gallery_teaser = hitsa_gallery_latest_gallery_preview();
-            //dpm($gallery_teaser);
         }
     }
 
@@ -323,7 +322,7 @@ function hitsa_menu_tree__hitsa_services_block($variables)
     $output = '';
     foreach ($variables['#tree'] as $service_subtype) {
         if (!empty($service_subtype['#below'])) {
-            $output .= '<h5 class="size-large">' . $service_subtype['#title'] . '</h5>';
+            $output .= '<h5 class="size-large">' . t($service_subtype['#title']) . '</h5>';
             $output .= '<ul class="bullet-links">';
             $service_subtype['#theme'] = 'menu_link__hitsa_services_block';
             $output .= render($service_subtype);

@@ -7,7 +7,6 @@
       <form method="post" action="<?php print url('news'); ?>" data-plugin="filters">
         <div class="row">
           <div class="col-12">
-             
             <div class="btn-bar">
               <span class="btn-input">
                 <input type="checkbox" name="category" value="all" checked="">

@@ -23,6 +23,9 @@ function hitsa_curriculum_menu()
     $field = field_info_field('field_school_selections');
     $allowed = list_allowed_values($field);
     foreach ($allowed as $allowed_key => $allowed_title) {
+        if($allowed_key=='sport'){
+            // continue;
+        }
         $items[$allowed_key . '/%node'] = array(
             'title' => t(''),
             'page callback' => 'hitsa_curriculum_page',
@@ -430,6 +433,7 @@ function hitsa_curriculum_header_get($form, &$form_state)
 function hitsa_curriculum_page($type = null, $name = null)
 {
     global $user;
+    
     $build = array();
 
 

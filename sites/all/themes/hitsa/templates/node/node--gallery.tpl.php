@@ -71,7 +71,7 @@
   <?php include 'include/search-result.tpl.php'; ?>
 <?php elseif($view_mode === 'menu_teaser'): ?>
 <div class="col-3">
-  <h4><?php print check_plain($title); ?></h4>
+  <h4><?php print htmlspecialchars_decode(check_plain($title)); ?></h4>
   <?php if(!empty($content['gallery_images'])): ?>
   <a href="<?php print $node_url; ?>"><img alt="<?php if(!empty($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value'])) 
   {print check_plain($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']);} ?>" 

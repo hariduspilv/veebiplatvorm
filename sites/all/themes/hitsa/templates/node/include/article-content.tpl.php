@@ -164,7 +164,7 @@
                 data-download="<?php print file_create_url($image['uri']); ?>"
                 data-plugin="modal" data-modal="image-<?php print $image['fid']; ?>" 
                 data-heading="<?php print $heading_title; ?>" data-closebutton="<?php print t('Close'); ?>"
-                <?php if(!empty($image['field_file_image_title_text'])) print ' data-title="' . check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) . '"'; ?>>
+                <?php (!empty($image['field_file_image_title_text']))? print ' data-title="' . check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) . '"': print 'data-title=""' ?>>
                   <img src="<?php print image_style_url('hitsa_core_thumbnail', $image['uri']); ?>" 
                   alt="<?php if(!empty($image['field_file_image_alt_text'])) print check_plain($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']); ?>">
                 </a>

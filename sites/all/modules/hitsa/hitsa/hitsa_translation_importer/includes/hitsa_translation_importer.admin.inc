@@ -107,6 +107,7 @@ function hitsa_translations_importer_translations($translations)
 {
     if (!empty($translations)) {
         foreach ($translations as $string => $values) {
+            t($string);
             $source = db_query('SELECT lid, source, context, textgroup, location FROM {locales_source} WHERE source = :string', array(':string' => $string))->fetchObject();
             if (!$source) {
                 watchdog('update_hook', 'Translation of string "%string" failed.', array('%string' => $string));
