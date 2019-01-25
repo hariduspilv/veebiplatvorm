@@ -1,14 +1,17 @@
 <?php
+
 /**
- * Import page
+ * @file
+ * Import page.
  */
+
 function hitsa_color_page()
 {
-    return drupal_get_form('hitsa_color_change_form');
+  return drupal_get_form('hitsa_color_change_form');
 }
 
 /**
- * Form for color change
+ * Form for color change.
  */
 function hitsa_color_change_form($form, &$form_state)
 {
@@ -230,5 +233,4 @@ function hitsa_color_grunt_runner(){
     $conf_path = conf_path();
     $conf_path = str_replace('sites/', '', $conf_path);
     var_dump(shell_exec('cd '.$_SERVER['DOCUMENT_ROOT'].'/'.'sites'.'/'.$conf_path.'/themes/hitsa/static && grunt compile 2>&1'));
-
 }

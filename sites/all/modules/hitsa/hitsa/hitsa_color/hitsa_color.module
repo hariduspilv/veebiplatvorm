@@ -1,34 +1,38 @@
 <?php
-function hitsa_color_permission(){
-	return array(
-		'use hitsa_color_change'=>array(
-			'title'	=> t('Use to change theme color')
-			),
-	);
-}
-/**
-* Implementation of hook_menu().
-*
-*/
-function hitsa_color_menu(){
 
-	//settings page
-	$items['admin/appearance/hitsa_color_change'] = array(
-		'title' => t('Muuda kujunduse värvi'),
-		'description' => t('Muuda kujunduse värvi'),
-	  'page callback' => 'hitsa_color_page',
-      'file' => 'includes/hitsa_color.inc',
-		'file path' => drupal_get_path('module', 'hitsa_color'),
-	  'access arguments' => array('use hitsa_color_change'),
-	);
-	//Page to bulk upload images
-	$items['admin/appearance/hitsa_bulk_upload_icons'] = array(
-		'title' => t('Lae ikoone üles'),
-		'description' => t('Ikoonide üleslaadimine'),
-	  'page callback' => 'hitsa_bulk_upload_icons',
-      'file' => 'includes/hitsa_bulk_upload.inc',
-		'file path' => drupal_get_path('module', 'hitsa_color'),
-	  'access arguments' => array('use hitsa_color_change'),
-	);
-	return $items;
+/**
+ * Setting permissions for color chaning.
+ */
+function hitsa_color_permission()
+{
+    return array(
+    'use hitsa_color_change' => array(
+    'title' => t('Use to change theme color')
+    ),
+    );
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function hitsa_color_menu()
+{
+    //settings page
+    $items['admin/appearance/hitsa_color_change'] = array(
+    'title' => t('Muuda kujunduse värvi'),
+    'description' => t('Muuda kujunduse värvi'),
+    'page callback' => 'hitsa_color_page',
+    'file' => 'includes/hitsa_color.inc',
+    'file path' => drupal_get_path('module', 'hitsa_color'),
+    'access arguments' => array('use hitsa_color_change'),
+    );
+    $items['admin/appearance/hitsa_bulk_upload_icons'] = array(
+    'title' => t('Lae ikoone üles'),
+    'description' => t('Ikoonide üleslaadimine'),
+    'page callback' => 'hitsa_bulk_upload_icons',
+    'file' => 'includes/hitsa_bulk_upload.inc',
+    'file path' => drupal_get_path('module', 'hitsa_color'),
+    'access arguments' => array('use hitsa_color_change'),
+    );
+    return $items;
 }
