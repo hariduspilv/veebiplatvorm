@@ -1,11 +1,12 @@
 <?php
 
- function hitsa_cron_update_translations(){
+function hitsa_cron_update_translations()
+{
 
-   $updates = [
-	   '1',
-     '2',
-     '3'
+  $updates = [
+    '1',
+    '2',
+    '3'
 
   ];
   if (!empty($updates)) {
@@ -36,8 +37,10 @@
     }
   }
 
- }
-function hitsa_cron_trans_up_1(){
+}
+
+function hitsa_cron_trans_up_1()
+{
   $string_to_translate = 'Education';
   $translation = locale($string_to_translate);
 // 1 Stringi puhul totoab nii muidu tuleb loop teha
@@ -51,10 +54,10 @@ function hitsa_cron_trans_up_1(){
     'Alumnus' => array(
       'et' => 'Vilistlased'
     ),
-    'Searched person was not found'=> array(
+    'Searched person was not found' => array(
       'et' => 'Otsitavat isikut ei leitud'
     ),
-    'Generate files' =>array(
+    'Generate files' => array(
       'et' => 'Genereeri failid'
     ),
     'Media Folders' => array(
@@ -67,10 +70,10 @@ function hitsa_cron_trans_up_1(){
       'et' => 'Helifail'
     ),
     'YouTube videos' => array(
-      'et' =>  'Youtube video'
+      'et' => 'Youtube video'
     ),
-    'Include subfolders in results' =>array(
-      'et' =>  'Näita alamkaustasi tulemustes'
+    'Include subfolders in results' => array(
+      'et' => 'Näita alamkaustasi tulemustes'
     ),
     'Create an archive of selected files' => array(
       'et' => 'Loo arhiiv valitud failidest'
@@ -87,15 +90,15 @@ function hitsa_cron_trans_up_1(){
     'Media Files' => array(
       'et' => 'Meedia Failid'
     ),
-    'Edit selected'=> array(
+    'Edit selected' => array(
       'et' => 'Muuda valitud'
     ),
 
-    'Delete selected'=> array(
+    'Delete selected' => array(
       'et' => 'Kustuta valitud'
     ),
     'Download selected' => array(
-      'et' =>  'Lae alla valitud'
+      'et' => 'Lae alla valitud'
     ),
     'Media Basket' => array(
       'et' => 'Meedia korv'
@@ -103,19 +106,19 @@ function hitsa_cron_trans_up_1(){
     'Download files in Media Basket' => array(
       'et' => 'Lae Meedia korvis olevad failid alla'
     ),
-    'Indicate that the selected files are permanent and should not be deleted'=>  array(
+    'Indicate that the selected files are permanent and should not be deleted' => array(
       'et' => 'Märgi, et valitud failid on igavesed ja ei tohkis ära kustutada'
     ),
     'scheme' => array(
       'et' => 'skeem'
     ),
-    'Indicate that the selected files are temporary and should be removed during cron runs'=>array(
+    'Indicate that the selected files are temporary and should be removed during cron runs' => array(
       'et' => 'Märgi et valitud failid on ajutised ja peaksid kustutatama kasutades croni'
     ),
-    'Delete selected files'=> array(
+    'Delete selected files' => array(
       'et' => 'Kustuta valitud failid'
     ),
-    'Edit selected files' =>  array(
+    'Edit selected files' => array(
       'et' => 'Muuda valitud faile'
     ),
     'Refresh YouTube information from source' => array(
@@ -125,86 +128,90 @@ function hitsa_cron_trans_up_1(){
       'et' => 'Arhiveeri'
     ),
   );
-  module_load_include('inc','hitsa_translation_importer','/includes/hitsa_translation_importer.admin');
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
   hitsa_translations_importer_translations($words);
   drupal_flush_all_caches();
   return TRUE;
 }
 
-function hitsa_cron_trans_up_2(){
-	$words = array(
-		'Front Page Image'=> array(
-			'et' => 'Esilehe pilt kuvatud',
-		),
-		'Upload Logo Image'=> array(
-			'et' => 'Lehe logo',
-		),
-		'Upload Front Page Image' => array(
-			'et' => 'Lae üles esilehe pilt',
-		),
+function hitsa_cron_trans_up_2()
+{
+  $words = array(
+    'Front Page Image' => array(
+      'et' => 'Esilehe pilt kuvatud',
+    ),
+    'Upload Logo Image' => array(
+      'et' => 'Lehe logo',
+    ),
+    'Upload Front Page Image' => array(
+      'et' => 'Lae üles esilehe pilt',
+    ),
 
-		'Contact page contact title' => array(
-			'et' => 'Kontakti lehe kontakti pealkiri',
-		),
-		'Footer right box title' => array(
-			'et' => 'Jaluse parema ploki pealkiri',
-		),
-		'Front page confirmation box title' => array(
-			'et' => 'Esilehe tunnustuste ploki pealkiri',
-		),
-		'Footer middle box title' => array(
-			'et' => 'Jaluse keskmise ploki pealkiri',
-		),
-		'Footer left box title' => array(
-			'et' => 'Jaluse vasaku ploki pealkiri',
-		),
-		'Front page gallery title' => array(
-			'et' => 'Esilehe galerii pealkiri',
-		),
-		'Front page services title' => array(
-			'et' => 'Esilehe teenuste pealkiri',
-		),
-		'Front page catering title' => array(
-			'et' => 'Esilehe toitlustuse ploki pealkiri',
-		),
-		'Front page events title' => array(
-			'et' => 'Esilehe sündmuste pealkiri',
-		),
-		'Our stories title' => array(
-			'et' => 'Meie lood pealkiri esilehel',
-		),
-		'Period title shown in calendar' => array(
-			'et' => 'Vaheaegade ploki pealkiri kalendris',
-		),
-		'Footer text area' => array(
-			'et' => 'Jaluse tekstiala',
-		),
-		'Footer text area title' => array(
-			'et' => 'Jaluse tekstiala pealkiri',
-		),
-		'Copyright Notice' => array(
-			'et' => 'Kasutusõiguste märkus',
-		),
-		'Phone Nr' => array(
-			'et' => 'Telefoni number',
-		),
-		'Name of institution' => array(
-			'et' => 'Asutuse nimi',
-		),
-		'multilingual' => array(
-			'et' => 'mitmekeelne'
-		),
-		'Front page hero banner maximum file size 10MB' => array(
-			'et'=> 'Esilehe bänneri maksimaalne faili suurus on 10MB'
+    'Contact page contact title' => array(
+      'et' => 'Kontakti lehe kontakti pealkiri',
+    ),
+    'Footer right box title' => array(
+      'et' => 'Jaluse parema ploki pealkiri',
+    ),
+    'Front page confirmation box title' => array(
+      'et' => 'Esilehe tunnustuste ploki pealkiri',
+    ),
+    'Footer middle box title' => array(
+      'et' => 'Jaluse keskmise ploki pealkiri',
+    ),
+    'Footer left box title' => array(
+      'et' => 'Jaluse vasaku ploki pealkiri',
+    ),
+    'Front page gallery title' => array(
+      'et' => 'Esilehe galerii pealkiri',
+    ),
+    'Front page services title' => array(
+      'et' => 'Esilehe teenuste pealkiri',
+    ),
+    'Front page catering title' => array(
+      'et' => 'Esilehe toitlustuse ploki pealkiri',
+    ),
+    'Front page events title' => array(
+      'et' => 'Esilehe sündmuste pealkiri',
+    ),
+    'Our stories title' => array(
+      'et' => 'Meie lood pealkiri esilehel',
+    ),
+    'Period title shown in calendar' => array(
+      'et' => 'Vaheaegade ploki pealkiri kalendris',
+    ),
+    'Footer text area' => array(
+      'et' => 'Jaluse tekstiala',
+    ),
+    'Footer text area title' => array(
+      'et' => 'Jaluse tekstiala pealkiri',
+    ),
+    'Copyright Notice' => array(
+      'et' => 'Kasutusõiguste märkus',
+    ),
+    'Phone Nr' => array(
+      'et' => 'Telefoni number',
+    ),
+    'Name of institution' => array(
+      'et' => 'Asutuse nimi',
+    ),
+    'multilingual' => array(
+      'et' => 'mitmekeelne'
+    ),
+    'Front page hero banner maximum file size 10MB' => array(
+      'et' => 'Esilehe bänneri maksimaalne faili suurus on 10MB'
+    ),
+    'Cooperation' => array(
+      'et' => 'Koostöö'
     ),
     'Search for an event' => array(
       'et' => 'Otsi sündmust',
       'ru' => 'Поиск события'
     ),
-	);
+  );
 
-    module_load_include('inc','hitsa_translation_importer','/includes/hitsa_translation_importer.admin');
-    hitsa_translations_importer_translations($words);
-    drupal_flush_all_caches();
-    return TRUE;
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
+  return TRUE;
 }

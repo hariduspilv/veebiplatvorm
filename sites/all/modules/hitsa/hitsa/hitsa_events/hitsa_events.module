@@ -845,7 +845,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '</span>';
         $output .= '</a><!--/object-date-->';
         $output .= '<div class="object-content">';
-        $output .= '<a href="#" onclick="event.preventDefault();" class="object-title">';
+        $output .= '<a href="'.current_path().'#anchor='.($event->nid).'"" onclick="event.preventDefault();" class="object-title">';
         $output .= $event->title;
         $output .= '</a>';
         $output .= '<div class="object-footer">';

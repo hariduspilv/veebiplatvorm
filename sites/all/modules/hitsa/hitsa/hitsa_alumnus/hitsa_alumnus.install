@@ -47,7 +47,7 @@ function hitsa_alumnus_uninstall()
         paragraphs_bundle_delete($paragraphs_bundle); // Delete paragraphs bundle
     }
 }
-function hitsa_alumnus_add_menu_links(){
+function hitsa_alumnus_add_menu_links($type=null){
     $mlids = variable_get('hitsa_core_mlids');
     $links = menu_tree_all_data('hitsa-main-menu');
     $about_link=null;
@@ -62,10 +62,19 @@ function hitsa_alumnus_add_menu_links(){
       foreach ($about_link as $alink) {
             if($alink['link']['link_title']=='Vilistlased' || $alink['link']['link_title']=='Graduates'|| $alink['link']['link_title']=='Выпускники'){
                 $weight = $alink['link']['weight'];
-                $alink['link']['link_path'] = 'alumnus';
-                $alink['link']['hidden'] = 0;
+                if($type=='duplicate'){
+
+                }
+                else {
+                  $alink['link']['link_path'] = 'alumnus';
+                  $alink['link']['hidden'] = 0;
+                }
                 menu_link_save($alink['link']);
-                $have_link=TRUE;
+                  $have_link = TRUE;
+                  if($type=='duplicate'){
+                    $have_link=FALSE;
+                  }
+
             }
         }
     }

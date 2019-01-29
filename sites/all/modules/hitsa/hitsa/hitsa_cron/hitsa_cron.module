@@ -89,7 +89,8 @@ function hitsa_cron_run_update()
     '12',
     '13',
     '14',
-    '15'
+    '15',
+    '16',
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -753,7 +754,7 @@ function hitsa_cron_up_7()
   module_load_include('install','hitsa_events','hitsa_events');
   hitsa_events_create_menu_links();
   module_load_include('install','hitsa_alumnus','hitsa_alumnus');
-  hitsa_alumnus_add_menu_links();
+  hitsa_alumnus_add_menu_links('Duplicate');
   return TRUE;
 }
 function hitsa_cron_up_8(){
@@ -994,5 +995,15 @@ function hitsa_cron_up_15(){
         }
       }
     }
+  }
+}
+
+function hitsa_cron_up_16(){
+  $path_check_et = drupal_lookup_path('source', 'sport-0','et');
+  $path_et = path_load($path_check_et);
+  $sport_availible = drupal_lookup_path('source','sport','et');
+  if(empty($sport_availible)){
+    $path_et['alias'] = 'sport';
+    path_save($path_et);
   }
 }
