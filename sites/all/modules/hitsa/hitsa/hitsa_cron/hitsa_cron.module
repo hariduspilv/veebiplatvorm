@@ -91,6 +91,7 @@ function hitsa_cron_run_update()
     '14',
     '15',
     '16',
+    '17',
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -1006,4 +1007,18 @@ function hitsa_cron_up_16(){
     $path_et['alias'] = 'sport';
     path_save($path_et);
   }
+}
+function hitsa_cron_up_17(){
+  $cron_memory_limit = variable_get('ultimate_cron_reserve_memory');
+  if(empty($cron_memory_limit)){
+    dpm('HEERE');
+    variable_set('ultimate_cron_reserve_memory',1024 * 1024 * 2 * 5);
+  }
+  else{
+    if($cron_memory_limit!=1024*1024*2*5){
+      dpm('HERE');
+      variable_set('ultimate_cron_reserve_memory',1024*1024*2*5);
+    }
+  }
+  return TRUE;
 }
