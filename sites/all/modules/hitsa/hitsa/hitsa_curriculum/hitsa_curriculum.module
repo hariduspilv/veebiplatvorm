@@ -1189,6 +1189,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
         $output_elements['textbooks'] .= '</p>';
     }
     if (!empty($content->field_table)) {
+
         $table_id = $content->field_table['und'][0]['value'];
         $table = entity_load_single('paragraphs_item', $table_id);
         if (!empty($table)) {
@@ -1250,7 +1251,7 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
             }
         }
         if (!empty($content->field_subjects_table)) {
-            if ($curriculum_type == 'subject-field') {
+            if ($curriculum_type == 'subject-fields') {
                 $table = $content->field_subjects_table['und'][0];
                 $table_descriptions = array();
                 if (!empty($content->field_table_descriptions)) {
