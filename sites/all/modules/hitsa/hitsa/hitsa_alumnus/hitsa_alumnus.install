@@ -59,24 +59,24 @@ function hitsa_alumnus_add_menu_links($type=null){
     }
     if(!empty($about_link)){
       $have_link = false;
-      foreach ($about_link as $alink) {
-            if($alink['link']['link_title']=='Vilistlased' || $alink['link']['link_title']=='Graduates'|| $alink['link']['link_title']=='Выпускники'){
-                $weight = $alink['link']['weight'];
-                if($type=='duplicate'){
-
-                }
-                else {
-                  $alink['link']['link_path'] = 'alumnus';
-                  $alink['link']['hidden'] = 0;
-                }
-                menu_link_save($alink['link']);
-                  $have_link = TRUE;
-                  if($type=='duplicate'){
-                    $have_link=FALSE;
-                  }
-
-            }
-        }
+//      foreach ($about_link as $alink) {
+//            if($alink['link']['link_title']=='Vilistlased' || $alink['link']['link_title']=='Graduates'|| $alink['link']['link_title']=='Выпускники'){
+//                $weight = $alink['link']['weight'];
+//                if($type=='duplicate'){
+//
+//                }
+//                else {
+//                  $alink['link']['link_path'] = 'alumnus';
+//                  $alink['link']['hidden'] = 0;
+//                }
+//                menu_link_save($alink['link']);
+//                  $have_link = TRUE;
+//                  if($type=='duplicate'){
+//                    $have_link=FALSE;
+//                  }
+//
+//            }
+//        }
     }
     if(!$have_link){
       $menu_link = array(
