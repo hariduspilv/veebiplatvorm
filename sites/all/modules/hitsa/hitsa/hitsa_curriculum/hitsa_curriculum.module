@@ -460,8 +460,12 @@ function hitsa_curriculum_generate_table($table, $descriptions = null, $type = n
             if (!empty($table_data['tabledata']['row_0'])) {
                 $output .= '  <thead>';
                 $output .= '  <tr>';
+                $empty_table=TRUE;
                 for ($i = 0; $i < $columns_count; $i++) {
                     $output .= '<th style="width: ' . $column_width . '%;">';
+                    if(!empty($table_data['tabledata']['row_0']['col_' . $i])){
+                      $empty_table=false;
+                    }
                     $output .= $table_data['tabledata']['row_0']['col_' . $i];
                     if (!empty($table_descriptions[$i . '_0'])) {
                         $output .= '<span class="before-question-circle" title="' . $table_descriptions[$i . '_0'] . '"></span>';
@@ -472,8 +476,9 @@ function hitsa_curriculum_generate_table($table, $descriptions = null, $type = n
                 $output .= ' </thead>';
             }
             $output .= '<tbody>';
+
             $show_table = true;
-            if ($type == 'subject-field') {
+            if ($type == 'subject-fields') {
                 $show_table = false;
             } elseif ($type == 'specialities') {
                 $show_table = false;
@@ -482,11 +487,11 @@ function hitsa_curriculum_generate_table($table, $descriptions = null, $type = n
                 $output .= '<tr>';
                 for ($j = 0; $j < $columns_count; $j++) {
                     $output .= '<td>';
-                    if ($type == 'subject-field' && $i == $rows_count - 1) {
+                    if ($type == 'subject-fields' && $i == $rows_count - 1) {
                         $output .= '<b>';
                     }
                     $output .= $table_data['tabledata']['row_' . $i]['col_' . $j];
-                    if ($type == 'subject-field' && $i == $rows_count - 1) {
+                    if ($type == 'subject-fields' && $i == $rows_count - 1) {
                         $output .= '<b>';
                     }
                     if ($j >= 1) {
@@ -529,7 +534,7 @@ function hitsa_curriculum_generate_table($table, $descriptions = null, $type = n
 
             $output .= '<tbody>';
             $show_table = true;
-            if ($type == 'subject-field') {
+            if ($type == 'subject-fields') {
                 $show_table = false;
             } elseif ($type == 'specialities') {
                 $show_table = false;
