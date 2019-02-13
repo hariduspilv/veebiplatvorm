@@ -182,7 +182,7 @@ function hitsa_core_variable_info($options) {
     'default' => t('Contact us'),
   );
   $variable['period_title'] = array(
-    'title' => t('Period title shown in calendar'),
+    'title' => t('Calendar right block title'),
     'group' => 'block_titles',
     'localize'=> TRUE,
   );
