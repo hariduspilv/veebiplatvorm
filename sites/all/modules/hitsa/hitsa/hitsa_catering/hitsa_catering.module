@@ -430,10 +430,12 @@ function hitsa_catering_week($start_date = null)
         //   $start_date = strtotime($start_date);
     }
     $tabs = menu_local_tabs();
-    if (!empty($tabs)) {
+
+    if (!empty($tabs) && $node->type!='content_page') {
         $tabs = drupal_render($tabs);
         $build['catering_edit']['#markup'] = $tabs;
     }
+
     //krumo($start_date);
     $monday = date("U", strtotime('this week monday', $start_date));
 
@@ -529,6 +531,16 @@ function hitsa_catering_week($start_date = null)
         $menu = $menu_items;
     }
     $loaded_menu = !empty($menu) ? node_load($menu->nid) : null;
+    if(!empty($loaded_menu) && empty($build['catering_edit']) && empty($build['catering_edit']['#markup'])){
+
+      $edit_url = url('node/' . $loaded_menu->nid . '/edit');
+      $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
+      $tabs = $edit_links;
+      $edit_array = array();
+      $edit_array['catering_edit']['#markup'] = $tabs;
+      $build = $edit_array+$build;
+    }
+
     $catering_html = null;
     if (!empty($loaded_menu->field_catering_provider)) {
         $catering_provider = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
@@ -555,7 +567,6 @@ function hitsa_catering_week($start_date = null)
             }
         }
     }
-
     $catering_header = hitsa_catering_catering_header($loaded_menu);
     $catering_table = hitsa_catering_paragraphs__create_table($loaded_menu);
 
