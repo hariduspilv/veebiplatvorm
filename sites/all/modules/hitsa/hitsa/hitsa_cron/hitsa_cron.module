@@ -93,6 +93,7 @@ function hitsa_cron_run_update()
     '16',
     '17',
     '18',
+    '19'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -1018,6 +1019,7 @@ function hitsa_cron_up_17(){
     if($cron_memory_limit!=1024*1024*2*5){
       variable_set('ultimate_cron_reserve_memory',1024*1024*2*5);
     }
+
   }
   return TRUE;
 }
@@ -1036,5 +1038,29 @@ function hitsa_cron_up_18(){
   }
   $image_style = image_style_load('hitsa_hero_banner');
   image_style_flush($image_style);
+  return TRUE;
+}
+function hitsa_cron_up_19(){
+  $type = variable_get('hitsa_school_type');
+  if($type==1){
+    $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
+    $main_menu_links = array();
+    foreach($main_menu_tree as $link) {
+      $main_menu_links[$link['link']['title']] = $link;
+    }
+    if(isset($main_menu_links['Student Life'])){
+      if(!empty($main_menu_links['Student Life'])){
+        if(!empty($main_menu_links['Student Life']['below'])){
+          foreach ($main_menu_links['Student Life']['below'] as $main_menu_link){
+            if($main_menu_link['link']['link_path']=='training-calendar'){
+              menu_link_delete($main_menu_link['link']['mlid']);
+            }
+          }
+        }
+      }
+    }
+  }
+
+
   return TRUE;
 }
