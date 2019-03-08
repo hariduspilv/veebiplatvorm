@@ -233,6 +233,7 @@ function hitsa_cron_trans_up_4(){
     'Searchable event' => array(
       'et' => 'Otsitav sündmus',
     ),
+    'Content Page Style'
   );
 
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');

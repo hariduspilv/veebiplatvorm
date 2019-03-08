@@ -1515,6 +1515,23 @@ function _hitsa_curriculum_installed_node_fields($school_type = null)
         'translatable' => 0,
         'type' => 'link_field',
     );
+
+  // Exported field_base: 'field_tab_weight'.
+  $field_bases['field_tab_weight'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_tab_weight',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
     return $field_bases;
 }
 function _hitsa_curriculum_installed_node_instances()
@@ -2880,34 +2897,88 @@ function _hitsa_curriculum_installed_node_instances()
             'weight' => 20,
         ),
     );
-
+  // Exported field_instance: 'node-curriculum-field_tab_weight'.
+  $field_instances['node-curriculum-field_tab_weight'] = array(
+    'bundle' => 'curriculum',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Saki järjekorra number 1st  100ni. Kui järjekorra number ei erine, siis kuvatakse kuupäeva järgi lisamise järjekorras.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => '',
+        ),
+        'type' => 'number_integer',
+        'weight' => 31,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_tab_weight',
+    'label' => 'Saki järjekord',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'max' => 100,
+      'min' => 1,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 41,
+    ),
+  );
     // Translatables
     // Included for use with string extractors like potx.
-    t('Assessment');
-    t('Attachments');
-    t('Days it takes place');
-    t('Description');
-    t('Erialade tabel');
-    t('Field');
-    t('Instructor');
-    t('Jobs pretext');
-    t('Kontaktid');
-    t('Length');
-    t('Materials');
-    t('Pictures');
-    t('Premise');
-    t('Rating');
-    t('Room');
-    t('Start ');
-    t('Tabbed content page type');
-    t('Tabeli veeru/rea juhendav abitekst');
-    t('Table description');
-    t('Table title');
-    t('Target group');
-    t('Töökohad');
-    t('Õppeainete tabel');
+  t('Assessment');
+  t('Attachments');
+  t('Days it takes place');
+  t('Description');
+  t('Erialade tabel');
+  t('Field');
+  t('Instructor');
+  t('Jobs pretext');
+  t('Kontaktid');
+  t('Kuupäeva vahemik, millal konkreetne sündmus toimub. Kui tegu ühepevase sündmusega, siis tuleb alguse ja lõpu kuupäevaks valida sama kuupäev.');
+  t('Length');
+  t('Materials');
+  t('Pictures');
+  t('Premise');
+  t('Rating');
+  t('Room');
+  t('Saki järjekord');
+  t('Saki järjekorra number 1st  100ni. Kui järjekorra number ei erine, siis kuvatakse kuupäeva järgi lisamise järjekorras.');
+  t('Start ');
+  t('Sündmuse algusaeg kellaajaliselt. Täita juhul, kui sündmusel on konkreetne alguse kellaaeg. Kui konkreetne alguse kellaaeg puudub, siis täita ei ole vaja.');
+  t('Tabbed content page type');
+  t('Tabeli veeru/rea juhendav abitekst');
+  t('Table description');
+  t('Table title');
+  t('Target group');
+  t('Töökohad');
+  t('Õppeainete tabel');
 
-    return $field_instances;
+
+  return $field_instances;
 }
 function hitsa_curriculum_delete_custom_node_fields()
 {

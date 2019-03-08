@@ -964,7 +964,30 @@ function hitsa_curriculum_custom_block($curriculum_type)
 function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id = null)
 {
     global $language;
+    $new_areas = array();
     if (is_array($areas)) {
+      foreach($areas as $area){
+        if(!empty($area->field_tab_weight)){
+          if(!empty($area->field_tab_weight['und'])){
+            if(!empty($area->field_tab_weight['und'][0])){
+              if(!empty($area->field_tab_weight['und'][0]['value'])){
+                $tab_weight = $area->field_tab_weight['und'][0]['value'];
+                $area->tab_weight=$tab_weight;
+                $new_areas[] = $area;
+              }
+            }
+          }
+        }
+        else{
+          $new_areas[] = $area;
+        }
+      }
+      usort($new_areas, function ($a, $b) {
+        return $a->tab_weight - $b->tab_weight;
+      });
+      if(is_array($new_areas)){
+        $areas=$new_areas;
+      }
         $output = '';
         $output .= '<ul class="side-menu">';
         $current_path = current_path();
@@ -1080,12 +1103,13 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                 $output .= $list_item;
             }
             $output .= '</ul>';
-
             return $output;
         }
     }
 }
+function hitsa_curriculum_find_tab_weight($area=null, $weight=null,$new_areas=null){
 
+}
 function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
 {
     global $language;
