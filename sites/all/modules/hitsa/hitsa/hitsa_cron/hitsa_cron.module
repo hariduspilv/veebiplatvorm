@@ -1398,5 +1398,12 @@ Ikoonide nimekiri lehel tasub jälgida, et vasakult oleks valitud Solid ja Free 
       field_create_instance($field_instance);
     };
   }
+  /**
+   * Added link update to remove update flag
+   */
+  db_update('system')
+    ->fields(array('schema_version' => '7002'))
+    ->condition('name', 'link', '=')
+    ->execute();
   return TRUE;
 }
