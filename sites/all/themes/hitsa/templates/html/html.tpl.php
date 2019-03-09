@@ -59,6 +59,8 @@
   <?php print $styles; ?>
   <?php print $scripts; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/sites/all/themes/hitsa/fa/css/fontawesome.css" rel="stylesheet">
+    <link href="/sites/all/themes/hitsa/fa/css/solid.css" rel="stylesheet">
 </head>
 <body class="<?php print $classes; ?>" <?php print $attributes;?>>
 

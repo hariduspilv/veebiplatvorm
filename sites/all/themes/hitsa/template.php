@@ -1458,7 +1458,7 @@ function hitsa_preprocess_html(&$variables){
       $css_location = 'sites/all/themes/hitsa/static/assets/js/main.js';
       drupal_add_css($js_location,array('type'=>'file','group' => JS_THEME, 'every_page' => TRUE));
     }
-}
+  }
 
 function hitsa_preprocess_node(&$variables){
 

@@ -631,7 +631,27 @@ function hitsa_curriculum_attachments($attachments)
         return $output;
     }
 }
-
+function hitsa_curriculum_logo_area($logo){
+  $logo = $logo[0];
+  $image_style = 'hc_pictures';
+  $image_style_url = image_style_url($image_style,$logo['uri']);
+  if(!empty($logo['field_file_image_alt_text'])){
+    $alt_text=$logo['field_file_image_alt_text']['und'][0]['value'];
+  }
+  else{
+    $alt_text='';
+  }
+  $output = '<div class="row print-flex">
+<div class="col-6 sm-12"></div>
+  <div class="col-6 sm-12">
+    <figure>
+        <img src="'.$image_style_url.'" alt="'.$alt_text.'">
+            <figcaption></figcaption>
+        </figure> 
+  </div><!--/col-6-->
+ </div>';
+  return $output;
+}
 function hitsa_curriculum_pictures($pictures)
 {
     if (!empty($pictures)) {
@@ -1125,6 +1145,13 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     if (!empty($content->title)) {
         drupal_set_title($content->title);
     }
+
+    if(!empty($content->field_logo_area)){
+      $output_elements['logo_area'] = hitsa_curriculum_logo_area($content->field_logo_area['und']);
+    }
+    if(!empty($output_elements['logo_area'])){
+      $output.=$output_elements['logo_area'];
+    }
     $output .= '
     <h3 class="sm-block-title">' . $content->title . '
       <span class="btn-bar align-right pull-right sm-hide">
@@ -1342,7 +1369,6 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
     if (!empty($content->field_attachments)) {
         $output_elements['documents'] = hitsa_curriculum_attachments($content->field_attachments['und']);
     }
-
     if (!empty($content->field_pictures)) {
         $output_elements['pictures'] = hitsa_curriculum_pictures($content->field_pictures['und']);
     }
@@ -1762,6 +1788,16 @@ function hitsa_curriculum_fp_subject_fields()
                 if (!empty($term->field_icon_choice)) {
                     $icon = $term->field_icon_choice['und'][0]['value'];
                     $class = 'before-' . $icon;
+
+                    if(!empty($term->field_fa_icon['und'])){
+                      $class = $term->field_fa_icon['und'][0]['value'];
+                      if (strpos($class, 'fas fa-') !== false) {
+                        $class=$class;
+                      }
+                      else{
+                        $class = 'fas fa-'.$class;
+                      }
+                    }
                     $link = '';
                     if (!empty($loaded_speciality)) {
                         $link = url('node/' . $loaded_speciality->nid);
