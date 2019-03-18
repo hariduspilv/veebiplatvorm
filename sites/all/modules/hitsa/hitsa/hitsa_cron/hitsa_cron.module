@@ -1380,7 +1380,8 @@ Ikoonide nimekiri lehel tasub jälgida, et vasakult oleks valitud Solid ja Free 
   t('Selle välja abil saab kasutada Font Awesome ikooni pakis olevaid ikoone.<br/>
 Ikoone on võimalik näha lehelt  -> <a target="_blank" href="https://fontawesome.com/icons?d=gallery&s=solid&m=free">Ikoonide nimekiri</a><br>
 Siia väljale tuleb kirjutada nimetus mis asub Ikoonide nimekirilehel ikooni all <br/>
-Ikoonide nimekiri lehel tasub jälgida, et vasakult oleks valitud Solid ja Free filter.
+Ikoonide nimekiri lehel tasub jälgida, et vasakult oleks valitud Solid ja Free filter.<br />
+Kui peaks olema valitud mõlemad Ikooni valik  kui ka Font Awesome Ikoon, siis eelistatakse Font Awesome ikooni
 
 ');
 
