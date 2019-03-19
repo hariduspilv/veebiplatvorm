@@ -457,8 +457,14 @@ function hitsa_catering_week($start_date = null)
         $menus[] = $value;
     }
     $providers = array();
+    $actually_loaded = '';
     foreach ($menus as $menu) {
         $loaded_menu = !empty($menu) ? node_load($menu->nid) : null;
+        if(!empty($loaded_menu->field_catering_provider)){
+          if($loaded_menu->field_catering_provider['und'][0]['target_id']==$catering_provider_tid){
+            $actually_loaded=$loaded_menu;
+          }
+        }
         if (!empty($loaded_menu)) {
             if (!empty($loaded_menu->field_catering_provider)) {
                 $providers[] = array(
@@ -471,6 +477,7 @@ function hitsa_catering_week($start_date = null)
             }
         }
     }
+    $loaded_menu=$actually_loaded;
     $catering_html = null;
     if (!empty($loaded_menu->field_catering_provider)) {
         $catering_provider = taxonomy_term_load($loaded_menu->field_catering_provider['und'][0]['target_id']);
@@ -530,7 +537,9 @@ function hitsa_catering_week($start_date = null)
     foreach ($results as $menu_items) {
         $menu = $menu_items;
     }
-    $loaded_menu = !empty($menu) ? node_load($menu->nid) : null;
+    if(empty($loaded_menu)) {
+      $loaded_menu = !empty($menu) ? node_load($menu->nid) : null;
+    }
     if(!empty($loaded_menu) && empty($build['catering_edit']) && empty($build['catering_edit']['#markup'])){
 
       $edit_url = url('node/' . $loaded_menu->nid . '/edit');
