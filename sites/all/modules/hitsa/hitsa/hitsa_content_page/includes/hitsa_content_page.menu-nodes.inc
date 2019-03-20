@@ -188,7 +188,7 @@ function _hitsa_content_page_gymnasium_nodes($main_menu_links)
         'plid' => $main_menu_links['Student Life'],
         'weight' => 3,
       ),
-      'cp_type' => 'cp_simple',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Raamatukogu', 'ru' => 'Библиотека', 'en' => 'Library'),
@@ -611,7 +611,7 @@ function _hitsa_content_page_vocational_nodes($main_menu_links)
         'plid' => $main_menu_links['Student Life'],
         'weight' => 2,
       ),
-      'cp_type' => 'cp_simple',
+      'cp_type' => 'cp_specialities',
     ),
     array(
       'title' => array('et' => 'Raamatukogu', 'ru' => 'Библиотека', 'en' => 'Library'),
