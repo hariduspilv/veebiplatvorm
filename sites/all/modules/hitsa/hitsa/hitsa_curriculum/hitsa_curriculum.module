@@ -1003,7 +1003,12 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
         }
       }
       usort($new_areas, function ($a, $b) {
-        return $a->tab_weight - $b->tab_weight;
+          if($a->tab_weight!=$b->tab_weight) {
+              return $a->tab_weight - $b->tab_weight;
+          }
+          else{
+              return $b->changed - $a->changed;
+          }
       });
       if(is_array($new_areas)){
         $areas=$new_areas;
