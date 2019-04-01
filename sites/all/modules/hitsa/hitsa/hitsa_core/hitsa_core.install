@@ -181,19 +181,19 @@ function _hitsa_core_menus()
       'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_header_menu' => array(
-      'menu_name' => 'Päise menüü',
+      'menu_name' => 'hitsa-header-menu',
       'title' => $t('Header menu'),
       'description' => $t('HITSA Header menu.'),
       'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_quicklinks_menu' => array(
-      'menu_name' => 'Kiirlingid',
+      'menu_name' => 'hitsa-quicklinks-menu',
       'title' => $t('Quicklinks'),
       'description' => $t('HITSA Quicklinks menu.'),
       'i18n_mode' => I18N_MODE_MULTIPLE,
     ),
     'hitsa_footer_menu' => array(
-      'menu_name' => 'Jaluse menüü',
+      'menu_name' => 'hitsa-footer-menu',
       'title' => $t('Footer menu'),
       'description' => $t('HITSA Footer menu.'),
       'i18n_mode' => I18N_MODE_MULTIPLE,

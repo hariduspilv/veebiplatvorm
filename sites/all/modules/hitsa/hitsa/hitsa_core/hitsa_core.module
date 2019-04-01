@@ -304,11 +304,22 @@ function hitsa_core_block_view($delta = '')
             break;
         case 'hitsa_front_mobile_links':
             $block = array();
+            global $language;
             $links = menu_load_links('hitsa-header-menu');
+            $other_links = menu_load_links('Päise menüü');
+            if(!empty($other_links)){
+              $links = $other_links;
+            }
+            foreach ($links as $key => $link){
+              if($link['language']!=$language->language){
+                if($link['language']!='und') {
+                  unset($links[$key]);
+                }
+              }
+            }
             $block['content'] = theme('hitsa_mobile_quicklinks', array('links' => $links));
             $block['subject'] = '';
             return $block;
-            break;
             break;
         case 'hitsa_front_events_catering':
             if (module_exists('hitsa_events') and module_exists('hitsa_catering') && $school_type == 1) {

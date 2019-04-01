@@ -422,7 +422,6 @@ function hitsa_catering_week($start_date = null)
             }
         }
     }
-
     global $language;
     if ($start_date == null) {
         $start_date = date('U');
