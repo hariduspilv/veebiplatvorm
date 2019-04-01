@@ -99,7 +99,7 @@
   <?php if(!empty($mobile_menu)): ?>
     <?php print $mobile_menu; ?>
   <?php endif; ?>
-  
+
   <?php if(!empty($page['hero'])):?>
   <?php print render($page['hero'])?>
   <?php endif;?>
@@ -142,7 +142,6 @@
       <?php if(empty($page['sidebar_right'])):?>
       </div><!--/col-x-->
       <?php endif?>
-
     <?php if(!empty($page['sidebar_right'])):?>
     </div><!--/col-x-->
       <div class="col-3 sm-12">

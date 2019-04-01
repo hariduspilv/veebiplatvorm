@@ -321,13 +321,13 @@ function _hitsa_core_image_styles()
     array(
       'style' => array(
         'name' => 'hitsa_core_thumbnail',
-        'label' => 'Thumbnail (354x198)'
+        'label' => 'Thumbnail (708x396)'
       ),
       'effect' => array(
-        'name' => 'image_scale_and_crop',
+        'name' => 'image_scale',
         'data' => array(
-          'width' => 354,
-          'height' => 198,
+          'width' => 708,
+          'height' => 396,
           'upscale' => false,
         ),
       ),

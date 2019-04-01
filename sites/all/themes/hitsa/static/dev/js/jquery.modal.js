@@ -77,7 +77,7 @@ $.fn.modal = function(){
 	}
 	
 	function getType(){
-		if( href.match(".jpg") || href.match(".jpeg") || href.match(".png") ){
+		if( href.match(".jpg") || href.match(".jpeg") || href.match(".png") || href.match(".gif") ){
 			type = "image";
 		}
 		else if( href.match("youtube.") ){

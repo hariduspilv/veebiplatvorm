@@ -139,6 +139,14 @@ a.object:hover{
    .object-title{text-decoration: underline;}
 }
 .object{display: block; text-decoration: none; font-weight: 100; line-height:122%;
+  &[data-modal]{
+    .object-image{ .before-gallery;
+      &:before{position: absolute; top:10px; right:9px;  width:30px; height:30px; line-height:30px; border-radius: 30px; background:@base-2; box-shadow:0 2px 4px 0 rgba(0,0,0,0.5);  text-align: center; color:@text-1; transition:transform 0.25s;}
+      &:hover{
+        &:before{transform:scale(1.2);}
+      }
+    }
+  }
    
    &.object-max_width{max-width: 670px;
       .object-title{font-size: 30px; line-height:42px; font-weight: 500;}
@@ -167,9 +175,9 @@ a.object:hover{
       }
       
       &.object-image-circle{border-radius:1000px; overflow: hidden; width:100px; height:100px; margin:0 auto; }
-      &:after{content:" "; position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(161,161,161,0.3); transition:opacity 0.25s;}
+      //&:after{content:" "; position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(161,161,161,0.3); transition:opacity 0.25s;}
 		
-		.object-placeholder{position: absolute; top:0; left:0; opacity:0.5; height:100%; width:100%; display: flex; justify-content: center; align-items: center; background:@base-1;
+		.object-placeholder{position: absolute; top:0; left:0; height:100%; width:100%; display: flex; justify-content: center; align-items: center; background:@base-1;
 			span{width:100%;}
 			img{max-width:80%; max-height:150px; display: block; width:auto; margin:0 auto;}
 		}
@@ -215,7 +223,7 @@ a.object:hover{
    .object-date{width:100px; flex-grow: 0; flex-shrink: 0; text-decoration: none; position: relative;
       &:before, &:after{content:" "; display: block; width:6px; height:18px; border-radius: 6px; background:@border-2; overflow: hidden; position: absolute; top:-9px; left:50%; margin-left:-16px;}
       &:after{margin-left:10px;}
-      .object-date_day{background:@highlight-1; border-radius:10px 10px 0 0; display: block; height:80px; line-height:90px; color:@text-2; text-align: center; font-weight: 100; font-size: 45px;}
+      .object-date_day{background:@highlight-1; border-radius:10px 10px 0 0; display: block; height:80px; line-height:90px; color:@text-2; text-align: center; font-weight: 100; font-size: 28px;}
       .object-date_month{background:@base-1; display: block; border-radius:0 0 10px 10px; color:@text-1; font-size:14px; text-align: center;}
    }
    
@@ -268,7 +276,7 @@ a.object:hover{
    
    
 }
-.object-dateseparator{height:30px; line-height:30px; text-align: center; position: relative; margin:12px 0;
+.object-dateseparator{height:30px; line-height:30px; text-align: center; position: relative; margin:-22px 0 12px;
    &:before{content:" "; height:3pxi; display: block; position: absolute; top:50%; left:0; width:100%; background:@highlight-1; overflow: hidden;}
    span{background:@base-2; color:@highlight-1; display: inline-block; position: relative; z-index: 2; padding:0 15px;}
 }
@@ -283,11 +291,18 @@ a.object:hover{
 
 .accordion{
    .accordion-entry{margin-bottom:2pxi;
+    &.accordion-entry-past-events{
+      & > .accordion-content{border:none; padding: 12px 0 10px;
+        .accordion-entry{
+          .accordion-title{background: @highlight-1-light; color: @highlight-1;}
+        }
+      }
+    }
       
-      .accordion-title{background:@highlight-1-light; color:@highlight-1;  font-size: 22px; font-weight: normal; line-height:120%; padding:16px 40px; cursor: pointer; position:relative; padding-right:80px; border-radius:2px;
+      .accordion-title{background:@highlight-1; color:@text-2;  font-size: 22px; font-weight: normal; line-height:120%; padding:16px 40px; cursor: pointer; position:relative; padding-right:80px; border-radius:2px;
          .after-arrow_down;
-         &:after{font-size:10px; width:30px; height:30px; background:@base-2; border-radius:30px; position: absolute; top:50%; right:40px; margin-top:-15px;  text-align: center; overflow: hidden; transition: color 0.25s, background 0.25s; line-height:100%; display: flex; flex-direction: column; justify-content:center;}
-         &:hover:after{background:@highlight-1; color:@text-2;}
+         &:after{font-size:10px; width:30px; height:30px; background:@base-2; border-radius:30px; position: absolute; top:50%; right:40px; margin-top:-15px;  text-align: center; overflow: hidden; transition: color 0.25s, background 0.25s; line-height:100%; display: flex; flex-direction: column; justify-content:center; color: @highlight-1;}
+         //&:hover:after{background:@highlight-1; color:@text-2;}
          
       }
       
@@ -297,10 +312,10 @@ a.object:hover{
 		}
       
       &.accordion-active{
-         .accordion-title{border-radius:2px 2px 0 0; .after-arrow_up; color:@text-1; font-weight: 500;
-            &:after{line-height:100%;}
+         & > .accordion-title{border-radius:2px 2px 0 0; .after-arrow_up; color:@text-2; font-weight: 500;
+            &:after{line-height:100%; color: @highlight-1;}
          }
-         .accordion-content{display: block;}   
+         & > .accordion-content{display: block;}   
       }
       
    }
@@ -385,10 +400,10 @@ h5+.bullet-links{margin-top:10px;}
 }
 
 figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margin:0 0 40px 0; position: relative;
-	&:after{position:absolute; top:0; left:0; background:red; width:100%; padding-bottom:56.3%; content:" "; background:rgba(161,161,161,0.3); transition:opacity 0.25s; pointer-events: none;}
+	/* &:after{position:absolute; top:0; left:0; background:red; width:100%; padding-bottom:56.3%; content:" "; background:rgba(161,161,161,0.3); transition:opacity 0.25s; pointer-events: none;}
 	&:hover{
 		&:after{opacity:1;}
-	}
+	} */
    &:last-child{margin-bottom:0;}
    img{width:100%; display: block; margin:0 0 9px 0;}
 	figcaption{padding:0 3px;}
@@ -396,7 +411,8 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
 		&[data-closeButton]{
 			&:before{position: absolute; top:10px; right:9px;  width:30px; height:30px; line-height:30px; border-radius: 30px; background:@base-2; box-shadow:0 2px 4px 0 rgba(0,0,0,0.5);  text-align: center; color:@text-1; transition:transform 0.25s;}
 			&[href*='youtube']{ .before-camera;}
-			&[href*='.html']{ .before-gallery;}
+      &[href*='.html']{ .before-gallery;}
+      &[href*='.jpg'], &[href*='.jpeg'], &[href*='.png'], &[href*='.gif']{ .before-picture;}
 		}
 		&:hover{
 			&:before{transform:scale(1.2);}
@@ -482,6 +498,9 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
 }
 
 .time-table{
+  &.time-table--vacation{
+    [class*='before-']{margin-right: 2px;}
+  }
    p{margin: 5px 0;}
    [class*='before-']{margin-right: 13px; font-size:1.25rem; display: inline-block; vertical-align: middle; margin-top:-2px;}
    &:first-child{margin-top:-5px;}
