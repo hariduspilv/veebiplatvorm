@@ -65,7 +65,6 @@ function hitsa_contacts_import_form_submit($form, &$form_state) {
 function hitsa_contacts_import($csv_content) {
   $csv_contacts = hitsa_contacts_parse_csv_file($csv_content);
   $existings_nodes = hitsa_contacts_get_existing_contact_nodes();
-
   foreach($csv_contacts as $csv_contact) {
     hitsa_contacts_create_update_contact($csv_contact, $existings_nodes);
   }
@@ -86,9 +85,7 @@ function hitsa_contacts_get_existing_contact_nodes() {
 
 function hitsa_contacts_parse_csv_file($csv_content) {
   $output = array();
-
   $contacts = explode("\n", $csv_content);
-
   foreach($contacts as $c) {
     $contact = explode("\t", $c);
 
@@ -106,7 +103,6 @@ function hitsa_contacts_parse_csv_file($csv_content) {
     $contact[9] = $groups;
     $output[] = $contact;
   }
-
   return $output;
 }
 
