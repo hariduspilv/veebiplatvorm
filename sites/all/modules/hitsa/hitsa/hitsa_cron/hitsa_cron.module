@@ -98,7 +98,8 @@ function hitsa_cron_run_update()
     '21',
     '22',
     '23',
-    '24'
+    '24',
+    '25'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -1431,6 +1432,15 @@ function hitsa_cron_up_24(){
       'isid' => $image_style['isid'],
     );
     image_effect_save($effect);
+  }
+  return TRUE;
+}
+function hitsa_cron_up_25($update=NULL){
+  $modules = array('robotstxt');
+  foreach($modules as $module){
+    if(!module_exists($module)){
+      module_enable(array($module));
+    }
   }
   return TRUE;
 }

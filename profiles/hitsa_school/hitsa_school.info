@@ -66,6 +66,8 @@ dependencies[] = hitsa_alumnus
 dependencies[] = hitsa_cron
 dependencies[] = image_exif_autorotate
 dependencies[] = imagecache_autorotate
+dependencies[] = robotstxt
+
 
 
 ; Information added by Drupal.org packaging script on 2017-06-21
