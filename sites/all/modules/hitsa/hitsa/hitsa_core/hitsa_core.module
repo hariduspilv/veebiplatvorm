@@ -119,8 +119,156 @@ function hitsa_core_menu()
         'file' => 'includes/hitsa_core.login.inc',     // don't forget to add the file and path
         'file path' => drupal_get_path('module', 'hitsa_core'),
     );
-
+    $items['admin/hitsa/contacts_sort'] = array(
+        'title' => 'Kontaktide sorteerimine',
+        'description' => 'Sorteeri inimesi osakondades',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('hitsa_core_contacts_departments_form'),
+        'access arguments' => array('administer content'),
+    );
     return $items;
+}
+
+function hitsa_core_contacts_departments(){
+    return drupal_get_form('hitsa_core_contacts_departments_form');
+
+}
+function hitsa_core_contacts_departments_form($form,$form_state){
+    $query = db_select('node','n');
+    $query->fields('n');
+    $query->condition('n.type','contact','=');
+
+
+    $results = $query->execute();
+    $contacts = array();
+    while($result = $results->fetchAssoc()){
+        if(isset($_REQUEST['department_filter'])){
+            $contact = node_load($result['nid']);
+            $contact_departments = $contact->contact_departments['und'];
+            foreach ($contact_departments as $contact_para => $contact_department){
+                $contact_department=  paragraphs_item_load($contact_department['value']);
+                if(!empty($contact_department->job_department)){
+                    if($contact_department->job_department['und'][0]['target_id']==$_REQUEST['department_filter']){
+                        $contact->para_to_look = $contact_para;
+                        $contacts[] = $contact;
+                    }
+                }
+            }
+        }
+        else {
+            $contacts[] = node_load($result['nid']);
+        }
+
+    }
+    $taxonomy_load = taxonomy_vocabulary_machine_name_load('contacts_department');
+    $taxonomy_load = taxonomy_get_tree($taxonomy_load->vid);
+    $list = array();
+    foreach ($taxonomy_load as $department){
+        $list[$department->tid] = $department->name;
+    }
+    reset($list);
+    $selected_department = key($list);
+    $form['filters']['department_filter'] = array(
+        '#type' => 'select',
+        '#options' => $list,
+        '#title' => 'Osakond',
+        '#weight' => -2,
+    );
+    $form['filters']['filter'] = array(
+        '#type' => 'submit',
+        '#value' => 'Filtreeri',
+        '#weight' => -2,
+    );
+    $form['contacts_list']['#weight'] = 1;
+    $form['contacts_list']['#tree'] = TRUE;
+    foreach ($contacts as $contact) {
+        if (!empty($contact->contact_departments)) {
+            $departments = $contact->contact_departments['und'];
+            if(isset($contact->para_to_look)){
+                $department = paragraphs_item_load(  $contact->contact_departments['und'][$contact->para_to_look]['value']);
+
+                $department_id = $contact->contact_departments['und'][$contact->para_to_look]['value'];
+                if (isset($department->department_weight)) {
+                    $person_weight = $department->department_weight['und'][0]['value'];
+                } else {
+                    $person_weight = 0;
+                }
+            }
+            else {
+                foreach ($departments as $department) {
+                    $show = false;
+                    $department_id = $department['value'];
+                    $department = paragraphs_item_load($department['value']);
+
+                    $department_selected = $department->job_department['und'][0]['target_id'];
+
+                    if (isset($department->department_weight)) {
+                        $person_weight = $department->department_weight['und'][0]['value'];
+                    } else {
+                        $person_weight = 0;
+                    }
+                    if($selected_department==$department_selected){
+                        $show = true;
+                        break;
+                    }
+                }
+                if(!$show){
+                    continue;
+                }
+            }
+        }
+        $form['contacts_list'][$contact->nid] = array();
+        $form['contacts_list'][$contact->nid]['name'] = array(
+            '#type' => 'markup',
+            '#markup' => $contact->title,
+        );
+        $form['contacts_list'][$contact->nid]['weight'] = array(
+            '#type' => 'weight',
+            '#title_display' => 'invisible',
+            '#default_value' => intval($person_weight),
+            '#value' => intval($person_weight),
+            '#attributes' => array('class' => array('weight')),
+        );
+        $form['contacts_list'][$contact->nid]['department_value'] = array(
+            '#type' => 'hidden',
+            '#value' => $department_id,
+        );
+
+    }
+    // Sort the rows.
+    uasort($form['contacts_list'], 'hitsa_core_sort_contacts_by_weight');
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Salvesta',
+    );
+    return $form;
+}
+function hitsa_core_sort_contacts_by_weight($a, $b) {
+    if (isset($a['weight']['#default_value']) && isset($b['weight']['#default_value'])) {
+        return $a['weight']['#default_value'] < $b['weight']['#default_value'] ? -1 : 1;
+    }
+    return 0;
+}
+function hitsa_core_contacts_departments_form_submit($form,&$form_state){
+
+    if($form_state['input']['op']=='Salvesta') {
+        if (!empty($form_state['input'])) {
+            foreach ($form_state['input']['contacts_list'] as $nid => $department_info) {
+                $department = entity_load_single('paragraphs_item', array($department_info['department_value']));
+
+                if (!empty($department_info['weight'])) {
+                    $department->department_weight['und'][0]['value'] = $department_info['weight'];
+                }
+                $department->revision = TRUE;
+                $department->save(FALSE);
+            }
+        }
+
+        $form_state['rebuild'] = TRUE;
+    }
+    elseif($form_state['input']['op']=='Filtreeri'){
+        $form_state['rebuild'] = TRUE;
+    }
 }
 function hitsa_core_menu_alter(&$items)
 {

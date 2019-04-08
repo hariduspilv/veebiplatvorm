@@ -1640,6 +1640,7 @@ function hitsa_events_htmlize_periods($periods)
         }
 
         $events_count = count($period->events);
+        $events_count_start = $events_count;
         if (strval($period->active) == 'TRUE') {
           $events_count--;
         }
@@ -1690,6 +1691,7 @@ function hitsa_events_htmlize_periods($periods)
         }
         $output_content .= '</div><!--/accordion-content-->';
         $events_count = count($period->events);
+        $events_count = $events_count_start-$events_count;
         $output_title = '<div class="accordion-title">' . $period->name . '(' . $events_count . ')</div>';
         $output .= $output_title.$output_content;
         $output .= '</div><!--/accordion-entry-->';

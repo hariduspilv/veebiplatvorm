@@ -162,7 +162,9 @@ function hitsa_core_theme()
       'id_form' => null,
     ),
   );
-
+  $items['hitsa_core_contacts_departments_form'] = array(
+      'render element' => 'form'
+  );
   $items['hitsa_login_mobile_id_form'] = array(
     'render element' => 'form',
     'template' => 'login-mobile-id-form',
@@ -454,6 +456,7 @@ function hitsa_core_login_page()
 
 function hitsa_core_search_page($filter = false)
 {
+
   $query = drupal_get_query_parameters();
   if (!empty($query['query'])) {
     $search = hitsa_core_search($query);
@@ -547,4 +550,34 @@ function hitsa_core_search_page($filter = false)
       'result_count' => !empty($result_count) ? $result_count : 0,
     )
   );
+}
+function theme_hitsa_core_contacts_departments_form($variables){
+    $form = $variables['form'];
+
+    $rows = array();
+    foreach (element_children($form['contacts_list']) as $nid) {
+        $form['contacts_list'][$nid]['weight']['#attributes']['class'] = array('slides-order-weight');
+        $weight = drupal_render($form['contacts_list'][$nid]['weight']);
+        $rows[] = array(
+            'data' => array(
+                array('class' => array('slide-cross')),
+                $nid,
+                drupal_render($form['contacts_list'][$nid]['name']),
+                $weight,
+
+            ),
+            'class' => array('draggable'),
+        );
+    }
+    $header = array('','id', t('Content'), t('Weight'));
+    $output = drupal_render($form['filters']);
+    $output .= drupal_render($form['contacts_list']);
+    $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'slides-order')));
+    $output .= drupal_render_children($form);
+
+    drupal_add_tabledrag('slides-order', 'order', 'sibling', 'slides-order-weight');
+
+    return $output;
+
+
 }
