@@ -135,11 +135,13 @@ function hitsa_events_block_view($delta = '')
             );
             break;
         case 'right_side_block':
-          $block['subject'] = t('');
+          $block_content = hitsa_events_get_time_period_block();
+          if(!empty($block_content)) {
+            $block['subject'] = t('');
             $block['content'] = array(
-                '#markup' => hitsa_events_get_time_period_block(),
-
+              '#markup' => $block_content(),
             );
+          }
             break;
     }
 
@@ -1692,7 +1694,7 @@ function hitsa_events_htmlize_periods($periods)
         $output_content .= '</div><!--/accordion-content-->';
         $events_count = count($period->events);
         $events_count = $events_count_start-$events_count;
-        $output_title = '<div class="accordion-title">' . $period->name . '(' . $events_count . ')</div>';
+        $output_title = '<div class="accordion-title">' . $period->name . '</div>';
         $output .= $output_title.$output_content;
         $output .= '</div><!--/accordion-entry-->';
       }
@@ -1709,7 +1711,11 @@ function hitsa_events_htmlize_periods($periods)
     $accordion_end = '</div><!--/accordion-->';
     $previous_semesters = '';
     if(!empty($previous_periods)){
+
       $previous_semester = '';
+      usort($previous_periods, function ($a, $b) {
+        return $a->field_time_period_dates['und'][0]['value2'] - $b->field_time_period_dates['und'][0]['value2'];
+      });
       foreach ($previous_periods as $prev){
         $events_count = count($prev->events);
         $previous_semester .= '<div class="accordion-entry">';

@@ -7,7 +7,8 @@ function hitsa_cron_update_translations()
     '1',
     '2',
     '3',
-    '4'
+    '4',
+    '5'
 
   ];
   if (!empty($updates)) {
@@ -233,7 +234,21 @@ function hitsa_cron_trans_up_4(){
     'Searchable event' => array(
       'et' => 'Otsitav sündmus',
     ),
-    'Content Page Style'
+    'Content Page Style' =>array(
+      'et' => 'Sisulehe tüüp'
+    ),
+  );
+
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
+  return TRUE;
+}
+function hitsa_cron_trans_up_5(){
+  $words = array(
+    'Previous events' => array(
+      'et' => 'Möödunud sündmused',
+    ),
   );
 
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
