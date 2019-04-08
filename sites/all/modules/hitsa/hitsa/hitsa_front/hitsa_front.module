@@ -329,7 +329,7 @@ function hitsa_front_make_html_list($list)
     foreach ($out as $part_key => $part) {
         $type = $part['type'] == 'class' ? t('Classes') : t('Lunch');
         // $output.=!empty($output)?'<hr/>':'';
-        $output .= '<div class="time-table">
+        $output .= '<div class="time-table time-table--vacation">
     <p><b>' . $type . '</b></p>';
         foreach ($part['hours'] as $key => $hour) {
             $output .= $hour['hour_html'];
@@ -352,7 +352,7 @@ function hitsa_front_html_breaks($list)
         $breaks = count($list);
         $i = 0;
         foreach ($list as $key => $break) {
-            $output .= '<div class="time-table">
+            $output .= '<div class="time-table time-table--vacation">
       <p><b>' . $break['name'] . ':</b></p>
       <p><span class="before-calendar"></span> ' . $break['start'] . ' - ' . $break['end'] . '</p>
    </div><!--/time-table-->
