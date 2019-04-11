@@ -1442,5 +1442,6 @@ function hitsa_cron_up_25($update=NULL){
       module_enable(array($module));
     }
   }
+  drupal_flush_all_caches();
   return TRUE;
 }

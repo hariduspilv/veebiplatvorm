@@ -139,7 +139,7 @@ function hitsa_events_block_view($delta = '')
           if(!empty($block_content)) {
             $block['subject'] = t('');
             $block['content'] = array(
-              '#markup' => $block_content,
+              '#markup' => $block_content ,
             );
           }
             break;
@@ -992,7 +992,7 @@ function hitsa_events_get_time_periods()
         $output .= '                      <span class="object-title">' . t($time_period->name) . '</span>';
         $output .= '                      <span class="object-footer">';
         $output .= (!empty($dated_start)) ? '<span class="before-calendar">' . $dated_start : '';
-        $output .= (!empty($dated_end)) ? ' - ' . $dated_end : '';
+        $output .= (!empty($dated_end)) ? ' - <br>' . $dated_end : '';
         $output .= (!empty($dated_start)) ? '</span>' : '';
         $output .= '                      </span><!--/object-footer-->';
         $output .= '                   </span><!--/object-content-->';
