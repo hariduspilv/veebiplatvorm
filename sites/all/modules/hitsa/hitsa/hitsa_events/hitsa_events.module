@@ -139,7 +139,7 @@ function hitsa_events_block_view($delta = '')
           if(!empty($block_content)) {
             $block['subject'] = t('');
             $block['content'] = array(
-              '#markup' => $block_content(),
+              '#markup' => $block_content,
             );
           }
             break;
