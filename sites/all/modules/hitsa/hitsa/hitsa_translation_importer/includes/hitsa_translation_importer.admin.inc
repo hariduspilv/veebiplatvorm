@@ -103,12 +103,17 @@ function hitsa_translations_importer_settings_form_validate($form, &$form_state)
 {
     return true;
 }
-function hitsa_translations_importer_translations($translations)
+function hitsa_translations_importer_translations($translations,$context=NULL)
 {
     if (!empty($translations)) {
         foreach ($translations as $string => $values) {
             t($string);
-            $source = db_query('SELECT lid, source, context, textgroup, location FROM {locales_source} WHERE source = :string', array(':string' => $string))->fetchObject();
+            if(empty($context)) {
+              $source = db_query('SELECT lid, source, context, textgroup, location FROM {locales_source} WHERE source = :string', array(':string' => $string))->fetchObject();
+            }
+            else{
+              $source = db_query('SELECT lid, source, context, textgroup, location FROM {locales_source} WHERE source = :string AND context = :context', array(':string' => $string,':context'=> $context))->fetchObject();
+            }
             if (!$source) {
                 watchdog('update_hook', 'Translation of string "%string" failed.', array('%string' => $string));
                 continue;
