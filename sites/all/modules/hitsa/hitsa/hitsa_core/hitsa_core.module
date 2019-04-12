@@ -124,7 +124,7 @@ function hitsa_core_menu()
         'description' => 'Sorteeri inimesi osakondades',
         'page callback' => 'drupal_get_form',
         'page arguments' => array('hitsa_core_contacts_departments_form'),
-        'access arguments' => array('administer content'),
+        'access arguments' => array('administer hitsa page settings'),
     );
     return $items;
 }
@@ -364,6 +364,14 @@ function hitsa_core_forms($form_id, $args)
 function hitsa_core_cron()
 {
     hitsa_core_search_server_add_index(); // Check the server->index relationship, add index if necessary.
+}
+function hitsa_core_admin_paths(){
+    $paths = array(
+      'admin/hitsa/contacts_sort' => TRUE,
+    );
+    return $paths;
+
+
 }
 
 function hitsa_core_permission()
