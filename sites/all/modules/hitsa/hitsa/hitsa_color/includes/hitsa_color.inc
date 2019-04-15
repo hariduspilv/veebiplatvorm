@@ -244,7 +244,19 @@ function hitsa_color_grunt_runner(){
     $var = '';
     hitsa_import_js($var,$var);
     hitsa_import_css($var,$var);
-
+    $file_name = 'picture.svg';
+    $files_location = 'sites/all/themes/hitsa/static/dev/styles';
+    $conf_path = conf_path();
+    $conf_path = str_replace('sites/', '', $conf_path);
+    if ($conf_path!='default') {
+      $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/styles';
+    } else {
+      $site_theme_location=false;
+    }
+    $file_content = file_get_contents($files_location.'/'.$file_name);
+    $file =fopen($site_theme_location.'/'.$file_name, 'w');
+    fwrite($file, $file_content);
+    fclose($file);
     $conf_path = conf_path();
     $conf_path = str_replace('sites/', '', $conf_path);
     var_dump(shell_exec('cd '.$_SERVER['DOCUMENT_ROOT'].'/'.'sites'.'/'.$conf_path.'/themes/hitsa/static && grunt compile 2>&1'));
