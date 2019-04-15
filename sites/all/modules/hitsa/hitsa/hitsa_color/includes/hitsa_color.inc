@@ -253,6 +253,7 @@ function hitsa_color_grunt_runner(){
     } else {
       $site_theme_location=false;
     }
+    var_dump($site_theme_location);
     $file_content = file_get_contents($files_location.'/'.$file_name);
     $file =fopen($site_theme_location.'/'.$file_name, 'w');
     fwrite($file, $file_content);
