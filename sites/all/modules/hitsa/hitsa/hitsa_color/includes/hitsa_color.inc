@@ -245,15 +245,14 @@ function hitsa_color_grunt_runner(){
     hitsa_import_js($var,$var);
     hitsa_import_css($var,$var);
     $file_name = 'picture.svg';
-    $files_location = 'sites/all/themes/hitsa/static/dev/styles';
+    $files_location = 'sites/all/themes/hitsa/static/dev/glyphs';
     $conf_path = conf_path();
     $conf_path = str_replace('sites/', '', $conf_path);
     if ($conf_path!='default') {
-      $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/styles';
+      $site_theme_location = 'sites/'.$conf_path.'/themes/hitsa/static/dev/glyphs';
     } else {
       $site_theme_location=false;
     }
-    var_dump($site_theme_location);
     $file_content = file_get_contents($files_location.'/'.$file_name);
     $file =fopen($site_theme_location.'/'.$file_name, 'w');
     fwrite($file, $file_content);
