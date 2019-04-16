@@ -2753,7 +2753,12 @@ function hitsa_events_set_active_period($periods = null)
 
                         $periods[$tid]->active = 'FALSE';
                     }
-                } else {
+                }
+                elseif ($time < $period_dates['start']){
+                  $periods[$tid] -> previous = 'FALSE';
+                  $periods[$tid] -> active = 'FALSE';
+                }
+                else {
                   $periods[$tid]->previous = 'TRUE';
                     $periods[$tid]->active = 'FALSE';
                 }
