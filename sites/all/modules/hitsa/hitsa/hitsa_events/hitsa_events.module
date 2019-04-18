@@ -780,7 +780,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         if ($time == $start_date_date) {
             $object_class = '';
         }
-
+        if($event->active_decider>$time){
+          $object_class = '';
+        }
         $locations = array();
         if (!empty($event->locations)) {
             foreach ($event->locations[$language->language] as $location) {
@@ -1652,22 +1654,40 @@ function hitsa_events_htmlize_periods($periods)
         $i = 0;
 
         $time = strtotime('today midnight');
+        $today_day = intval(date('d'));
+        $today_month = date('m');
         $lastElement = end($period->events);
-
         foreach ($period->events as $key => $event_html) {
           if (strval($period->active) == 'TRUE') {
-            if ($event_html['start_date'] < $time && !isset($event_html['today'])) {
-              if(isset($previous_periods[$period->tid])){
-                $previous_periods[$period->tid]->events[] = $event_html;
+            $days_start = date('d',$event_html['dates']['start']);
+            $month_start = date('m',$event_html['dates']['start']);
+            $days_end = date('d',$event_html['dates']['end']);
+            if($days_start!=$days_end){
+              $days_count = $days_end-$days_start;
+              for($i=0;$i<=$days_count;$i++){
+                if($days_start+$i >= $today_day && $today_month==$month_start){
+//                  continue;
+                }
               }
-              else{
-                $previous_periods[$period->tid] = $period;
-                unset($previous_periods[$period->tid]->events);
-                $previous_periods[$period->tid]->events[] = $event_html;
-              }
-//              dpm($period->events[$key]);
-              continue;
             }
+            if ($event_html['start_date'] < $time && !isset($event_html['today'])) {
+
+              if($event_html['dates']['end']>$time){
+//                continue;
+              }
+              else {
+                if (isset($previous_periods[$period->tid])) {
+                  $previous_periods[$period->tid]->events[] = $event_html;
+                } else {
+                  $previous_periods[$period->tid] = $period;
+                  unset($previous_periods[$period->tid]->events);
+                  $previous_periods[$period->tid]->events[] = $event_html;
+                }
+//              dpm($period->events[$key]);
+                continue;
+              }
+            }
+
           }
           if (isset($event_html['today'])) {
             if (isset($period->events[$key - 1])) {
@@ -1685,7 +1705,7 @@ function hitsa_events_htmlize_periods($periods)
           } else {
             if (isset($period->events[$key + 1])) {
               if (!isset($period->events[$key + 1]['today'])) {
-                $output_content .= '<hr />';
+//                $output_content .= '<hr />';
               }
             }
           }
@@ -2814,7 +2834,6 @@ function hitsa_events_attach_period_to_date($events = null, $periods = null, $ty
                 //     $in_period= 'TRUE';
                 // }
                 if ($in_period == 'TRUE') {
-
                     $events_html = hitsa_events_html_decider($event, $ed, $pd);
                     foreach ($events_html as $event_html) {
                         $periods[$tid]->events[] = $event_html;
@@ -2872,13 +2891,26 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
         if (isset($dates['start']) && isset($dates['end'])) {
             if ($dates['start'] == $dates['end']) {
                 $event_html = hitsa_events_event_html($event);
+                $event_html['dates']=$dates;
                 $event_html['sort_date'] = $dates['start'];
+                $event_html['shown_date'] = $dates['start'];
+                if(!empty($dates['start']) && !empty($dates['end'])){
+                  $start_time = date('H:i:s',$dates['start']);
+                  if($start_time == '00:00:00'){
+                    $event_html['sort_date'] = strtotime('+23 hours +58 minutes',$dates['start']);
+                  }
+                  elseif($dates['start'] == $dates['end']){
+                    $event_html['sort_date'] = strtotime('+23 hours +58 minutes',$dates['start']);
+                  }
+                  else{
+                    $event_html['sort_date'] = $dates['start'];
+                  }
+                }
                 $event_html_out[] = $event_html;
             } else {
 
                 if ($dates['end'] >= $pd['end']) {
                     $dates['end'] = $pd['end'];
-                    $dates['end'];
                 }
                 if ($dates['start'] <= $pd['start']) {
                     $dates['start'] = $pd['start'];
@@ -2901,16 +2933,34 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                             }
                         }
                     }
+                  $days_start = date('d',$dates['start']);
+                  $days_end = date('d',$dates['end']);
+                  $days_count = $days_end-$days_start;
+                  $active_decider = date('U', strtotime("+{$days_count} day", $dates['start']));
+                  $event->active_decider =$active_decider;
                     $event_html = hitsa_events_event_html($event, $type = 'event', $start_date_date);
                     $event_html['dates'] = $dates;
                     $event_html['sort_date'] = $start_date_date;
+                    $event_html['shown_date'] = $start_date_date;
+                    if(!empty($dates['start']) && !empty($dates['end'])){
+                      $start_time = date('H:i:s',$start_date_date);
+                      if($start_time == '00:00:00'){
+                        $event_html['sort_date'] = strtotime('+23 hours +59 minutes',$active_decider);
+                      }
+                      elseif($dates['start'] == $dates['end']){
+                        $event_html['sort_date'] = strtotime('+23 hours +58 minutes',$start_date_date);
+                      }
+                      else{
+                        $event_html['sort_date'] = $start_date_date;
+                      }
+                    }
                     $event_html_out[] = $event_html;
 
                 }
-
             }
         }
     }
+
     return $event_html_out;
 }
 function hitsa_events_sort_period_events($periods)
