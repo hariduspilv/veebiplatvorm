@@ -2947,6 +2947,11 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                       if($start_time == '00:00:00'){
                         $event_html['sort_date'] = strtotime('+23 hours +59 minutes',$active_decider);
                       }
+                      elseif((date('d',$dates['end'])-date('d',$dates['start']))>0){
+                        $event_html['sort_date'] = strtotime('midnight',$active_decider);
+
+                        $event_html['sort_date'] = strtotime('+23 hours +59 minutes',$event_html['sort_date']);
+                      }
                       elseif($dates['start'] == $dates['end']){
                         $event_html['sort_date'] = strtotime('+23 hours +58 minutes',$start_date_date);
                       }
