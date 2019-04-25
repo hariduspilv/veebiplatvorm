@@ -2894,17 +2894,21 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                 $event_html['dates']=$dates;
                 $event_html['sort_date'] = $dates['start'];
                 $event_html['shown_date'] = $dates['start'];
-                if(!empty($dates['start']) && !empty($dates['end'])){
-                  $start_time = date('H:i:s',$dates['start']);
-                  if($start_time == '00:00:00'){
-                    $event_html['sort_date'] = strtotime('+23 hours +58 minutes',$dates['start']);
-                  }
-                  elseif($dates['start'] == $dates['end']){
-                    $event_html['sort_date'] = strtotime('+23 hours +58 minutes',$dates['start']);
-                  }
-                  else{
-                    $event_html['sort_date'] = $dates['start'];
-                  }
+//                if(!empty($dates['start']) && !empty($dates['end'])){
+//                  $start_time = date('H:i:s',$dates['start']);
+//                  if($start_time == '00:00:00'){
+//                    $event_html['sort_date'] = strtotime('midnight +1 minutes',$dates['start']);
+//                  }
+//                  elseif($dates['start'] == $dates['end']){
+//                    $event_html['sort_date'] = strtotime('midnight +1 minutes',$dates['start']);
+//                  }
+//                  else{
+//                    $event_html['sort_date'] = $dates['start'];
+//                  }
+//                }
+//                $sort_date = hitsa_events_get_sort_date($dates);
+                if(!empty($sort_date)) {
+                  $event_html['sort_date'] = $sort_date;
                 }
                 $event_html_out[] = $event_html;
             } else {
@@ -2942,25 +2946,28 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                     $event_html['dates'] = $dates;
                     $event_html['sort_date'] = $start_date_date;
                     $event_html['shown_date'] = $start_date_date;
-                    if(!empty($dates['start']) && !empty($dates['end'])){
-                      $start_time = date('H:i:s',$start_date_date);
-                      if($start_time == '00:00:00'){
-                        $event_html['sort_date'] = strtotime('+23 hours +59 minutes',$active_decider);
-                      }
-                      elseif((date('d',$dates['end'])-date('d',$dates['start']))>0){
-                        $event_html['sort_date'] = strtotime('midnight',$active_decider);
-
-                        $event_html['sort_date'] = strtotime('+23 hours +59 minutes',$event_html['sort_date']);
-                      }
-                      elseif($dates['start'] == $dates['end']){
-                        $event_html['sort_date'] = strtotime('+23 hours +58 minutes',$start_date_date);
-                      }
-                      else{
-                        $event_html['sort_date'] = $start_date_date;
-                      }
+//                    $sort_date = hitsa_events_get_sort_date($dates,$active_decider,$start_date_date);
+                    if(!empty($sort_date)) {
+                      $event_html['sort_date'] = $sort_date;
                     }
+//                    if(!empty($dates['start']) && !empty($dates['end'])){
+//                      $start_time = date('H:i:s',$start_date_date);
+//                      if($start_time == '00:00:00'){
+//                        $event_html['sort_date'] = strtotime('midnight',$active_decider);
+//                      }
+//                      elseif((date('d',$dates['end'])-date('d',$dates['start']))>0){
+//                        $event_html['sort_date'] = strtotime('midnight',$active_decider);
+//
+//                        $event_html['sort_date'] = strtotime('midnight +1 minutes',$event_html['sort_date']);
+//                      }
+//                      elseif($dates['start'] == $dates['end']){
+//                        $event_html['sort_date'] = strtotime('midnight',$start_date_date);
+//                      }
+//                      else{
+//                        $event_html['sort_date'] = $start_date_date;
+//                      }
+//                    }
                     $event_html_out[] = $event_html;
-
                 }
             }
         }
@@ -2968,13 +2975,78 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
 
     return $event_html_out;
 }
+function hitsa_events_get_sort_date($dates=null,$active=null,$start_date=null){
+  $output = null;
+  if(!empty($dates)){
+    if(!empty($start_date)) {
+      $start_time = date('H:i:s', $start_date);
+    }
+    else{
+      $start_time = date('H:i:s',$dates['start']);
+    }
+    $today_date = date('d.m.Y',time());
+    if(!empty($active)) {
+      $active_date = date('d.m.Y', $active);
+    }
+    if(!empty($start_time)){
+      if($dates['start']!=$dates['end']){
+        if(!empty($active_date)){
+          if($active_date==$today_date){
+            $output = date('');
+          }
+        }
+      }
+    }
+  }
+  return $output;
+}
 function hitsa_events_sort_period_events($periods)
 {
 
     foreach ($periods as $tid => $period) {
         if (!empty($period->events)) {
             usort($period->events, function ($a, $b) {
-                return $a['sort_date'] - $b['sort_date'];
+
+//              dpm(date('d.m.Y H:m:i',$a['dates']['start']));
+//              dpm(date('d.m.Y H:m:i',$a['dates']['end']));
+//              if($a['dates']['start']==$a['dates']['end']&&$b['dates']['start']!=$b['dates']['end']){
+//
+//                return $b['sort_date'] - $a['sort_date'];
+//              }
+//              if($a['dates']['start_date']!=$a['dates']['end_date']&&$b['dates']['start_date']!=$b['dates']['end_date']){
+//
+//                return $a['dates']['end_date'] - $b['dates']['end_date'];
+//              }
+
+              if(isset($b['today'])){
+                return $a['dates']['start'] - $b['sorted'];
+              }
+
+                if(date('d.m.Y',$a['dates']['start'])!=date('d.m.Y',$a['dates']['end'])&&date('d.m.Y',$b['dates']['start'])!=date('d.m.Y',$b['dates']['end'])){
+//                  if(date('d.m.Y',$a['dates']['end'])!=date('d.m.Y',$b['dates']['end'])){
+//                    return $a['dates']['end']- $b['dates']['end'];
+//                  }
+                  if(date('d.m.Y',$a['dates']['start'])==date('d.m.Y',$b['dates']['start'])){
+
+                    return $a['dates']['end']- $b['dates']['end'];
+                  }
+
+//                  return $a['dates']['start']- $b['dates']['start'];
+                }
+              if(date('d.m.Y',$a['dates']['start'])==date('d.m.Y',$a['dates']['end'])&&date('d.m.Y',$b['dates']['start'])!=date('d.m.Y',$b['dates']['end'])){
+
+                if(date('d.m.Y',$a['dates']['start'])!=date('d.m.Y',$b['dates']['start'])){
+
+                  return $a['dates']['start']- $a['dates']['start'];
+                }
+                return $b['dates']['end']- $a['dates']['end'];
+              }
+                if(date('d.m.Y',$a['dates']['start'])!=date('d.m.Y',$b['dates']['start'])){
+
+                  return $a['dates']['start']- $a['dates']['start'];
+                }
+
+                  return $b['dates']['end']- $a['dates']['end'];
             });
         } else {
             unset($periods[$tid]);
