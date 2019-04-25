@@ -3026,6 +3026,7 @@ function hitsa_events_sort_period_events($periods)
 //                  if(date('d.m.Y',$a['dates']['end'])!=date('d.m.Y',$b['dates']['end'])){
 //                    return $a['dates']['end']- $b['dates']['end'];
 //                  }
+
                   if(date('d.m.Y',$a['dates']['start'])==date('d.m.Y',$b['dates']['start'])){
 
                     return $a['dates']['end']- $b['dates']['end'];
@@ -3039,14 +3040,14 @@ function hitsa_events_sort_period_events($periods)
 
                   return $a['dates']['start']- $a['dates']['start'];
                 }
+
                 return $b['dates']['end']- $a['dates']['end'];
               }
                 if(date('d.m.Y',$a['dates']['start'])!=date('d.m.Y',$b['dates']['start'])){
 
                   return $a['dates']['start']- $a['dates']['start'];
                 }
-
-                  return $b['dates']['end']- $a['dates']['end'];
+//                  return $b['dates']['end']- $a['dates']['end'];
             });
         } else {
             unset($periods[$tid]);
