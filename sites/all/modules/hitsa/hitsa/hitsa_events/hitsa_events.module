@@ -3006,48 +3006,66 @@ function hitsa_events_sort_period_events($periods)
     foreach ($periods as $tid => $period) {
         if (!empty($period->events)) {
             usort($period->events, function ($a, $b) {
-
-//              dpm(date('d.m.Y H:m:i',$a['dates']['start']));
-//              dpm(date('d.m.Y H:m:i',$a['dates']['end']));
-//              if($a['dates']['start']==$a['dates']['end']&&$b['dates']['start']!=$b['dates']['end']){
-//
-//                return $b['sort_date'] - $a['sort_date'];
-//              }
-//              if($a['dates']['start_date']!=$a['dates']['end_date']&&$b['dates']['start_date']!=$b['dates']['end_date']){
-//
-//                return $a['dates']['end_date'] - $b['dates']['end_date'];
-//              }
-
+                $astart = date('d.m.Y',$a['dates']['start']);
+                $aend = date('d.m.Y',$a['dates']['end']);
+                $bend = date('d.m.Y',$b['dates']['end']);
+                $bstart = date('d.m.Y',$b['dates']['start']);
               if(isset($b['today'])){
                 return $a['dates']['start'] - $b['sorted'];
               }
+              if($astart!=$aend&&$bstart!=$bend){
 
-                if(date('d.m.Y',$a['dates']['start'])!=date('d.m.Y',$a['dates']['end'])&&date('d.m.Y',$b['dates']['start'])!=date('d.m.Y',$b['dates']['end'])){
-//                  if(date('d.m.Y',$a['dates']['end'])!=date('d.m.Y',$b['dates']['end'])){
-//                    return $a['dates']['end']- $b['dates']['end'];
-//                  }
 
-                  if(date('d.m.Y',$a['dates']['start'])==date('d.m.Y',$b['dates']['start'])){
-
-                    return $a['dates']['end']- $b['dates']['end'];
+                if($astart!=$bstart){
+                  return $a['dates']['start'] - $b['dates']['start'];
+                }
+                if($aend != $bend){
+                  return $a['dates']['end']- $b['dates']['end'];
+                }
+                if($astart==$bstart){
+                  if($bend==$aend){
+                    return $a['dates']['end'] - $b['dates']['end'];
                   }
-
-//                  return $a['dates']['start']- $b['dates']['start'];
+                  return $a['dates']['start'] - $b['dates']['start'];
                 }
-              if(date('d.m.Y',$a['dates']['start'])==date('d.m.Y',$a['dates']['end'])&&date('d.m.Y',$b['dates']['start'])!=date('d.m.Y',$b['dates']['end'])){
-
-                if(date('d.m.Y',$a['dates']['start'])!=date('d.m.Y',$b['dates']['start'])){
-
-                  return $a['dates']['start']- $a['dates']['start'];
-                }
-
-                return $b['dates']['end']- $a['dates']['end'];
               }
-                if(date('d.m.Y',$a['dates']['start'])!=date('d.m.Y',$b['dates']['start'])){
+              if($astart==$aend && $bstart==$bend){
+                $astartminute = date('d.m.Y H-m',$a['dates']['start']);
+                $bstartminute = date('d.m.Y H-m',$b['dates']['start']);
 
-                  return $a['dates']['start']- $a['dates']['start'];
+                if($astartminute!=$bstartminute){
+                  return $a['dates']['start'] - $b['dates']['start'];
                 }
-//                  return $b['dates']['end']- $a['dates']['end'];
+                else{
+                  return $a['dates']['end'] - $b['dates']['end'];
+                }
+              }
+              if($astart==$aend && $bstart!=$bend){
+//                if($a['dates']['start']==$a['dates']['end']&& $b['dates']['start']!=$b['dates']['end']) {
+//                  krumo(date('d.m.Y', $a['dates']['start']) . '-' . date('d.m.Y', $a['dates']['end']));
+//
+//                  krumo($a['dates']['start']-$a['dates']['end']);
+//                  krumo($b['dates']['start']-$b['dates']['end']);
+//                  krumo(date('d.m.Y', $b['dates']['start']) . '-' . date('d.m.Y', $b['dates']['end']));
+//                  if($astart==$bstart) {
+//                    return $b['dates']['end'] - $a['dates']['end'];
+//                  }
+//                }
+                if($astart==$bstart){
+                  return $b['dates']['end']-$a['dates']['end'];
+                }
+//                return $a['dates']['start'] - $b['dates']['start'];
+              }
+              if($astart!=$aend){
+                if($bstart==$bend) {
+                  if($astart==$bstart){
+                    return $b['dates']['end']-$a['dates']['end'];
+                  }
+                }
+              }
+//
+
+                  return $a['dates']['start']- $b['dates']['start'];
             });
         } else {
             unset($periods[$tid]);
