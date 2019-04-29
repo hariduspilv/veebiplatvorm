@@ -21,6 +21,7 @@ function hitsa_core_install()
   hitsa_core_set_variable_translations();
   hitsa_core_add_media_folder_terms();
   hitsa_core_set_initial_domain_path();
+  hitsa_core_set_initail_metatags();
 }
 
 function hitsa_core_uninstall()
@@ -868,7 +869,15 @@ function hitsa_core_add_media_folder_terms()
     }
   }
 }
-
+function hitsa_core_set_initail_metatags(){
+  $blob = 'a:8:{s:5:"title";a:1:{s:5:"value";s:46:"[node:title] | [current-page:pager][site:name]";}s:11:"description";a:1:{s:5:"value";s:14:"[node:summary]";}s:8:"og:title";a:1:{s:5:"value";s:12:"[node:title]";}s:14:"og:description";a:1:{s:5:"value";s:14:"[node:summary]";}s:15:"og:updated_time";a:1:{s:5:"value";s:23:"[node:changed:custom:c]";}s:8:"og:image";a:1:{s:5:"value";s:36:"[node:cp_image][node:subpage_images]";}s:22:"article:published_time";a:1:{s:5:"value";s:23:"[node:created:custom:c]";}s:21:"article:modified_time";a:1:{s:5:"value";s:23:"[node:changed:custom:c]";}}';
+  if(!empty($blob)){
+    db_merge('metatag_config')->key(array('instance'=>'node'))->fields(array(
+      'instance' => 'node',
+      'config' => $blob,
+  ))->execute();
+  }
+}
 function hitsa_core_set_initial_domain_path()
 {
   variable_set('hitsa_inital_path', conf_path());
@@ -877,7 +886,7 @@ function hitsa_core_set_initial_domain_path()
  *
  * Update to make site pathauto working and also remove non english characters
  */
-function hitsa_core_update_7000()
+ function hitsa_core_update_7000()
 {
   if (module_exists('hitsa_content_page')) {
 
