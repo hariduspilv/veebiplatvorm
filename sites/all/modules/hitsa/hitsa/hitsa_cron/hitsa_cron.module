@@ -6,7 +6,13 @@
 
 function hitsa_cron_cronapi()
 {
-
+     //Siia kirjutada update number
+     $cronsettings_set = variable_get('cronsettings_set');
+     if(empty($cronsettings_set)) {
+         variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
+         variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
+         variable_set('cronsettings_set','TRUE');
+       }
   $items = [];
   $random_time = variable_get('hitsa_cron_random_time');
   if (empty($random_time)) {
@@ -47,14 +53,7 @@ function hitsa_cron_cronapi()
       ],
     ],
   ];
-    //Siia kirjutada update number
-  $cronsettings_set = variable_get('cronsettings_set');
-  watchdog('cron_tester','Reached here');
-  if(!empty($cronsettings_set)) {
-      variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
-      variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
-      variable_set('cronsettings_set','TRUE');
-    }
+ 
   return $items;
 }
 
@@ -100,7 +99,8 @@ function hitsa_cron_run_update()
     '23',
     '24',
     '25',
-    '26'
+    '26',
+    '27'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -1454,5 +1454,16 @@ function hitsa_cron_up_26(){
       'config' => $blob,
   ))->execute();
   }
+  return TRUE;
+}
+function hitsa_cron_up_27(){
+  $modules = array('hitsa_rss');
+  foreach($modules as $module){
+    if(!module_exists($module)){
+      module_enable(array($module));
+    }
+  }
+  drupal_flush_all_caches();
+  drupal_flush_all_caches();
   return TRUE;
 }

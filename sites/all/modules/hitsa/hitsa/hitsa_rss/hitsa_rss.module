@@ -1,0 +1,4 @@
+<?php
+
+module_load_include('inc', 'hitsa_rss', 'includes/hitsa_rss.views');
+
