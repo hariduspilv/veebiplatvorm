@@ -63,6 +63,7 @@ dependencies[] = hitsa_color
 dependencies[] = hitsa_front
 dependencies[] = hitsa_alumnus
 dependencies[] = hitsa_cron
+dependencies[] = hitsa_rss
 dependencies[] = image_exif_autorotate
 dependencies[] = imagecache_autorotate
 dependencies[] = robotstxt

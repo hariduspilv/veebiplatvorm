@@ -100,7 +100,8 @@ function hitsa_cron_run_update()
     '24',
     '25',
     '26',
-    '27'
+    '27',
+    '28'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -1465,5 +1466,20 @@ function hitsa_cron_up_27(){
   }
   drupal_flush_all_caches();
   drupal_flush_all_caches();
+  return TRUE;
+}
+function hitsa_cron_up_28(){
+  module_load_include('install','tablefield','tablefield');
+  tablefield_update_7007();
+  db_update('system')
+    ->fields(array('schema_version' => '7007'))
+    ->condition('name', 'tablefield', '=')
+    ->execute();
+    module_load_include('install','system','system');
+    system_update_7082();
+    db_update('system')
+    ->fields(array('schema_version' => '7082'))
+    ->condition('name', 'system', '=')
+    ->execute();
   return TRUE;
 }
