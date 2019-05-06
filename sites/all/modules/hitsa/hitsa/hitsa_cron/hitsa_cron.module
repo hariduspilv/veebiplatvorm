@@ -218,7 +218,8 @@ function hitsa_cron_run_update()
     '25',
     '26',
     '27',
-    '28'
+    '28',
+    '29'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -1124,6 +1125,7 @@ function hitsa_cron_up_15(){
       }
     }
   }
+  return TRUE;
 }
 
 function hitsa_cron_up_16(){
@@ -1598,5 +1600,40 @@ function hitsa_cron_up_28(){
     ->fields(array('schema_version' => '7082'))
     ->condition('name', 'system', '=')
     ->execute();
+  return TRUE;
+}
+
+function hitsa_cron_up_29(){
+  // drupal_flush_all_caches();
+  $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
+  $main_menu_links = array();
+  foreach($main_menu_tree as $link) {
+    $main_menu_links[$link['link']['title']] = $link;
+  }
+  if(isset($main_menu_links['Student Life'])){
+    foreach ($main_menu_links['Student Life']['below'] as $link_key => $link) {
+      if(!empty($link['link'])){
+        if($link['link']['link_title']=='Catering'){
+          if (strpos($link['link']['link_path'], 'node/') !== false) {
+            $path_alias = (drupal_get_path_alias($link['link']['link_path']));
+            dpm($path_alias);
+            $path_old = path_load(array(
+              'source' => $link['link']['link_path'],
+              'alias' => $path_alias
+            )              );
+            $path_alias_check = path_load( array('source' => 'catering','alias'=>'catering'));
+            if (strpos($path_alias, 'catering-') !== false) {
+              $alias = array(
+                'source' => $link['link']['link_path'],
+                'alias' => 'catering',
+                );
+              path_save($alias);
+              
+            }
+          }
+        }
+      }
+    }
+  }
   return TRUE;
 }

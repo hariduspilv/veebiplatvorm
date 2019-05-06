@@ -7,7 +7,18 @@ function hitsa_contacts_import_form($form, &$form_state) {
   switch ($form_state['stage']) {
     case 'upload_file':
       $form['instuctions'] = array(
-        '#markup' => t('<div>Here goes the contact import instructions.</div>'),
+        '#markup' => '<div>Esimeses tulbas peaks olema inimest eristav number, selle numbri mõte on see, et selle abil saab teha tulevikus failis uuendusi ning saab uuesti sisse importida<br>
+        Teise tulpa kirjutada eesnimi <br>
+        Kolmandasse tulpa kirjutada perekonnanimi<br>
+        Neljandasse tulpa kirjutada ametikoht<br>
+        Viiendasse tulpakirjutada telefoninumbrid kujul 55555555|55555555<br>
+        Kuuendasse tulpa kirjutada e-posti aadress<br>
+        Seitsmendasse tulpa kirjutada muu informatsioon<br>
+        Kaheksandasse tulpa kirjutada vastuvõtu-või konsultatsiooniajad kujul K:13-14|N14-17<br>
+        Üheksandasse tulpa kirjutada cv lingi aadress kui see olemas on<br>
+        Kümnendasse tulpa tuleks kirjutada osakonnad ja järjekord seal osakonnas näiteks: Juhtkond;1|Õpetajad;2 <br>
+        Kui salvestate seda, siis tuleks seda teha .csv formaadis ja valida eraldajaks TABi
+        </div>',
       );
 
       $form['upload'] = array(
@@ -126,17 +137,16 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
   }
 
   $emw_node = entity_metadata_wrapper('node', $node);
-
   /* String input */
   $emw_node->contact_id = $contact_array[0]; // Contact ID
   $emw_node->first_name = $contact_array[1]; // First name
   $emw_node->last_name = $contact_array[2]; // Last name
-  $emw_node->phone_nr = $contact_array[4]; // Phone Nr.
+  $emw_node->phone_nr = explode('|',$contact_array[4]); // Phone Nr.
   $emw_node->e_mail = $contact_array[5]; // E-Mail
   //$emw_node->additional_info = $contact_array[6]; // Additional info
   $emw_node->reception_times = explode('|', $contact_array[7]); // Reception times
   $emw_node->contact_cv = array('url' => $contact_array[8]); // CV Link
-
+  // krumo($emw_node);
   /* Taxonomy input */
   // Job position
   $job_position_term = taxonomy_get_term_by_name($contact_array[3], 'contacts_job_position');
