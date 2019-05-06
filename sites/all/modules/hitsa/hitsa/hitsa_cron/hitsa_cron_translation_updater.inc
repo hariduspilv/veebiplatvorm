@@ -9,7 +9,8 @@ function hitsa_cron_update_translations()
     '3',
     '4',
     '5',
-    '6'
+    '6',
+    '7'
 
   ];
   if (!empty($updates)) {
@@ -300,4 +301,26 @@ function hitsa_cron_trans_up_6(){
   hitsa_translations_importer_translations($words,'Long month name');
   drupal_flush_all_caches();
   return TRUE;
+}
+function hitsa_cron_trans_up_7(){
+  $words = array(
+    'Õppetöö' => array(
+      'en' => 'Studies',
+    ),
+    
+  );
+  $taxonomy = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
+    $taxonomy_tree = taxonomy_get_tree($taxonomy->vid);
+    $allowed = array();
+    foreach ($taxonomy_tree as $term) {
+        if($term->name=='Õppetöö'){
+          $tid = $term->tid;
+        }
+    }
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  if(!empty($tid)){
+      hitsa_translations_importer_translations($words,'term:'.$tid.':name');
+      drupal_flush_all_caches();
+      return TRUE;
+  }
 }
