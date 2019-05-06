@@ -39,7 +39,7 @@ function hitsa_contacts_menu() {
     'title' => 'Contact Import',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('hitsa_contacts_import_form'),
-    'access arguments' => array('administer content'),
+    'access arguments' => array('administer hitsa page settings'),
   );
 
   return $items;
