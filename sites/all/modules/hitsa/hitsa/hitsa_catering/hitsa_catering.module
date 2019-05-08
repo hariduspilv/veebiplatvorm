@@ -33,7 +33,7 @@ function hitsa_catering_block_info()
     $blocks = array();
 
     // This example comes from node.module.
-    $pages = "catering\ncatering/*\ntoitlustamine\ntoitlustamine/*\ncontent/toitlustamine\ncontent/toitlustamine/*";
+    $pages = "catering\ncatering/*\ntoitlustamine\ntoitlustamine/*\ncontent/toitlustamine\ncontent/toitlustamine/*\npitanie\npitanie/*";
     $blocks['catering_block'] = array(
         'info' => t('Catering ' . ' block'),
         'region' => 'content',
@@ -655,7 +655,7 @@ function hitsa_catering_paragraphs__create_table($loaded_menu)
                     }
                     if (!empty($subcategory)) {
                         $food_type = taxonomy_term_load($meal->field_food_type['und'][0]['target_id']);
-                        
+
                     $tag = i18n_taxonomy_term_get_translation($food_type, $language->language);
                     $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
                         $row_names[$translated] = $food_type;
@@ -1037,7 +1037,7 @@ function hitsa_catering_generate_header($node)
             $translate_link = '<li><a href="' . $translate_url . '">' . t('Translate') . '</a></li>';
             $output.= $translate_link;
             $output .='</ul>';
-            
+
         }
         $output .= '<div class="block">';
         $output .= '<h2 class="block-title">' . $node->title . '</h2>';

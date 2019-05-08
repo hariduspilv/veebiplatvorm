@@ -1,6 +1,7 @@
 <?php
 
-function hitsa_cron_block_info(){
+function hitsa_cron_block_info()
+{
   $blocks['fornt_page_events'] = array(
     'info' => t('Block to activate some updates'),
     'cache' => DRUPAL_NO_CACHE,
@@ -11,19 +12,20 @@ function hitsa_cron_block_info(){
   );
   return $blocks;
 }
-function hitsa_cron_block_view($delta = ''){
+function hitsa_cron_block_view($delta = '')
+{
   switch ($delta) {
     case 'fornt_page_events':
       hitsa_cron_activate_update();
 
       break;
-    
   }
 }
-function hitsa_cron_activate_update(){
+function hitsa_cron_activate_update()
+{
   $robots = variable_get('robotstxt');
-  if(empty($robots)){
-    $robots_text= '#
+  if (empty($robots)) {
+    $robots_text = '#
     # robots.txt
     #
     # This file is to prevent the crawling and indexing of certain parts
@@ -37,7 +39,7 @@ function hitsa_cron_activate_update(){
     #
     # For more information about the robots.txt standard, see:
     # http://www.robotstxt.org/robotstxt.html
-    
+
     User-agent: *
     Crawl-delay: 10
     # CSS, JS, Images
@@ -114,7 +116,7 @@ function hitsa_cron_activate_update(){
     Disallow: /?q=user/login/
     Disallow: /?q=user/logout/
     ';
-    variable_set('robotstxt',$robots_text);
+    variable_set('robotstxt', $robots_text);
   }
 }
 /**
@@ -123,13 +125,13 @@ function hitsa_cron_activate_update(){
 
 function hitsa_cron_cronapi()
 {
-     //Siia kirjutada update number
-     $cronsettings_set = variable_get('cronsettings_set');
-     if(empty($cronsettings_set)) {
-         variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
-         variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
-         variable_set('cronsettings_set','TRUE');
-       }
+  //Siia kirjutada update number
+  $cronsettings_set = variable_get('cronsettings_set');
+  if (empty($cronsettings_set)) {
+    variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
+    variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
+    variable_set('cronsettings_set', 'TRUE');
+  }
   $items = [];
   $random_time = variable_get('hitsa_cron_random_time');
   if (empty($random_time)) {
@@ -170,7 +172,7 @@ function hitsa_cron_cronapi()
       ],
     ],
   ];
- 
+
   return $items;
 }
 
@@ -219,7 +221,8 @@ function hitsa_cron_run_update()
     '26',
     '27',
     '28',
-    '29'
+    '29',
+    '30',
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -362,7 +365,8 @@ Vajalik ainult eriala tabeli puhul',
  * @throws FieldException
  * Update to add contacts field to news, contetnt article and events
  */
-function hitsa_cron_up_3($update=null){
+function hitsa_cron_up_3($update = null)
+{
   $field_bases = array();
 
   // Exported field_base: 'field_contacts'.
@@ -597,13 +601,15 @@ function hitsa_cron_up_3($update=null){
     }
   }
   return TRUE;
-}/**
+}
+/**
  * @param null $update
  * @return bool
  * @throws FieldException
  * Update to add contacts field to news, contetnt article and events
  */
-function hitsa_cron_up_4($update=null){
+function hitsa_cron_up_4($update = null)
+{
   $field_bases = array();
 
   // Exported field_base: 'field_contacts'.
@@ -839,38 +845,39 @@ function hitsa_cron_up_4($update=null){
   }
   return TRUE;
 }
-function hitsa_cron_up_5($update=NULL){
-  $modules = array('image_exif_autorotate','imagecache_autorotate');
-  foreach($modules as $module){
-    if(!module_exists($module)){
+function hitsa_cron_up_5($update = NULL)
+{
+  $modules = array('image_exif_autorotate', 'imagecache_autorotate');
+  foreach ($modules as $module) {
+    if (!module_exists($module)) {
       module_enable(array($module));
     }
   }
   $activated = true;
-  foreach($modules as $module){
-    if(!module_exists($module)){
+  foreach ($modules as $module) {
+    if (!module_exists($module)) {
       $activated = false;
     }
   }
-  if($activated){
+  if ($activated) {
     return TRUE;
-  }
-  else{
-    watchdog('hitsa_update_error','Modules were not enabled');
+  } else {
+    watchdog('hitsa_update_error', 'Modules were not enabled');
   }
 }
 
-function hitsa_cron_up_6($update=NULL){
+function hitsa_cron_up_6($update = NULL)
+{
 
   $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
   $main_menu_links = array();
-  foreach($main_menu_tree as $link) {
+  foreach ($main_menu_tree as $link) {
     $main_menu_links[$link['link']['title']] = $link;
   }
-  if(isset($main_menu_links['About us'])){
-    foreach($main_menu_links['About us']['below'] as $about_link){
-      if($about_link['link']['link_title'] =='Galerii' || $about_link['link']['link_title'] =='Gallery' || $about_link['link']['link_title'] == 'Галерея'){
-        if($about_link['link']['link_path'] !='gallery'){
+  if (isset($main_menu_links['About us'])) {
+    foreach ($main_menu_links['About us']['below'] as $about_link) {
+      if ($about_link['link']['link_title'] == 'Galerii' || $about_link['link']['link_title'] == 'Gallery' || $about_link['link']['link_title'] == 'Галерея') {
+        if ($about_link['link']['link_path'] != 'gallery') {
           menu_link_delete($about_link['link']['mlid']);
         }
       }
@@ -880,41 +887,43 @@ function hitsa_cron_up_6($update=NULL){
 
 function hitsa_cron_up_7()
 {
-  module_load_include('install','hitsa_events','hitsa_events');
+  module_load_include('install', 'hitsa_events', 'hitsa_events');
   hitsa_events_create_menu_links();
-  module_load_include('install','hitsa_alumnus','hitsa_alumnus');
+  module_load_include('install', 'hitsa_alumnus', 'hitsa_alumnus');
   hitsa_alumnus_add_menu_links('Duplicate');
   return TRUE;
 }
-function hitsa_cron_up_8(){
-  $block_query = db_select('block','b');
-  $block_query -> fields('b');
-  $block_query -> condition('b.module','hitsa_events','=');
-  $block_query -> condition('b.delta','right_side_block','=');
+function hitsa_cron_up_8()
+{
+  $block_query = db_select('block', 'b');
+  $block_query->fields('b');
+  $block_query->condition('b.module', 'hitsa_events', '=');
+  $block_query->condition('b.delta', 'right_side_block', '=');
   $results = $block_query->execute();
   $blid = null;
-  $blocks =array();
-  while($result = $results->fetchAssoc()){
+  $blocks = array();
+  while ($result = $results->fetchAssoc()) {
     $blocks[] = $result;
   }
-  if(!empty($blocks)){
-   foreach($blocks as $block){
-    $update = db_update('block') // Table name no longer needs {}
-      ->fields(array(
-        'pages' => "calendar\ntraining-calendar\nstudies-calendar",
-      ))
-      ->condition('bid',$block['bid'], '=')
-      ->execute();
-   }
+  if (!empty($blocks)) {
+    foreach ($blocks as $block) {
+      $update = db_update('block') // Table name no longer needs {}
+        ->fields(array(
+          'pages' => "calendar\ntraining-calendar\nstudies-calendar",
+        ))
+        ->condition('bid', $block['bid'], '=')
+        ->execute();
+    }
   }
   block_flush_caches();
   cache_clear_all();
-  module_load_include('install','hitsa_core','hitsa_core');
+  module_load_include('install', 'hitsa_core', 'hitsa_core');
 
   hitsa_core_set_translatable_variables();
   return TRUE;
 }
-function hitsa_cron_up_9(){
+function hitsa_cron_up_9()
+{
   $words = array(
     'Cancel user account' => array(
       'et' => 'Tühista kasutajakonto',
@@ -923,96 +932,97 @@ function hitsa_cron_up_9(){
       'et' => 'Vaheta kasutaja rolli',
     ),
   );
-  module_load_include('inc','hitsa_translation_importer','/includes/hitsa_translation_importer.admin');
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
   hitsa_translations_importer_translations($words);
   drupal_flush_all_caches();
   return TRUE;
 }
-function hitsa_cron_up_10(){
+function hitsa_cron_up_10()
+{
   $items = array();
   $items["node:curriculum:14"] = array(
-        'entity' => 'node',
-        'bundle' => 'curriculum',
-        'dependent' => 'field_subjects_table',
-        'dependee' => 'field_school_selections',
-        'options' => array(
-            'state' => 'visible',
-            'condition' => 'value',
-            'grouping' => 'AND',
-            'effect' => 'show',
-            'effect_options' => array(),
-            'element_view' => array(
-                1 => 1,
-                2 => 2,
-                5 => 0,
-                3 => 0,
-                4 => 0,
-            ),
-            'element_view_per_role' => 0,
-            'element_view_roles' => array(
-                1 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    2 => 2,
-                    5 => 0,
-                    3 => 0,
-                    4 => 0,
-                ),
-            ),
-            'element_edit' => array(
-                1 => 1,
-                3 => 0,
-            ),
-            'element_edit_per_role' => 0,
-            'element_edit_roles' => array(
-                1 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                2 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                3 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-                4 => array(
-                    1 => 1,
-                    3 => 0,
-                ),
-            ),
-            'selector' => '',
-            'values_set' => 1,
-            'value_form' => 'subject-fields',
-            'value' => array(
-                0 => array(
-                    'value' => 'subject-fields',
-                ),
-            ),
-            'values' => array(),
+    'entity' => 'node',
+    'bundle' => 'curriculum',
+    'dependent' => 'field_subjects_table',
+    'dependee' => 'field_school_selections',
+    'options' => array(
+      'state' => 'visible',
+      'condition' => 'value',
+      'grouping' => 'AND',
+      'effect' => 'show',
+      'effect_options' => array(),
+      'element_view' => array(
+        1 => 1,
+        2 => 2,
+        5 => 0,
+        3 => 0,
+        4 => 0,
+      ),
+      'element_view_per_role' => 0,
+      'element_view_roles' => array(
+        1 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
         ),
-    );
+        2 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          2 => 2,
+          5 => 0,
+          3 => 0,
+          4 => 0,
+        ),
+      ),
+      'element_edit' => array(
+        1 => 1,
+        3 => 0,
+      ),
+      'element_edit_per_role' => 0,
+      'element_edit_roles' => array(
+        1 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        2 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        3 => array(
+          1 => 1,
+          3 => 0,
+        ),
+        4 => array(
+          1 => 1,
+          3 => 0,
+        ),
+      ),
+      'selector' => '',
+      'values_set' => 1,
+      'value_form' => 'subject-fields',
+      'value' => array(
+        0 => array(
+          'value' => 'subject-fields',
+        ),
+      ),
+      'values' => array(),
+    ),
+  );
   foreach ($items as $conditional) {
     $ids = array();
     $field = field_info_instance('node', $conditional['dependee'], 'curriculum');
@@ -1023,102 +1033,98 @@ function hitsa_cron_up_10(){
       'dependee' => $field['id'],
       'dependent' => $field2['id'],
     );
-      conditional_fields_dependency_insert($ids['dependee'], $ids['dependent'], $conditional['options']);
+    conditional_fields_dependency_insert($ids['dependee'], $ids['dependent'], $conditional['options']);
   }
 }
-function hitsa_cron_up_11(){
-	$taxonomy = taxonomy_vocabulary_machine_name_load('catering_food_type');
-	$taxonomy = taxonomy_get_tree($taxonomy->vid);
-	foreach($taxonomy as $term){
-		if($term->name=='Koolilõina'){
-			$term->name='Koolilõuna';
-			taxonomy_term_save($term);
-		}
-	}
-	return TRUE;
+function hitsa_cron_up_11()
+{
+  $taxonomy = taxonomy_vocabulary_machine_name_load('catering_food_type');
+  $taxonomy = taxonomy_get_tree($taxonomy->vid);
+  foreach ($taxonomy as $term) {
+    if ($term->name == 'Koolilõina') {
+      $term->name = 'Koolilõuna';
+      taxonomy_term_save($term);
+    }
+  }
+  return TRUE;
 }
-function hitsa_cron_up_12(){
-	$bundles = paragraphs_bundle_load();
-	foreach($bundles as $bundle){
-		if($bundle->name=='Alumnus person'){
-			$bundle->name='Vilistlane';
-		}
-		elseif($bundle->name=='Food'){
-			$bundle->name ='Toit';
-		}
-		elseif($bundle->name=='Contacts'){
-			$bundle->name = 'Kontaktid';
-		}
-		elseif($bundle->name=='Description'){
-			$bundle->name ='Kirjeldus';
-		}
-		elseif($bundle->name=='jobs'){
-			$bundle->name = 'töö';
-		}
-		elseif($bundle->name=='Reception time'){
-			$bundle->name = 'Vastuvõtu aeg';
-		}
-		elseif($bundle->name=='Table'){
-			$bundle->name = 'Tabel';
-		}
-		paragraphs_bundle_save($bundle);
-
-	}
-	return TRUE;
-
+function hitsa_cron_up_12()
+{
+  $bundles = paragraphs_bundle_load();
+  foreach ($bundles as $bundle) {
+    if ($bundle->name == 'Alumnus person') {
+      $bundle->name = 'Vilistlane';
+    } elseif ($bundle->name == 'Food') {
+      $bundle->name = 'Toit';
+    } elseif ($bundle->name == 'Contacts') {
+      $bundle->name = 'Kontaktid';
+    } elseif ($bundle->name == 'Description') {
+      $bundle->name = 'Kirjeldus';
+    } elseif ($bundle->name == 'jobs') {
+      $bundle->name = 'töö';
+    } elseif ($bundle->name == 'Reception time') {
+      $bundle->name = 'Vastuvõtu aeg';
+    } elseif ($bundle->name == 'Table') {
+      $bundle->name = 'Tabel';
+    }
+    paragraphs_bundle_save($bundle);
+  }
+  return TRUE;
 }
 
-function hitsa_cron_up_13(){
-	$menus =  menu_get_menus();
-	foreach($menus as $key => $menu){
-		$loaded_menu = menu_load($key);
-	if($loaded_menu['title']=='Header menu'){
-		$loaded_menu['title'] = 'Päise menüü';
-		menu_save($loaded_menu);
-	}	
-	if($loaded_menu['title']=='Main menu' && $loaded_menu['menu_name']=='hitsa-main-menu'){
-		$loaded_menu['title'] = 'Peamenüü';
-		menu_save($loaded_menu);
-	}	
-	if($loaded_menu['title']=='Quicklinks'){
-		$loaded_menu['title'] = 'Kiirlingid';
-		menu_save($loaded_menu);
-	}	
-	if($loaded_menu['title']=='Footer menu'){
-		$loaded_menu['title'] = 'Jaluse menüü';
-		menu_save($loaded_menu);
-	}	
-	}
+function hitsa_cron_up_13()
+{
+  $menus =  menu_get_menus();
+  foreach ($menus as $key => $menu) {
+    $loaded_menu = menu_load($key);
+    if ($loaded_menu['title'] == 'Header menu') {
+      $loaded_menu['title'] = 'Päise menüü';
+      menu_save($loaded_menu);
+    }
+    if ($loaded_menu['title'] == 'Main menu' && $loaded_menu['menu_name'] == 'hitsa-main-menu') {
+      $loaded_menu['title'] = 'Peamenüü';
+      menu_save($loaded_menu);
+    }
+    if ($loaded_menu['title'] == 'Quicklinks') {
+      $loaded_menu['title'] = 'Kiirlingid';
+      menu_save($loaded_menu);
+    }
+    if ($loaded_menu['title'] == 'Footer menu') {
+      $loaded_menu['title'] = 'Jaluse menüü';
+      menu_save($loaded_menu);
+    }
+  }
 }
-function hitsa_cron_up_14(){
-    $field = field_info_instance('node', 'field_image', 'article');
-    field_delete_instance($field);
-    return TRUE;
+function hitsa_cron_up_14()
+{
+  $field = field_info_instance('node', 'field_image', 'article');
+  field_delete_instance($field);
+  return TRUE;
 }
-function hitsa_cron_up_15(){
+function hitsa_cron_up_15()
+{
   $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
   $main_menu_links = array();
-  foreach($main_menu_tree as $link) {
+  foreach ($main_menu_tree as $link) {
     $main_menu_links[$link['link']['title']] = $link;
   }
-  if(isset($main_menu_links['Student Life'])){
+  if (isset($main_menu_links['Student Life'])) {
     foreach ($main_menu_links['Student Life']['below'] as $link_key => $link) {
-      if(!empty($link['link'])){
-        if($link['link']['link_title']=='Sport'){
+      if (!empty($link['link'])) {
+        if ($link['link']['link_title'] == 'Sport') {
           if (strpos($link['link']['link_path'], 'node/') !== false) {
             $path_alias = (drupal_get_path_alias($link['link']['link_path']));
             $path_old = path_load(array(
               'source' => $link['link']['link_path'],
               'alias' => $path_alias
-            )              );
-            $path_alias_check = path_load( array('source' => 'sport','alias'=>'sport'));
+            ));
+            $path_alias_check = path_load(array('source' => 'sport', 'alias' => 'sport'));
             if (strpos($path_alias, 'sport-') !== false) {
               $alias = array(
                 'source' => $link['link']['link_path'],
                 'alias' => 'sport',
-                );
+              );
               path_save($alias);
-              
             }
           }
         }
@@ -1128,37 +1134,38 @@ function hitsa_cron_up_15(){
   return TRUE;
 }
 
-function hitsa_cron_up_16(){
-  $path_check_et = drupal_lookup_path('source', 'sport-0','et');
+function hitsa_cron_up_16()
+{
+  $path_check_et = drupal_lookup_path('source', 'sport-0', 'et');
   $path_et = path_load($path_check_et);
-  $sport_availible = drupal_lookup_path('source','sport','et');
-  if(empty($sport_availible)){
+  $sport_availible = drupal_lookup_path('source', 'sport', 'et');
+  if (empty($sport_availible)) {
     $path_et['alias'] = 'sport';
     path_save($path_et);
   }
 }
-function hitsa_cron_up_17(){
+function hitsa_cron_up_17()
+{
   $cron_memory_limit = variable_get('ultimate_cron_reserve_memory');
-  if(empty($cron_memory_limit)){
-    variable_set('ultimate_cron_reserve_memory',1024 * 1024 * 2 * 5);
-  }
-  else{
-    if($cron_memory_limit!=1024*1024*2*5){
-      variable_set('ultimate_cron_reserve_memory',1024*1024*2*5);
+  if (empty($cron_memory_limit)) {
+    variable_set('ultimate_cron_reserve_memory', 1024 * 1024 * 2 * 5);
+  } else {
+    if ($cron_memory_limit != 1024 * 1024 * 2 * 5) {
+      variable_set('ultimate_cron_reserve_memory', 1024 * 1024 * 2 * 5);
     }
-
   }
   return TRUE;
 }
 
-function hitsa_cron_up_18(){
+function hitsa_cron_up_18()
+{
   $style = image_style_load('hitsa_hero_banner');
 
-  if(!empty($style['effects'])) {
+  if (!empty($style['effects'])) {
     $ieid = key($style['effects']);
     $effect = image_effect_load($ieid, 'hitsa_hero_banner');
 
-    if(!empty($effect)) {
+    if (!empty($effect)) {
       $effect['data'] = array('width' => 3840, 'height' => '', 'upscale' => 0);
       image_effect_save($effect);
     }
@@ -1167,19 +1174,20 @@ function hitsa_cron_up_18(){
   image_style_flush($image_style);
   return TRUE;
 }
-function hitsa_cron_up_19(){
+function hitsa_cron_up_19()
+{
   $type = variable_get('hitsa_school_type');
-  if($type==1){
+  if ($type == 1) {
     $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
     $main_menu_links = array();
-    foreach($main_menu_tree as $link) {
+    foreach ($main_menu_tree as $link) {
       $main_menu_links[$link['link']['title']] = $link;
     }
-    if(isset($main_menu_links['Student Life'])){
-      if(!empty($main_menu_links['Student Life'])){
-        if(!empty($main_menu_links['Student Life']['below'])){
-          foreach ($main_menu_links['Student Life']['below'] as $main_menu_link){
-            if($main_menu_link['link']['link_path']=='training-calendar'){
+    if (isset($main_menu_links['Student Life'])) {
+      if (!empty($main_menu_links['Student Life'])) {
+        if (!empty($main_menu_links['Student Life']['below'])) {
+          foreach ($main_menu_links['Student Life']['below'] as $main_menu_link) {
+            if ($main_menu_link['link']['link_path'] == 'training-calendar') {
               menu_link_delete($main_menu_link['link']['mlid']);
             }
           }
@@ -1191,11 +1199,13 @@ function hitsa_cron_up_19(){
 
   return TRUE;
 }
-function hitsa_cron_up_20(){
-  module_load_include('install','link','link');
+function hitsa_cron_up_20()
+{
+  module_load_include('install', 'link', 'link');
   link_update_7002();
 }
-function hitsa_cron_up_21(){
+function hitsa_cron_up_21()
+{
   $field_bases = array();
   // Exported field_base: 'field_tab_weight'.
   $field_bases['field_tab_weight'] = array(
@@ -1274,13 +1284,14 @@ function hitsa_cron_up_21(){
   }
 
   foreach ($field_instances as $field_instance) {
-    if(empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))){
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
       field_create_instance($field_instance);
     };
   }
   return TRUE;
 }
-function hitsa_cron_up_22(){
+function hitsa_cron_up_22()
+{
   $field_bases = array();
   // Exported field_base: 'field_tab_weight'.
   $field_bases['field_logo_area'] = array(
@@ -1398,13 +1409,14 @@ function hitsa_cron_up_22(){
   }
 
   foreach ($field_instances as $field_instance) {
-    if(empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))){
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
       field_create_instance($field_instance);
     };
   }
   return TRUE;
 }
-function  hitsa_cron_up_23(){
+function  hitsa_cron_up_23()
+{
   $field_bases = array();
   // Exported field_base: 'field_fa_icon'.
   $field_bases['field_fa_icon'] = array(
@@ -1518,7 +1530,7 @@ Kui peaks olema valitud mõlemad Ikooni valik  kui ka Font Awesome Ikoon, siis e
   }
 
   foreach ($field_instances as $field_instance) {
-    if(empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))){
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
       field_create_instance($field_instance);
     };
   }
@@ -1531,7 +1543,8 @@ Kui peaks olema valitud mõlemad Ikooni valik  kui ka Font Awesome Ikoon, siis e
     ->execute();
   return TRUE;
 }
-function hitsa_cron_up_24(){
+function hitsa_cron_up_24()
+{
   $image_style = image_style_load('hitsa_core_thumbnail');
   if (!empty($image_style['effects'])) {
     foreach ($image_style['effects'] as $effect_key => $effect) {
@@ -1556,30 +1569,33 @@ function hitsa_cron_up_24(){
   }
   return TRUE;
 }
-function hitsa_cron_up_25($update=NULL){
+function hitsa_cron_up_25($update = NULL)
+{
   $modules = array('robotstxt');
-  foreach($modules as $module){
-    if(!module_exists($module)){
+  foreach ($modules as $module) {
+    if (!module_exists($module)) {
       module_enable(array($module));
     }
   }
   drupal_flush_all_caches();
   return TRUE;
 }
-function hitsa_cron_up_26(){
+function hitsa_cron_up_26()
+{
   $blob = 'a:8:{s:5:"title";a:1:{s:5:"value";s:46:"[node:title] | [current-page:pager][site:name]";}s:11:"description";a:1:{s:5:"value";s:14:"[node:summary]";}s:8:"og:title";a:1:{s:5:"value";s:12:"[node:title]";}s:14:"og:description";a:1:{s:5:"value";s:14:"[node:summary]";}s:15:"og:updated_time";a:1:{s:5:"value";s:23:"[node:changed:custom:c]";}s:8:"og:image";a:1:{s:5:"value";s:36:"[node:cp_image][node:subpage_images]";}s:22:"article:published_time";a:1:{s:5:"value";s:23:"[node:created:custom:c]";}s:21:"article:modified_time";a:1:{s:5:"value";s:23:"[node:changed:custom:c]";}}';
-  if(!empty($blob)){
-    db_merge('metatag_config')->key(array('instance'=>'node'))->fields(array(
+  if (!empty($blob)) {
+    db_merge('metatag_config')->key(array('instance' => 'node'))->fields(array(
       'instance' => 'node',
       'config' => $blob,
-  ))->execute();
+    ))->execute();
   }
   return TRUE;
 }
-function hitsa_cron_up_27(){
+function hitsa_cron_up_27()
+{
   $modules = array('hitsa_rss');
-  foreach($modules as $module){
-    if(!module_exists($module)){
+  foreach ($modules as $module) {
+    if (!module_exists($module)) {
       module_enable(array($module));
     }
   }
@@ -1587,52 +1603,77 @@ function hitsa_cron_up_27(){
   drupal_flush_all_caches();
   return TRUE;
 }
-function hitsa_cron_up_28(){
-  module_load_include('install','tablefield','tablefield');
+function hitsa_cron_up_28()
+{
+  module_load_include('install', 'tablefield', 'tablefield');
   tablefield_update_7007();
   db_update('system')
     ->fields(array('schema_version' => '7007'))
     ->condition('name', 'tablefield', '=')
     ->execute();
-    module_load_include('install','system','system');
-    system_update_7082();
-    db_update('system')
+  module_load_include('install', 'system', 'system');
+  system_update_7082();
+  db_update('system')
     ->fields(array('schema_version' => '7082'))
     ->condition('name', 'system', '=')
     ->execute();
   return TRUE;
 }
 
-function hitsa_cron_up_29(){
+function hitsa_cron_up_29()
+{
   // drupal_flush_all_caches();
   $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
   $main_menu_links = array();
-  foreach($main_menu_tree as $link) {
+  foreach ($main_menu_tree as $link) {
     $main_menu_links[$link['link']['title']] = $link;
   }
-  if(isset($main_menu_links['Student Life'])){
+  if (isset($main_menu_links['Student Life'])) {
     foreach ($main_menu_links['Student Life']['below'] as $link_key => $link) {
-      if(!empty($link['link'])){
-        if($link['link']['link_title']=='Catering'){
+      if (!empty($link['link'])) {
+        if ($link['link']['link_title'] == 'Catering') {
           if (strpos($link['link']['link_path'], 'node/') !== false) {
             $path_alias = (drupal_get_path_alias($link['link']['link_path']));
-            dpm($path_alias);
             $path_old = path_load(array(
               'source' => $link['link']['link_path'],
               'alias' => $path_alias
-            )              );
-            $path_alias_check = path_load( array('source' => 'catering','alias'=>'catering'));
+            ));
+            $path_alias_check = path_load(array('source' => 'catering', 'alias' => 'catering'));
             if (strpos($path_alias, 'catering-') !== false) {
               $alias = array(
                 'source' => $link['link']['link_path'],
                 'alias' => 'catering',
-                );
+              );
               path_save($alias);
-              
             }
           }
         }
       }
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Update for catering block;.
+ */
+function hitsa_cron_up_30() {
+  $blocks_list = db_select('block', 'b');
+  $blocks_list->fields('b');
+  $blocks_list->condition('module', 'hitsa_catering');
+  $blocks_list->condition('status', 1);
+  $blocks_list->condition('pages', '', '!=');
+  $results = $blocks_list->execute();
+  while ($block = $results->fetchAssoc()) {
+    if (!empty($block['pages']) && $block['status'] == 1) {
+      $pages = $block['pages'];
+      $pages .= "\npitanie\npitanie/*";
+      $num_updated = db_update('block')
+        ->fields(array(
+          'pages' => $pages,
+        ))
+        ->condition('bid', $block['bid'], '=')
+        ->execute();
     }
   }
   return TRUE;
