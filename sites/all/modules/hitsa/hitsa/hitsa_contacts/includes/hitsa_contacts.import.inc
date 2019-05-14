@@ -7,7 +7,8 @@ function hitsa_contacts_import_form($form, &$form_state) {
   switch ($form_state['stage']) {
     case 'upload_file':
       $form['instuctions'] = array(
-        '#markup' => '<div>Esimeses tulbas peaks olema inimest eristav number, selle numbri mõte on see, et selle abil saab teha tulevikus failis uuendusi ning saab uuesti sisse importida<br>
+        '#markup' => '<div>
+        Esimeses tulbas peaks olema inimest eristav number, selle numbri mõte on see, et selle abil saab teha tulevikus failis uuendusi ning saab uuesti sisse importida<br>
         Teise tulpa kirjutada eesnimi <br>
         Kolmandasse tulpa kirjutada perekonnanimi<br>
         Neljandasse tulpa kirjutada ametikoht<br>
@@ -18,7 +19,14 @@ function hitsa_contacts_import_form($form, &$form_state) {
         Üheksandasse tulpa kirjutada cv lingi aadress kui see olemas on<br>
         Kümnendasse tulpa tuleks kirjutada osakonnad ja järjekord seal osakonnas näiteks: Juhtkond;1|Õpetajad;2 <br>
         Kui salvestate seda, siis tuleks seda teha .csv formaadis ja valida eraldajaks TABi
-        </div>',
+        </div>
+        <br>
+        <a target="_blank" href="https://projektid.hitsa.ee/pages/viewpage.action?spaceKey=KVA&title=Kontaktide+importimine+.csv+failist">
+        Juhend, kuidas teha exceli tabelist meile vastuvõetavat csv faili
+        </a>
+        <br>
+        <br>
+        ',
       );
 
       $form['upload'] = array(
@@ -119,7 +127,6 @@ function hitsa_contacts_parse_csv_file($csv_content) {
 
 function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes) {
   global $user;
-
   $contact_id = $contact_array[0];
   if(isset($existings_nodes[$contact_id])) {
     // Node exists, update existing node
