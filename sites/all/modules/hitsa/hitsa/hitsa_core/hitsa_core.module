@@ -36,6 +36,13 @@ function hitsa_core_menu()
     'access callback' => 'user_access',
     'access arguments' => array('administer hitsa page settings'),
   );
+  $items['admin/hitsa/rss'] = array(
+    'title' => 'Rss-feeds',
+    'type' => MENU_NORMAL_ITEM,
+    'page callback' => 'hitsa_core_rss_feeds',
+    'access callback' => 'user_access',
+    'access arguments' => array('administer hitsa page settings'),
+  );
   $items['admin/hitsa/block-titles'] = array(
     'title' => 'Block titles',
     'type' => MENU_NORMAL_ITEM,
@@ -129,6 +136,26 @@ function hitsa_core_menu()
   );
 
   return $items;
+}
+
+function hitsa_core_rss_feeds() {
+  $feeds = array();
+  $feeds[] = array(
+    'link' => url('events-feed.xml'),
+    'title' => 'Sündmuste feed',
+    'desc' => 'Sündmuste feed link näitab viimast 20'
+  );
+  $feeds[] = array(
+    'link' => url('uudise-feed.xml'),
+    'title' => 'Uuuidste feed',
+    'desc' => 'Uudise feed link näitab viimast 20'
+  );
+  $build = array();
+
+  $build['page'] = array(
+    '#markup' => theme('hitsa_core_rss_feeds', array('feeds' => $feeds))
+  );
+  return $build;
 }
 
 function hitsa_core_contacts_departments()
@@ -333,6 +360,12 @@ function hitsa_core_redirect_content_type($node)
     case 'alumnus':
       drupal_goto('alumnus');
 
+      break;
+    case 'contact_location':
+      drupal_goto('contact');
+      break;
+    case 'contact':
+      drupal_goto('contact');
       break;
     default:
       return node_page_view($node);

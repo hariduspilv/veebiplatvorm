@@ -170,6 +170,11 @@ function hitsa_core_theme()
     'template' => 'login-mobile-id-form',
     'path' => drupal_get_path('module', 'hitsa_core') . '/templates',
   );
+  $items['hitsa_core_rss_feeds'] = array(
+    'render element' => 'form',
+    'template' => 'rss-template',
+    'path' => drupal_get_path('module', 'hitsa_core') . '/templates',
+  );
 
   $items['hitsa_core_image_caption'] = array(
     'template' => 'single_image_figure',
