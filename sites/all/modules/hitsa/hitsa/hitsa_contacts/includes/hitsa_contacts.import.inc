@@ -167,7 +167,11 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
   if(!empty($contact_array[9])) {
     $jd_array = $contact_array[9];
     $job_deparments = array();
+
     foreach($jd_array as $jd) {
+      $jd[0] = str_replace('"', '', $jd[0]);
+      $jd[1] = str_replace('"', '', $jd[1]);
+
       $entity = entity_create('paragraphs_item', array('field_name' => 'contact_departments', 'bundle' => 'contacts_department'));
       $entity->setHostEntity('node', $emw_node->value());
       $entity->save();
@@ -175,7 +179,7 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
       $emw_entity = entity_metadata_wrapper('paragraphs_item', $entity);
 
       // Weight
-      $emw_entity->department_weight = $jd[1];
+      $emw_entity->department_weight =intval( $jd[1]);
 
       // Department taxonomy term
       $department_term = taxonomy_get_term_by_name($jd[0], 'contacts_department');
