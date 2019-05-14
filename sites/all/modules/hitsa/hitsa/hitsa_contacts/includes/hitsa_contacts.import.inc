@@ -12,17 +12,17 @@ function hitsa_contacts_import_form($form, &$form_state) {
         Teise tulpa kirjutada eesnimi <br>
         Kolmandasse tulpa kirjutada perekonnanimi<br>
         Neljandasse tulpa kirjutada ametikoht<br>
-        Viiendasse tulpakirjutada telefoninumbrid kujul 55555555|55555555<br>
+        Viiendasse tulpa kirjutada telefoninumbrid. Mitme väärtuse sisestamiseks tuleb need eraldada püstkriipusga (|) Näiteks:<b>55555555|55555555</b><br>
         Kuuendasse tulpa kirjutada e-posti aadress<br>
         Seitsmendasse tulpa kirjutada muu informatsioon<br>
-        Kaheksandasse tulpa kirjutada vastuvõtu-või konsultatsiooniajad kujul K:13-14|N14-17<br>
+        Kaheksandasse tulpa kirjutada vastuvõtu-või konsultatsiooniajad vaba tekstina. Mitme väärtuse sisestamiseks tuleb need eraldada püstkriipusga (|) Näiteks: <b>K:13-14|N:14-17</b> <br>
         Üheksandasse tulpa kirjutada cv lingi aadress kui see olemas on<br>
-        Kümnendasse tulpa tuleks kirjutada osakonnad ja järjekord seal osakonnas näiteks: Juhtkond;1|Õpetajad;2 <br>
+        Kümnendasse tulpa tuleks kirjutada osakonnad ja järjekord  Mitme väärtuse sisestamiseks tuleb need eraldada püstkriipusga (|) Näiteks: <b>Juhtkond;1|Õpetajad;2</b><br>
         Kui salvestate seda, siis tuleks seda teha .csv formaadis ja valida eraldajaks TABi
         </div>
         <br>
         <a target="_blank" href="https://projektid.hitsa.ee/pages/viewpage.action?spaceKey=KVA&title=Kontaktide+importimine+.csv+failist">
-        Juhend, kuidas teha exceli tabelist meile vastuvõetavat csv faili
+        Juhend, kuidas teha exceli tabelist vastuvõetav csv faili
         </a>
         <br>
         <br>
