@@ -43,13 +43,13 @@ function hitsa_catering_block_info()
         'weight' => 100,
     );
     $school_type = hitsa_core_get_school_type();
-    // $blocks['catering_block_front_page'] = array(
-    //     'info' => t('Catering front page'),
-    //     'region' => 'content',
-    //     'status' => ($school_type==2)?0:1,
-    //     'visibility' => BLOCK_VISIBILITY_LISTED,
-    //     'pages' => '<front>',
-    // );
+    $blocks['catering_block_front_page'] = array(
+        'info' => t('Catering front page'),
+        'region' => 'content',
+        'status' => ($school_type==2)?0:1,
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => '<front>',
+    );
     return $blocks;
 }
 
@@ -68,13 +68,13 @@ function hitsa_catering_block_view($delta = '')
                 '#markup' => $catering_table,
             );
             break;
-        // case 'catering_block_front_page':
-        //     $block['subject'] = t('');
-        //     $block['content'] = array(
-        //         '#markup' => hitsa_catering_front_page_block(),
-        //     );
+        case 'catering_block_front_page':
+            $block['subject'] = t('');
+            $block['content'] = array(
+                '#markup' => hitsa_catering_front_page_block(),
+            );
 
-        //     break;
+            break;
     }
     return $block;
 }
@@ -1144,20 +1144,23 @@ function hitsa_catering_front_page_block()
                         if (!empty($food->field_food_subcategory)) {
                             $food_subcategory = $food->field_food_subcategory[LANGUAGE_NONE][0]['target_id'];
                             $food_subcategory = taxonomy_term_load($food_subcategory);
+                              $tag = i18n_taxonomy_term_get_translation($food_subcategory, $language->language);
+                                     $translated_subcategory = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
+
                             if (!empty($food_subcategory->field_food_icon)) {
                                 $icon = 'before-' . $food_subcategory->field_food_icon[LANGUAGE_NONE][0]['value'];
                                 $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
                                 $foods[$sub_category_name][$food_name]['name'] = $food_name;
-                                $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
+                                $foods[$sub_category_name][$food_name]['subcategory'] = $translated_subcategory;
                                 $foods[$sub_category_name][$food_name]['icon'] = $icon;
                             } else {
                                 $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
                                 $foods[$sub_category_name][$food_name]['name'] = $food_name;
-                                $foods[$sub_category_name][$food_name]['subcategory'] = $sub_category_name;
+                                $foods[$sub_category_name][$food_name]['subcategory'] = $translated_subcategory;
                                 if ($sub_category_name == 'Dessert') {
                                     $foods[$sub_category_name][$food_name]['icon'] = 'before-sweet';
                                 } else {
@@ -1215,19 +1218,21 @@ function hitsa_catering_front_page_block()
                             if (!empty($food->field_food_subcategory)) {
                                 $food_subcategory = $food->field_food_subcategory['und'][0]['target_id'];
                                 $food_subcategory = taxonomy_term_load($food_subcategory);
+                                 $tag = i18n_taxonomy_term_get_translation($food_subcategory, $language->language);
+                                     $translated_subcategory = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
 
                                 if (!empty($food_subcategory->field_food_icon)) {
                                     $icon = 'before-' . $food_subcategory->field_food_icon['und'][0]['value'];
                                     $sub_category_name = $food_subcategory->name;
                                     $foods_tomorrow[$sub_category_name][$f]['name'] = $food_name;
-                                    $foods_tomorrow[$sub_category_name][$f]['subcategory'] = $sub_category_name;
+                                    $foods_tomorrow[$sub_category_name][$f]['subcategory'] = $translated_subcategory;
                                     $foods_tomorrow[$sub_category_name][$f]['icon'] = $icon;
                                 } else {
                                     $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
                                     $foods_tomorrow[$sub_category_name][$f]['name'] = $food_name;
-                                    $foods_tomorrow[$sub_category_name][$f]['subcategory'] = $sub_category_name;
+                                    $foods_tomorrow[$sub_category_name][$f]['subcategory'] = $translated_subcategory;
                                     if ($sub_category_name == 'Dessert') {
                                         $foods_tomorrow[$sub_category_name][$f]['icon'] = 'before-sweet';
                                     } else {
@@ -1284,19 +1289,21 @@ function hitsa_catering_front_page_block()
                             if (!empty($food->field_food_subcategory)) {
                                 $food_subcategory = $food->field_food_subcategory['und'][0]['target_id'];
                                 $food_subcategory = taxonomy_term_load($food_subcategory);
+                                  $tag = i18n_taxonomy_term_get_translation($food_subcategory, $language->language);
+                                     $translated_subcategory = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
 
                                 if (!empty($food_subcategory->field_food_icon)) {
                                     $icon = 'before-' . $food_subcategory->field_food_icon['und'][0]['value'];
                                     $sub_category_name = $food_subcategory->name;
                                     $foods_tomorrow[$sub_category_name][$f]['name'] = $food_name;
-                                    $foods_tomorrow[$sub_category_name][$f]['subcategory'] = $sub_category_name;
+                                    $foods_tomorrow[$sub_category_name][$f]['subcategory'] = $translated_subcategory;
                                     $foods_tomorrow[$sub_category_name][$f]['icon'] = $icon;
                                 } else {
                                     $sub_category_name = $food_subcategory->name;
 //                                $foods[$food_name]['subcategory'] = $sub_category_name;
 //                                $foods[$food_name]['icon'] = $icon;
                                     $foods_tomorrow[$sub_category_name][$f]['name'] = $food_name;
-                                    $foods_tomorrow[$sub_category_name][$f]['subcategory'] = $sub_category_name;
+                                    $foods_tomorrow[$sub_category_name][$f]['subcategory'] = $translated_subcategory;
                                     if ($sub_category_name == 'Dessert') {
                                         $foods_tomorrow[$sub_category_name][$f]['icon'] = 'before-sweet';
                                     } else {

@@ -147,8 +147,8 @@ function hitsa_core_rss_feeds() {
   );
   $feeds[] = array(
     'link' => url('uudise-feed.xml'),
-    'title' => 'Uuuidste feed',
-    'desc' => 'Uudise feed link näitab viimast 20'
+    'title' => 'Uudiste feed',
+    'desc' => 'Uudiste feedi link näitab viimast 20'
   );
   $build = array();
 
