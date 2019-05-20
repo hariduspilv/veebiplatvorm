@@ -85,13 +85,13 @@
   <ul class="tabs primary">
     <li><a href="<?php print url('node/' . $node->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
     <li><a href="<?php print url('node/' . $node->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
-  </ul>          
+  </ul>
 </div>
 <?php endif; ?>
 
 <div class="object object-horizontal">
   <div class="object-inner">
-    
+
     <div class="object-image object-image-circle<?php if(empty($content['contact_image'])) print " object-no_image"; ?>"
     <?php if(!empty($content['contact_image'])) print ' style="background-image:url(' . image_style_url('hitsa_contacts_page_image', $content['contact_image']['#items'][0]['uri']) . ')"'; ?>>
       <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>" />
@@ -99,11 +99,11 @@
     <div class="object-content">
       <div class="object-content_col">
         <p>
-          <b><?php print sprintf('%s %s', 
-            !empty($content['first_name'][0]['#markup']) ? $content['first_name'][0]['#markup'] : '', 
+          <b><?php print sprintf('%s %s',
+            !empty($content['first_name'][0]['#markup']) ? $content['first_name'][0]['#markup'] : '',
             !empty($content['last_name'][0]['#markup']) ? $content['last_name'][0]['#markup'] : ''
-            ); // Name ?> 
-          <?php 
+            ); // Name ?>
+          <?php
           $attachment_type = !empty($content['cv_attachment_type']) ? $content['cv_attachment_type']['#items'][0]['value'] : NULL;
           if(!empty($content[$attachment_type])): // Contact CV ?>
           <a target="_blank" href="<?php if($attachment_type === 'contact_cv') {print check_url($content[$attachment_type]['#items'][0]['url']);} else print file_create_url($content[$attachment_type]['#items'][0]['uri']); ?>">(CV)</a>
@@ -112,7 +112,9 @@
         </p>
         <p>
           <?php if($job_position_field = field_get_items('node', $node, 'job_position')): // Job position ?>
-            <?php $job_position = field_view_value('node', $node, 'job_position', $job_position_field[0]); print render($job_position); ?><br />
+          <?php foreach($job_position_field as $job_field):?>
+            <?php $job_position = field_view_value('node', $node, 'job_position', $job_field); print render($job_position); ?><br />
+            <?php endforeach?>
           <?php endif; ?>
           <?php if($phone_nrs = field_get_items('node', $node, 'phone_nr')): // Phone Nrs
             foreach($phone_nrs as $p): ?>

@@ -547,6 +547,11 @@ function hitsa_core_render_sitemap()
  */
 function hitsa_core_form_alter(&$form, &$form_state, $form_id)
 {
+  if(isset($form['#entity_type'])){
+    if($form['#entity_type']=='node'){
+      unset($form['actions']['preview']);
+    }
+  }
   if (!empty($form['body']) && $form['#node']->type !== 'curriculum') {
     //$form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
     //$form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;

@@ -1,5 +1,5 @@
 <?php if(!empty($locations)): ?>
-  <?php 
+  <?php
   $i = 0;
   foreach($locations as $location): ?>
   <div class="block block-narrow <?php if($type === 'primary') {print 'sm-show';} else if($i === 0) print 'sm-hide'; ?>">
@@ -7,16 +7,16 @@
       <ul class="tabs primary" style="margin-bottom: 30px;">
         <li><a href="<?php print url('node/' . $location->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
         <li><a href="<?php print url('node/' . $location->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
-      </ul>          
+      </ul>
     <?php endif; ?>
     <h2 class="block-title sm-borderless"><?php print check_plain($location->title); ?></h2>
-    
+
     <div class="accordion accordion-xs" data-plugin="accordion">
-                  
+
       <div class="accordion-entry">
         <div class="accordion-title"><?php print t('General information'); ?></div>
         <div class="accordion-content">
-                      
+
           <ul class="list-details">
             <?php if(!empty($location->location_address)): ?>
             <li>
@@ -39,8 +39,14 @@
               <div class="before-envelope"></div>
               <div class="list-details_text">
                 <p>
-                  <?php print spamspan(check_plain($location->e_mail[LANGUAGE_NONE][0]['email'])); ?>
+                <a href="javascript:void(0);" class="email-tooltip tooltipstered" data-tooltip-content="#email-<?php print $i?>"><?php print t('E-mail')?> </a>
+
                 </p>
+                <div class="d-none">
+                                  <div id="email-<?php print $i?>" class="tooltip-content">
+                                    <a href="mailto:vkhk@vkhk.ee" class="highlight-1"> <?php print spamspan(check_plain($location->e_mail[LANGUAGE_NONE][0]['email'])); ?></a>
+                                  </div><!--tooltip-content-->
+                                 </div><!--/d-none-->
               </div><!--/list-details_text-->
             </li>
             <?php endif; ?>
@@ -53,7 +59,7 @@
             </li>
             <?php endif; ?>
           </ul><!--/list-details-->
-                      
+
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php if(!empty($location->location_coordinates)): ?>
@@ -65,17 +71,17 @@
         <?php else:?>
         <a href="http://maps.google.com" class="map-wrapper">
         <?php endif;?>
-          
-						<div class="map" data-plugin="googleMaps" data-coords="<?php 
-						print sprintf('%s,%s', $location->location_coordinates[LANGUAGE_NONE][0]['lat'], 
-						$location->location_coordinates[LANGUAGE_NONE][0]['lng']); ?>" 
+
+						<div class="map" data-plugin="googleMaps" data-coords="<?php
+						print sprintf('%s,%s', $location->location_coordinates[LANGUAGE_NONE][0]['lat'],
+						$location->location_coordinates[LANGUAGE_NONE][0]['lng']); ?>"
 						data-icon="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/mapIcon.png'; ?>" data-zoom="15"></div>
 						<img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>">
 					</a>
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php endif; ?>
-      
+
       <?php if(!empty($location->location_parking) || !empty($location->location_parking_attachment)): ?>
       <div class="accordion-entry">
         <div class="accordion-title"><?php print t('Parking'); ?></div>
@@ -95,7 +101,7 @@
                     <?php print t('Attachment'); ?>
                   <?php endif; ?>
                   </a>
-                  
+
                 </p>
               </div>
             </li>
@@ -104,7 +110,7 @@
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php endif; ?>
-      
+
       <?php if(!empty($location->location_transport)): ?>
       <div class="accordion-entry">
         <div class="accordion-title"><?php print t('Transportation'); ?></div>
@@ -113,11 +119,11 @@
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php endif; ?>
-        
+
     </div><!--/accordion-->
-               
+
   </div><!--/block-->
-  <?php 
+  <?php
   $i++;
   endforeach; ?>
 <?php endif; ?>

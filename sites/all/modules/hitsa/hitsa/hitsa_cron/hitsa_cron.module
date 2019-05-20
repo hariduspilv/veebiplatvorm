@@ -223,6 +223,7 @@ function hitsa_cron_run_update()
     '28',
     '29',
     '30',
+    '31'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -1676,5 +1677,40 @@ function hitsa_cron_up_30() {
         ->execute();
     }
   }
+  return TRUE;
+}
+/**
+ * Update for updateng job position cardinality.
+ */
+function hitsa_cron_up_31(){
+  $field_bases = array();
+  $field_bases['job_position'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'job_position',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'label' => 'Position',
+    'locked' => 1,
+    'module' => 'entityreference',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'handler' => 'base',
+      'handler_settings' => array(
+        'target_bundles' => array(
+          0 => 'contacts_job_position',
+        ),
+      ),
+      'target_type' => 'taxonomy_term',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+  field_update_field($field_bases['job_position']);
   return TRUE;
 }
