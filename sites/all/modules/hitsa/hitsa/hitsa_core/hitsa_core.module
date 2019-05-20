@@ -450,9 +450,13 @@ function hitsa_core_block_info()
 
   return $blocks;
 }
-
-function hitsa_core_block_view($delta = '')
-{
+/**
+ * Function to create block view.
+ *
+ * @param string $delta
+ *   Machine name for block.
+ */
+function hitsa_core_block_view($delta = '') {
   $output = array();
   $school_type = hitsa_core_get_school_type();
   switch ($delta) {
