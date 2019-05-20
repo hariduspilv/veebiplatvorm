@@ -163,24 +163,27 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
   foreach ($job_positions as $key => $job_pos) {
     $job_position_term = taxonomy_get_term_by_name($job_pos, 'contacts_job_position');
     if(!empty($job_position_term)) {
-      $emw_node->job_position = reset($job_position_term);
-      $job_parts['und'][]['target_id']=reset($job_position_term)->tid;
+      $existing = reset($job_position_term);
+      // krumo($existing);
+      // $emw_node->job_position = $existing;
+      $job_parts['und'][]['target_id'] = $existing->tid;
     } else {
       // Create new taxonomy term
       $job_position_voc = taxonomy_vocabulary_machine_name_load('contacts_job_position');
       $job_position_tid = _create_taxonomy_term($job_pos, $job_position_voc->vid);
-      // krumo($job_position_tid);
+
       // Set new taxonomy term
 
       $job_parts['und'][]['target_id']=$job_position_tid;
-      $emw_node->job_position = $job_position_tid;
+      // $emw_node->job_position = $job_position_tid;
     }
   }
-
   $emw_node->contact_departments = array();
   $emw_node->save();
 
   $node->job_position = $job_parts;
+
+  krumo($node);
   node_save($node);
   // Department
   if(!empty($contact_array[9])) {
