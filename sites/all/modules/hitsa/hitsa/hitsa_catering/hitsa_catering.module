@@ -70,9 +70,9 @@ function hitsa_catering_block_view($delta = '')
             break;
         case 'catering_block_front_page':
             $block['subject'] = t('');
-            $block['content'] = array(
-                '#markup' => hitsa_catering_front_page_block(),
-            );
+            // $block['content'] = array(
+            //     '#markup' => hitsa_catering_front_page_block(),
+            // );
 
             break;
     }
