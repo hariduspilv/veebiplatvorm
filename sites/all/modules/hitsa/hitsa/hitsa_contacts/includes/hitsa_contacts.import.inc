@@ -183,7 +183,7 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
 
   $node->job_position = $job_parts;
 
-  krumo($node);
+//  krumo($node);
   node_save($node);
   // Department
   if(!empty($contact_array[9])) {

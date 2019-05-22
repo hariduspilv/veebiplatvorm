@@ -105,8 +105,10 @@
             ); // Name ?>
           <?php
           $attachment_type = !empty($content['cv_attachment_type']) ? $content['cv_attachment_type']['#items'][0]['value'] : NULL;
-          if(!empty($content[$attachment_type])): // Contact CV ?>
-          <a target="_blank" href="<?php if($attachment_type === 'contact_cv') {print check_url($content[$attachment_type]['#items'][0]['url']);} else print file_create_url($content[$attachment_type]['#items'][0]['uri']); ?>">(CV)</a>
+          if(!empty($content[$attachment_type]&&!empty($content[$attachment_type]['#items'][0]['url']))):
+              if(!empty($content[$attachment_type])): // Contact CV ?>
+                <a target="_blank" href="<?php if($attachment_type === 'contact_cv') {print check_url($content[$attachment_type]['#items'][0]['url']);} else print file_create_url($content[$attachment_type]['#items'][0]['uri']); ?>">(CV)</a>
+              <?php endif; ?>
           <?php endif; ?>
           </b>
         </p>
