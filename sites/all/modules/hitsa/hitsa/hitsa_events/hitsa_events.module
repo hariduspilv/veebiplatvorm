@@ -1012,6 +1012,7 @@ function hitsa_events_get_time_periods()
 
 function hitsa_events_front_page_block($type_override=null)
 {
+    hitsa_core_updates_installer();
     global $language;
     $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'event'));
     $school_type = hitsa_core_get_school_type();

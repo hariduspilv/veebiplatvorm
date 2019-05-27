@@ -33,7 +33,7 @@ function hitsa_catering_block_info()
     $blocks = array();
 
     // This example comes from node.module.
-    $pages = "catering\ncatering/*\ntoitlustamine\ntoitlustamine/*\ncontent/toitlustamine\ncontent/toitlustamine/*\npitanie\npitanie/*";
+    $pages = "catering\ncatering/*\ntoitlustamine\ntoitlustamine/*\ncontent/toitlustamine\ncontent/toitlustamine/*\npitanie\npitanie/*\nпитание";
     $blocks['catering_block'] = array(
         'info' => t('Catering ' . ' block'),
         'region' => 'content',
@@ -370,6 +370,7 @@ function hitsa_catering_node_presave($node)
 function hitsa_catering_week($start_date = null)
 {
     global $language;
+    global $user;
     $build = array();
     $catering_provider_tid = null;
     $catering_provider = null;
@@ -542,11 +543,12 @@ function hitsa_catering_week($start_date = null)
     if(!empty($loaded_menu) && empty($build['catering_edit']) && empty($build['catering_edit']['#markup'])){
 
       $edit_url = url('node/' . $loaded_menu->nid . '/edit');
-      $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li>';
-
-      $translate_url = url('node/' . $loaded_menu->nid . '/translate');
-      $edit_links .= '<li><a href="' . $translate_url . '">' . t('Translate') . '</a></li>';
-      $edit_links.='</ul>';
+      if($user->uid!=0){
+        $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li>';
+        $translate_url = url('node/' . $loaded_menu->nid . '/translate');
+        $edit_links .= '<li><a href="' . $translate_url . '">' . t('Translate') . '</a></li>';
+        $edit_links.='</ul>';
+      }
       $tabs = $edit_links;
       $edit_array = array();
       $edit_array['catering_edit']['#markup'] = $tabs;
