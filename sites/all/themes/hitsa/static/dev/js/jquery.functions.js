@@ -1,7 +1,11 @@
 $(document).ready(function(){
    setTimeout(function() {
       $(window).anchorScroll();
-	 }, 0);
+   }, 0);
+  $('.email-tooltip').tooltipster({
+    trigger: 'click',
+    interactive: true
+  });
 });
 
 if ('addEventListener' in document) {
@@ -613,23 +617,63 @@ $.fn.dropdownMenu = function(){
 $.fn.datepickerRange = function(){
    var main = $(this);
 	var parent = main.parents(".form-item:first");
-	
+  
+  function updateCalendar() {
+    setTimeout(function(){
+      var event_dates = $("[data-eventdate]");
+      var td = $(".calendar-table").find("td:not(.off)");
+      td.removeClass("event");
+      event_dates.each(function(){
+        var obj = $(this);
+        var obj_date = obj.attr("data-eventdate").split('|');
+        for (var i in obj_date) {
+          td.filter("[data-date='" + obj_date[i] + "']").addClass("event");
+        }
+      });
+    }, 150);
+  }
 	parent.bind("click", function(e){
 		if( $(e.target).is(parent) ){
 			main.trigger("focus");
 		}
 	});
-	
-   main.addClass("datepicker-range").daterangepicker({
-      autoApply: true,
-      autoUpdateInput: false,
-      locale: translations.datepicker['default'],
-      opens: "center"
-   }, function(chosen_date, chosen_date2) {
-      //alert(chosen_date);
-      main.val(chosen_date.format('DD/MM/YYYY') + " - " + chosen_date2.format('DD/MM/YYYY')).trigger("change");
-      
-   });
+	if ($("#calendar_daterangepicker").length > 0) {
+    
+    var picker = main.addClass("datepicker-range").daterangepicker({
+        parentEl: "#calendar_daterangepicker",
+        autoApply: true,
+        autoUpdateInput: false,
+        locale: translations.datepicker['default'],
+        opens: "center"
+    });
+    picker.on('apply.daterangepicker', function(ev, picker) {
+      main.val(picker.startDate.format('DD/MM/YYYY') + " - " + picker.endDate.format('DD/MM/YYYY'));
+    });
+    
+    $(window).on("querychange calendar:update", function(){
+      updateCalendar();
+    });
+
+    picker.data('daterangepicker').hide = function () {};
+    picker.data('daterangepicker').show();
+    main.on("change", function(){
+      var obj = $(this);
+      if (obj.val() != '') {
+        obj.val(picker.data('daterangepicker').startDate.format('DD/MM/YYYY') + " - " + picker.data('daterangepicker').endDate.format('DD/MM/YYYY'));
+      }
+    });
+  } else {
+    var picker = main.addClass("datepicker-range").daterangepicker({
+        autoApply: true,
+        autoUpdateInput: false,
+        locale: translations.datepicker['default'],
+        opens: "center"
+    }, function(chosen_date, chosen_date2) {
+        //alert(chosen_date);
+        main.val(chosen_date.format('DD/MM/YYYY') + " - " + chosen_date2.format('DD/MM/YYYY')).trigger("change");
+        
+    });
+  }
 };
 
 $.fn.datepickerSingle = function(){
@@ -640,7 +684,7 @@ $.fn.datepickerSingle = function(){
    main.daterangepicker({
       autoUpdateInput: false,
       singleDatePicker: true,
-      locale: locale['default'],
+      locale: translations.datepicker['default'],
       opens: "center",
       drops: drops
    }, function(chosen_date) {
