@@ -1041,6 +1041,7 @@ function hitsa_core_updates_installer(){
 
   $updates = [
     '1',
+    '2'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_core_updated');

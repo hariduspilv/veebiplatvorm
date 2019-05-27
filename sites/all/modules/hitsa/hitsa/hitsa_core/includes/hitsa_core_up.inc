@@ -53,3 +53,31 @@
   }
   return TRUE;
   }
+  function hitsa_core_up_2(){
+    $check_existing = drupal_lookup_path('source','catering');
+    $main_menu_tree = menu_tree_all_data('hitsa-main-menu');
+    $main_menu_links = array();
+    foreach ($main_menu_tree as $link) {
+      $main_menu_links[$link['link']['title']] = $link;
+    }
+    if (isset($main_menu_links['Student Life'])) {
+      foreach ($main_menu_links['Student Life']['below'] as $link_key => $link) {
+        if (!empty($link['link'])) {
+          if ($link['link']['link_title'] == 'Catering') {
+            if (strpos($link['link']['link_path'], 'node/') !== FALSE) {
+              $path_alias = (drupal_get_path_alias($link['link']['link_path']));
+
+              if (strpos($path_alias, 'catering-') !== FALSE) {
+                $alias = array(
+                  'source' => $link['link']['link_path'],
+                  'alias' => 'catering',
+                );
+                path_save($alias);
+              }
+            }
+          }
+        }
+      }
+    }
+    return TRUE;
+  }
