@@ -502,7 +502,17 @@ function adminimal_select($variables)
     }
     $element['#options'] = $element_options;
   }
-
+  if(!empty($element['#attributes'])){
+    if(!empty($element['#attributes']['class'])){
+      if($element['#attributes']['class'][0]=='slides-order-weight'){
+        $options = array();
+        for($i=-100;$i<=100;$i++){
+          $options[$i]=$i;
+        }
+        $element['#options'] = $options;
+      }
+    }
+  }
   return '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_options($element) . '</select>';
 }
 function adminimal_textfield($variables)

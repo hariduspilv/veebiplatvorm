@@ -1,0 +1,12 @@
+name = 'Basic SEO Rules'
+description = 'Basic rules for the SEO compliance checker module'
+dependencies[] = "seo_checker"
+files[] = basic_seo_rules.module
+package = "SEO Compliance Checker"
+core = 7.x
+; Information added by Drupal.org packaging script on 2014-11-17
+version = "7.x-1.8"
+core = "7.x"
+project = "seo_checker"
+datestamp = "1416211981"
+

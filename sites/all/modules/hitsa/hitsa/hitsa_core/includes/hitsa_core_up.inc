@@ -81,3 +81,13 @@
     }
     return TRUE;
   }
+  function hitsa_core_up_3(){
+    drupal_flush_all_caches();
+    drupal_flush_all_caches();
+    return TRUE;
+  }
+ function hitsa_core_up_4(){
+    drupal_flush_all_caches();
+    drupal_flush_all_caches();
+    return TRUE;
+  }

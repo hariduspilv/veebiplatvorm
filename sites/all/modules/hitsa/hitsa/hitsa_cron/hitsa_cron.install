@@ -1,6 +1,6 @@
 <?php
 function hitsa_cron_install() {
     variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
-    variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
+    variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flush' => '1', 'user_agent' => 'Ultimate Cron'));
     variable_set('cronsettings_set','TRUE');
 }
