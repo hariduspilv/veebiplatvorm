@@ -1058,7 +1058,8 @@ function hitsa_core_updates_installer(){
     '1',
     '2',
     '3',
-    '4'
+    '4',
+    '5'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_core_updated');

@@ -91,3 +91,9 @@
     drupal_flush_all_caches();
     return TRUE;
   }
+  function hitsa_core_up_5(){
+    $field_instance = field_info_instance('node','job_position','contact');
+    $field_instance['description'] = 'Ametikohad, mitme ametikoha valimiseks hoidke peal Ctrl klahvi.';
+    field_update_instance($field_instance);
+    return TRUE;
+  }

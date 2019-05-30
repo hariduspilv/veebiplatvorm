@@ -11,7 +11,7 @@ function hitsa_contacts_import_form($form, &$form_state) {
         Esimeses tulbas peaks olema inimest eristav number, selle numbri mõte on see, et selle abil saab teha tulevikus failis uuendusi ning saab uuesti sisse importida<br>
         Teise tulpa kirjutada eesnimi <br>
         Kolmandasse tulpa kirjutada perekonnanimi<br>
-        Neljandasse tulpa kirjutada ametikoht<br>
+        Neljandasse tulpa kirjutada ametikoht Mitme väärtuse sisestamiseks tuleb need eraldada püstkriipusga (|) Näiteks: <b>Ajalugu|Kunstiajalugu<br>
         Viiendasse tulpa kirjutada telefoninumbrid. Mitme väärtuse sisestamiseks tuleb need eraldada püstkriipusga (|) Näiteks:<b>55555555|55555555</b><br>
         Kuuendasse tulpa kirjutada e-posti aadress<br>
         Seitsmendasse tulpa kirjutada muu informatsioon<br>
