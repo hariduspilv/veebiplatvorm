@@ -131,7 +131,7 @@ a.block{text-decoration: none;}
          .btn{min-width:100%;}
       }
    }
-   .row{ margin:0 -@gridGutter/2;  padding-top:0; padding-bottom:0; height:100%; align-items: stretch; }
+   .row{ margin:0 -@gridGutter/2;  padding-top:0; padding-bottom:0; height:100%; align-items: stretch; justify-content: center;}
    [class*='col-']{padding-top:0; padding-bottom:0; min-height: 100%;}
 }
 
@@ -215,7 +215,7 @@ a.object:hover{
 	}
    .object-footer{font-size:16px; color:@text-1; line-height:160%; font-weight: 100;
     .before-calendar{position: relative; padding-left: 24px; line-height: 26px;
-      &:before{position: absolute; left: 0; top: -1px;}
+      &:before{position: absolute; left: 0; top: 0;}
     }
       span{display:inline-block; padding-right:20px;
          &:before{padding-right:10px;}
@@ -261,7 +261,7 @@ a.object:hover{
          &+.object-content{padding-left:20px;}
       }
       .object-content{flex-grow: 1;}
-      .object-date + .object-content{padding-left:20px; margin-top:-5px;}
+      .object-date + .object-content{padding-left:20px; margin-top:-5px; padding-right: 20px;}
       .object-title{padding-top:0; font-size:20px; line-height:24px;}
    }
    
@@ -502,7 +502,9 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
 
 .time-table{
   &.time-table--vacation{
-    [class*='before-']{margin-right: 2px;}
+    [class*='before-']{margin-right: 2px; font-size: 1rem; position: relative; padding-left: 28px;
+      &:before{font-size: 1.25rem; position: absolute; top: 0; left: 0;}
+    }
   }
    p{margin: 5px 0;}
    [class*='before-']{margin-right: 13px; font-size:1.25rem; display: inline-block; vertical-align: middle; margin-top:-2px;}
@@ -678,4 +680,10 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
 	&.notification-success{border-color:@notification-success;
 		.notification-sign{background:@notification-success; .before-notification-check;}
 	}
+}
+.tooltip-content{font-size: 14px;}
+.calendar-datepicker{
+  .daterangepicker{position: relative !important; top: auto !important; left: auto !important; width: 100%; margin-top: 0; display: flex !important; flex-wrap: wrap; justify-content: center; z-index: 0;
+    &::before, &::after{display: none;}
+  }
 }

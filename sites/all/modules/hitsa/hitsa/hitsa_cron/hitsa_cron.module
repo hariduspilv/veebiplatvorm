@@ -132,7 +132,7 @@ function hitsa_cron_cronapi()
   $cronsettings_set = variable_get('cronsettings_set');
   if (empty($cronsettings_set)) {
     variable_set('ultimate_cron_plugin_scheduler_default', 'crontab');
-    variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flus' => '1', 'user_agent' => 'Ultimate Cron'));
+    variable_set('ultimate_cron_plugin_settings_poorman_settings', array('launcher' => 'serial', 'early_page_flush' => '1', 'user_agent' => 'Ultimate Cron'));
     variable_set('cronsettings_set', 'TRUE');
   }
   $items = [];
@@ -227,7 +227,12 @@ function hitsa_cron_run_update()
     '29',
     '30',
     '31',
-    '32'
+    '32',
+    '33',
+    '34',
+    '35',
+    '36',
+    '37'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -241,10 +246,12 @@ function hitsa_cron_run_update()
         }
       }
       if ($to_update) {
+        variable_set('cache_clean_please',1);
         $function_name = 'hitsa_cron_up_' . strval($update);
         if (function_exists($function_name)) {
           $update_status = call_user_func($function_name, $update);
           if ($update_status) {
+
             $updatedd = variable_get('hitsa_updated');
             if (empty($updatedd)) {
               variable_set('hitsa_updated', $update);
@@ -255,6 +262,7 @@ function hitsa_cron_run_update()
         }
       }
     }
+
   }
 }
 
@@ -1793,7 +1801,7 @@ function hitsa_cron_up_32(){
     Disallow: /update.php
     Disallow: /UPGRADE.txt
     Disallow: /xmlrpc.php
-    # Paths (clean URLs)
+    # Paths (clean URLs)9
     Disallow: /admin/
     Disallow: /comment/reply/
     Disallow: /filter/tips/
@@ -1816,4 +1824,155 @@ function hitsa_cron_up_32(){
     ';
     variable_set('robotstxt', $robots_text);
     return TRUE;
+}
+function hitsa_cron_up_33(){
+  $blocks_list = db_select('block', 'b');
+  $blocks_list->fields('b');
+  $blocks_list->condition('module', 'hitsa_catering');
+  $blocks_list->condition('status', 1);
+  $blocks_list->condition('pages', '', '!=');
+  $results = $blocks_list->execute();
+  while ($block = $results->fetchAssoc()) {
+    if (!empty($block['pages']) && $block['status'] == 1) {
+      $pages = $block['pages'];
+      $pages .= "\nпитание\ntoitlustamine\ncatering-0";
+      $num_updated = db_update('block')
+        ->fields(array(
+          'pages' => $pages,
+        ))
+        ->condition('bid', $block['bid'], '=')
+        ->execute();
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Function to enable SEO modules and keyword checker.
+ */
+function hitsa_cron_up_34(){
+  $modules = array('seo_checker','keyword_rules');
+  foreach ($modules as $module) {
+    if (!module_exists($module)) {
+      module_enable(array($module));
+    }
+  }
+  drupal_flush_all_caches();
+  drupal_flush_all_caches();
+
+  $field_instances = array();
+
+  // Exported field_instance: 'node-article-field_seo_keyword'.
+  $field_instances['node-article-field_seo_keyword'] = array(
+    'bundle' => 'article',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'SEO Võtmesõnad. Erinevad sõnad tuleb eraldada komaga.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 18,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_seo_keyword',
+    'label' => 'SEO Võtmesõna',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 50,
+    ),
+  );
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('SEO Võtmesõna');
+  t('SEO Võtmesõnad. Erinevad sõnad tuleb eraldada komaga.');
+
+  $field_bases = array();
+
+  // Exported field_base: 'field_seo_keyword'.
+  $field_bases['field_seo_keyword'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_seo_keyword',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'entity_translation_sync' => FALSE,
+      'max_length' => 2550,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+
+
+
+  foreach ($field_bases as $field) {
+
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+      field_create_field($field);
+    }
+  }
+
+  foreach ($field_instances as $field_instance) {
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_create_instance($field_instance);
+    };
+  }
+  variable_set('seo_checker_article','1');
+  variable_set('seo_threshold_keyword_in_headings',20);
+  variable_set('seo_threshold_keyword_in_title',20);
+  variable_set('seo_threshold_keyword_density',array(0=>1,1=>22));
+  variable_set('keyword_rules_field_article','field_seo_keyword');
+  return TRUE;
+}
+function hitsa_cron_up_35(){
+  $blob = 'a:9:{s:5:"title";a:1:{s:5:"value";s:46:"[node:title] | [current-page:pager][site:name]";}s:11:"description";a:1:{s:5:"value";s:14:"[node:summary]";}s:8:"og:title";a:1:{s:5:"value";s:12:"[node:title]";}s:14:"og:description";a:1:{s:5:"value";s:14:"[node:summary]";}s:15:"og:updated_time";a:1:{s:5:"value";s:23:"[node:changed:custom:c]";}s:8:"og:image";a:1:{s:5:"value";s:36:"[node:cp_image][node:subpage_images]";}s:22:"article:published_time";a:1:{s:5:"value";s:23:"[node:created:custom:c]";}s:21:"article:modified_time";a:1:{s:5:"value";s:23:"[node:changed:custom:c]";}s:12:"og:video:url";a:1:{s:5:"value";s:20:"[node:article_video]";}}';
+  if (!empty($blob)) {
+    db_merge('metatag_config')->key(array('instance' => 'node'))->fields(array(
+      'instance' => 'node',
+      'config' => $blob,
+    ))->execute();
+  }
+}
+function hitsa_cron_up_36(){
+  drupal_flush_all_caches();
+  drupal_flush_all_caches();
+  return TRUE;
+}
+function hitsa_cron_up_37(){
+  drupal_flush_all_caches();
+  drupal_flush_all_caches();
+  return TRUE;
 }

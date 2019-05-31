@@ -42,11 +42,6 @@ var translations = {
 			text: "Jaga Facebookis"
 		},
 		{
-			icon: "before-googleplus",
-			prefix: "https://plus.google.com/share?url=",
-			text: "Jaga Google Plusis"
-		},
-		{
 			icon: "before-twitter",
 			prefix: "https://twitter.com/share?url=",
 			text: "Jaga Twitteris"

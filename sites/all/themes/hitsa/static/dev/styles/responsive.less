@@ -85,7 +85,7 @@ html{
                   //&:after{content:". "; display: inline;}
                }
                .object-date_month{background:none; padding:0; width:auto; display: inline;}
-               &+.object-content{padding-left:0;}
+               &+.object-content{padding-left:0; padding-right: 0;}
             }
          }
       }
@@ -326,7 +326,21 @@ html{
 	
 	.side-menu{overflow-x: hidden;
 		li.active a:after{display: none;}
-	}
+  }
+  .calendar-datepicker{
+    .daterangepicker{
+      .calendar.left, .calendar.right{width: auto !important;}
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .calendar-datepicker{
+    .daterangepicker .calendar-table table{
+      th, td{font-size: 12px;}
+      td span{width: 26px; height: 26px; line-height: 26px;}
+    }
+  }
 }
 
 @media screen and (orientation:landscape) and (max-width:375px){

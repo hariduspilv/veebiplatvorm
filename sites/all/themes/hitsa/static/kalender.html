@@ -5,11 +5,11 @@
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
    <meta name="Author" content="Wiseman Interactive Oü  www.wiseman.ee"/>
    
-	<link type="text/css" rel="stylesheet" href="assets/styles/default.css?ver=1.1" />
+	<link type="text/css" rel="stylesheet" href="assets/styles/default.css?ver=1.2" />
 	
    <link rel="shortcut icon"  href="assets/imgs/favicon.ico" type="image/x-icon"/>
    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&amp;key=AIzaSyA33H-Nd_ItCgl9iuvLI3VTU6hU5g-H2S4"></script>
-   <script type="text/javascript" src="assets/js/main.js?ver=1.1" ></script>
+   <script type="text/javascript" src="assets/js/main.js?ver=1.2" ></script>
    <title>HITSA</title>
    <meta name="viewport" content="width=375px" />
 	<meta name="format-detection" content="telephone=no">
@@ -375,6 +375,10 @@
                <hr />
                <div class="row-spacer"></div>
                
+               <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
+
+               <div class="row-spacer"></div>
+
                <div class="row">
                   <div class="col-12">
                      <div class="form-item-row">
@@ -386,7 +390,7 @@
 
                         <div class="form-item form-item_rounded after-calendar form-item-stretch">
                            <div class="form-item_title">Kuupäev</div>
-                           <input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="Vali kuupäev" />
+                           <input type="text" name="date" data-plugin="datepickerRange" data-onSubmit="true" placeholder="DD/MM/YY - DD/MM/YY" />
                         </div><!--/form-item-->
 
                         <div class="form-item">
@@ -410,7 +414,7 @@
                                   <div class="accordion-title"><span class="sm-hide">2016/2017</span><span class="sm-show">2016/17</span> Sügissemester (16)</div>
                                   <div class="accordion-content">
                                      
-                                     <div id="208" class="object object-event object-inactive">
+                                     <div id="208" class="object object-event object-inactive" data-eventdate="02/05/2019|03/05/2019|04/05/2019|05/05/2019">
                                         <div class="object-inner">
                                            <div class="object-date">
                                               <div class="object-date_day sm-hide">23</div>
@@ -455,7 +459,7 @@
                                      
                                      <hr />
                                      
-                                     <div class="object object-event object-inactive">
+                                     <div class="object object-event object-inactive" data-eventdate="19/05/2019">
                                         <div class="object-inner">
                                            <div class="object-date">
                                               <div class="object-date_day sm-hide">23-26</div>

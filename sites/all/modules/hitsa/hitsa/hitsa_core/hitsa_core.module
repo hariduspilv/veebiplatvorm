@@ -259,6 +259,7 @@ function hitsa_core_contacts_departments_form($form, $form_state)
       '#type' => 'hidden',
       '#value' => $department_id,
     );
+
   }
   // Sort the rows.
   uasort($form['contacts_list'], 'hitsa_core_sort_contacts_by_weight');
@@ -1026,11 +1027,65 @@ function hitsa_core_generate_single_image_figure($image_file = null)
 
   return $output;
 }
+
 function hitsa_core_enable_cron_module()
 {
   $module = 'hitsa_cron';
   global $user;
   if (!module_exists($module)) {
     module_enable(array($module), true);
+  }
+}
+
+function hitsa_core_updates_installer(){
+  module_load_include('inc','hitsa_core','includes/hitsa_core_up');
+  $cache_clean = variable_get('cache_clean_please');
+  $simple = variable_get('ultimate_cron_plugin_scheduler_default');
+  if($simple=='simple'){
+    variable_set('ultimate_cron_plugin_scheduler_default','crontab');
+    drupal_flush_all_caches();
+  }
+//  if(!empty($cache_clean)){
+//    $core = array('cache', 'cache_path', 'cache_filter', 'cache_bootstrap', 'cache_page');
+//    $cache_tables = array_merge(module_invoke_all('flush_caches'), $core);
+//    foreach ($cache_tables as $table) {
+//      cache_clear_all('*', $table, TRUE);
+//    }
+//    variable_set('cache_clean_please','');
+//  }
+
+  $updates = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5'
+  ];
+  if (!empty($updates)) {
+    $updated = variable_get('hitsa_core_updated');
+    $updated = explode(',', $updated);
+    foreach ($updates as $update) {
+      $to_update = TRUE;
+      foreach ($updated as $uptodate) {
+        if (strval($update) == strval($uptodate)) {
+          $to_update = FALSE;
+          break;
+        }
+      }
+      if ($to_update) {
+        $function_name = 'hitsa_core_up_' . strval($update);
+        if (function_exists($function_name)) {
+          $update_status = call_user_func($function_name, $update);
+          if ($update_status) {
+            $updatedd = variable_get('hitsa_core_updated');
+            if (empty($updatedd)) {
+              variable_set('hitsa_core_updated', $update);
+            } else {
+              variable_set('hitsa_core_updated', $updatedd . ',' . $update);
+            }
+          }
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,17 @@
+name = SEO Compliance Checker
+description = Checks the SEO compliance of a node at it's creation/modification
+files[] = seo_checker.module
+files[] = seo_checker.install
+files[] = inc/seo_checker.admin.inc
+files[] = inc/seo_checker.theme.inc
+files[] = theme/slider-atleast.tpl.php
+files[] = theme/slider-range.tpl.php
+configure = admin/config/content/seo_checker
+package = SEO Compliance Checker
+core = 7.x
+; Information added by Drupal.org packaging script on 2014-11-17
+version = "7.x-1.8"
+core = "7.x"
+project = "seo_checker"
+datestamp = "1416211981"
+

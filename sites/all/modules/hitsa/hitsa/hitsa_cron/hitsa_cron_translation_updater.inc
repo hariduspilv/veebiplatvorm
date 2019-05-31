@@ -10,7 +10,8 @@ function hitsa_cron_update_translations()
     '4',
     '5',
     '6',
-    '7'
+    '7',
+    '8'
 
   ];
   if (!empty($updates)) {
@@ -29,16 +30,19 @@ function hitsa_cron_update_translations()
         if (function_exists($function_name)) {
           $update_status = call_user_func($function_name, $update);
           if ($update_status) {
+
             $updatedd = variable_get('hitsa_translations_updated');
             if (empty($updatedd)) {
               variable_set('hitsa_translations_updated', $update);
             } else {
               variable_set('hitsa_translations_updated', $updatedd . ',' . $update);
             }
+
           }
         }
       }
     }
+
   }
 
 }
@@ -323,4 +327,35 @@ function hitsa_cron_trans_up_7(){
       drupal_flush_all_caches();
       return TRUE;
   }
+}
+function hitsa_cron_trans_up_8(){
+  $words = array(
+    'Test failed, please make sure you use your keywords in the body but not too often.' => array(
+      'et'=> 'Test ebaõnnestus, veenduge, et teie võtmesõna esineks, kuid mitte liiga tihti',
+    ),
+    'Test failed, please make sure your images contain an alternative text.' => array(
+      'et' => 'Test ebaõnnestus, veenduge et teie pilt sisaldaks alampealkirja.'
+    ),
+    'Test failed, please make sure your links contain a title attribute.' => array(
+      'et' => 'Test ebaõnnestus, veenduge et teie link sisaldaks tiitel atribuuti.'
+    ),
+    'Test failed, place your keywords early in your node title.' => array(
+      'et'=>'Test ebaõnnestus veenduge, et võtmesõna oleks pealkirjas võimalikult alguses'
+    ),
+    'Passed' => array(
+      'et'=>'Õnnestus'
+    ),
+    'Failed' => array(
+      'et'=>'Ebaõnnestus'
+    ),
+    'Usage of keywords in node titles' => array(
+      'et'=>'Võtmesõna kasutus pealkirjas'
+    ),
+    'Keyword density in the body' => array(
+      'et'=> 'Võtmesõna tihedus sisus'
+    )
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
 }

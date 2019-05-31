@@ -524,6 +524,7 @@ DateRangePicker.prototype = {
   },
 
   updateMonthsInView: function() {
+    
       if (this.endDate) {
 
           //if both dates are visible already, do nothing
@@ -555,7 +556,7 @@ DateRangePicker.prototype = {
   },
 
   updateCalendars: function() {
-
+    $(window).trigger('calendar:update');
       if (this.timePicker) {
           var hour, minute, second;
           if (this.endDate) {
@@ -815,8 +816,11 @@ DateRangePicker.prototype = {
               }
               if (!disabled)
                   cname += 'available';
-
-              html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '"><span>' + calendar[row][col].date() + '</span></td>';
+                  function pad(n) {
+                    return (n < 10) ? ("0" + n) : n;
+                  }
+                  
+              html += '<td data-date="'+pad(calendar[row][col].date())+ '/'+pad(month+1)+'/'+year+'" class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '"><span>' + calendar[row][col].date() + '</span></td>';
 
           }
           html += '</tr>';
