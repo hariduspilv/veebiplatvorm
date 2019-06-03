@@ -1638,10 +1638,13 @@ function hitsa_events_for_services()
 function hitsa_events_htmlize_periods($periods)
 {
     $output = '';
-
+    global $language;
     $accordion_start = '<div class="accordion" data-allClosed="TRUE" data-plugin="accordion">';
     $previous_periods = array();
     foreach ($periods as $period) {
+      $tag = i18n_taxonomy_term_get_translation($period, $language->language);
+      $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
+      $period->name = $translated;
       if($period->previous=='TRUE'){
         $previous_periods[] = $period;
       }
