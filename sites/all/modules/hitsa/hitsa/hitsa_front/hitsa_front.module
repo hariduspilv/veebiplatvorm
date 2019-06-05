@@ -354,7 +354,7 @@ function hitsa_front_html_breaks($list)
         foreach ($list as $key => $break) {
             $output .= '<div class="time-table time-table--vacation">
       <p><b>' . $break['name'] . ':</b></p>
-      <p><span class="before-calendar"> ' . $break['start'] . ' - ' . $break['end'] . '</span></p>
+      <p><span class="before-calendar"> ' . $break['start'] . ' - <br>' . $break['end'] . '</span></p>
    </div><!--/time-table-->
 
 ';

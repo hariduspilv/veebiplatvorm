@@ -97,3 +97,7 @@
     field_update_instance($field_instance);
     return TRUE;
   }
+  function hitsa_core_up_6(){
+   variable_set('seo_checker_allow_failures','show-always');
+    return TRUE;
+  }
