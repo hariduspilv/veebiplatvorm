@@ -133,12 +133,21 @@
         </p>
       </div><!--/object-content_col-->
       <div class="object-content_col">
+
         <?php if(!empty($content['reception_times'])): ?>
-            <p><b><?php print t('Reception time'); ?>:</b></p>
+        <?php $reception = '';?>
+
             <?php foreach($content['reception_times']['#items'] as $reception_time): ?>
-            <?php print check_plain($reception_time['safe_value']); ?><br>
+          <?php $reception.= check_plain($reception_time['safe_value'])?>
+          <?php if(!empty($reception_time['value'])):?>
+          <?php $reception.='<br>'?>
+          <?php endif;?>
             <?php endforeach; ?>
         <?php endif; ?>
+          <?php if(!empty($reception)):?>
+              <p><b><?php print t('Reception time'); ?>:</b></p>
+            <?php print $reception?>
+          <?php endif?>
       </div><!--/object-content_col-->
     </div><!--/object-content-->
   </div><!--/object-inner-->
