@@ -774,6 +774,10 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         if ($type == 'training') {
             $time_hours_minutes = '<span class="before-calendar">' . date('j.m', $start_date) . ' - ' . date('j.m', $end_date) . '</span>';
         }
+//        krumo($start_date_date);
+//        krumo($time);
+//        krumo(date('j.m',$start_date_date));
+//        krumo(date('j.m',$time));
         if (empty($start_date_date)) {
             $start_date_date = $start_date;
         }
@@ -2952,6 +2956,9 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                   $days_start = date('d',$dates['start']);
                   $days_end = date('d',$dates['end']);
                   $days_count = $days_end-$days_start;
+                  if(time()>$start_date_date&&time()<$dates['end']){
+                    $start_date_date = strtotime('tomorrow midnight');
+                  }
                   $active_decider = date('U', strtotime("+{$days_count} day", $dates['start']));
                   $event->active_decider =$active_decider;
                     $event_html = hitsa_events_event_html($event, $type = 'event', $start_date_date);
