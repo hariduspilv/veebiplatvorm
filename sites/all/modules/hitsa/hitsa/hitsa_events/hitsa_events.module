@@ -436,7 +436,7 @@ function hitsa_events_calendar_page_html()
     foreach ($allowed as $allowed_key => $allowed_value) {
         $output .= '     <span class="btn-input" > ';
         $output .= ' <input type = "checkbox" name = "category" value = "' . $allowed_key . '"/>';
-        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value . '</span >';
+        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value. '</span >';
         $output .= '                   </span ><!--/btn - input-->';
     }
     $time_periods = array();
@@ -1070,6 +1070,7 @@ function hitsa_events_front_page_block($type_override=null)
                     $loaded_tag = i18n_taxonomy_localize_terms($loaded_tag);
                     $tag = i18n_taxonomy_term_get_translation($loaded_tag, $language->language);
                     $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
+                    $loaded_tag->name = $translated;
                     $events_array[$translated][] = $event;
                     $categories[$loaded_tag->name] = $loaded_tag->tid;
                 }
@@ -1343,6 +1344,11 @@ function hitsa_events_training_calendar()
     //        $allowed[$term->tid] = $term->name;
     //    }
     //TODO Koolituste filtrid korda teha.
+  foreach ($taxonomy_tree as $term) {
+    $tag = i18n_taxonomy_term_get_translation($term, $language->language);
+    $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
+    $allowed[$term->tid] = $translated;
+  }
     if (!isset($output)) {
         $output = '';
     }
@@ -1377,18 +1383,22 @@ function hitsa_events_training_calendar()
         $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value . '</span >';
         $output .= '                   </span ><!--/btn - input-->';
     }
-    $allowed = taxonomy_vocabulary_machine_name_load('training_tags');
-    $allowed = taxonomy_get_tree($allowed->vid);
-    if (!empty($allowed)) {
-        $output .= '     <span class="btn-input" > ';
+
+    $allowed_tags = taxonomy_vocabulary_machine_name_load('training_tags');
+    $allowed_tags = taxonomy_get_tree($allowed_tags->vid);
+    if (!empty($allowed_tags)) {
+        $output .= '<h4>' . t('Event tags') . '</h4>';
+        $output .= '   <br>  <span class="btn-input" > ';
         $output .= ' <input type = "checkbox" name = "training-category" value = "all" checked />';
         $output .= '                      <span class="btn btn-xs btn-alternate" > ' . t('All') . '</span >';
         $output .= '                   </span ><!--/btn - input-->';
 
-        foreach ($allowed as $allowed_key => $allowed_value) {
+        foreach ($allowed_tags as $allowed_key => $allowed_value) {
             $output .= '     <span class="btn-input" > ';
             $output .= ' <input type = "checkbox" name = "training-category" value = "' . $allowed_value->tid . '"/>';
-            $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value->name . '</span >';
+          $tag = i18n_taxonomy_term_get_translation($allowed_value, $language->language);
+          $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
+            $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $translated . '</span >';
             $output .= '                   </span ><!--/btn - input-->';
         }
     }
