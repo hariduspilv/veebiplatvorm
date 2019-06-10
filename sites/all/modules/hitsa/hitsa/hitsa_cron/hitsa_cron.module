@@ -233,7 +233,8 @@ function hitsa_cron_run_update()
     '35',
     '36',
     '37',
-    '38'
+    '38',
+    '39'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -2097,4 +2098,7 @@ function hitsa_cron_up_38(){
     };
   }
   return TRUE;
+}
+function hitsa_cron_up_39(){
+  variable_set('captcha_default_challenge','image_captcha/Image');
 }
