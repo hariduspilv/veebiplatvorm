@@ -22,6 +22,7 @@ function hitsa_vocational_install()
     hitsa_vocational_enable_translations();
     hitsa_vocational_disable_blocks();
     hitsa_vocational_de_u_mt();
+    hitsa_core_set_inital_path();
 }
 function hitsa_vocational_install_themes()
 {

@@ -70,6 +70,17 @@ function hitsa_content_page_theme()
 
 function hitsa_content_page_preprocess_node(&$variables)
 {
+
+  if(!empty($variables['body'])){
+    $current_host = $_SERVER['HTTP_HOST'];
+    $inital_url = variable_get('hitsa_initial_path');
+
+    if(!empty($inital_url)) {
+      foreach ($variables['body'] as $body_key => $body_value) {
+        $variables['body'][$body_key]['safe_value'] = str_replace($inital_url, $current_host, $body_value['safe_value']);
+      }
+    }
+  }
   if ($variables['type'] === 'content_page') {
     if ($variables['view_mode'] === 'full') {
       if(!empty($variables['field_catering_file'])){
@@ -96,13 +107,6 @@ function hitsa_content_page_preprocess_node(&$variables)
         $variables['more_services'] = $services_rendered;
         $variables['more_services_title'] = t('More services');
         $variables['more_services_link'] = '<a href="' . url('services') . '" class="btn sm-stretch">' . t('All services') . '</a>';
-      }
-      if(!empty($variables['body'])){
-        $current_host = $_SERVER['HTTP_HOST'];
-       $inital_url = variable_get('hitsa_initial_path');
-        foreach ($variables['body'] as $body_key => $body_value){
-         $variables['body'][$body_key]['safe_value'] = str_replace($inital_url,$current_host,$body_value['safe_value']);
-        }
       }
       if(!empty($variables['field_contacts'])){
         if(function_exists('hitsa_curriculum_contacts')){

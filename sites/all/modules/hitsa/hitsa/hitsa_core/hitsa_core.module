@@ -1125,3 +1125,7 @@ function hitsa_core_updates_installer(){
     }
   }
 }
+function hitsa_core_set_inital_path(){
+  $inital_path = $_SERVER['HTTP_HOST'];
+  variable_set('hitsa_initial_path',$inital_path);
+}
