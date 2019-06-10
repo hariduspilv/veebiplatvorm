@@ -234,7 +234,8 @@ function hitsa_cron_run_update()
     '36',
     '37',
     '38',
-    '39'
+    '39',
+    '40'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -2101,4 +2102,11 @@ function hitsa_cron_up_38(){
 }
 function hitsa_cron_up_39(){
   variable_set('captcha_default_challenge','image_captcha/Image');
+}
+function hitsa_cron_up_40(){
+  $type_to_add = 'cp_simple_without_images';
+  $field = field_info_field('cp_type');
+  $field['settings']['allowed_values'][$type_to_add] = 'Sisuleht lihtne ilma pildita';
+  field_update_field($field);
+  return TRUE;
 }

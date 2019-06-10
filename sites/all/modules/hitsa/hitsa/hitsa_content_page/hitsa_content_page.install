@@ -42,6 +42,7 @@ function _hitsa_content_page_fields() {
           'cp_service' => 'Teenus',
           'cp_contacts' => 'Konsultatsiooniajad',
           'cp_specialities' => $t('Specialities'),
+          'cp_simple_without_images' => 'Sisuleht ilma pildita'
         ),
       ),
     ),

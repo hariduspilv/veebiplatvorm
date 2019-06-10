@@ -60,7 +60,11 @@
 				</h1>
 
 				<div class="row">
-				  <div class="col-7 sm-12">
+                <?php    if($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images'):?>
+                    <div class="col-12 sm-12">
+                    <?php else:?>
+                    <div class="col-7 sm-12">
+                        <?php endif?>
                     <?php if(!empty($content['field_catering_file'])):?>
                     <?php foreach($field_catering_file as $catering_file):?>
                         <a target="_blank" class="link-circle" href="<?php print $catering_file['url']?>">
@@ -158,8 +162,11 @@
             </span>
             
 				  </div>
-				  
-		      <div class="col-4 sm-12 col-offset-1 sm-offset-0">
+                      <?php    if($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images'):?>
+                          <?php else:?>
+                            <div class="col-4 sm-12 col-offset-1 sm-offset-0">
+                              <?php endif?>
+
             
             <div class="btn-bar align-right sm-hide">
               <a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
