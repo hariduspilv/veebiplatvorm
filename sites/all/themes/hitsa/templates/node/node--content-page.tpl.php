@@ -80,7 +80,7 @@
  */
 ?>
 <?php if($view_mode === 'full'): ?>
-    <?php if(!empty($cp_type) && $cp_type[0]['value'] === 'cp_specialities') $hide_main_block = TRUE; ?>
+  
 
     <?php include('include/article-content.tpl.php'); ?>
     

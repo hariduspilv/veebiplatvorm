@@ -186,7 +186,6 @@ function hitsa_core_variable_info($options) {
     'group' => 'block_titles',
     'localize'=> TRUE,
   );
-
   return $variable;
 }
 

@@ -1,7 +1,8 @@
 <?php if(!empty($services) || !empty($events)): ?>
 <div class="block block-narrow" data-plugin="tabs">
-  <h2 class="block-title"><?php print t('Services'); ?></h2>
-  
+    <?php if(!empty($block_title)):?>
+  <h2 class="block-title"><?php print $block_title; ?></h2>
+  <?php endif?>
   <div class="row pull-up">
      <div class="col-12">
         <?php if(!empty($services)): ?>
@@ -21,3 +22,4 @@
   <?php endif; ?>
 </div>
 <?php endif; ?>
+

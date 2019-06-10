@@ -1580,7 +1580,7 @@ function hitsa_curriculum_generate_header($header)
   $menus = menu_tree_all_data('hitsa-main-menu');
 //  $trail = hitsa_curriculum_find_trail($menus,'node/'.$header->nid);
 
-    $output.='<div class="block sm-hide">';
+    $output.='<div class="block">';
 
   $link = (i18n_menu_link_load('node/'.$header->nid,$language->language));
   if(!empty($link)){
