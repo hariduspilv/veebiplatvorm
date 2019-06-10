@@ -1127,6 +1127,8 @@ function hitsa_events_front_page_block($type_override=null)
                     $time = strtotime('today midnight');
                     $start = $event->event_date['und'][0]['value'];
                     $start_readable_day = date('d', $start);
+                    $end_readable_day = date('d',$event->event_date['und'][0]['value2']);
+
                     $start_readable_month = strftime('%B', $start);
                     $start_readable_month = format_date($start, 'custom', 'F', null, null);
 
@@ -1144,7 +1146,12 @@ function hitsa_events_front_page_block($type_override=null)
                 $output .= '                <div class="object object-event">';
                 $output .= '                   <div class="object-inner">';
                 $output .= '                      <a href="" class="object-date">';
-                $output .= '                         <span class="object-date_day">' . $start_readable_day . '</span>';
+                if($start_readable_day==$end_readable_day) {
+                  $output .= '                         <span class="object-date_day">' . $start_readable_day . '</span>';
+                }
+                else{
+                  $output .= '                         <span class="object-date_day">' . $start_readable_day .'-'.$end_readable_day. '</span>';
+                }
                 $output .= '                         <span class="object-date_month">' . $start_readable_month . '</span>';
                 $output .= '                      </a><!--/object-date-->';
                 $output .= '                      <span class="object-content">';
