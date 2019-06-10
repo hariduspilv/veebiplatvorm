@@ -232,7 +232,8 @@ function hitsa_cron_run_update()
     '34',
     '35',
     '36',
-    '37'
+    '37',
+    '38'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -1974,5 +1975,126 @@ function hitsa_cron_up_36(){
 function hitsa_cron_up_37(){
   drupal_flush_all_caches();
   drupal_flush_all_caches();
+  return TRUE;
+}
+function hitsa_cron_up_38(){
+  $field_bases = array();
+
+  // Exported field_base: 'field_catering_file'.
+  $field_bases['field_catering_file'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_catering_file',
+    'indexes' => array(
+      'fid' => array(
+        0 => 'fid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'file',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'display_default' => 0,
+      'display_field' => 0,
+      'entity_translation_sync' => array(
+        0 => 'fid',
+      ),
+      'uri_scheme' => 'public',
+    ),
+    'translatable' => 1,
+    'type' => 'file',
+  );
+
+  foreach ($field_bases as $field) {
+
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+      field_create_field($field);
+    }
+  }
+  $field_instances = array();
+
+  // Exported field_instance: 'node-content_page-field_catering_file'.
+  $field_instances['node-content_page-field_catering_file'] = array(
+    'bundle' => 'content_page',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'file',
+        'settings' => array(),
+        'type' => 'file_default',
+        'weight' => 15,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_catering_file',
+    'label' => 'Totilustuse fail',
+    'required' => 0,
+    'settings' => array(
+      'description_field' => 0,
+      'entity_translation_sync' => FALSE,
+      'file_directory' => 'catering_files',
+      'file_extensions' => 'txt pdf doc jpg png gif jpeg',
+      'max_filesize' => '10 MB',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'media',
+      'settings' => array(
+        'allowed_schemes' => array(
+          'public' => 'public',
+          'youtube' => 0,
+        ),
+        'allowed_types' => array(
+          'audio' => 0,
+          'document' => 0,
+          'image' => 'image',
+          'video' => 0,
+        ),
+        'browser_plugins' => array(
+          'media_browser_plus--media_browser_my_files' => 0,
+          'media_browser_plus--media_browser_thumbnails' => 0,
+          'media_default--media_browser_1' => 0,
+          'media_default--media_browser_my_files' => 0,
+          'media_internet' => 0,
+          'upload' => 0,
+        ),
+        'manualcrop_crop_info' => 1,
+        'manualcrop_default_crop_area' => 1,
+        'manualcrop_enable' => 0,
+        'manualcrop_inline_crop' => 0,
+        'manualcrop_instant_crop' => FALSE,
+        'manualcrop_instant_preview' => 1,
+        'manualcrop_keyboard' => 1,
+        'manualcrop_maximize_default_crop_area' => 0,
+        'manualcrop_require_cropping' => array(),
+        'manualcrop_styles_list' => array(),
+        'manualcrop_styles_mode' => 'include',
+        'manualcrop_thumblist' => 0,
+      ),
+      'type' => 'media_generic',
+      'weight' => 55,
+    ),
+  );
+
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Totilustuse fail');
+  foreach ($field_instances as $field_instance) {
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_create_instance($field_instance);
+    };
+  }
   return TRUE;
 }

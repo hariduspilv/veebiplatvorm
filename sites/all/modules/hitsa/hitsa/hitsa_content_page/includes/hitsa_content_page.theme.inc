@@ -72,6 +72,21 @@ function hitsa_content_page_preprocess_node(&$variables)
 {
   if ($variables['type'] === 'content_page') {
     if ($variables['view_mode'] === 'full') {
+      if(!empty($variables['field_catering_file'])){
+        $catering_array = array();
+        foreach($variables['field_catering_file'] as $catering_file){
+          $file = $catering_file['uri'];
+          $file_url = file_create_url($file);
+          if(empty($catering_file['title'])){
+            $name = $catering_file['filename'];
+          }
+          else{
+            $name = $catering_file['title'];
+          }
+          $catering_array[] = array( 'url' => $file_url,'name' => $name);
+        }
+        $variables['field_catering_file'] = $catering_array;
+      }
       if (!empty($variables['cp_type']) && $variables['cp_type'][0]['value'] === 'cp_service') {
         $more_services = hitsa_content_page_get_more_services_block_nodes($variables);
         $services_rendered = array();
@@ -100,7 +115,7 @@ function hitsa_content_page_preprocess_node(&$variables)
       }
       if (!empty($variables['cp_type']) && $variables['cp_type'][0]['value'] === 'cp_contacts') {
         if (module_exists('hitsa_contacts')) {
-          $variables['contact_filter'] = hitsa_contacts_filter_widget($variables['nid']);
+          $variables['contact_filter'] =  hitsa_contacts_filter_widget($variables['nid']);
         }
       }
     }

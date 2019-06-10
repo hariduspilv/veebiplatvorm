@@ -8,6 +8,7 @@
   $heading_title = t('Services');
   ?>
   <h2 class="block-title"><?php print $heading_title; ?></h2>
+
   <?php else: 
     $active_menu_trail = menu_get_active_trail(); // Set active menu trail
     if(count($active_menu_trail) === 3) {
@@ -22,9 +23,9 @@
   <?php endif; ?>
   
   <div class="row-spacer-xs sm-hide"></div>
-  
+
   <div class="row"<?php if(!empty($contact_filter)) {print ' data-posturl="' . url('api/contact') . '" data-plugin="filterContents"';} ?>>
-    
+
     <?php if(!empty($content['cp_type']) && $content['cp_type']['#items'][0]['value'] === 'cp_contacts'): ?>
       <?php if(!empty($content['cp_contacts'])): ?>
         <?php 
@@ -48,6 +49,7 @@
             </div>
         <h1 class="col-7 sm-12"><?php print $title; ?>
           <?php if($node->type === 'article'): ?>
+
           <span class="editor-info">
 				  	<span class="before-calendar"><?php print format_date($node->created, 'hitsa_date_month'); ?></span>
 				  	<?php if(!empty($author_name)): ?>
@@ -56,10 +58,17 @@
 				  </span>
 				  <?php endif; ?>
 				</h1>
-				
+
 				<div class="row">
 				  <div class="col-7 sm-12">
-				    
+                    <?php if(!empty($content['field_catering_file'])):?>
+                    <?php foreach($field_catering_file as $catering_file):?>
+                        <a target="_blank" class="link-circle" href="<?php print $catering_file['url']?>">
+                            <span class="before-document"></span>
+                            <?php print $catering_file['name']?>
+                        </a>
+                      <?php endforeach?>
+                    <?php endif?>
         
             <?php if(!empty($body)): ?>
             <?php if(!empty($body[0]['safe_summary'])): ?>

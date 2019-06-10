@@ -80,22 +80,23 @@
  */
 ?>
 <?php if($view_mode === 'full'): ?>
-  
+
 
     <?php include('include/article-content.tpl.php'); ?>
     
     <?php if(!empty($webform)): // Webform ?>
       <div class="block">
         <h2 class="block-title"><?php print $webform['subject']; ?></h2>
+
         <?php print $webform['content']; ?>
       </div>
     <?php endif; ?>
-    
+
     <?php if(!empty($more_services)): ?>
     <div class="block no-print">
 
       <h2 class="block-title"><?php if(!empty($more_services_title)) {print $more_services_title;} ?></h2>
-      
+
       <div class="row row-vertical-xl">
       <?php foreach($more_services as $service) { print $service; } ?>
       </div><!--/row-->
