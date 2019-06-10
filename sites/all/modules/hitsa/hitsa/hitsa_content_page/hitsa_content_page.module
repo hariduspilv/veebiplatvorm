@@ -253,7 +253,6 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
         ),
       );
     }
-    krumo($form);
     if(isset($form['body'])) {
       $form['body'][LANGUAGE_NONE][0]['summary']['#description'] = ''; // Hide summary description
     }
