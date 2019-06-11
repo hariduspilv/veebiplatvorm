@@ -80,12 +80,44 @@
                <?php print $body[0]['safe_summary']; ?>
             </div><!--/intro-->
             <?php endif; ?>
-            
+            <div class="sm-hide">
             <?php if(!empty($body[0]['safe_value'])): ?>
               <?php print $body[0]['safe_value']; ?>
             <?php endif; ?>
+            </div>
+              <div class="sm-show">
+              <?php if(!empty($body[0]['safe_summary'])): ?>
+                    <div class="hidden-content" data-plugin="showMore">
+                        <div class="text-center">
+                            <a href="" class="link" data-anchor><?php print t('Read more')?><span class="before-arrow_down"></span></a>
+                        </div><!--/text-center-->
+                        <div class="hidden-container" data-container>
+                            <?php print $body[0]['safe_value']?>
+                        </div><!--/hidden-container-->
+                    </div><!--/showMore-->
+                      <?php else:?>
+                        <?php if(!isset($end)):?>
+                            <?php if(!empty($start)):?>
+                                <?php print $start?>
+                            <?php endif;?>
+                        <?php else:?>
+                          <?php if(!empty($start)):?>
+                            <?php print $start?>
+                          <?php endif;?>
+                          <?php if(!empty($end)):?>
+                            <div class="hidden-content" data-plugin="showMore">
+                                <div class="text-center">
+                                    <a href="" class="link" data-anchor><?php print t('Read more')?><span class="before-arrow_down"></span></a>
+                                </div><!--/text-center-->
+                                <div class="hidden-container" data-container>
+                                  <?php print $end?>
+                                </div><!--/hidden-container-->
+                            </div><!--/showMore-->
+                          <?php endif;?>
+                        <?php endif?>
+                      <?php endif?>
             <?php endif; ?>
-            
+              </div>
             <?php if(!empty($cinfo_company)): ?>
               <p>
                 <b><?php print check_plain($cinfo_company[0]['safe_value']); ?></b>
@@ -174,14 +206,8 @@
             </div>
             
             <div class="row-spacer-xl no-print sm-hide"></div>
-
-                              <?php if($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] != 'cp_simple_without_images'):?>
             <?php if(!empty($subpage_images) || (!empty($cp_image) && $subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
-            <?php if($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_specialities'):?>
-              <figure class="sm-hide">
-              <?php else:?>
               <figure>
-            <?php endif?>
                 <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>"
                 data-download="<?php print file_create_url($image['uri']); ?>"
                 data-plugin="modal" data-modal="image-<?php print $image['fid']; ?>" 
@@ -210,7 +236,6 @@
               </a>
               <figcaption><?php print check_plain($article_video[0]['filename']); ?></figcaption>
             </figure>
-
             <?php elseif(!empty($subpage_images[1])): $image = $subpage_images[1]; ?>
             <figure>
               <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>" 
@@ -223,8 +248,7 @@
               <figcaption><?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?></figcaption>
             </figure>
             <?php endif; ?>
-            <?php endif; ?>
-
+            
             <span class="article-date sm-show">
               <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
             </span>

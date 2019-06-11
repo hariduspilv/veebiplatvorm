@@ -76,9 +76,34 @@ function hitsa_content_page_preprocess_node(&$variables)
     $inital_url = variable_get('hitsa_initial_path');
 
     if(!empty($inital_url)) {
+      $variables['body_no_table'] = '';
       foreach ($variables['body'] as $body_key => $body_value) {
         $variables['body'][$body_key]['safe_value'] = str_replace($inital_url, $current_host, $body_value['safe_value']);
+        $doc = new DOMDocument();
+        $decoded = utf8_decode($body_value['value']);
+        $doc->loadHTML($decoded);
+        $xpath = new DOMXPath($doc);
+        foreach ($xpath->query('//table') as $node) {
+          $node->parentNode->removeChild($node);
+        }
+        $body_no_table = $doc->saveHTML();
       }
+    }
+    $body_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>','',$body_no_table);
+    $body_no_table = str_replace('</body></html>','',$body_no_table);
+    if(strlen($body_no_table)>1000){
+      $your_desired_width = 1000;
+        $break_point = mb_strrpos(mb_substr($body_no_table, 0, $your_desired_width,'UTF-8'), ' ');
+        $start = mb_substr($body_no_table, 0, $break_point,'UTF-8');
+        $end = mb_substr($body_no_table, $break_point,  mb_strlen($body_no_table,'UTF-8'));
+        $start = utf8_encode($start);
+        $end = utf8_encode($end);
+        $variables['start'] = $start;
+        $variables['end']=$end;
+    }
+    else{
+      $variables['start'] = $body_no_table;
     }
   }
   if ($variables['type'] === 'content_page') {
