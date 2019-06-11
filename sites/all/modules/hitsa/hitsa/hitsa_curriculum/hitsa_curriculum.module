@@ -956,6 +956,9 @@ function hitsa_curriculum_custom_block($curriculum_type)
             $output.='<div class="row-spacer"></div>';
         }
         $output .= '<div class="block no-padding" ' . $id_block . ' data-plugin="scrollIfID">';
+        if(!empty($mobile_block)){
+          $output.=$mobile_block;
+        }
         $output .= '<div class="row">';
         if ($content_count > 1) {
             $output .= '<div class="col-3 d-flex sm-hide no-print">';
@@ -976,7 +979,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
         $output .= '</div><!--/block-->';
     }
     if(!empty($mobile_block)){
-        $output = $mobile_block.$output;
+//        $output = $mobile_block.$output;
     }
     return $output;
 }
