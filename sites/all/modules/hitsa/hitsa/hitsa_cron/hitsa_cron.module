@@ -235,7 +235,8 @@ function hitsa_cron_run_update()
     '37',
     '38',
     '39',
-    '40'
+    '40',
+    '41'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -2040,7 +2041,7 @@ function hitsa_cron_up_38(){
     ),
     'entity_type' => 'node',
     'field_name' => 'field_catering_file',
-    'label' => 'Totilustuse fail',
+    'label' => 'Toitlustuse fail',
     'required' => 0,
     'settings' => array(
       'description_field' => 0,
@@ -2108,5 +2109,12 @@ function hitsa_cron_up_40(){
   $field = field_info_field('cp_type');
   $field['settings']['allowed_values'][$type_to_add] = 'Sisuleht lihtne ilma pildita';
   field_update_field($field);
+  return TRUE;
+}
+function hitsa_cron_up_41(){
+
+  $instance_info = field_info_instance('node', 'field_catering_file', 'content_page');
+  $instance_info['label'] = 'Toitlustamise fail';
+  field_update_instance($instance_info);
   return TRUE;
 }

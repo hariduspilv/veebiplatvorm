@@ -800,7 +800,7 @@ function _hitsa_content_page_field_instances() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_catering_file',
-      'label' => 'Totilustuse fail',
+      'label' => 'Toitlustuse fail',
       'required' => 0,
       'settings' => array(
         'description_field' => 0,
