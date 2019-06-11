@@ -13,7 +13,7 @@
  */
 function keyword_rules_register_seo_rules() {
   $rules['keyword_density'] = array(
-    'name' => 'Keyword density in the body',
+    'name' => t('Keyword density in the body'),
     'description' => 'Checks the density of keywords over the the body of a page. Remark: too high density is not a good SEO.',
     'threshold type' => 'range',
     'default threshold' => array(5, 20),

@@ -13,7 +13,8 @@ function hitsa_cron_update_translations()
     '7',
     '8',
     '9',
-    '10'
+    '10',
+    '11'
 
 
   ];
@@ -382,6 +383,22 @@ function hitsa_cron_trans_up_10(){
     'Searchable event' => array(
       'et'=> 'Otsi sündmust',
       'ru' => 'Ищи мероприятие',
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
+}
+function hitsa_cron_trans_up_11(){
+  $words = array(
+    'SEO Check Results' => array(
+      'et'=> 'SEO testi tulemused',
+    ),
+    'Rule' => array(
+      'et'=> 'Reegel',
+    ),
+    'Achieved' => array(
+      'et'=> 'Saavutatud',
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');

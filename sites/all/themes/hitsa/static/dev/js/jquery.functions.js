@@ -600,7 +600,7 @@ $.fn.dropdownMenu = function(){
 	li.each(function(){
       var obj = $(this);
       var anchorTag = obj.children("a");
-      console.log(anchorTag);
+      //console.log(anchorTag);
 		if( obj.children("ul").size() > 0 ){
 			anchorTag.append('<span class="before-arrow_down"></span>');
 			obj.children("a, span").bind("click", function(e){
@@ -723,9 +723,16 @@ $.fn.share = function(){
 		var html = '<div class="share-tip" data-share="true">';
 		
 		var share = translations.share;
-		
-		for( var i in share ){
-			html+= '<a class="share-button '+share[i].icon+'" href="'+share[i].prefix+window.location.href+'">'+share[i].text+'</a>';
+		if (main.attr("data-shareurl")) {
+      for( var i in share ){
+        console.log(share[i].prefix+main.attr("data-shareurl"));
+        html+= '<a class="share-button '+share[i].icon+'" href="'+share[i].prefix+main.attr("data-shareurl")+'">'+share[i].text+'</a>';
+      }
+    } else {
+      for( var i in share ){
+        console.log(share[i].prefix);
+        html+= '<a class="share-button '+share[i].icon+'" href="'+share[i].prefix+window.location.href+'">'+share[i].text+'</a>';
+      }
 		}
 		
 		html+= '</div>';
@@ -816,6 +823,15 @@ $.fn.notification = function(){
 		e.preventDefault();
 		main.parents(".row:first").remove();
 	});
+}
+
+$.fn.showMore = function(){
+  var main = $(this);
+  var anchor = main.find("[data-anchor]");
+  anchor.on("click", function(e){
+    e.preventDefault();
+    main.addClass("open");
+  });
 }
 
 $(function(){

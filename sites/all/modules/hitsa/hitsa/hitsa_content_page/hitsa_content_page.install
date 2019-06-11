@@ -821,7 +821,7 @@ function _hitsa_content_page_field_instances() {
           'allowed_types' => array(
             'audio' => 0,
             'document' => 0,
-            'image' => 'image',
+            'image' => 0,
             'video' => 0,
           ),
           'browser_plugins' => array(
