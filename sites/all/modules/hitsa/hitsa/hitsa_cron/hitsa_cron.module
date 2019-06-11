@@ -236,7 +236,8 @@ function hitsa_cron_run_update()
     '38',
     '39',
     '40',
-    '41'
+    '41',
+    '42'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -2115,6 +2116,12 @@ function hitsa_cron_up_41(){
 
   $instance_info = field_info_instance('node', 'field_catering_file', 'content_page');
   $instance_info['label'] = 'Toitlustamise fail';
+  field_update_instance($instance_info);
+  return TRUE;
+}
+function hitsa_cron_up_42(){
+  $instance_info = field_info_instance('node', 'field_catering_file', 'content_page');
+  $instance_info['widget']['settings']['allowed_types']['image'] = 0;
   field_update_instance($instance_info);
   return TRUE;
 }
