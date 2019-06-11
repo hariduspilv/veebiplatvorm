@@ -1535,7 +1535,7 @@ function hitsa_curriculum_generate_header($header)
             $picture_text = $image['field_file_image_title_text']['und'][0]['value'];
         }
         $output_image = '';
-        $output_image .= '  <figure>';
+        $output_image .= '  <figure class="sm-hide">';
         $output_image .= '    <img src="' . $image_url . '" alt="">';
         $output_image .= '    <figcaption>' . $picture_text . '</figcaption>';
         $output_image .= '   </figure>';
