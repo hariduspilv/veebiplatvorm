@@ -274,7 +274,7 @@ function hitsa_core_contacts_departments_form($form, $form_state)
         'edit-submit'
       ),
     ),
-    '#value' => 'Taasta tähestikuline järjekord eesnime järgi',
+    '#value' => 'Sorteeri eesnime järgi',
   );
   $form['reset_alpha_family'] = array(
     '#type' => 'submit',
@@ -283,7 +283,7 @@ function hitsa_core_contacts_departments_form($form, $form_state)
         'edit-submit'
       ),
     ),
-    '#value' => 'Taasta tähestikuline järjekord perekonnanime järgi',
+    '#value' => 'Sorteeri perekonnanime järgi',
   );
 
   return $form;
