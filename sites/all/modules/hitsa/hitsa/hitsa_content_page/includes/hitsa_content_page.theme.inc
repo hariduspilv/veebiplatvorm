@@ -70,7 +70,64 @@ function hitsa_content_page_theme()
 
 function hitsa_content_page_preprocess_node(&$variables)
 {
-
+  if ($variables['type'] === 'event') {
+    $dates = $variables['event_date'][0];
+    $variables['start_date'] = date('d', $dates['value']);
+    if ($dates['value'] != $dates['value2']) {
+      $variables['end_date'] = format_date($dates['value'], 'custom', 'd. ' . t('M'));
+    }
+    if (!empty($variables['field_event_type'])) {
+      $have_event = FALSE;
+      $have_training = FALSE;
+      foreach ($variables['field_event_type'] as $type_event) {
+        if ($type_event['value'] == 'event') {
+          $have_event = TRUE;
+        }
+        elseif ($type_event['value'] == 'training'){
+          $have_training = TRUE;
+        }
+      }
+      $variables['event_tags_correct'] = '';
+      if ($have_training==TRUE) {
+        if (!empty($variables['field_training_tags'])) {
+          foreach ($variables['field_training_tags'] as $training_tag) {
+            $variables['event_tags_correct'] .= empty($variables['event_tags_correct']) ? $training_tag['entity']->name : ', ' .
+              $training_tag['entity']->name;
+          }
+        }
+      }
+      if($have_event==TRUE){
+        if (!empty($variables['event_tags'])) {
+          foreach ($variables['event_tags'] as $event_tag) {
+            $variables['event_tags_correct'] .= empty($variables['event_tags_correct']) ? $event_tag['taxonomy_term']->name : ', ' .
+              $event_tag['taxonomy_term']->name;
+          }
+        }
+      }
+      if (!empty($variables['field_pictures'])) {
+        foreach ($variables['field_pictures'] as $pic_key => $field_picture) {
+          $variables['field_pictures'][$pic_key] = hitsa_core_generate_single_image_figure($field_picture);
+        }
+      }
+      if(!empty($variables['field_contacts'])){
+        $variables['field_contacts'] = hitsa_curriculum_contacts($variables['field_contacts']);
+      }
+      if (!empty($variables['locations'])) {
+        $locations = '';
+        foreach ($variables['locations'] as $location) {
+          $locations .= empty($locations) ? $location['taxonomy_term']->name : ', ' .
+            $location['taxonomy_term']->name;
+        }
+        if (!empty($locations)) {
+          $variables['locations'] = $locations;
+        }
+        else {
+          unset($variables['locations']);
+        }
+      }
+//      krumo($variables);
+    }
+  }
   if(!empty($variables['body'])){
     $current_host = $_SERVER['HTTP_HOST'];
     $inital_url = variable_get('hitsa_initial_path');

@@ -409,16 +409,16 @@ function hitsa_core_redirect_front($content)
 function hitsa_core_redirect_content_type($node)
 {
   switch ($node->type) {
-    case 'event':
-      if (!empty($node->field_event_type[LANGUAGE_NONE])) {
-        if ($node->field_event_type[LANGUAGE_NONE][0]['value'] == 'event') {
-          drupal_goto('calendar');
-        }
-        if ($node->field_event_type[LANGUAGE_NONE][0]['value'] == 'training') {
-          drupal_goto('training-calendar');
-        }
-      }
-      break;
+//    case 'event':
+////      if (!empty($node->field_event_type[LANGUAGE_NONE])) {
+////        if ($node->field_event_type[LANGUAGE_NONE][0]['value'] == 'event') {
+////          drupal_goto('calendar');
+////        }
+////        if ($node->field_event_type[LANGUAGE_NONE][0]['value'] == 'training') {
+////          drupal_goto('training-calendar');
+////        }
+////      }
+//      break;
     case 'catering':
       if (!empty($node->path)) {
         return node_page_view($node);
