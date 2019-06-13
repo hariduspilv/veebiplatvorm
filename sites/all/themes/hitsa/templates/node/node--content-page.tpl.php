@@ -80,10 +80,15 @@
  */
 ?>
 <?php if($view_mode === 'full'): ?>
-
-
+  <?php if(empty($field_school_selections)): ?>
     <?php include('include/article-content.tpl.php'); ?>
-    
+  <?php elseif($field_school_selections[0]['value'] != 'catering'):?>
+    <?php include('include/article-content.tpl.php'); ?>
+  <?php else:?>
+    <?php include('include/article-content-catering.tpl.php'); ?>
+  <?php endif?>
+
+
     <?php if(!empty($webform)): // Webform ?>
       <div class="block">
         <h2 class="block-title"><?php print $webform['subject']; ?></h2>
@@ -107,11 +112,11 @@
       </div><!--/row-->
     </div><!--/block-->
     <?php endif; ?>
-    
+
     <?php if(!empty($subpages)): ?>
       <?php print $subpages; ?>
     <?php endif; ?>
-    
+
 <?php else: ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
