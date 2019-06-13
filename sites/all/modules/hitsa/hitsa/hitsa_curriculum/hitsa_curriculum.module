@@ -1526,6 +1526,37 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
 
 function hitsa_curriculum_generate_header($header)
 {
+  if(!empty($header)) {
+    if(!empty($header->field_school_selections) && $header->field_school_selections['und'][0]['value'] == 'catering') {
+      $view = node_view($header, 'full');
+      global $user;
+      $nid = $header->nid;
+      $header = (drupal_render($view));
+      if($user->uid>0){
+        $edit_link = url('node/'.$nid.'/edit');
+        $languages = language_list();
+        if(count($languages)>1){
+
+          $translate = url('node/'.$nid.'/translate');
+          $translate = '<li>
+                            <a href="' . $translate . '">' . t('Translate') . '</a>
+                        </li>';
+        }
+        else{
+          $translate = '';
+        }
+        $edit_links = '
+                <ul class="tabs primary">
+                    <li>
+                        <a href="' . $edit_link . '">' . t('Edit') . '</a>
+                    </li>
+                    '.$translate.'
+                 </ul>';
+        $header= $edit_links.$header;
+      }
+      return $header;
+    }
+  }
     if (!empty($header->cp_image)) {
         $image = $header->cp_image['und'][0];
         $image_style = 'hc_pictures';
