@@ -71,6 +71,7 @@
                             <span class="before-document"></span>
                             <?php print $catering_file['name']?>
                         </a>
+                            <div class="row-spacer"></div>
                       <?php endforeach?>
                     <?php endif?>
         
