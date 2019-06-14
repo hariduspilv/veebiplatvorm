@@ -712,7 +712,6 @@ function hitsa_events_get_nodes_html($nodes, $type = 'event')
     $separated_events = hitsa_events_splitter($nodes, $true_periods, $type);
     $separated_sorted_events = hitsa_events_sort_period_events($separated_events);
     $periods = $separated_sorted_events;
-    // krumo($periods);
     if (!empty($periods)) {
         $output = hitsa_events_htmlize_periods($periods);
     }
@@ -2760,6 +2759,7 @@ function hitsa_events_splitter($events = null, $periods = null, $type)
         return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
     });
     $attached_events = hitsa_events_attach_period_to_date($events, $periods_to_show, $type);
+//    krumo($attached_events);
     $attached_events = hitsa_events_put_todays_date($attached_events);
     return $attached_events;
 }
@@ -2861,16 +2861,20 @@ function hitsa_events_attach_period_to_date($events = null, $periods = null, $ty
                 // krumo('Perioodi algus: ' . $pd['start']);
                 // krumo('Perioodi lopp: ' . $pd['end']);
                 $in_period = 'FALSE';
+//                krumo(date('d.m.Y',$pd['start']));
+//                krumo(date('d.m.Y',$pd['end']));
+//                krumo(date('d.m.Y',$edm['start']));
                 if ($edm['start'] >= $pd['start'] && $edm['start'] <= $pd['end']) {
                     $in_period = 'TRUE';
                 }
+//                krumo($in_period);
                 // kui tahame syndmust tulevikku ka kuvatud
-                // elseif($ed['end']<=$pd['end'] && $pd['start']<=$ed{'end'}){
-                //     $in_period = 'TRUE';
-                // }
-                // elseif($ed['start']<=$pd['start']&&$ed['end']>=$pd['end']){
-                //     $in_period= 'TRUE';
-                // }
+//                 elseif($ed['end']<=$pd['end'] && $pd['start']<=$ed{'end'}){
+//                     $in_period = 'TRUE';
+//                 }
+//                 elseif($ed['start']<=$pd['start']&&$ed['end']>=$pd['end']){
+//                     $in_period= 'TRUE';
+//                 }
                 if ($in_period == 'TRUE') {
                     $events_html = hitsa_events_html_decider($event, $ed, $pd);
                     foreach ($events_html as $event_html) {
@@ -2957,6 +2961,7 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                 if ($dates['start'] <= $pd['start']) {
                     $dates['start'] = $pd['start'];
                 }
+//                krumo(date('d.m',$dates['start']));
                 $numDays = hitsa_events_event_day_splitter($dates['start'], $dates['end']);
                 for ($i = 0; $i < 1; $i++) {
 
@@ -2968,7 +2973,7 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                             $two_dates[0] = strtotime(str_replace('/', '-', $two_dates[0]));
                             $two_dates[1] = strtotime(str_replace('/', '-', $two_dates[1]));
                             if ($two_dates[0] > $start_date_date) {
-                                continue;
+//                                continue;
                             }
                             if ($two_dates[1] < $start_date_date) {
                                 continue;
