@@ -484,6 +484,9 @@ function hitsa_events_calendar_page_html()
                <div class="row-spacer-xs"></div>
                <hr />
                <div class="row-spacer"></div>
+               
+               <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
+               <div class="row-spacer"></div>
 
                <div class="row">
                   <div class="col-12">
@@ -1366,7 +1369,7 @@ function hitsa_events_training_calendar()
     $output .= '<h2 class="block-title">' . t('Calendar') . '</h2>';
     $output .= '<div class="row">
                   <div class="col-12">
-                     <h3>' . t('Filter events') . '</h3>
+                     <h3>' . t('Filter trainings') . '</h3>
                   </div><!--/col-12-->
                </div><!--/row-->
                ';
@@ -1378,23 +1381,23 @@ function hitsa_events_training_calendar()
                      <div data-show="hiddenFilter" class="row-spacer"></div>
 
                      <div class="btn-bar">';
-    if (!empty($allowed)) {
-        $output .= '     <span class="btn-input" > ';
-        $output .= ' <input type = "checkbox" name = "category" value = "all" checked />';
-        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . t('All') . '</span >';
-        $output .= '                   </span ><!--/btn - input-->';
-    }
-    foreach ($allowed as $allowed_key => $allowed_value) {
-        $output .= '     <span class="btn-input" > ';
-        $output .= ' <input type = "checkbox" name = "category" value = "' . $allowed_key . '"/>';
-        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value . '</span >';
-        $output .= '                   </span ><!--/btn - input-->';
-    }
+//    if (!empty($allowed)) {
+//        $output .= '     <span class="btn-input" > ';
+//        $output .= ' <input type = "checkbox" name = "category" value = "all" checked />';
+//        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . t('All') . '</span >';
+//        $output .= '                   </span ><!--/btn - input-->';
+//    }
+//    foreach ($allowed as $allowed_key => $allowed_value) {
+//        $output .= '     <span class="btn-input" > ';
+//        $output .= ' <input type = "checkbox" name = "category" value = "' . $allowed_key . '"/>';
+//        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value . '</span >';
+//        $output .= '                   </span ><!--/btn - input-->';
+//    }
 
     $allowed_tags = taxonomy_vocabulary_machine_name_load('training_tags');
     $allowed_tags = taxonomy_get_tree($allowed_tags->vid);
     if (!empty($allowed_tags)) {
-        $output .= '<h4>' . t('Event tags') . '</h4>';
+//        $output .= '<h4>' . t('Event tags') . '</h4>';
         $output .= '   <br>  <span class="btn-input" > ';
         $output .= ' <input type = "checkbox" name = "training-category" value = "all" checked />';
         $output .= '                      <span class="btn btn-xs btn-alternate" > ' . t('All') . '</span >';
@@ -1457,13 +1460,15 @@ function hitsa_events_training_calendar()
                <div class="row-spacer-xs"></div>
                <hr />
                <div class="row-spacer"></div>
+               <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
 
+               <div class="row-spacer"></div>
                <div class="row">
                   <div class="col-12">
                      <div class="form-item-row">
 
                         <div class="form-item after-search form-item_rounded form-item-stretch">
-                           <div class="form-item_title">Otsitav sündmus</div>
+                           <div class="form-item_title">'.t('Searchable event').'</div>
                            <input type="text" name="event-title" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
                         </div><!--/form-item-->
 

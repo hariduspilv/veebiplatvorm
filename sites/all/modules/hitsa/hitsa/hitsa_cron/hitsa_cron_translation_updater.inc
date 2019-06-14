@@ -14,7 +14,8 @@ function hitsa_cron_update_translations()
     '8',
     '9',
     '10',
-    '11'
+    '11',
+    '12'
 
 
   ];
@@ -399,6 +400,17 @@ function hitsa_cron_trans_up_11(){
     ),
     'Achieved' => array(
       'et'=> 'Saavutatud',
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
+}
+function hitsa_cron_trans_up_12(){
+  $words = array(
+    'Filter trainings' => array(
+      'et'=> 'Filtreeri koolitusi',
+      'ru' => 'Oбучение фильтра'
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
