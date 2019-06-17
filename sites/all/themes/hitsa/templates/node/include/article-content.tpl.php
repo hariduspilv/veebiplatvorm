@@ -254,13 +254,19 @@
                 <?php endif?>
 
                  <?php if(empty($field_school_selections)): ?>
+
+                   <?php    if($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images'):?>
+                   <?php else:?>
          <div class="btn-bar align-right sm-hide">
                   <a href="javascript:void(0);" class="btn-circle before-share"
                     data-plugin="share"></a>
                   <a href="javascript:window.print();"
                     class="sm-hide btn-circle before-print"></a>
                 </div>
+                <?php endif?>
         <?php elseif($field_school_selections[0]['value']!='catering'):?>
+                   <?php    if($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images'):?>
+                   <?php else:?>
          <div class="btn-bar align-right sm-hide">
                   <a href="javascript:void(0);" class="btn-circle before-share"
                     data-plugin="share"></a>
@@ -268,9 +274,12 @@
                     class="sm-hide btn-circle before-print"></a>
                 </div>
         <?php endif?>
+        <?php endif?>
 
 
                 <div class="row-spacer-xl no-print sm-hide"></div>
+                <?php    if($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images'):?>
+                <?php else:?>
                 <?php if(!empty($subpage_images) || (!empty($cp_image) && $subpage_images = $cp_image)): $image = $subpage_images[0]; // Gallery ?>
                 <figure>
                   <a href="<?php print image_style_url('hitsa_article_modal_view', $image['uri']); ?>"
@@ -288,6 +297,7 @@
                     <?php if(!empty($image['field_file_image_title_text'])) print check_plain($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']); ?>
                   </figcaption>
                 </figure>
+                <?php endif; ?>
                 <?php endif; ?>
                 <?php if(!empty($article_video)): ?>
                 <figure>
