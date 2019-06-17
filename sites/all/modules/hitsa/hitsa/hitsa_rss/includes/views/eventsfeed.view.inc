@@ -33,14 +33,75 @@ $handler->display->display_options['pager']['options']['tags']['previous'] = '�
 $handler->display->display_options['pager']['options']['tags']['next'] = 'järgmine ›';
 $handler->display->display_options['pager']['options']['tags']['last'] = 'viimane »';
 $handler->display->display_options['style_plugin'] = 'default';
-$handler->display->display_options['row_plugin'] = 'node';
+$handler->display->display_options['row_plugin'] = 'fields';
+/* Valdkond: Sisu: Body */
+$handler->display->display_options['fields']['body']['id'] = 'body';
+$handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+$handler->display->display_options['fields']['body']['field'] = 'body';
+$handler->display->display_options['fields']['body']['label'] = '';
+$handler->display->display_options['fields']['body']['element_label_colon'] = FALSE;
+/* Valdkond: Sisu: Body */
+$handler->display->display_options['fields']['body_1']['id'] = 'body_1';
+$handler->display->display_options['fields']['body_1']['table'] = 'field_data_body';
+$handler->display->display_options['fields']['body_1']['field'] = 'body';
+$handler->display->display_options['fields']['body_1']['label'] = 'Kirjeldus';
+$handler->display->display_options['fields']['body_1']['element_label_colon'] = FALSE;
+/* Valdkond: Sisu: Date */
+$handler->display->display_options['fields']['event_date_2']['id'] = 'event_date_2';
+$handler->display->display_options['fields']['event_date_2']['table'] = 'field_data_event_date';
+$handler->display->display_options['fields']['event_date_2']['field'] = 'event_date';
+$handler->display->display_options['fields']['event_date_2']['label'] = '';
+$handler->display->display_options['fields']['event_date_2']['alter']['strip_tags'] = TRUE;
+$handler->display->display_options['fields']['event_date_2']['element_type'] = '0';
+$handler->display->display_options['fields']['event_date_2']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['event_date_2']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['event_date_2']['settings'] = array(
+  'format_type' => 'custom',
+  'custom_date_format' => 'd.m.Y H:i',
+  'fromto' => 'both',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+  'show_remaining_days' => 0,
+);
+/* Valdkond: Sisu: Author */
+$handler->display->display_options['fields']['gallery_author']['id'] = 'gallery_author';
+$handler->display->display_options['fields']['gallery_author']['table'] = 'field_data_gallery_author';
+$handler->display->display_options['fields']['gallery_author']['field'] = 'gallery_author';
+$handler->display->display_options['fields']['gallery_author']['label'] = 'Autor';
+/* Valdkond: Sisu: Location */
+$handler->display->display_options['fields']['locations']['id'] = 'locations';
+$handler->display->display_options['fields']['locations']['table'] = 'field_data_locations';
+$handler->display->display_options['fields']['locations']['field'] = 'locations';
+$handler->display->display_options['fields']['locations']['label'] = 'Koht';
+$handler->display->display_options['fields']['locations']['element_default_classes'] = FALSE;
+$handler->display->display_options['fields']['locations']['type'] = 'i18n_taxonomy_term_reference_plain';
+$handler->display->display_options['fields']['locations']['settings'] = array(
+  'view_mode' => 'token',
+  'links' => 1,
+  'use_content_language' => 1,
+);
+/* Valdkond: Sisu: Pictures */
+$handler->display->display_options['fields']['field_pictures']['id'] = 'field_pictures';
+$handler->display->display_options['fields']['field_pictures']['table'] = 'field_data_field_pictures';
+$handler->display->display_options['fields']['field_pictures']['field'] = 'field_pictures';
+$handler->display->display_options['fields']['field_pictures']['label'] = 'PILDID';
+$handler->display->display_options['fields']['field_pictures']['click_sort_column'] = 'fid';
+$handler->display->display_options['fields']['field_pictures']['type'] = 'enclosure';
+$handler->display->display_options['fields']['field_pictures']['settings'] = array(
+  'image_style' => '',
+);
+$handler->display->display_options['fields']['field_pictures']['delta_offset'] = '0';
 /* Valdkond: Sisu: Pealkiri */
 $handler->display->display_options['fields']['title']['id'] = 'title';
 $handler->display->display_options['fields']['title']['table'] = 'node';
 $handler->display->display_options['fields']['title']['field'] = 'title';
-$handler->display->display_options['fields']['title']['label'] = '';
-$handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-$handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+$handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+/* Valdkond: Sisu: Tee */
+$handler->display->display_options['fields']['path']['id'] = 'path';
+$handler->display->display_options['fields']['path']['table'] = 'node';
+$handler->display->display_options['fields']['path']['field'] = 'path';
+$handler->display->display_options['fields']['path']['absolute'] = TRUE;
 /* Lühike kriteerium: Sisu: Postituse kuupäev */
 $handler->display->display_options['sorts']['created']['id'] = 'created';
 $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -60,20 +121,66 @@ $handler->display->display_options['filters']['type']['field'] = 'type';
 $handler->display->display_options['filters']['type']['value'] = array(
   'event' => 'event',
 );
+/* Filtri kriteeriumid: Sisu: Keel */
+$handler->display->display_options['filters']['language']['id'] = 'language';
+$handler->display->display_options['filters']['language']['table'] = 'node';
+$handler->display->display_options['filters']['language']['field'] = 'language';
+$handler->display->display_options['filters']['language']['value'] = array(
+  '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
+);
 
 /* Display: Page */
 $handler = $view->new_display('page', 'Page', 'page');
-$handler->display->display_options['path'] = 's-ndmuste-feed';
+$handler->display->display_options['path'] = 'events-feed';
 
 /* Display: Feed */
 $handler = $view->new_display('feed', 'Feed', 'feed');
 $handler->display->display_options['pager']['type'] = 'some';
 $handler->display->display_options['pager']['options']['items_per_page'] = '20';
 $handler->display->display_options['pager']['options']['offset'] = '0';
-$handler->display->display_options['style_plugin'] = 'rss';
-$handler->display->display_options['row_plugin'] = 'node_rss';
+$handler->display->display_options['style_plugin'] = 'rss_fields';
+$handler->display->display_options['style_options']['channel'] = array(
+  'core' => array(
+    'views_rss_core' => array(
+      'description' => '',
+      'language' => '',
+      'category' => '',
+      'image' => '',
+      'copyright' => '',
+      'managingEditor' => '',
+      'webMaster' => '',
+      'generator' => '',
+      'docs' => '',
+      'cloud' => '',
+      'ttl' => '',
+      'skipHours' => '',
+      'skipDays' => '',
+    ),
+  ),
+);
+$handler->display->display_options['style_options']['item'] = array(
+  'core' => array(
+    'views_rss_core' => array(
+      'title' => 'title',
+      'link' => 'path',
+      'description' => 'body',
+      'author' => 'gallery_author',
+      'category' => 'locations',
+      'comments' => '',
+      'enclosure' => 'field_pictures',
+      'guid' => 'title',
+      'pubDate' => 'event_date_2',
+    ),
+  ),
+);
+$handler->display->display_options['style_options']['feed_settings'] = array(
+  'absolute_paths' => 1,
+  'feed_in_links' => 0,
+);
 $handler->display->display_options['path'] = 'events-feed.xml';
 $handler->display->display_options['displays'] = array(
   'default' => 'default',
   'page' => 'page',
 );
+
+

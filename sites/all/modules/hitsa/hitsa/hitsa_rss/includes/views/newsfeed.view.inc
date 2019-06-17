@@ -1,4 +1,4 @@
-<?php 
+<?php
 $view = new view();
 $view->name = 'uudise_feed';
 $view->description = '';
@@ -41,6 +41,8 @@ $handler->display->display_options['fields']['title']['field'] = 'title';
 $handler->display->display_options['fields']['title']['label'] = '';
 $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
 $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+$handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
 /* Valdkond: Sisu: Body */
 $handler->display->display_options['fields']['body_1']['id'] = 'body_1';
 $handler->display->display_options['fields']['body_1']['table'] = 'field_data_body';
@@ -54,9 +56,9 @@ $handler->display->display_options['fields']['subpage_images']['field'] = 'subpa
 $handler->display->display_options['fields']['subpage_images']['label'] = '';
 $handler->display->display_options['fields']['subpage_images']['element_label_colon'] = FALSE;
 $handler->display->display_options['fields']['subpage_images']['click_sort_column'] = 'fid';
+$handler->display->display_options['fields']['subpage_images']['type'] = 'enclosure';
 $handler->display->display_options['fields']['subpage_images']['settings'] = array(
   'image_style' => 'hitsa_gallery_image_full',
-  'image_link' => '',
 );
 $handler->display->display_options['fields']['subpage_images']['delta_limit'] = '1';
 $handler->display->display_options['fields']['subpage_images']['delta_offset'] = '0';
@@ -66,6 +68,12 @@ $handler->display->display_options['fields']['gallery_author']['table'] = 'field
 $handler->display->display_options['fields']['gallery_author']['field'] = 'gallery_author';
 $handler->display->display_options['fields']['gallery_author']['label'] = '';
 $handler->display->display_options['fields']['gallery_author']['element_label_colon'] = FALSE;
+/* Valdkond: Sisu: Link */
+$handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+$handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+$handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+$handler->display->display_options['fields']['view_node']['alter']['make_link'] = TRUE;
+$handler->display->display_options['fields']['view_node']['alter']['absolute'] = TRUE;
 /* Lühike kriteerium: Sisu: Postituse kuupäev */
 $handler->display->display_options['sorts']['created']['id'] = 'created';
 $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -85,6 +93,13 @@ $handler->display->display_options['filters']['type']['field'] = 'type';
 $handler->display->display_options['filters']['type']['value'] = array(
   'article' => 'article',
 );
+/* Filtri kriteeriumid: Sisu: Keel */
+$handler->display->display_options['filters']['language']['id'] = 'language';
+$handler->display->display_options['filters']['language']['table'] = 'node';
+$handler->display->display_options['filters']['language']['field'] = 'language';
+$handler->display->display_options['filters']['language']['value'] = array(
+  '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
+);
 
 /* Display: Page */
 $handler = $view->new_display('page', 'Page', 'page');
@@ -95,18 +110,48 @@ $handler = $view->new_display('feed', 'Feed', 'feed');
 $handler->display->display_options['pager']['type'] = 'some';
 $handler->display->display_options['pager']['options']['items_per_page'] = '20';
 $handler->display->display_options['pager']['options']['offset'] = '0';
-$handler->display->display_options['style_plugin'] = 'rss';
-$handler->display->display_options['style_options']['grouping'] = array(
-  0 => array(
-    'field' => 'title',
-    'rendered' => 1,
-    'rendered_strip' => 0,
+$handler->display->display_options['style_plugin'] = 'rss_fields';
+$handler->display->display_options['style_options']['channel'] = array(
+  'core' => array(
+    'views_rss_core' => array(
+      'description' => '',
+      'language' => '',
+      'category' => '',
+      'image' => '',
+      'copyright' => '',
+      'managingEditor' => '',
+      'webMaster' => '',
+      'generator' => '',
+      'docs' => '',
+      'cloud' => '',
+      'ttl' => '',
+      'skipHours' => '',
+      'skipDays' => '',
+    ),
   ),
 );
-$handler->display->display_options['style_options']['uses_fields'] = TRUE;
-$handler->display->display_options['row_plugin'] = 'node_rss';
+$handler->display->display_options['style_options']['item'] = array(
+  'core' => array(
+    'views_rss_core' => array(
+      'title' => 'title',
+      'link' => 'view_node',
+      'description' => 'body_1',
+      'author' => 'gallery_author',
+      'category' => '',
+      'comments' => '',
+      'enclosure' => 'subpage_images',
+      'guid' => '',
+      'pubDate' => '',
+    ),
+  ),
+);
+$handler->display->display_options['style_options']['feed_settings'] = array(
+  'absolute_paths' => 1,
+  'feed_in_links' => 0,
+);
 $handler->display->display_options['path'] = 'uudise-feed.xml';
 $handler->display->display_options['displays'] = array(
   'default' => 'default',
   'page' => 'page',
 );
+

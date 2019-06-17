@@ -140,16 +140,20 @@ function hitsa_core_menu()
 
 function hitsa_core_rss_feeds() {
   $feeds = array();
-  $feeds[] = array(
-    'link' => url('events-feed.xml'),
-    'title' => 'Sündmuste feed',
-    'desc' => 'Sündmuste feed link näitab viimast 20'
-  );
-  $feeds[] = array(
-    'link' => url('uudise-feed.xml'),
-    'title' => 'Uudiste feed',
-    'desc' => 'Uudiste feedi link näitab viimast 20'
-  );
+  $language_list = language_list();
+  global $language;
+  foreach ($language_list as $lng) {
+    $feeds[] = array(
+      'link' => url('events-feed.xml',array('language'=>$lng)),
+      'title' => t($lng->name) .' sündmuste feed',
+      'desc' => 'Sündmuste feed link näitab viimast 20'
+    );
+    $feeds[] = array(
+      'link' => url('uudise-feed.xml',array('language'=>$lng)),
+      'title' => t($lng->name) .' uudise feed',
+      'desc' => 'Uudiste feedi link näitab viimast 20'
+    );
+  }
   $build = array();
 
   $build['page'] = array(

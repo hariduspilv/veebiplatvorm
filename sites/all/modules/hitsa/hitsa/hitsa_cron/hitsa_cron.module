@@ -238,7 +238,8 @@ function hitsa_cron_run_update()
     '40',
     '41',
     '42',
-    '43'
+    '43',
+    '44'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -2250,4 +2251,12 @@ function hitsa_cron_up_43(){
   // Included for use with string extractors like potx.
   t('Pictures');
   return TRUE;
+}
+function hitsa_cron_up_44(){
+  $modules = array('views_rss','views_rss_core');
+  module_enable($modules);
+
+  drupal_flush_all_caches();
+  return TRUE;
+
 }
