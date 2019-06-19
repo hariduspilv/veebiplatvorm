@@ -436,7 +436,7 @@ function hitsa_events_calendar_page_html()
     foreach ($allowed as $allowed_key => $allowed_value) {
         $output .= '     <span class="btn-input" > ';
         $output .= ' <input type = "checkbox" name = "category" value = "' . $allowed_key . '"/>';
-        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value . '</span >';
+        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value. '</span >';
         $output .= '                   </span ><!--/btn - input-->';
     }
     $time_periods = array();
@@ -483,6 +483,9 @@ function hitsa_events_calendar_page_html()
 
                <div class="row-spacer-xs"></div>
                <hr />
+               <div class="row-spacer"></div>
+               
+               <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
                <div class="row-spacer"></div>
 
                <div class="row">
@@ -709,7 +712,6 @@ function hitsa_events_get_nodes_html($nodes, $type = 'event')
     $separated_events = hitsa_events_splitter($nodes, $true_periods, $type);
     $separated_sorted_events = hitsa_events_sort_period_events($separated_events);
     $periods = $separated_sorted_events;
-    // krumo($periods);
     if (!empty($periods)) {
         $output = hitsa_events_htmlize_periods($periods);
     }
@@ -774,6 +776,10 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         if ($type == 'training') {
             $time_hours_minutes = '<span class="before-calendar">' . date('j.m', $start_date) . ' - ' . date('j.m', $end_date) . '</span>';
         }
+//        krumo($start_date_date);
+//        krumo($time);
+//        krumo(date('j.m',$start_date_date));
+//        krumo(date('j.m',$time));
         if (empty($start_date_date)) {
             $start_date_date = $start_date;
         }
@@ -931,7 +937,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
 
         $output .= '<a href="javascript:void(0);" class="btn sm-stretch" data-toggle="object-details_' . $details_number . '" data-hide="object-details_' . $details_number . '">' . t('Read more') . '</a>';
         $output .= '<div data-show="object-details_' . $details_number . '">';
-        $output .= '<a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>';
+        $output .= '<a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share" data-shareurl="'.url('node/'.$event->nid,array('absolute'=>TRUE)).'"></a>';
         $output .= '<a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>';
         $output .= '<a href="javascript:void(0);" data-toggle="object-details_' . $details_number . '" class="sm-hide btn btn-transparent after-close">' . t('Close') . '</a>';
 
@@ -1066,6 +1072,7 @@ function hitsa_events_front_page_block($type_override=null)
                     $loaded_tag = i18n_taxonomy_localize_terms($loaded_tag);
                     $tag = i18n_taxonomy_term_get_translation($loaded_tag, $language->language);
                     $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
+                    $loaded_tag->name = $translated;
                     $events_array[$translated][] = $event;
                     $categories[$loaded_tag->name] = $loaded_tag->tid;
                 }
@@ -1122,6 +1129,8 @@ function hitsa_events_front_page_block($type_override=null)
                     $time = strtotime('today midnight');
                     $start = $event->event_date['und'][0]['value'];
                     $start_readable_day = date('d', $start);
+                    $end_readable_day = date('d',$event->event_date['und'][0]['value2']);
+
                     $start_readable_month = strftime('%B', $start);
                     $start_readable_month = format_date($start, 'custom', 'F', null, null);
 
@@ -1139,7 +1148,12 @@ function hitsa_events_front_page_block($type_override=null)
                 $output .= '                <div class="object object-event">';
                 $output .= '                   <div class="object-inner">';
                 $output .= '                      <a href="" class="object-date">';
-                $output .= '                         <span class="object-date_day">' . $start_readable_day . '</span>';
+                if($start_readable_day==$end_readable_day) {
+                  $output .= '                         <span class="object-date_day">' . $start_readable_day . '</span>';
+                }
+                else{
+                  $output .= '                         <span class="object-date_day">' . $start_readable_day .'-'.$end_readable_day. '</span>';
+                }
                 $output .= '                         <span class="object-date_month">' . $start_readable_month . '</span>';
                 $output .= '                      </a><!--/object-date-->';
                 $output .= '                      <span class="object-content">';
@@ -1339,6 +1353,11 @@ function hitsa_events_training_calendar()
     //        $allowed[$term->tid] = $term->name;
     //    }
     //TODO Koolituste filtrid korda teha.
+  foreach ($taxonomy_tree as $term) {
+    $tag = i18n_taxonomy_term_get_translation($term, $language->language);
+    $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
+    $allowed[$term->tid] = $translated;
+  }
     if (!isset($output)) {
         $output = '';
     }
@@ -1349,7 +1368,7 @@ function hitsa_events_training_calendar()
     $output .= '<h2 class="block-title">' . t('Calendar') . '</h2>';
     $output .= '<div class="row">
                   <div class="col-12">
-                     <h3>' . t('Filter events') . '</h3>
+                     <h3>' . t('Filter trainings') . '</h3>
                   </div><!--/col-12-->
                </div><!--/row-->
                ';
@@ -1361,30 +1380,34 @@ function hitsa_events_training_calendar()
                      <div data-show="hiddenFilter" class="row-spacer"></div>
 
                      <div class="btn-bar">';
-    if (!empty($allowed)) {
-        $output .= '     <span class="btn-input" > ';
-        $output .= ' <input type = "checkbox" name = "category" value = "all" checked />';
-        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . t('All') . '</span >';
-        $output .= '                   </span ><!--/btn - input-->';
-    }
-    foreach ($allowed as $allowed_key => $allowed_value) {
-        $output .= '     <span class="btn-input" > ';
-        $output .= ' <input type = "checkbox" name = "category" value = "' . $allowed_key . '"/>';
-        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value . '</span >';
-        $output .= '                   </span ><!--/btn - input-->';
-    }
-    $allowed = taxonomy_vocabulary_machine_name_load('training_tags');
-    $allowed = taxonomy_get_tree($allowed->vid);
-    if (!empty($allowed)) {
-        $output .= '     <span class="btn-input" > ';
+//    if (!empty($allowed)) {
+//        $output .= '     <span class="btn-input" > ';
+//        $output .= ' <input type = "checkbox" name = "category" value = "all" checked />';
+//        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . t('All') . '</span >';
+//        $output .= '                   </span ><!--/btn - input-->';
+//    }
+//    foreach ($allowed as $allowed_key => $allowed_value) {
+//        $output .= '     <span class="btn-input" > ';
+//        $output .= ' <input type = "checkbox" name = "category" value = "' . $allowed_key . '"/>';
+//        $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value . '</span >';
+//        $output .= '                   </span ><!--/btn - input-->';
+//    }
+
+    $allowed_tags = taxonomy_vocabulary_machine_name_load('training_tags');
+    $allowed_tags = taxonomy_get_tree($allowed_tags->vid);
+    if (!empty($allowed_tags)) {
+//        $output .= '<h4>' . t('Event tags') . '</h4>';
+        $output .= '   <br>  <span class="btn-input" > ';
         $output .= ' <input type = "checkbox" name = "training-category" value = "all" checked />';
         $output .= '                      <span class="btn btn-xs btn-alternate" > ' . t('All') . '</span >';
         $output .= '                   </span ><!--/btn - input-->';
 
-        foreach ($allowed as $allowed_key => $allowed_value) {
+        foreach ($allowed_tags as $allowed_key => $allowed_value) {
             $output .= '     <span class="btn-input" > ';
             $output .= ' <input type = "checkbox" name = "training-category" value = "' . $allowed_value->tid . '"/>';
-            $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $allowed_value->name . '</span >';
+          $tag = i18n_taxonomy_term_get_translation($allowed_value, $language->language);
+          $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
+            $output .= '                      <span class="btn btn-xs btn-alternate" > ' . $translated . '</span >';
             $output .= '                   </span ><!--/btn - input-->';
         }
     }
@@ -1436,13 +1459,15 @@ function hitsa_events_training_calendar()
                <div class="row-spacer-xs"></div>
                <hr />
                <div class="row-spacer"></div>
+               <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
 
+               <div class="row-spacer"></div>
                <div class="row">
                   <div class="col-12">
                      <div class="form-item-row">
 
                         <div class="form-item after-search form-item_rounded form-item-stretch">
-                           <div class="form-item_title">Otsitav sündmus</div>
+                           <div class="form-item_title">'.t('Searchable event').'</div>
                            <input type="text" name="event-title" placeholder="Otsi sündmust" data-plugin="autocomplete" data-url="/api/events_autocomplete" data-onSubmit="true" />
                         </div><!--/form-item-->
 
@@ -2734,6 +2759,7 @@ function hitsa_events_splitter($events = null, $periods = null, $type)
         return $a->field_time_period_dates['und'][0]['value'] - $b->field_time_period_dates['und'][0]['value'];
     });
     $attached_events = hitsa_events_attach_period_to_date($events, $periods_to_show, $type);
+//    krumo($attached_events);
     $attached_events = hitsa_events_put_todays_date($attached_events);
     return $attached_events;
 }
@@ -2835,16 +2861,20 @@ function hitsa_events_attach_period_to_date($events = null, $periods = null, $ty
                 // krumo('Perioodi algus: ' . $pd['start']);
                 // krumo('Perioodi lopp: ' . $pd['end']);
                 $in_period = 'FALSE';
+//                krumo(date('d.m.Y',$pd['start']));
+//                krumo(date('d.m.Y',$pd['end']));
+//                krumo(date('d.m.Y',$edm['start']));
                 if ($edm['start'] >= $pd['start'] && $edm['start'] <= $pd['end']) {
                     $in_period = 'TRUE';
                 }
+//                krumo($in_period);
                 // kui tahame syndmust tulevikku ka kuvatud
-                // elseif($ed['end']<=$pd['end'] && $pd['start']<=$ed{'end'}){
-                //     $in_period = 'TRUE';
-                // }
-                // elseif($ed['start']<=$pd['start']&&$ed['end']>=$pd['end']){
-                //     $in_period= 'TRUE';
-                // }
+//                 elseif($ed['end']<=$pd['end'] && $pd['start']<=$ed{'end'}){
+//                     $in_period = 'TRUE';
+//                 }
+//                 elseif($ed['start']<=$pd['start']&&$ed['end']>=$pd['end']){
+//                     $in_period= 'TRUE';
+//                 }
                 if ($in_period == 'TRUE') {
                     $events_html = hitsa_events_html_decider($event, $ed, $pd);
                     foreach ($events_html as $event_html) {
@@ -2931,6 +2961,7 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                 if ($dates['start'] <= $pd['start']) {
                     $dates['start'] = $pd['start'];
                 }
+//                krumo(date('d.m',$dates['start']));
                 $numDays = hitsa_events_event_day_splitter($dates['start'], $dates['end']);
                 for ($i = 0; $i < 1; $i++) {
 
@@ -2942,7 +2973,7 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                             $two_dates[0] = strtotime(str_replace('/', '-', $two_dates[0]));
                             $two_dates[1] = strtotime(str_replace('/', '-', $two_dates[1]));
                             if ($two_dates[0] > $start_date_date) {
-                                continue;
+//                                continue;
                             }
                             if ($two_dates[1] < $start_date_date) {
                                 continue;
@@ -2952,6 +2983,9 @@ function hitsa_events_html_decider($event = null, $dates = null, $pd = null)
                   $days_start = date('d',$dates['start']);
                   $days_end = date('d',$dates['end']);
                   $days_count = $days_end-$days_start;
+                  if(time()>$start_date_date&&time()<$dates['end']){
+                    $start_date_date = strtotime('tomorrow midnight');
+                  }
                   $active_decider = date('U', strtotime("+{$days_count} day", $dates['start']));
                   $event->active_decider =$active_decider;
                     $event_html = hitsa_events_event_html($event, $type = 'event', $start_date_date);

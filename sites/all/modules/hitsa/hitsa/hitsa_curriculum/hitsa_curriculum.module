@@ -956,6 +956,9 @@ function hitsa_curriculum_custom_block($curriculum_type)
             $output.='<div class="row-spacer"></div>';
         }
         $output .= '<div class="block no-padding" ' . $id_block . ' data-plugin="scrollIfID">';
+        if(!empty($mobile_block)){
+          $output.=$mobile_block;
+        }
         $output .= '<div class="row">';
         if ($content_count > 1) {
             $output .= '<div class="col-3 d-flex sm-hide no-print">';
@@ -976,7 +979,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
         $output .= '</div><!--/block-->';
     }
     if(!empty($mobile_block)){
-        $output = $mobile_block.$output;
+//        $output = $mobile_block.$output;
     }
     return $output;
 }
@@ -1523,6 +1526,37 @@ function hitsa_curriculum_generate_right_custom_side($content, $curriculum_type)
 
 function hitsa_curriculum_generate_header($header)
 {
+  if(!empty($header)) {
+    if(!empty($header->field_school_selections) && $header->field_school_selections['und'][0]['value'] == 'catering') {
+      $view = node_view($header, 'full');
+      global $user;
+      $nid = $header->nid;
+      $header = (drupal_render($view));
+      if($user->uid>0){
+        $edit_link = url('node/'.$nid.'/edit');
+        $languages = language_list();
+        if(count($languages)>1){
+
+          $translate = url('node/'.$nid.'/translate');
+          $translate = '<li>
+                            <a href="' . $translate . '">' . t('Translate') . '</a>
+                        </li>';
+        }
+        else{
+          $translate = '';
+        }
+        $edit_links = '
+                <ul class="tabs primary">
+                    <li>
+                        <a href="' . $edit_link . '">' . t('Edit') . '</a>
+                    </li>
+                    '.$translate.'
+                 </ul>';
+        $header= $edit_links.$header;
+      }
+      return $header;
+    }
+  }
     if (!empty($header->cp_image)) {
         $image = $header->cp_image['und'][0];
         $image_style = 'hc_pictures';
@@ -1532,7 +1566,7 @@ function hitsa_curriculum_generate_header($header)
             $picture_text = $image['field_file_image_title_text']['und'][0]['value'];
         }
         $output_image = '';
-        $output_image .= '  <figure>';
+        $output_image .= '  <figure class="sm-hide">';
         $output_image .= '    <img src="' . $image_url . '" alt="">';
         $output_image .= '    <figcaption>' . $picture_text . '</figcaption>';
         $output_image .= '   </figure>';
@@ -1580,7 +1614,7 @@ function hitsa_curriculum_generate_header($header)
   $menus = menu_tree_all_data('hitsa-main-menu');
 //  $trail = hitsa_curriculum_find_trail($menus,'node/'.$header->nid);
 
-    $output.='<div class="block sm-hide">';
+    $output.='<div class="block">';
 
   $link = (i18n_menu_link_load('node/'.$header->nid,$language->language));
   if(!empty($link)){

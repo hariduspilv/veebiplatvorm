@@ -140,16 +140,20 @@ function hitsa_core_menu()
 
 function hitsa_core_rss_feeds() {
   $feeds = array();
-  $feeds[] = array(
-    'link' => url('events-feed.xml'),
-    'title' => 'Sündmuste feed',
-    'desc' => 'Sündmuste feed link näitab viimast 20'
-  );
-  $feeds[] = array(
-    'link' => url('uudise-feed.xml'),
-    'title' => 'Uudiste feed',
-    'desc' => 'Uudiste feedi link näitab viimast 20'
-  );
+  $language_list = language_list();
+  global $language;
+  foreach ($language_list as $lng) {
+    $feeds[] = array(
+      'link' => url('events-feed.xml',array('language'=>$lng)),
+      'title' => t($lng->name) .' sündmuste feed',
+      'desc' => 'Sündmuste feed link näitab viimast 20'
+    );
+    $feeds[] = array(
+      'link' => url('uudise-feed.xml',array('language'=>$lng)),
+      'title' => t($lng->name) .' uudise feed',
+      'desc' => 'Uudiste feedi link näitab viimast 20'
+    );
+  }
   $build = array();
 
   $build['page'] = array(
@@ -267,6 +271,24 @@ function hitsa_core_contacts_departments_form($form, $form_state)
     '#type' => 'submit',
     '#value' => 'Salvesta',
   );
+  $form['reset_alpha'] = array(
+    '#type' => 'submit',
+    '#attributes' => array(
+      'id' => array(
+        'edit-submit'
+      ),
+    ),
+    '#value' => 'Sorteeri eesnime järgi',
+  );
+  $form['reset_alpha_family'] = array(
+    '#type' => 'submit',
+    '#attributes' => array(
+      'id' => array(
+        'edit-submit'
+      ),
+    ),
+    '#value' => 'Sorteeri perekonnanime järgi',
+  );
 
   return $form;
 }
@@ -277,6 +299,9 @@ function hitsa_core_sort_contacts_by_weight($a, $b)
   }
 
   return 0;
+}
+function hitsa_core_sort_contacts_alphabetically($a,$b){
+  return $b['name']<$a['name'];
 }
 function hitsa_core_contacts_departments_form_submit($form, &$form_state)
 {
@@ -294,7 +319,54 @@ function hitsa_core_contacts_departments_form_submit($form, &$form_state)
     }
 
     $form_state['rebuild'] = true;
-  } elseif ($form_state['input']['op'] == 'Filtreeri') {
+  }
+  elseif($form_state['clicked_button']['#id']=='edit-reset-alpha'){
+    $persons_list = $form_state['input']['contacts_list'];
+    foreach ($persons_list as $nid => $department_info) {
+      $contact = node_load($nid);
+      $persons_list[$nid]['name'] = $contact->title;
+    }
+    uasort($persons_list, 'hitsa_core_sort_contacts_alphabetically');
+    $i=-100;
+    foreach($persons_list as $nid => $department_info){
+      $weight = $i;
+      $department = entity_load_single('paragraphs_item', array($department_info['department_value']));
+
+      if (!empty($department_info['weight'])) {
+        $department->department_weight['und'][0]['value'] = $weight;
+      }
+      $department->revision = true;
+      $department->save(false);
+      $i++;
+    }
+
+    $form_state['rebuild'] = true;
+  }
+  elseif($form_state['clicked_button']['#id']=='edit-reset-alpha-family'){
+    $persons_list = $form_state['input']['contacts_list'];
+    foreach ($persons_list as $nid => $department_info) {
+      $contact = node_load($nid);
+      $names = explode(' ',$contact->title);
+      $title = end($names);
+      $persons_list[$nid]['name'] = $title;
+    }
+    uasort($persons_list, 'hitsa_core_sort_contacts_alphabetically');
+    $i=-100;
+    foreach($persons_list as $nid => $department_info){
+      $weight = $i;
+      $department = entity_load_single('paragraphs_item', array($department_info['department_value']));
+
+      if (!empty($department_info['weight'])) {
+        $department->department_weight['und'][0]['value'] = $weight;
+      }
+      $department->revision = true;
+      $department->save(false);
+      $i++;
+    }
+
+    $form_state['rebuild'] = true;
+  }
+  elseif ($form_state['input']['op'] == 'Filtreeri') {
     $form_state['rebuild'] = true;
   }
 }
@@ -341,16 +413,16 @@ function hitsa_core_redirect_front($content)
 function hitsa_core_redirect_content_type($node)
 {
   switch ($node->type) {
-    case 'event':
-      if (!empty($node->field_event_type[LANGUAGE_NONE])) {
-        if ($node->field_event_type[LANGUAGE_NONE][0]['value'] == 'event') {
-          drupal_goto('calendar');
-        }
-        if ($node->field_event_type[LANGUAGE_NONE][0]['value'] == 'training') {
-          drupal_goto('training-calendar');
-        }
-      }
-      break;
+//    case 'event':
+////      if (!empty($node->field_event_type[LANGUAGE_NONE])) {
+////        if ($node->field_event_type[LANGUAGE_NONE][0]['value'] == 'event') {
+////          drupal_goto('calendar');
+////        }
+////        if ($node->field_event_type[LANGUAGE_NONE][0]['value'] == 'training') {
+////          drupal_goto('training-calendar');
+////        }
+////      }
+//      break;
     case 'catering':
       if (!empty($node->path)) {
         return node_page_view($node);
@@ -1089,4 +1161,8 @@ function hitsa_core_updates_installer(){
       }
     }
   }
+}
+function hitsa_core_set_inital_path(){
+  $inital_path = $_SERVER['HTTP_HOST'];
+  variable_set('hitsa_initial_path',$inital_path);
 }

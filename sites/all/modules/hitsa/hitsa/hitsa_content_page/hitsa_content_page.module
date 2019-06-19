@@ -205,6 +205,18 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
             ':input[name^="cp_type"]' => array(
               'value' => 'cp_specialities',
             ),
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_simple_without_images',
+            ),
+          ),
+        );
+      }
+      if(!empty($form['field_contacts'])) {
+        $form['field_contacts']['#states'] = array(
+          'invisible' => array(
+            ':input[name^="cp_type"]' => array(
+              'value' => 'cp_simple_without_images',
+            ),
           ),
         );
       }
@@ -227,6 +239,19 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
           ),
         );
       }
+    }
+    if(!empty($form['field_catering_file'])){
+      $form['field_catering_file']['#states'] = array(
+        'visible' => array(
+          ':input[name^="cp_type"]' => array(
+            'value' => 'cp_specialities',
+          ),
+          ':input[name^="field_school_selections"]' => array(
+            'value' => 'catering',
+          ),
+
+        ),
+      );
     }
     if(isset($form['body'])) {
       $form['body'][LANGUAGE_NONE][0]['summary']['#description'] = ''; // Hide summary description

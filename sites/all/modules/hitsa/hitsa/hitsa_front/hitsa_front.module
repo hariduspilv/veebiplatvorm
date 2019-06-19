@@ -329,7 +329,7 @@ function hitsa_front_make_html_list($list)
     foreach ($out as $part_key => $part) {
         $type = $part['type'] == 'class' ? t('Classes') : t('Lunch');
         // $output.=!empty($output)?'<hr/>':'';
-        $output .= '<div class="time-table time-table--vacation">
+        $output .= '<div class="time-table">
     <p><b>' . $type . '</b></p>';
         foreach ($part['hours'] as $key => $hour) {
             $output .= $hour['hour_html'];

@@ -20,6 +20,7 @@ function hitsa_school_install()
     hitsa_enable_translations();
     hitsa_school_disable_blocks();
     hitsa_school_de_u_mt();
+  hitsa_core_set_inital_path();
 }
 
 function hitsa_install()

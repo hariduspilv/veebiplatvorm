@@ -80,22 +80,28 @@
  */
 ?>
 <?php if($view_mode === 'full'): ?>
-    <?php if(!empty($cp_type) && $cp_type[0]['value'] === 'cp_specialities') $hide_main_block = TRUE; ?>
-
+  <?php if(empty($field_school_selections)): ?>
     <?php include('include/article-content.tpl.php'); ?>
-    
+  <?php elseif($field_school_selections[0]['value'] != 'catering'):?>
+    <?php include('include/article-content.tpl.php'); ?>
+  <?php else:?>
+    <?php include('include/article-content-catering.tpl.php'); ?>
+  <?php endif?>
+
+
     <?php if(!empty($webform)): // Webform ?>
       <div class="block">
         <h2 class="block-title"><?php print $webform['subject']; ?></h2>
+
         <?php print $webform['content']; ?>
       </div>
     <?php endif; ?>
-    
+
     <?php if(!empty($more_services)): ?>
     <div class="block no-print">
 
       <h2 class="block-title"><?php if(!empty($more_services_title)) {print $more_services_title;} ?></h2>
-      
+
       <div class="row row-vertical-xl">
       <?php foreach($more_services as $service) { print $service; } ?>
       </div><!--/row-->
@@ -106,11 +112,11 @@
       </div><!--/row-->
     </div><!--/block-->
     <?php endif; ?>
-    
+
     <?php if(!empty($subpages)): ?>
       <?php print $subpages; ?>
     <?php endif; ?>
-    
+
 <?php else: ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 

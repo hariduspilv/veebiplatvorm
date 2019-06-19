@@ -31,7 +31,7 @@ function hitsa_core_variable_info($options) {
     'default' => 'Testimine',
   );
   $variable['hitsa_initial_path'] = array(
-    'title' => t('Hitsa inital path'),
+    'title' => t('Hitsa esialgne hosti nimi'),
     'group' => 'general_variables',
     'description' => t('Hitsa esialgne domeeni nimi ennem vahetamist peaks olema kujul sites/domeeninimi'),
   );
@@ -186,7 +186,6 @@ function hitsa_core_variable_info($options) {
     'group' => 'block_titles',
     'localize'=> TRUE,
   );
-
   return $variable;
 }
 

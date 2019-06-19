@@ -307,7 +307,11 @@ html{
 	}
 	
 	article{
-		h1{font-size:25px;}
+    h1{font-size:25px;}
+    .article-heading{flex-direction: row; justify-content: space-between;}
+    .link-circle{font-size: 14px;
+      [class*="before-"]{width: 24px; height: 24px; line-height: 24px; font-size: 14px; margin-bottom: 0;}
+    }
 	}
 	
 	.d-flex.d-wrap{flex-wrap: wrap; margin-bottom:-20px;
@@ -331,6 +335,16 @@ html{
     .daterangepicker{
       .calendar.left, .calendar.right{width: auto !important;}
     }
+  }
+  .hidden-content{
+    &.open{
+      .link{display: none;}
+      .hidden-container{display: block;}
+    }
+    .link{display:inline;
+      [class*="before-"]{font-size: 10px; margin-left: 8px; vertical-align: middle; display: inline-block;}
+    }
+    .hidden-container{display: none;}
   }
 }
 

@@ -12,7 +12,11 @@ function hitsa_cron_update_translations()
     '6',
     '7',
     '8',
-    '9'
+    '9',
+    '10',
+    '11',
+    '12'
+
 
   ];
   if (!empty($updates)) {
@@ -369,6 +373,44 @@ function hitsa_cron_trans_up_9(){
     'Tomorrow' => array(
       'et' => 'Homme',
       'ru' => 'Завтра'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
+}
+function hitsa_cron_trans_up_10(){
+  $words = array(
+    'Searchable event' => array(
+      'et'=> 'Otsi sündmust',
+      'ru' => 'Ищи мероприятие',
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
+}
+function hitsa_cron_trans_up_11(){
+  $words = array(
+    'SEO Check Results' => array(
+      'et'=> 'SEO testi tulemused',
+    ),
+    'Rule' => array(
+      'et'=> 'Reegel',
+    ),
+    'Achieved' => array(
+      'et'=> 'Saavutatud',
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
+}
+function hitsa_cron_trans_up_12(){
+  $words = array(
+    'Filter trainings' => array(
+      'et'=> 'Filtreeri koolitusi',
+      'ru' => 'Oбучение фильтра'
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
