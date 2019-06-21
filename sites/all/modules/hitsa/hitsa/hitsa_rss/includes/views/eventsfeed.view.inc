@@ -102,6 +102,22 @@ $handler->display->display_options['fields']['path']['id'] = 'path';
 $handler->display->display_options['fields']['path']['table'] = 'node';
 $handler->display->display_options['fields']['path']['field'] = 'path';
 $handler->display->display_options['fields']['path']['absolute'] = TRUE;
+/* Valdkond: Sisu: Date */
+$handler->display->display_options['fields']['event_date']['id'] = 'event_date';
+$handler->display->display_options['fields']['event_date']['table'] = 'field_data_event_date';
+$handler->display->display_options['fields']['event_date']['field'] = 'event_date';
+$handler->display->display_options['fields']['event_date']['label'] = '';
+$handler->display->display_options['fields']['event_date']['element_label_colon'] = FALSE;
+$handler->display->display_options['fields']['event_date']['type'] = 'date_plain';
+$handler->display->display_options['fields']['event_date']['settings'] = array(
+  'format_type' => 'custom',
+  'custom_date_format' => 'U',
+  'fromto' => 'value2',
+  'multiple_number' => '',
+  'multiple_from' => '',
+  'multiple_to' => '',
+  'show_remaining_days' => 0,
+);
 /* Lühike kriteerium: Sisu: Postituse kuupäev */
 $handler->display->display_options['sorts']['created']['id'] = 'created';
 $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -128,6 +144,15 @@ $handler->display->display_options['filters']['language']['field'] = 'language';
 $handler->display->display_options['filters']['language']['value'] = array(
   '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
 );
+/* Filtri kriteeriumid: Sisu: Date - end date (event_date:value2) */
+$handler->display->display_options['filters']['event_date_value2']['id'] = 'event_date_value2';
+$handler->display->display_options['filters']['event_date_value2']['table'] = 'field_data_event_date';
+$handler->display->display_options['filters']['event_date_value2']['field'] = 'event_date_value2';
+$handler->display->display_options['filters']['event_date_value2']['operator'] = '>';
+$handler->display->display_options['filters']['event_date_value2']['granularity'] = 'hour';
+$handler->display->display_options['filters']['event_date_value2']['form_type'] = 'date_text';
+$handler->display->display_options['filters']['event_date_value2']['default_date'] = 'Now';
+$handler->display->display_options['filters']['event_date_value2']['year_range'] = '-0:+10';
 
 /* Display: Page */
 $handler = $view->new_display('page', 'Page', 'page');
@@ -182,5 +207,3 @@ $handler->display->display_options['displays'] = array(
   'default' => 'default',
   'page' => 'page',
 );
-
-

@@ -79,10 +79,10 @@
  * @ingroup themeable
  */
 ?>
-<?php if($view_mode === 'full'): ?>
+<?php if ($view_mode === 'full') : ?>
     <div class="block">
 
-        <h2 class="block-title"><?php print t('Event')?></h2>
+        <h2 class="block-title"><?php print t('Event') ?></h2>
 
         <div class="row-spacer-xs sm-hide"></div>
         <div class="row">
@@ -92,69 +92,78 @@
                     <div class="btn-bar align-right sm-show sm-pull_right">
                         <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
                         <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-                    </div><!--/button-row-->
+                    </div>
+                    <!--/button-row-->
 
-                    <h1 class="col-7 sm-12"><?php print $title?>
+                    <h1 class="col-7 sm-12"><?php print $title ?>
                         <span class="editor-info">
-                            <?php if(!empty($start_date)):?>
-										<span class="before-calendar">
-                                            <?php print $start_date?>
-                                            <?php if(!empty($end_date)):?>
-                                            -
-                                            <?php print $end_date?>
-                                            <?php endif?>
-                                        </span>
-                            <?php endif;?>
-                            <?php if(!empty($event_tags_correct)):?>
-										<span class="before-tags"><?php print $event_tags_correct?></span>
-                            <?php endif?>
-                            <?php if(!empty($locations)):?>
-										<span class="before-location"><?php print $locations?></span>
-                            <?php endif?>
-									</span>
+                            <?php if (!empty($start_date)) : ?>
+                                <span class="before-calendar">
+                                    <?php print $start_date ?>
+                                    <?php if (!empty($end_date)) : ?>
+                                        -
+                                        <?php print $end_date ?>
+                                    <?php endif ?>
+                                </span>
+                            <?php endif; ?>
+                            <?php if (!empty($event_tags_correct)) : ?>
+                                <span class="before-tags"><?php print $event_tags_correct ?></span>
+                            <?php endif ?>
+                            <?php if (!empty($locations)) : ?>
+                                <span class="before-location"><?php print $locations ?></span>
+                            <?php endif ?>
+                        </span>
                     </h1>
-
+                    <?php if (empty($field_pictures)) : ?>
+                        <div class="btn-bar align-right sm-hide">
+                            <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+                            <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
+                        </div>
+                          <!--/button-row-->
+                    <?php endif ?>
                     <div class="row">
-                        <?php if(!empty($field_pictures)):?>
-                        <div class="col-7 sm-12">
-                            <?php else:?>
-                            <div class="col-12 sm-12">
-                        <?php endif?>
-                          <?php if(!empty($body[0]['safe_value'])): ?>
-                            <?php print $body[0]['safe_value']; ?>
-                          <?php endif; ?>
-                                <?php if(empty($field_pictures)):?>
+                        <?php if (!empty($field_pictures)) : ?>
+                            <div class="col-7 sm-12">
+                            <?php else : ?>
+                                <div class="col-12 sm-12">
+                                <?php endif ?>
+                                <?php if (!empty($body[0]['safe_value'])) : ?>
+                                    <?php print $body[0]['safe_value']; ?>
+                                <?php endif; ?>
+
+
+                            </div>
+                            <!--/col-8-->
+                            <?php if (!empty($field_pictures)) : ?>
+                                <div class="col-4 sm-12 col-offset-1 sm-offset-0">
+
                                     <div class="btn-bar align-right sm-hide">
                                         <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
                                         <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-                                    </div><!--/button-row-->
-                                <?php endif?>
+                                    </div>
+                                    <!--/button-row-->
 
-                        </div><!--/col-8-->
-                        <?php if(!empty($field_pictures)):?>
-                            <div class="col-4 sm-12 col-offset-1 sm-offset-0">
-
-                                <div class="btn-bar align-right sm-hide">
-                                    <a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
-                                    <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
-                                </div><!--/button-row-->
-
-                                <div class="row-spacer-xl no-print sm-hide"></div>
-                                <?php foreach ($field_pictures as $picture):?>
-                                <?php print $picture?>
-                                <?php endforeach;?>
-                            </div><!--/col-4-->
-                        <?php endif;?>
-                          <?php if(!empty($field_contacts)):?>
-                          <div class="col-12 sm-12">
-                            <?php print $field_contacts?>
-                          </div>
-                          <?php endif?>
-                    </div><!--/row-->
+                                    <div class="row-spacer-xl no-print sm-hide"></div>
+                                    <?php foreach ($field_pictures as $picture) : ?>
+                                        <?php print $picture ?>
+                                    <?php endforeach; ?>
+                                </div>
+                                <!--/col-4-->
+                            <?php endif; ?>
+                            <?php if (!empty($field_contacts)) : ?>
+                                <div class="col-12 sm-12">
+                                    <?php print $field_contacts ?>
+                                </div>
+                            <?php endif ?>
+                        </div>
+                        <!--/row-->
 
                 </article>
-            </div><!--/col-12-->
-        </div><!--/row-->
+            </div>
+            <!--/col-12-->
+        </div>
+        <!--/row-->
 
-    </div><!--/block-->
+    </div>
+    <!--/block-->
 <?php endif; ?>

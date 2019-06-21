@@ -94,6 +94,7 @@ function hitsa_curriculum_block_info()
             'cache' => DRUPAL_CACHE_PER_PAGE,
         );
     }
+    
     $school_type = hitsa_core_get_school_type();
     if ($school_type == 2) {
         $blocks['hitsa_hero_banner'] = array(
@@ -435,9 +436,7 @@ function hitsa_curriculum_page($type = null, $name = null)
     global $user;
     
     $build = array();
-
-
-    return $build;
+     return $build;
 }
 
 function hitsa_curriculum_generate_table($table, $descriptions = null, $type = null)

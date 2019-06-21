@@ -239,7 +239,8 @@ function hitsa_cron_run_update()
     '41',
     '42',
     '43',
-    '44'
+    '44',
+    '45'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -2259,4 +2260,12 @@ function hitsa_cron_up_44(){
   drupal_flush_all_caches();
   return TRUE;
 
+}
+
+function hitsa_cron_up_45(){
+  $modules = array('date_views',);
+  module_enable($modules);
+
+  drupal_flush_all_caches();
+  return TRUE;
 }
