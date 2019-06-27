@@ -93,6 +93,9 @@
                       <a href="javascript:window.print();" class="sm-hide btn-circle before-print"></a>
                   </div>
                 <?php endif?>
+              <?php if ($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images') : ?>
+              <br>
+              <?php endif?>
             <div class="row">
               <?php if ($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images') : ?>
                 <div class="col-12 sm-12">

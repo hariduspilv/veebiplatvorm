@@ -91,6 +91,7 @@ $handler->display->display_options['fields']['field_pictures']['type'] = 'enclos
 $handler->display->display_options['fields']['field_pictures']['settings'] = array(
   'image_style' => '',
 );
+$handler->display->display_options['fields']['field_pictures']['delta_limit'] = '1';
 $handler->display->display_options['fields']['field_pictures']['delta_offset'] = '0';
 /* Valdkond: Sisu: Pealkiri */
 $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -207,3 +208,4 @@ $handler->display->display_options['displays'] = array(
   'default' => 'default',
   'page' => 'page',
 );
+
