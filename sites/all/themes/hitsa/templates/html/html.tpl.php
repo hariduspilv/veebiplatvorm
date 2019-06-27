@@ -49,7 +49,7 @@
 
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="Author" content="Trinidad-Wiseman Oü  www.twn.ee"/>
+  <meta name="Author" content="Trinidad-Wiseman Oü  www.twn.ee" />
   <meta name="format-detection" content="telephone=no">
   <?php
 
@@ -59,10 +59,15 @@
   <?php print $styles; ?>
   <?php print $scripts; ?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/sites/all/themes/hitsa/fa/css/fontawesome.css" rel="stylesheet">
-    <link href="/sites/all/themes/hitsa/fa/css/solid.css" rel="stylesheet">
+  <link href="/sites/all/themes/hitsa/fa/css/fontawesome.css" rel="stylesheet">
+  <link href="/sites/all/themes/hitsa/fa/css/solid.css" rel="stylesheet">
+  <script src="https://xgis.maaamet.ee/xgis2/mod/1.2.9/main/public/js/Dogis.Vendor.js">
+  </script>
+  <script src="https://xgis.maaamet.ee/xgis2/mod/1.2.9/main/public/js/Dogis.Map.js">
+  </script>
 </head>
-<body class="<?php print $classes; ?>" <?php print $attributes;?>>
+
+<body class="<?php print $classes; ?>" <?php print $attributes; ?>>
 
 
   <div id="skip-link">
@@ -72,4 +77,5 @@
   <?php print $page; ?>
   <?php print $page_bottom; ?>
 </body>
+
 </html>

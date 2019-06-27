@@ -375,7 +375,57 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
     $footer_menu = menu_tree_all_data($hitsa_footer_menu_name);
     $variables['footer_menu'] = menu_tree_output(i18n_menu_localize_tree($footer_menu));
   }
+  $map_service_json = variable_get( 'hitsa_maaamet_json_footer');
+  // krumo($map_service_json);
+  if(!empty($map_service_json)){
+    $map_service_json = json_decode($map_service_json);
+    if(!empty($map_service_json->addresses)){
+      if(!empty($map_service_json->addresses[0])){
+        $x = $map_service_json->addresses[0]->viitepunkt_x;
+        $y = $map_service_json->addresses[0]->viitepunkt_y;
+        $tooltip = null;
 
+        if(!empty(variable_get( 'hitsa_maaamet_comment'))){
+          $tooltip = variable_get( 'hitsa_maaamet_comment');
+        }
+        $footer_map = '
+
+        <div id="mapFrame_footer" class="dg-mapframe" style="height:500px; width:100%"></div>
+<script>
+  Dogis.Map.Containers["mapFrame_footer"] = new Dogis.Map(document.getElementById(
+    "mapFrame_footer"), {
+    "app": "maainfo",
+    // "bookmark": "CTQDX8Gj",
+    "proxy": "https://xgis.maaamet.ee/xgis2/mod",
+    "plugin": true,
+    "params": {
+      // "aadress": "L. Koidula tn 1, Rakvere linn, Lääne-Viru maakond",
+      // "searchid": "KATASTRIYKSUS",
+      "adfit": 1,
+      "adshow": 1,
+      "punkt": "'.$x.', '.$y.'",
+      "moot": 1000,
+      "tooltip": "'.$tooltip. '",
+      "OTSINGUVALJANIMI": "kaaas",
+    "components": {
+      "navigation": {
+        "settings": {
+          "hidden": true,
+        }
+      },
+      "scalebar": {
+        "settings": {
+          "hidden": true,
+        }
+      }
+    },
+    }
+  })
+</script>';
+      $variables['footer_map'] = $footer_map;
+      }
+    }
+  }
   // School Location Map
   $variables['google_api_key'] = variable_get_value('hitsa_google_api_key');
   $variables['hitsa_school_place_coords'] = variable_get_value('hitsa_school_place_coords');
@@ -392,6 +442,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
       $variables['hitsa_school_place_address'] = $address_link;
     }
   }
+
 
 }
 

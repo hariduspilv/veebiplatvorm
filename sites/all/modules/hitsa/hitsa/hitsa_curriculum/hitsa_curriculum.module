@@ -94,7 +94,7 @@ function hitsa_curriculum_block_info()
             'cache' => DRUPAL_CACHE_PER_PAGE,
         );
     }
-    
+
     $school_type = hitsa_core_get_school_type();
     if ($school_type == 2) {
         $blocks['hitsa_hero_banner'] = array(
@@ -434,7 +434,7 @@ function hitsa_curriculum_header_get($form, &$form_state)
 function hitsa_curriculum_page($type = null, $name = null)
 {
     global $user;
-    
+
     $build = array();
      return $build;
 }
@@ -646,7 +646,7 @@ function hitsa_curriculum_logo_area($logo){
     <figure>
         <img src="'.$image_style_url.'" alt="'.$alt_text.'">
             <figcaption></figcaption>
-        </figure> 
+        </figure>
   </div><!--/col-6-->
  </div>';
   return $output;
@@ -1662,19 +1662,110 @@ $output.='
 
 ';
   if (!empty($header->body)){
-    if(!empty($header->body['und'][0]['safe_summary'])){
 
-      $output.='    <div class="intro">'.$header->body['und'][0]['safe_summary'].'
-            </div>
-            <!--/intro-->';
+        $current_host = $_SERVER['HTTP_HOST'];
+        $inital_url = variable_get('hitsa_initial_path');
+        $header->body['und'][0]['safe_value'] = str_replace($inital_url, $current_host, $header->body['und'][0]['safe_value']);
+        $header->body['und'][0]['safe_summary'] = str_replace($inital_url, $current_host, $header->body['und'][0]['safe_summary']);
+        $new_summary = $header->body['und'][0]['safe_summary'];
+        $new_summary = htmlentities($new_summary);
+        $new_summary = str_replace(' ', '', $new_summary);
+        $new_summary = str_replace('&nbsp', '', strval($new_summary));
+        $new_summary = str_replace('<p>', '', strval($new_summary));
+        $new_summary = str_replace("</p>", '', strval($new_summary));
+        $new_summary = str_replace('&lt;', '', strval($new_summary));
+        $new_summary = str_replace('p&gt;', '', strval($new_summary));
+        $new_summary = str_replace(';/', '', strval($new_summary));
+        $new_summary = rtrim($new_summary);
+        $new_summary = trim($new_summary);
+        if (empty($new_summary)) {
+            $header->body['und'][0]['safe_summary'] = '';
+        }
+        $doc = new DOMDocument();
+        $decoded = utf8_decode($header->body['und'][0]['value']);
+        $doc->loadHTML($decoded);
+        $xpath = new DOMXPath($doc);
+        foreach ($xpath->query('//table') as $node) {
+            $node->parentNode->removeChild($node);
+        }
+        $body_no_table = $doc->saveHTML();
+        $body_no_table_original = $body_no_table;
+        $body_no_table = str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>', '', $body_no_table);
+        $body_no_table = str_replace('</body></html>', '', $body_no_table);
+        $body_no_table = str_replace('&nbsp', '', strval($body_no_table));
+        $body_no_table = str_replace('<p>', '', strval($body_no_table));
+        $body_no_table = str_replace("</p>", '', strval($body_no_table));
+        $body_no_table = str_replace(";", '', strval($body_no_table));
+        $body_no_table = trim($body_no_table);
+        if (empty($body_no_table)) {
+            $header->body['und'][0]['safe_value'] = '';
+            $header->body['und'][0]['value'] = '';
+        }
+        else{
+            $body_no_table = $body_no_table_original;
+            $body_no_table = str_replace( '<p>&nbsp;</p>','',$body_no_table);
+        }
+        if (strlen($body_no_table) > 1000) {
+            $your_desired_width = 1000;
+            $break_point = mb_strrpos(mb_substr($body_no_table, 0, $your_desired_width, 'UTF-8'), ' ');
+            $start = mb_substr($body_no_table, 0, $break_point, 'UTF-8');
+            $end = mb_substr($body_no_table, $break_point,  mb_strlen($body_no_table, 'UTF-8'));
+            $start = utf8_encode($start);
+            $end = utf8_encode($end);
+            $start_of_text = $start;
+            $end_of_text = $end;
+        } else {
+            $start_of_text = $body_no_table;
+        }
+        if(!empty($header->body['und'][0]['safe_summary'])){
+        $output.='    <div class="intro">'.$header->body['und'][0]['safe_summary'].'
+                </div>
+                <!--/intro-->';
+        }
+        if(!empty($header->body['und'][0]['safe_summary'])){
+            $output.= '
+            <br>
+            <div class="hidden-content" data-plugin="showMore">
+                    <div class="text-center">
+                      <a href="" class="link"
+                        data-anchor>'.t(' Read more').'<span
+                          class="before-arrow_down"></span></a>
+                    </div>
+                    <!--/text-center-->
+                    <div class="hidden-container" data-container>
+                      '.$header->body['und'][0]['value'].'
+                    </div>
+                    <!--/hidden-container-->
+                  </div>';
+        }
+        else{
+            $output.= '<div class = "sm-hide">';
+            $output.='<br>';
+            $output.= $header->body['und'][0]['value'];
+            $output.= '</div>';
+            $output.= '<div class="sm-show">';
+            $output.='<br>';
+            $output.= $start_of_text;
+            if(!empty($end_of_text)){
+                $output .= '
+            <br>
+            <div class="hidden-content" data-plugin="showMore">
+                    <div class="text-center">
+                      <a href="" class="link"
+                        data-anchor>' . t(' Read more') . '<span
+                          class="before-arrow_down"></span></a>
+                    </div>
+                    <!--/text-center-->
+                    <div class="hidden-container" data-container>
+                      ' . $end_of_text . '
+                    </div>
+                    <!--/hidden-container-->
+                  </div>';
+            }
+            $output.='</div>';
+        }
     }
-  }
-  if (!empty($header->body)){
-    if(!empty($header->body['und'][0]['safe_value'])){
-      $output.='<p>'.$header->body['und'][0]['safe_value'].'</p>
-            <!--/intro-->';
-    }
-  }
 
   $output.='
 

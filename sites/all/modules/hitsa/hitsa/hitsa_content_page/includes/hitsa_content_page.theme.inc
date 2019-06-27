@@ -136,19 +136,115 @@ function hitsa_content_page_preprocess_node(&$variables)
       $variables['body_no_table'] = '';
       foreach ($variables['body'] as $body_key => $body_value) {
         $variables['body'][$body_key]['safe_value'] = str_replace($inital_url, $current_host, $body_value['safe_value']);
+        $variables['body'][$body_key]['safe_summary'] = str_replace($inital_url, $current_host, $body_value['safe_summary']);
+        $new_summary = $body_value['safe_summary'];
+        $new_summary = htmlentities($new_summary);
+        $new_summary = str_replace(' ','',$new_summary);
+        $new_summary = str_replace( '&nbsp','',strval($new_summary));
+        $new_summary = str_replace( '<p>','',strval($new_summary));
+        $new_summary = str_replace( "</p>",'',strval($new_summary));
+        $new_summary = str_replace( '&lt;','',strval($new_summary));
+        $new_summary = str_replace( 'p&gt;','',strval($new_summary));
+        $new_summary = str_replace( ';/','',strval($new_summary));
+        $new_summary = rtrim($new_summary);
+        $new_summary = trim($new_summary);
+        if(empty($new_summary)){
+          $variables['body'][$body_key]['safe_summary']='';
+        }
+
+        $tables = '';
+        $doc_summary = new DOMDocument();
+        $decoded_summary = utf8_decode($body_value['summary']);
+        $doc_summary->loadHTML($decoded_summary);
+        $doc_summary->preserveWhiteSpace = false;
+        $table  = $doc_summary->getElementsByTagName('table');
+        $i=0;
+        foreach ($table as $part){
+          $tables.='<table>';
+          $rows = $part->getElementsByTagName('tr');
+          foreach ($rows as $row){
+            $tables.='<tr>';
+            $cols = $row->getElementsByTagName('td');
+            foreach ($cols as $col){
+              $value = $col->nodeValue;
+              $tables.='<td>'.$value.'</td>';
+            }
+            $tables.='</tr>';
+          }
+          $tables.='</table>';
+        }
+
+        $xpath_summary = new DOMXPath($doc_summary);
+        foreach ($xpath_summary->query('//table') as $summary) {
+          $summary->parentNode->removeChild($summary);
+        }
+        $summary_no_table = $doc_summary->saveHTML();
+        $summary_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>','',$summary_no_table);
+        $summary_no_table = str_replace('</body></html>','',$summary_no_table);
+        $summary_no_table = str_replace('&nbsp', '', strval( $summary_no_table));
+        $summary_no_table = str_replace('<p>', '', strval( $summary_no_table));
+        $summary_no_table = str_replace("</p>", '', strval( $summary_no_table));
+        $summary_no_table = str_replace(";", '', strval( $summary_no_table));
+        $summary_no_table = trim($summary_no_table);
+        if(empty($summary_no_table)){
+          $variables['only_table'] = true;
+        }
+        $variables['body'][$body_key]['safe_summary']=str_replace('<table','<table class="sm-hide" ',$variables['body'][$body_key]['safe_summary']);
+        $variables['body'][$body_key]['safe_value']=str_replace('<table','<table class="sm-hide" ',$variables['body'][$body_key]['safe_value']);
+        if (strpos($variables['body'][$body_key]['safe_summary'], '<table') !== false) {
+          $variables['header_table']= true;
+        }
+
         $doc = new DOMDocument();
         $decoded = utf8_decode($body_value['value']);
         $doc->loadHTML($decoded);
+        $doc->preserveWhiteSpace = false;
+        $table  = $doc->getElementsByTagName('table');
+//        $tables = '';
+        $i=0;
+        foreach ($table as $part){
+          $tables.='<table>';
+          $rows = $part->getElementsByTagName('tr');
+          foreach ($rows as $row){
+            $tables.='<tr>';
+            $cols = $row->getElementsByTagName('td');
+            foreach ($cols as $col){
+              $value = $col->nodeValue;
+              $tables.='<td>'.$value.'</td>';
+            }
+            $tables.='</tr>';
+          }
+          $tables.='</table>';
+
+        }
+        if(!empty($tables)){
+          $variables['tables'] = $tables;
+        }
         $xpath = new DOMXPath($doc);
         foreach ($xpath->query('//table') as $node) {
           $node->parentNode->removeChild($node);
         }
         $body_no_table = $doc->saveHTML();
+        $body_no_table_original = $body_no_table;
       }
+
     }
     $body_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>','',$body_no_table);
     $body_no_table = str_replace('</body></html>','',$body_no_table);
+    $body_no_table = str_replace('&nbsp', '', strval( $body_no_table));
+    $body_no_table = str_replace('<p>', '', strval( $body_no_table));
+    $body_no_table = str_replace("</p>", '', strval( $body_no_table));
+    $body_no_table = str_replace(";", '', strval( $body_no_table));
+    $body_no_table = trim($body_no_table);
+    if(empty($body_no_table)){
+      $variables['mobile_body'][$body_key]['safe_value'] = '';
+      $variables['mobile_body'][$body_key]['value'] = '';
+    }
+    else{
+      $body_no_table = $body_no_table_original;
+    }
     if(strlen($body_no_table)>1000){
       $your_desired_width = 1000;
         $break_point = mb_strrpos(mb_substr($body_no_table, 0, $your_desired_width,'UTF-8'), ' ');
@@ -161,6 +257,14 @@ function hitsa_content_page_preprocess_node(&$variables)
     }
     else{
       $variables['start'] = $body_no_table;
+    }
+    if(!empty($tables)){
+      if(!empty($variables['end'])) {
+        $variables['end'] .= $tables;
+      }
+      else{
+        $variables['end']=$tables;
+      }
     }
   }
   if ($variables['type'] === 'content_page') {
@@ -257,7 +361,7 @@ function hitsa_content_page_services_block()
 {
   $services_menu_mlid = variable_get('hitsa_services_mlid');
   $output = '';
-  
+
   if (!empty($services_menu_mlid)) {
     $tree = menu_tree_all_data('hitsa-main-menu');
     foreach ($tree as $child) {
