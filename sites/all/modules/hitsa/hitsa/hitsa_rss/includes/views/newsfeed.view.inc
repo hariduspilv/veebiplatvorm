@@ -154,4 +154,3 @@ $handler->display->display_options['displays'] = array(
   'default' => 'default',
   'page' => 'page',
 );
-
