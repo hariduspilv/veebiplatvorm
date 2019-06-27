@@ -333,17 +333,61 @@ function hitsa_events_calendar_page()
     return $build;
 }
 function hitsa_events_get_dates($type = null){
-
+    global $language;
     $query = db_select('node','n');
     $query -> fields('n');
     $query -> condition('n.type','event','=');
+    if(!empty($_REQUEST)){
+      if(!empty($_REQUEST['category'])) {
+        $categories = explode(',',$_REQUEST['category']);
+      }
+      if(!empty($_REQUEST['training-category'])) {
+        $categories = explode(',',$_REQUEST['category']);
+      }
+    }
     $result = $query->execute();
     $dates_array = array();
     foreach ($result->fetchAll() as $key => $value) {
         $node = node_load($value->nid);
+
+      if($type == 'training'){
+        if(!empty($node->field_training_tags)){
+          $in_category = false;
+          foreach($node->field_training_tags['und'] as $training_tag){
+            foreach($categories as $category){
+              if($category==$training_tag['target_id']){
+                $in_category = true;
+              }
+            }
+          }
+        }
+        if(!empty($categories)){
+          if(!$in_category){
+            continue;
+          }
+        }
+      }
+      if($type == 'event'){
+        if(!empty($node->event_tags)){
+          $in_category = false;
+          foreach($node->field_training_tags[$language->language] as $training_tag){
+            foreach($categories as $category){
+              if($category==$training_tag['tid']){
+                $in_category = true;
+              }
+            }
+          }
+        }
+        if(!empty($categories)){
+          if(!$in_category){
+            continue;
+          }
+        }
+      }
         if(!empty($node->field_event_type)){
             foreach ($node->field_event_type['und'] as $key => $types) {
                 if ($types['value'] == $type) {
+
                     if (!empty($node->event_date)) {
                         $dates = $node->event_date['und'][0];
                         if ($dates['value'] == $dates['value2']) {
@@ -585,6 +629,12 @@ function hitsa_events_calendar_page_html()
     $output .= '<div class="row-spacer"></div>';
     $output .= '<div class="row">';
     $output .= '<div class="col-12" data-postURL="/api/events" data-plugin="filterContents">';
+
+  $calendar_dates = hitsa_events_get_dates('event');
+  if (!empty($calendar_dates)) {
+    $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
+    $output.=$date_div;
+  }
     if (empty($_REQUEST)) {
         if (!empty($periods)) {
             $output .= hitsa_events_htmlize_periods($periods);
@@ -594,10 +644,7 @@ function hitsa_events_calendar_page_html()
     }
     $output .= '</div><!--/col-12-->';
     $output .= '</div><!--/row-->';
-    if (!empty($calendar_dates)) {
-        $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
-        $output.=$date_div;
-    }
+
     $output .= '
             </div><!--/block-->
             ';
