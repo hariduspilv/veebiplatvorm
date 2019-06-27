@@ -244,6 +244,12 @@ function hitsa_content_page_preprocess_node(&$variables)
     }
     else{
       $body_no_table = $body_no_table_original;
+      $body_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body>','',$body_no_table);
+      $body_no_table = str_replace('</body></html>','',$body_no_table);
+
+      $body_no_table = str_replace('&nbsp;', '', strval( $body_no_table));
+
     }
     if(strlen($body_no_table)>1000){
       $your_desired_width = 1000;
