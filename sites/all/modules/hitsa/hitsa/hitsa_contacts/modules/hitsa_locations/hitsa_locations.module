@@ -1,4 +1,5 @@
 <?php
+// use function GuzzleHttp\json_decode;
 
 module_load_include('inc', 'hitsa_locations', 'includes/hitsa_locations.views');
 
@@ -69,44 +70,105 @@ function hitsa_locations_block_content($type = 'primary')
       if (!empty($locations)) {
         $locations_address = null;
         foreach ($locations as $location_key => $location) {
-          if (!empty($location->location_coordinates)) {
-            $lat = '';
-            $lon = '';
-            $lat = $location->location_coordinates['und'][0]['lat'];
-            $lon = $location->location_coordinates['und'][0]['lng'];
-            $options['language'] = 'et';
-            module_load_include('inc', 'geocoder', 'google');
-            $actual_address = geocoder_reverse_google($lat, $lon, $options);
-            if (!empty($actual_address)) {
-              $actual_address = $actual_address->address;
-              $address_link = url('https://www.google.com/maps/search/', array('query' => array('api' => 1, 'query' => $actual_address)));
-              $locations[$location_key]->address_link = $address_link;
-            }
 
+          if (!empty($location->field_hitsa_place_tooltip)) {
+            $tooltip = $location->field_hitsa_place_tooltip['und'][0]['value'];
+          }
+          $coordinates = variable_get('place_' . $location->nid . '_map');
+          $coordinates = json_decode($coordinates);
+          if (!empty($coordinates->addresses)) {
+            if (!empty($coordinates->addresses[0])) {
+              if (!empty($coordinates->addresses[0]->viitepunkt_x)) {
+                $x = $coordinates->addresses[0]->viitepunkt_x;
+                $y = $coordinates->addresses[0]->viitepunkt_y;
+                if (!empty($x) && !empty($y)) {
+
+                  $locations[$location_key]->full_map = '
+
+        <div id="map_' . $location->nid . '" class="dg-mapframe map-wrapper map" style="height:100%; width:100%" ></div>
+<script>
+  Dogis.Map.Containers["map_' . $location->nid . '"] = new Dogis.Map(document.getElementById(
+    "map_' . $location->nid . '"), {
+    "app": "maainfo",
+    // "bookmark": "CTQDX8Gj",
+    "proxy": "https://xgis.maaamet.ee/xgis2/mod",
+    "plugin": true,
+    "params": {
+      // "aadress": "L. Koidula tn 1, Rakvere linn, Lääne-Viru maakond",
+      // "searchid": "KATASTRIYKSUS",
+      "adfit": 1,
+      "adshow": 1,
+      "punkt": "' . $x . ', ' . $y . '",
+      "moot": 1000,
+      "tooltip": "' . $tooltip . '",
+      "OTSINGUVALJANIMI": "kaaas",
+    "components": {
+      "navigation": {
+        "settings": {
+          "hidden": true,
+        }
+      },
+      "scalebar": {
+        "settings": {
+          "hidden": true,
+        }
+      }
+    },
+    }
+  })
+</script>';
+                }
+              }
+            }
           }
         }
       }
       return theme('locations_block', array('locations' => $locations, 'type' => 'primary'));
     } else {
       $locations = node_load_multiple($nids);
+
       if (!empty($locations)) {
         $locations_address = null;
         foreach ($locations as $location_key => $location) {
-          if (!empty($location->location_coordinates)) {
-            $lat = '';
-            $lon = '';
-            $lat = $location->location_coordinates['und'][0]['lat'];
-            $lon = $location->location_coordinates['und'][0]['lng'];
-            $options['language'] = 'et';
-            module_load_include('inc', 'geocoder', 'google');
-            $actual_address = geocoder_reverse_google($lat, $lon, $options);
-            if (!empty($actual_address)) {
-              $actual_address = $actual_address->address;
-              $address_link = url('https://www.google.com/maps/search/', array('query' => array('api' => 1, 'query' => $actual_address)));
-              $locations[$location_key]->address_link = $address_link;
-            }
-
+          if(!empty( $location->field_hitsa_place_tooltip)){
+            $tooltip = $location->field_hitsa_place_tooltip['und'][0]['value'];
           }
+          $coordinates = variable_get('place_' . $location->nid . '_map');
+          $coordinates = json_decode($coordinates);
+          if(!empty($coordinates->addresses)){
+            if(!empty($coordinates->addresses[0])){
+              if(!empty($coordinates->addresses[0]->viitepunkt_x)){
+                $x = $coordinates->addresses[0]->viitepunkt_x;
+                $y = $coordinates->addresses[0]->viitepunkt_y;
+                if(!empty($x) && !empty($y)){
+
+                  $locations[$location_key]->full_map = '
+
+        <div id="map_'. $location->nid. '" class="dg-mapframe map-wrapper map" style="height:100%; width:100%" ></div>
+<script>
+  Dogis.Map.Containers["map_' . $location->nid . '"] = new Dogis.Map(document.getElementById(
+    "map_' . $location->nid . '"), {
+    "app": "maainfo",
+    // "bookmark": "CTQDX8Gj",
+    "proxy": "https://xgis.maaamet.ee/xgis2/mod",
+    "plugin": true,
+    "params": {
+      // "aadress": "L. Koidula tn 1, Rakvere linn, Lääne-Viru maakond",
+      // "searchid": "KATASTRIYKSUS",
+      "adfit": 1,
+      "adshow": 1,
+      "punkt": "' . $x . ', ' . $y . '",
+      "moot": 1000,
+      "tooltip": "'.$tooltip.'",
+    }
+  })
+</script>';
+
+                }
+              }
+            }
+          }
+
         }
       }
       return theme('locations_block', array('locations' => $locations, 'type' => 'secondary'));

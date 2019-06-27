@@ -676,10 +676,27 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
     case 'content_page_node_form':
 
       break;
+    case 'contact_location_node_form':
+      $form['actions']['submit']['#submit'][] = 'hitsa_core_save_coordinates';
+      break;
     case 'webform_email_edit_form':
       $form['from_address_option']['#title'] = t('E-mail reply to address');
       $form['from_address_option']['#options']['custom'] = t('Reply to');
       break;
+  }
+}
+
+function hitsa_core_save_coordinates($form,&$form_state){
+  if(!empty($form_state['input'])){
+
+    if(!empty($form_state['input'][ 'field_hitsa_place_address'])){
+      if(!empty($form_state['input']['field_hitsa_place_address']['und'][0]['value'])){
+        $address = $form_state['input']['field_hitsa_place_address']['und'][0]['value'];
+        if(!empty($form_state['nid'])){
+          hitsa_core_get_coordinates($address,'place',$form_state['nid']);
+        }
+      }
+    }
   }
 }
 
@@ -1165,4 +1182,26 @@ function hitsa_core_updates_installer(){
 function hitsa_core_set_inital_path(){
   $inital_path = $_SERVER['HTTP_HOST'];
   variable_set('hitsa_initial_path',$inital_path);
+}
+function hitsa_core_get_coordinates($address=null,$area =null,$nid=null ){
+  if(!empty($address)){
+    $url_to_quest = 'http://inaadress.maaamet.ee/inaadress/gazetteer';
+    $data = array(
+      'address' => $address,
+    );
+    $data = http_build_query($data);
+    $request = drupal_http_request($url_to_quest.'?'.$data);
+
+    if(!empty($request->data)){
+      if($area == 'footer'){
+        variable_set('hitsa_maaamet_json_footer',$request->data);
+      }
+      if($area == 'place'){
+        if(!empty($nid)){
+          $name = 'place_'.$nid.'_map';
+          variable_set($name,$request->data);
+        }
+      }
+    }
+  }
 }

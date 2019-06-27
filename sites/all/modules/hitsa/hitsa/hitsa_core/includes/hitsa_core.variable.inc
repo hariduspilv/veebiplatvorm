@@ -71,14 +71,14 @@ function hitsa_core_variable_info($options) {
     );
   }
 
-  $variable['hitsa_school_place_id'] = array(
-    'title' => t('Place ID'),
-    'group' => 'header_footer_variables',
-  );
-  $variable['hitsa_school_place_coords'] = array(
-    'title' => t('Place Coordinates'),
-    'group' => 'header_footer_variables',
-  );
+  // $variable['hitsa_school_place_id'] = array(
+  //   'title' => t('Place ID'),
+  //   'group' => 'header_footer_variables',
+  // );
+  // $variable['hitsa_school_place_coords'] = array(
+  //   'title' => t('Place Coordinates'),
+  //   'group' => 'header_footer_variables',
+  // );
   $variable['footer_copyright_notice'] = array(
     'title' => t('Copyright Notice'),
     'group' => 'header_footer_variables',
@@ -105,6 +105,17 @@ function hitsa_core_variable_info($options) {
     'type' => 'number',
     'default' => 100,
     'description' => t('Allowed range: 50-100%'),
+  );
+
+  $variable['hitsa_maaamet_address'] = array(
+    'title' => t('Maa ametist võetud aadress'),
+    'description' => 'Kooli võimalikult täpne aadress, aadressi saab alati kontrollida maa ameti lehel <a target = "_blank" href="https://xgis.maaamet.ee/xgis2/page/app/maainfo">Maa amet</a>',
+    'group' => 'header_footer_variables'
+  );
+  $variable['hitsa_maaamet_comment'] = array(
+    'title' => t('Maaameti koha kommentaar'),
+    'description' => 'Kaardi koha kommetaar kuvatakse kui minnakse hiirega markeri peale',
+    'group' => 'header_footer_variables'
   );
 
 //////////Blokkide pealkirjad
@@ -278,22 +289,24 @@ function hitsa_core_form_variable_group_form_alter(&$form, &$form_state) {
       $form['footer_text_area']['#default_value'] = $area_value;
       $form['#submit'][] = 'footer_text_area_submit';
     }
+
+    $form['#submit'][] = 'footer_map_submit';
     drupal_add_css('.contact-row > * {display:inline-block;} .img-stretch {max-width: 100%;}', 'inline');
 
     // Gmap picker
-    $form['gmap_picker'] = array(
-      '#markup' => theme('gmap_picker'),
-      '#weight' => 2,
-    );
+    // $form['gmap_picker'] = array(
+    //   '#markup' => theme('gmap_picker'),
+    //   '#weight' => 2,
+    // );
 
-    // Hide the school place element
-    $form['hitsa_school_place_id']['#attributes']['style'] = 'display:none;';
-    $form['hitsa_school_place_id']['#title_display'] = 'invisible';
-    $form['hitsa_school_place_id']['#theme_wrappers'] = array();
-    // Hide the school coords element
-    $form['hitsa_school_place_coords']['#attributes']['style'] = 'display:none;';
-    $form['hitsa_school_place_coords']['#title_display'] = 'invisible';
-    $form['hitsa_school_place_coords']['#theme_wrappers'] = array();
+    // // Hide the school place element
+    // $form['hitsa_school_place_id']['#attributes']['style'] = 'display:none;';
+    // $form['hitsa_school_place_id']['#title_display'] = 'invisible';
+    // $form['hitsa_school_place_id']['#theme_wrappers'] = array();
+    // // Hide the school coords element
+    // $form['hitsa_school_place_coords']['#attributes']['style'] = 'display:none;';
+    // $form['hitsa_school_place_coords']['#title_display'] = 'invisible';
+    // $form['hitsa_school_place_coords']['#theme_wrappers'] = array();
 
     // Front page hero banner height
     if(isset($form['hitsa_fp_image_height'])) {
@@ -495,5 +508,15 @@ function hitsa_core_favicon_submit($form, &$form_state) {
 function footer_text_area_submit($form,&$form_state){
   if(!empty($form_state['values']['footer_text_area'])){
     variable_set('footer_text_area',$form_state['values']['footer_text_area']);
+  }
+}
+function footer_map_submit($form,&$form_state){
+
+  if(!empty($form_state)){
+    if(!empty($form_state['input'])) {
+      if(!empty($form_state['input'][ 'hitsa_maaamet_address'])){
+        hitsa_core_get_coordinates($form_state[ 'input']['hitsa_maaamet_address'],'footer');
+      }
+    }
   }
 }

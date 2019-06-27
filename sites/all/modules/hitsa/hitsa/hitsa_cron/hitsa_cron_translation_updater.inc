@@ -15,7 +15,8 @@ function hitsa_cron_update_translations()
     '9',
     '10',
     '11',
-    '12'
+    '12',
+    '13'
 
 
   ];
@@ -316,7 +317,7 @@ function hitsa_cron_trans_up_7(){
     'Õppetöö' => array(
       'en' => 'Studies',
     ),
-    
+
   );
   $taxonomy = taxonomy_vocabulary_machine_name_load('hitsa_event_tags');
     $taxonomy_tree = taxonomy_get_tree($taxonomy->vid);
@@ -411,6 +412,16 @@ function hitsa_cron_trans_up_12(){
     'Filter trainings' => array(
       'et'=> 'Filtreeri koolitusi',
       'ru' => 'Oбучение фильтра'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  drupal_flush_all_caches();
+}
+function hitsa_cron_trans_up_13(){
+  $words = array(
+    'Test passed.' => array(
+      'et'=> 'Test õnnestus',
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');

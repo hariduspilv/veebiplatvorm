@@ -16,6 +16,8 @@ function hitsa_preprocess_page(&$variables)
 {
     $google_api_key = !empty($key = variable_get_value('hitsa_google_api_key')) ? '&key=' . $key : '';
     drupal_add_js('https://maps.google.com/maps/api/js?sensor=false' . $google_api_key, 'external');
+    $path = drupal_get_path('module','hitsa_core');
+    drupal_add_js('/'.$path.'/includes/jsmapfixer.js','external');
     if ($variables['is_front']) {
         $variables['page']['content']['system_main']['#access'] = false;
     }
@@ -1461,7 +1463,6 @@ function hitsa_preprocess_html(&$variables){
   }
 
 function hitsa_preprocess_node(&$variables){
-
   if (!empty($variables['field_school_selections'])){
     $page_type = $variables['field_school_selections'][0]['value'];
     if (module_exists('hitsa_curriculum')){
