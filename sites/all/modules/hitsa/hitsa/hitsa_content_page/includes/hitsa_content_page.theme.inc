@@ -132,11 +132,13 @@ function hitsa_content_page_preprocess_node(&$variables)
     $current_host = $_SERVER['HTTP_HOST'];
     $inital_url = variable_get('hitsa_initial_path');
 
-    if(!empty($inital_url)) {
+   
       $variables['body_no_table'] = '';
       foreach ($variables['body'] as $body_key => $body_value) {
+        if(!empty($inital_url)) {
         $variables['body'][$body_key]['safe_value'] = str_replace($inital_url, $current_host, $body_value['safe_value']);
         $variables['body'][$body_key]['safe_summary'] = str_replace($inital_url, $current_host, $body_value['safe_summary']);
+        }
         $new_summary = $body_value['safe_summary'];
         $new_summary = htmlentities($new_summary);
         $new_summary = str_replace(' ','',$new_summary);
@@ -229,7 +231,7 @@ function hitsa_content_page_preprocess_node(&$variables)
         $body_no_table_original = $body_no_table;
       }
 
-    }
+    
     $body_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>','',$body_no_table);
     $body_no_table = str_replace('</body></html>','',$body_no_table);

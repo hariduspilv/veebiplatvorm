@@ -45,6 +45,7 @@
                 <!--/intro-->
                 <?php endif; ?>
                 <div class="sm-hide">
+                <div class="row-spacer"></div>
                   <?php if(!empty($body[0]['safe_value'])): ?>
                   <?php print $body[0]['safe_value']; ?>
                   <?php endif; ?>
@@ -59,6 +60,7 @@
                     </div>
                     <!--/text-center-->
                     <div class="hidden-container" data-container>
+                      
                       <?php print $body[0]['safe_value']?>
                     </div>
                     <!--/hidden-container-->
@@ -82,6 +84,8 @@
                     </div>
                     <!--/text-center-->
                     <div class="hidden-container" data-container>
+                            
+                      <div class="row-spacer"></div>
                       <?php print $end?>
                     </div>
                     <!--/hidden-container-->
