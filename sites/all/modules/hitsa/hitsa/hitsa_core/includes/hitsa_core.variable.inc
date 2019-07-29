@@ -107,16 +107,16 @@ function hitsa_core_variable_info($options) {
     'description' => t('Allowed range: 50-100%'),
   );
 
-  $variable['hitsa_maaamet_address'] = array(
-    'title' => t('Maa ametist võetud aadress'),
-    'description' => 'Kooli võimalikult täpne aadress, aadressi saab alati kontrollida maa ameti lehel <a target = "_blank" href="https://xgis.maaamet.ee/xgis2/page/app/maainfo">Maa amet</a>',
-    'group' => 'header_footer_variables'
-  );
-  $variable['hitsa_maaamet_comment'] = array(
-    'title' => t('Maaameti koha kommentaar'),
-    'description' => 'Kaardi koha kommetaar kuvatakse kui minnakse hiirega markeri peale',
-    'group' => 'header_footer_variables'
-  );
+  // $variable['hitsa_maaamet_address'] = array(
+  //   'title' => t('Maa ametist võetud aadress'),
+  //   'description' => 'Kooli võimalikult täpne aadress, aadressi saab alati kontrollida maa ameti lehel <a target = "_blank" href="https://xgis.maaamet.ee/xgis2/page/app/maainfo">Maa amet</a>',
+  //   'group' => 'header_footer_variables'
+  // );
+  // $variable['hitsa_maaamet_comment'] = array(
+  //   'title' => t('Maaameti koha kommentaar'),
+  //   'description' => 'Kaardi koha kommetaar kuvatakse kui minnakse hiirega markeri peale',
+  //   'group' => 'header_footer_variables'
+  // );
 
 //////////Blokkide pealkirjad
 
