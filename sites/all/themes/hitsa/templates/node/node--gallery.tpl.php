@@ -1,15 +1,15 @@
 <?php if($view_mode === 'full'): ?>
 <div class="row">
   <div class="col-12">
-    
+
     <div class="block sm-opaque" data-plugin="gallery" data-modal="true">
-               
-      <h1 class="block-title"><?php print $title; ?> 
+
+      <h1 class="block-title"><?php print $title; ?>
       <?php if($modal): ?>
       <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close"><?php print t('Close'); ?></a>
       <?php endif; ?>
       </h1>
-               
+
 			<div class="gallery-wrapper">
 				<div class="row">
 					<div class="col-12">
@@ -20,27 +20,29 @@
 						</div>
 					</div><!--/col-12-->
 				</div><!--/row-->
-				
+
 				<div class="row sm-grow">
 					<div class="col-3 sm-hide">
 						<?php if(!empty($content['gallery_images'])): ?>
 						  <?php print render($content['gallery_images']); ?>
 						<?php endif; ?>
-						
+
 						<div class="row-spacer"></div>
 						<ul class="paginator paginator-left" id="paginator">
 						</ul><!--/paginator-->
-								
+
 					</div><!--/col-3-->
-					
+
 					<div class="col-9 sm-12">
 						<div class="swiper-holder swiper-gallery" id="gallery">
 							<div class="swiper-container">
 								<div class="swiper-wrapper">
 									<div class="swiper-slide" data-image="?image?">
+                    <a class="gallery-image" href="?href?" data-fancybox="gallery" data-caption="?caption?">
 										<div class="gallery-image">
 											<img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-gallery.gif'; ?>">
 										</div><!--/gallery-image-->
+                    </a><!--/gallery-image-->
 										<div class="gallery-description">
 											<div class="gallery-title">?title?</div>
 											<div class="gallery-page">?currentImage?/?totalImages?</div>
@@ -52,14 +54,14 @@
 							<div class="swiper-button-next"></div>
 						</div><!--/swiper-holder-->
 					</div><!--/col-9-->
-							
+
 				</div><!--/row-->
 			</div><!--/gallery-wrapper-->
 			<div class="row sm-show mobile-thumbnails">
 				<div class="col-12">
 					<div class="mobile-thumbnails-holder">
 						<div class="mobile-thumbnails-scroller">
-						
+
 						</div><!--/mobile-thumbnails-scroller-->
 					</div><!--/mobile-thumbnails-holder-->
 				</div><!--/col-12-->
@@ -73,8 +75,8 @@
 <div class="col-3">
   <h4><?php print htmlspecialchars_decode(check_plain($title)); ?></h4>
   <?php if(!empty($content['gallery_images'])): ?>
-  <a href="<?php print $node_url; ?>"><img alt="<?php if(!empty($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value'])) 
-  {print check_plain($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']);} ?>" 
+  <a href="<?php print $node_url; ?>"><img alt="<?php if(!empty($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']))
+  {print check_plain($content['gallery_images'][0]['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']);} ?>"
   src="<?php print image_style_url('hitsa_gallery_menu_teaser', $content['gallery_images']['#items'][0]['uri']); ?>"></a>
   <?php endif; ?>
   <a href="<?php print $node_url; ?>" class="btn"><?php print t('Check gallery'); ?></a>
