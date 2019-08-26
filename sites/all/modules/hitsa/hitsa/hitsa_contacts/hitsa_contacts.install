@@ -6,14 +6,14 @@
 function hitsa_contacts_install() {
   module_load_include('inc', 'hitsa_core', 'includes/hitsa_core.installer');
   hitsa_core_installer('hitsa_contacts', 'install');
-  
+
   // Add "Contact Us" webform
   hitsa_contacts_add_contact_form();
-  
+
   variable_set("language_content_type_contact", ENTITY_TRANSLATION_ENABLED); // Add field translation
-  
+
   // Add taxonomy term translations
-  
+
 }
 
 function hitsa_contacts_enable() {
@@ -29,13 +29,13 @@ function hitsa_contacts_uninstall() {
   //hitsa_core_delete_nodes('contact');
   field_purge_batch(500);
   hitsa_contacts_delete_contact_form(); // Delete "Contact Us" webform
-  
+
   variable_del("language_content_type_contact"); // Delete field translation variable.
 }
 
 function _hitsa_contacts_fields() {
   $t = get_t();
-  
+
   return array(
     // Contact fields
     'contact_id' => array(
@@ -155,6 +155,69 @@ function _hitsa_contacts_fields() {
       ),
       'translatable' => 0,
       'type' => 'text_long',
+    ),
+    'field_hitsa_place_address' => array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_hitsa_place_address',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'add_row_localization_source' => 'Add another item',
+        'entity_translation_sync' => FALSE,
+        'max_length' => 2550,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
+    ),
+    'field_hitsa_place_tooltip' =>  array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_hitsa_place_tooltip',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'add_row_localization_source' => 'Add another item',
+        'entity_translation_sync' => FALSE,
+        'max_length' => 2550,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
+    ),
+    'field_hitsa_place_zoom' => array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_hitsa_place_zoom',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'add_row_localization_source' => 'Add another item',
+        'entity_translation_sync' => FALSE,
+        'max_length' => 255,
+      ),
+      'translatable' => 0,
+      'type' => 'text',
     ),
     // Reception times (Paragraph)
     /*
@@ -438,7 +501,7 @@ function _hitsa_contacts_field_instances() {
       'bundle' => 'contact',
       'entity_type' => 'node',
       'label' => $t('Reception time'),
-      'description' => $t('Example') . ': E-R kell 15-18', 
+      'description' => $t('Example') . ': E-R kell 15-18',
       'widget' => array(
         'type' => 'text_textfield',
         'module' => 'text',
@@ -554,6 +617,133 @@ function _hitsa_contacts_field_instances() {
         'weight' => 8,
       ),
     ),
+    'node-contact_location-field_hitsa_place_address' => array(
+      'bundle' => 'contact_location',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 8,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_hitsa_place_address',
+      'label' => 'Maaameti aadress',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'maxlength_js' => 0,
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 41,
+      ),
+    ),
+    'node-contact_location-field_hitsa_place_tooltip' => array(
+      'bundle' => 'contact_location',
+      'default_value' => NULL,
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 9,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_hitsa_place_tooltip',
+      'label' => 'Kaardi tooltip',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'maxlength_js' => 0,
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 42,
+      ),
+    ),
+    'node-contact_location-field_hitsa_place_zoom' => array(
+      'bundle' => 'contact_location',
+      'default_value' => array(
+        0 => array(
+          'value' => 1000,
+        ),
+      ),
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 10,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_hitsa_place_zoom',
+      'label' => 'Kaardi suurendus',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'maxlength_js' => 0,
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => 43,
+      ),
+    ),
     // Reception times (Paragraph)
     /*
     'reception_weekdays' => array(
@@ -596,19 +786,19 @@ function _hitsa_contacts_field_instances() {
 function _hitsa_contacts_paragraphs() {
   $t = get_t();
   $paragraphs = array();
-  
+
   $paragraphs['contacts_department'] = (object) array(
     'name' => 'Osakond',
     'bundle' => 'contacts_department',
     'locked' => 1,
   );
-  
+
   $paragraphs['reception_time'] = (object) array(
     'name' => $t('Reception time'),
     'bundle' => 'reception_time',
     'locked' => 1,
   );
-  
+
   return $paragraphs;
 }
 
@@ -617,7 +807,7 @@ function _hitsa_contacts_paragraphs() {
 */
 function _hitsa_contacts_vocabularies() {
   $vocabularies = array();
-  
+
   $vocabularies['contacts_job_position'] =
     array(
       'vocabulary' => (object) array(
@@ -664,7 +854,7 @@ function _hitsa_contacts_vocabularies() {
         ),
       ),
     );
-  
+
   $vocabularies['contacts_department'] =
     array(
       'vocabulary' => (object) array(
@@ -704,7 +894,7 @@ function _hitsa_contacts_vocabularies() {
         ),
       ),
     );
-    
+
   return $vocabularies;
 }
 
@@ -713,7 +903,7 @@ function _hitsa_contacts_vocabularies() {
 */
 function _hitsa_contacts_menu_links() {
   $t = get_t();
-  
+
   $menu_links = array();
   /*
   $hitsa_main_menu_name = variable_get('hitsa_main_menu_name');
@@ -725,7 +915,7 @@ function _hitsa_contacts_menu_links() {
       'weight' => 10,
     );
   }*/
-  
+
   return $menu_links;
 }
 
@@ -751,7 +941,7 @@ function _hitsa_contacts_image_styles() {
 		  ),
 		),
   );
-  
+
   return $image_styles;
 }
 
@@ -760,12 +950,12 @@ function _hitsa_contacts_image_styles() {
 */
 function _hitsa_contacts_path_aliases() {
   $path_aliases = array();
-  
+
   $path_aliases['contact'] = array(
     'et' => 'kontakt',
     'ru' => 'kontakt',
   );
-  
+
   return $path_aliases;
 }
 
@@ -783,7 +973,7 @@ function hitsa_contacts_add_contact_form() {
   $node->uid = 1;
   $node->promote = 0;
   $node->comment = 0;
-  
+
   // Create the webform components.
   $components = array(
     array(
@@ -814,7 +1004,7 @@ function hitsa_contacts_add_contact_form() {
       ),
     ),
   );
-  
+
   // Attach the webform to the node.
   $node->webform = array(
     'confirmation' => "Aitäh! Me oleme su kirja kätte saanud.",
@@ -838,11 +1028,11 @@ function hitsa_contacts_add_contact_form() {
     ),
     'components' => $components,
   );
-  
+
   // Save the node.
   node_save($node);
   variable_set('hitsa_contacts_contact_us_webform_nid', $node->nid);
-  
+
   // Set localization options
   if(module_exists('webform_localization')) {
     $webform_localization_options = array(
@@ -854,7 +1044,7 @@ function hitsa_contacts_add_contact_form() {
       'single_webform' => 0,
       'webform_properties' => "",
     );
-  
+
     drupal_write_record('webform_localization', $webform_localization_options);
   }
 }
@@ -896,12 +1086,12 @@ function hitsa_contacts_update_7001() {
   // Update the contact image style effects
   $style = image_style_load('hitsa_contacts_page_image');
   $isid = $style['isid'];
-  
+
   // Delete the current effect.
   foreach($style['effects'] as $effect) {
     image_effect_delete($effect);
   }
-  
+
   // Add the new manual crop effect instead
   foreach(_hitsa_contacts_image_styles() as $s) {
     if($s['style']['name'] === 'hitsa_contacts_page_image') {
@@ -911,11 +1101,11 @@ function hitsa_contacts_update_7001() {
       break;
     }
   }
-  
+
   // Update the contact image field instance to allow manual cropping.
   $field_instance = _hitsa_contacts_field_instances()['contact_image'];
   field_update_instance($field_instance);
-  
+
   // Update contact phone nr field to support two phone nrs.
   $field = field_info_field('phone_nr');
   if(!empty($field)) {
