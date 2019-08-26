@@ -434,7 +434,7 @@ function hitsa_events_get_dates($type = null){
  * @return array
  */
 function getDatesFromRange($start, $end, $format = 'Y-m-d')
-{   
+{
     $array = array();
     $interval = new DateInterval('P1D');
     $realEnd = new DateTime($end);
@@ -643,7 +643,7 @@ function hitsa_events_calendar_page_html()
     if (empty($_REQUEST)) {
         if (!empty($periods)) {
             $output .= hitsa_events_htmlize_periods($periods);
-            
+
         }
     } else {
         $output .= hitsa_events_endpoint('loaded_page');
@@ -741,7 +741,6 @@ function hitsa_events_endpoint($loaded_page = null)
         $start_date = strtotime(str_replace('/', '-', $dates[0]));
         $end_date = strtotime(str_replace('/', '-', $dates[1]));
         $q->join('field_data_event_date', 'fded', 'fded.entity_id=n.nid');
-
         $db_or = db_or();
         $db_or->condition('fded.event_date_value', $start_date, '>=');
         $db_or->condition('fded.event_date_value2', $start_date, '>=');
@@ -753,6 +752,21 @@ function hitsa_events_endpoint($loaded_page = null)
     $r = $q->execute();
     $nodes = array();
     foreach ($r as $key => $node) {
+      if(!empty($node-> event_date_value)){
+        if(!empty($start_date)){
+          $start_date_readable = date('d-m-Y',$start_date);
+          $start_date_readable = strtotime($start_date_readable);
+          $end_date_readable = date('d-m-Y',$end_date);
+          $end_date_readable = strtotime($end_date_readable);
+          $node_date_readable = date('d-m-Y',$node-> event_date_value);
+          $node_date_readable = strtotime($node_date_readable);
+          if($node_date_readable<=$end_date_readable&& $node_date_readable>=$start_date_readable){
+          }
+          else{
+            continue;
+          }
+        }
+      }
         $nodes[$node->nid] = node_load($node->nid);
     }
     if (!empty($nodes)) {
