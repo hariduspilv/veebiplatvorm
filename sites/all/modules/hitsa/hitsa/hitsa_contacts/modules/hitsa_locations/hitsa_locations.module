@@ -133,6 +133,12 @@ function hitsa_locations_block_content($type = 'primary')
           if(!empty( $location->field_hitsa_place_tooltip)){
             $tooltip = $location->field_hitsa_place_tooltip['und'][0]['value'];
           }
+          if(!empty( $location->field_hitsa_place_zoom)){
+            $zoomlevel = $location->field_hitsa_place_zoom['und'][0]['value'];
+          }
+          else{
+            $zoomlevel=1000;
+          }
           $coordinates = variable_get('place_' . $location->nid . '_map');
           $coordinates = json_decode($coordinates);
           if(!empty($coordinates->addresses)){
@@ -142,27 +148,7 @@ function hitsa_locations_block_content($type = 'primary')
                 $y = $coordinates->addresses[0]->viitepunkt_y;
                 if(!empty($x) && !empty($y)){
 
-                  $locations[$location_key]->full_map = '
-
-        <div id="map_'. $location->nid. '" class="dg-mapframe map-wrapper map" style="height:100%; width:100%" ></div>
-<script>
-  Dogis.Map.Containers["map_' . $location->nid . '"] = new Dogis.Map(document.getElementById(
-    "map_' . $location->nid . '"), {
-    "app": "maainfo",
-    // "bookmark": "CTQDX8Gj",
-    "proxy": "https://xgis.maaamet.ee/xgis2/mod",
-    "plugin": true,
-    "params": {
-      // "aadress": "L. Koidula tn 1, Rakvere linn, Lääne-Viru maakond",
-      // "searchid": "KATASTRIYKSUS",
-      "adfit": 1,
-      "adshow": 1,
-      "punkt": "' . $x . ', ' . $y . '",
-      "moot": 1000,
-      "tooltip": "'.$tooltip.'",
-    }
-  })
-</script>';
+                  $locations[$location_key]->full_map = '<iframe height="300" width="100%" src="https://xgis.maaamet.ee/xgis2/page/app/maainfo?punkt='.$x.','.$y.'&moot='.$zoomlevel.'&tooltip='.$tooltip.'"></iframe>';
 
                 }
               }
