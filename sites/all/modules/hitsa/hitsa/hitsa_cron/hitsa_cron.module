@@ -240,7 +240,9 @@ function hitsa_cron_run_update()
     '42',
     '43',
     '44',
-    '45'
+    '45',
+    '46',
+    '47'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -2491,5 +2493,31 @@ function hitsa_cron_up_46(){
   }
   // Translatables
   // Included for use with string extractors like potx.
+  return TRUE;
+}
+function hitsa_cron_up_47()
+{
+  $image_style = image_style_load('hitsa_core_logo');
+  if (!empty($image_style['effects'])) {
+    foreach ($image_style['effects'] as $effect_key => $effect) {
+      if ($effect['name'] == 'image_scale_and_crop') {
+        $image_effect = image_effect_load($effect_key, 'hitsa_core_logo');
+        if (!empty($image_effect['data'])) {
+          $image_effect['data']['width'] = '1305';
+          $image_effect['data']['height'] = '282';
+        }
+        image_effect_delete($image_effect);
+      }
+    }
+    $effect = array(
+      'name' => 'image_scale',
+      'data' => array(
+        'width' => '1305',
+        'height' => '282'
+      ),
+      'isid' => $image_style['isid'],
+    );
+    image_effect_save($effect);
+  }
   return TRUE;
 }
