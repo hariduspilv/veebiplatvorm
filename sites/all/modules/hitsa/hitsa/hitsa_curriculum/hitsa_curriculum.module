@@ -1931,12 +1931,19 @@ function hitsa_curriculum_fp_subject_fields()
                     if (!empty($loaded_speciality)) {
                         $link = url('node/' . $loaded_speciality->nid);
                     }
+
+                    $name_out = $term->name;
+                    if(!empty($term->field_extra_name)){
+                      foreach ($term->field_extra_name['und'] as $name){
+                        $name_out.= '<br>'.$name['value'];
+                      }
+                    }
                     if (!empty($link)) {
                         $output_slides[] = '<div class="col-3">
                     <a href="' . $link . '" class="block">
                        <span class="caroussel_profession">
                           <span class="caroussel_profession-icon ' . $class . '"></span>
-                          <span class="caroussel_profession-title">' . $term->name . '</span>
+                          <span class="caroussel_profession-title">' . $name_out .'</span>
                           <div class="caroussel_profession-btn_wrapper">
                           <span class="btn">' . t('Look at specialities') . '</span>
                           </div><!--caroussel_profession-btn_wrapper-->

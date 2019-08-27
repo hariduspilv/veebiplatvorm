@@ -4999,6 +4999,27 @@ function hitsa_curriculum_add_custom_taxonomy_fields_base()
     'translatable' => 0,
     'type' => 'text',
   );
+  $field_bases['field_extra_name'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_extra_name',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'entity_translation_sync' => FALSE,
+      'max_length' => 2550,
+    ),
+    'translatable' => 1,
+    'type' => 'text',
+  );
     return $field_bases;
 }
 function hitsa_curriculum_add_custom_taxonomy_fields_instances()
@@ -5058,6 +5079,41 @@ Ikoonide nimekiri lehel tasub jälgida, et vasakult oleks valitud Solid ja Free 
     'entity_type' => 'taxonomy_term',
     'field_name' => 'field_fa_icon',
     'label' => 'Font Awesome Ikoon',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
+  $field_instances['taxonomy_term-fields-field_extra_name'] = array(
+    'bundle' => 'fields',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Lisanimetus kuvatakse esilehel valdkonna nimetuse all. Mitu väärtust kuvatakse samuti üksteise all.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_extra_name',
+    'label' => 'Lisanimetus',
     'required' => 0,
     'settings' => array(
       'entity_translation_sync' => FALSE,
