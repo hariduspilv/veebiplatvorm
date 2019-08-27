@@ -60,6 +60,25 @@ function _hitsa_contacts_fields() {
       'label' => $t('Image'),
       'type' => 'image',
     ),
+    'field_extra_info' => array(
+      'active' => 1,
+      'cardinality' => 1,
+      'deleted' => 0,
+      'entity_types' => array(),
+      'field_name' => 'field_extra_info',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => 0,
+      'module' => 'text',
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+      ),
+      'translatable' => 0,
+      'type' => 'text_long',
+    ),
     'job_position' => array(
       'field_name' => 'job_position',
       'label' => $t('Position'),
@@ -394,6 +413,53 @@ function _hitsa_contacts_field_instances() {
         ),
         'type' => 'media_generic',
         'weight' => 4,
+      ),
+    ),
+    'node-contact-field_extra_info' => array(
+      'bundle' => 'contact',
+      'default_value' => array(
+        0 => array(
+          'value' => 'Lisainfo tekst',
+        ),
+      ),
+      'deleted' => 0,
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 13,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_extra_info',
+      'label' => 'Lisainformatsioon',
+      'required' => 0,
+      'settings' => array(
+        'entity_translation_sync' => FALSE,
+        'text_processing' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'maxlength_js' => 1000,
+          'maxlength_js_enforce' => 0,
+          'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+          'maxlength_js_truncate_html' => 0,
+          'rows' => 5,
+        ),
+        'type' => 'text_textarea',
+        'weight' => 5,
       ),
     ),
     'job_position' => array(
