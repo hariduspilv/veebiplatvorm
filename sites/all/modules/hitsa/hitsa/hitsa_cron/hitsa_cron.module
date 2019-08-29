@@ -243,6 +243,7 @@ function hitsa_cron_run_update()
     '45',
     '46',
     '47',
+    '48'
 
   ];
   if (!empty($updates)) {
@@ -2664,5 +2665,123 @@ function hitsa_cron_up_47()
   }
   // Translatables
   // Included for use with string extractors like potx.
+
+  $field_update = field_info_field('cp_image');
+  $field_update['cardinality'] = -1;
+  field_update_field($field_update);
+  $field_update = field_info_field('subpage_images');
+  $field_update['cardinality'] = -1;
+  field_update_field($field_update);
+  return TRUE;
+}
+function hitsa_cron_up_48(){
+//  dpm('HERE');
+  $image_style = image_style_load('hitsa_article_thumbnail');
+  if (!empty($image_style['effects'])) {
+    foreach ($image_style['effects'] as $effect_key => $effect) {
+      if ($effect['name'] == 'image_scale_and_crop') {
+        $image_effect = image_effect_load($effect_key, 'hitsa_article_thumbnail');
+        image_effect_delete($image_effect);
+      }
+    }
+  }
+    $effect = array(
+      'name' => 'manualcrop_crop_and_scale',
+      'data' => array(
+        'width' => 720,
+        'height' => 428,
+        'upscale' => 0,
+        'respectminimum' => 1,
+        'onlyscaleifcrop' => 0,
+        'style_name' => 'hitsa_article_thumbnail',
+      ),
+      'isid' => $image_style['isid'],
+      'weight' => -1,
+    );
+    image_effect_save($effect);
+    $field_instance_info = field_info_instance('node','subpage_images','article');
+    $field_instance_info['widget'] = array(
+    'active' => 1,
+    'module' => 'media',
+    'settings' => array(
+      'allowed_schemes' => array(
+        'public' => 'public',
+        'youtube' => 0,
+      ),
+      'allowed_types' => array(
+        'audio' => 0,
+        'document' => 0,
+        'image' => 'image',
+        'video' => 0,
+      ),
+      'browser_plugins' => array(
+        'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
+        'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+        'media_default--media_browser_1' => 0,
+        'media_default--media_browser_my_files' => 0,
+        'media_internet' => 0,
+        'upload' => 'upload',
+      ),
+      'manualcrop_crop_info' => 1,
+      'manualcrop_default_crop_area' => 1,
+      'manualcrop_enable' => 1,
+      'manualcrop_inline_crop' => 0,
+      'manualcrop_instant_crop' => FALSE,
+      'manualcrop_instant_preview' => 1,
+      'manualcrop_keyboard' => 1,
+      'manualcrop_maximize_default_crop_area' => 0,
+      'manualcrop_require_cropping' => array(),
+      'manualcrop_styles_list' => array(
+        'hitsa_article_thumbnail' => 'hitsa_article_thumbnail',
+      ),
+      'manualcrop_styles_mode' => 'include',
+      'manualcrop_thumblist' => 0,
+    ),
+    'type' => 'media_generic',
+    'weight' => 45,
+  );
+  field_update_instance($field_instance_info);
+  $field_instance_info = field_info_instance('node','cp_image','content_page');
+  $field_instance_info['widget'] = array(
+    'active' => 1,
+    'module' => 'media',
+    'settings' => array(
+      'allowed_schemes' => array(
+        'public' => 'public',
+        'youtube' => 0,
+      ),
+      'allowed_types' => array(
+        'audio' => 0,
+        'document' => 0,
+        'image' => 'image',
+        'video' => 0,
+      ),
+      'browser_plugins' => array(
+        'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
+        'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+        'media_default--media_browser_1' => 0,
+        'media_default--media_browser_my_files' => 0,
+        'media_internet' => 0,
+        'upload' => 'upload',
+      ),
+      'manualcrop_crop_info' => 1,
+      'manualcrop_default_crop_area' => 1,
+      'manualcrop_enable' => 1,
+      'manualcrop_inline_crop' => 0,
+      'manualcrop_instant_crop' => FALSE,
+      'manualcrop_instant_preview' => 1,
+      'manualcrop_keyboard' => 1,
+      'manualcrop_maximize_default_crop_area' => 0,
+      'manualcrop_require_cropping' => array(),
+      'manualcrop_styles_list' => array(
+        'hitsa_article_thumbnail' => 'hitsa_article_thumbnail',
+      ),
+      'manualcrop_styles_mode' => 'include',
+      'manualcrop_thumblist' => 0,
+    ),
+    'type' => 'media_generic',
+    'weight' => 45,
+  );
+  field_update_instance($field_instance_info);
   return TRUE;
 }

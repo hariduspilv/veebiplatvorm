@@ -9,19 +9,19 @@ function hitsa_content_page_menu() {
     'page callback' => 'hitsa_content_filter',
     'access arguments' => array('access content'),
   );
-  
+
   $items['admin/content/content-pages'] = array(
     'title' => 'Sisuleheküljed',
     'access arguments' => array('administer nodes'),
     'type' => MENU_LOCAL_TASK,
   );
-  
+
   $items['services'] = array(
     'title' => 'Teenused',
     'page callback' => 'hitsa_content_page_service_page_view',
     'access arguments' => array('access content'),
   );
-  
+
   return $items;
 }
 
@@ -65,15 +65,15 @@ function hitsa_content_page_form_alter(&$form, &$form_state, $form_id) {
   if($form_id === 'content_page_node_form') {
 	  $form['#attached']['js'][] = drupal_get_path('module', 'hitsa_content_page') . '/includes/picture.js';
 	  $form['#validate'][] = 'hitsa_content_page_header_one_image_validate'; // Headers can have only one image
-    
+
     if($user->uid !== '1') {
       $form['cp_display_style']['#access'] = FALSE;
       //$form['cp_type']['#access'] = FALSE;
     }
-    
+
     if(isset($form['cp_type'])) { // Set field conditions
       $form['cp_type']['#weight'] = $form['title']['#weight'] - 2;
-    
+
       // Image is required
       $form['#validate'][] = 'hitsa_content_page_required_fields';
       if(!empty($form['cp_subpages'])) {
@@ -276,12 +276,12 @@ function hitsa_content_page_field_group_pre_render(&$element, $group, &$form) {
 
 function hitsa_content_page_required_fields($form, &$form_state) {
   // Specific CP type is set and image is not added.
-  if(!empty($form_state['values']['cp_type']) 
-  && in_array($form_state['values']['cp_type'][LANGUAGE_NONE][0]['value'], 
+  if(!empty($form_state['values']['cp_type'])
+  && in_array($form_state['values']['cp_type'][LANGUAGE_NONE][0]['value'],
     array('cp_service', 'cp_tabbed', 'cp_specialities'))
   && $form_state['values']['cp_image'][LANGUAGE_NONE][0]['fid'] === 0
   ) {
-    form_set_error('cp_image', 
+    form_set_error('cp_image',
   t('!name field is required.', array('!name' => $form['cp_image'][LANGUAGE_NONE][0]['#title'])));
   }
 }
@@ -339,16 +339,16 @@ function hitsa_content_page_autocomplete($type) {
   $parameters = drupal_get_query_parameters();
 
   if(!empty($parameters['search'])) {
-    
+
     $arguments = array(
       ':type' => $type,
       ':search' => '%' . db_like($parameters['search']) . '%',
     );
-    
+
     if(!empty($parameters['article_type'])) {
       $arguments[':article_type'] = $parameters['article_type'];
     }
-    
+
     $result = db_query('SELECT DISTINCT title FROM {node} n
       WHERE type = :type 
       AND status = 1
@@ -358,32 +358,32 @@ function hitsa_content_page_autocomplete($type) {
     );
 
     $titles = $result->fetchCol();
-    
+
     $autocomplete = (object) array(
       'label' => t('No results found!'),
       'list' => array(),
     );
 
-    
+
     foreach($titles as $title) {
       $autocomplete->list[] = (object) array('title' => $title);
     }
-    
+
     drupal_json_output($autocomplete);
   }
 }
 
 function hitsa_content_page_query_content($q = array(), $count = FALSE) {
   $query = new EntityFieldQuery();
-  
+
   $parameters = _hitsa_content_page_set_query_parameters($q);
-  
+
   foreach($parameters as $parameter) {
     $query->{$parameter['type']}(...$parameter['arguments']);
   }
 
   $output = array();
-  
+
   $output['content'] = $query->execute();
 
   if($count) {
@@ -397,7 +397,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
   global $language;
 
   $parameters = array();
-  
+
   // Order by
   if(!empty($query['order_by'])) {
     $parameters[] = array(
@@ -405,7 +405,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
      'arguments' => array($query['order_by']['parameter'], $query['order_by']['direction']),
     );
   }
-  
+
   // Status
   if(!empty($query['status'])) {
     $parameters[] = array(
@@ -413,7 +413,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
      'arguments' => array('status', $query['status']),
     );
   }
-  
+
   // CP type
   if(!empty($query['cp_type'])) {
     $parameters[] = array(
@@ -421,7 +421,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
      'arguments' => array('cp_type', 'value', $query['cp_type']),
     );
   }
-  
+
   // Entity type
   if(!empty($query['entity_type'])) {
     $parameters[] = array(
@@ -429,7 +429,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
      'arguments' => array('entity_type', $query['entity_type']),
     );
   }
-  
+
   // Bundle
   if(!empty($query['bundle'])) {
     $parameters[] = array(
@@ -437,30 +437,30 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
      'arguments' => array('bundle', $query['bundle']),
     );
   }
-  
+
   // Language
   $parameters[] = array(
     'type' => 'propertyCondition',
     'arguments' => array('language', $language->language),
   );
-  
+
   // Date
   if(!empty($query['date']) && preg_match("/\d{2}\/\d{2}\/\d{4} - \d{2}\/\d{2}\/\d{4}/", $query['date']) === 1) {
     $date_range = explode(" - ", $query['date']);
     $date_from = date_create_from_format("d/m/Y H:i", $date_range[0] . ' 00:00');
     $date_to = date_create_from_format("d/m/Y H:i", $date_range[1] . ' 23:59');
-    
+
     $parameters[] = array(
       'type' => 'propertyCondition',
       'arguments' => array('created', $date_from->getTimestamp(), '>='),
     );
-    
+
     $parameters[] = array(
       'type' => 'propertyCondition',
       'arguments' => array('created', $date_to->getTimestamp(), '<='),
     );
   }
-  
+
   // Title
   if(!empty($query['title'])) {
     $parameters[] = array(
@@ -468,7 +468,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
       'arguments' => array('title', '%' . $query['title'] . '%', 'LIKE'),
     );
   }
-  
+
   // Page / Range
   if(!empty($query['page'])) {
     $page_range = ($query['page'] - 1) * 12;
@@ -478,13 +478,13 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
       'arguments' => array($page_range, $page_range + 12),
     );
   } else if(!empty($query['range'])) {
-    
+
     $parameters[] = array(
       'type' => 'range',
       'arguments' => array($query['range'][0], $query['range'][1]),
     );
   }
-  
+
   // Pager
   if(!empty($query['pager'])) {
     $parameters[] = array(
@@ -492,11 +492,11 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
       'arguments' => array($query['pager']),
     );
   }
-  
+
   // Academic year
   if(!empty($query['category'])) {
     $academic_years = explode(',', $query['category']);
-    
+
     foreach($academic_years as $academic_year) {
       if($academic_year === 'all') {
         $academic_years = NULL;
@@ -510,7 +510,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
       );
     }
   }
-  
+
   // Type
   if(!empty($query['article_type'])) {
     $parameters[] = array(
@@ -518,7 +518,7 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
       'arguments' => array('article_type', 'value', $query['article_type']),
     );
   }
-  
+
   // Exclude
   if(!empty($query['nids_not_in'])) {
     $parameters[] = array(
@@ -526,40 +526,40 @@ function _hitsa_content_page_set_query_parameters($query = array()) {
       'arguments' => array('entity_id', $query['nids_not_in'], 'NOT IN'),
     );
   }
-  
+
   return $parameters;
 }
 
 function hitsa_content_page_get_more_services_block_nodes($variables) {
   $query = array();
-  
+
   $query['entity_type'] = 'node';
   $query['bundle'] = 'content_page';
-  
+
   // Show services.
   $query['cp_type'] = 'cp_service';
-  
+
   // Exclude current node
   $query['nids_not_in'] = array($variables['nid']);
-  
+
   // Query up to 6 nodes
   $query['range'] = array(0, 6);
-  
+
   if($result = hitsa_content_page_query_content($query)) {
     $service_nids = !empty($result['content']) ? $result['content'] : NULL;
   }
-  
+
   if(!empty($service_nids['node'])) {
     $services = node_load_multiple(array_keys($service_nids['node']));
   }
-  
+
   return !empty($services) ? $services : array();
 }
 
 function hitsa_content_page_header_one_image_validate($form, &$form_state) {
   // cp_specialities can hold only one image
   if(!empty($form_state['values']['cp_image'][LANGUAGE_NONE])) {
-    if(!empty($form_state['values']['cp_type'][LANGUAGE_NONE][0]['value'] 
+    if(!empty($form_state['values']['cp_type'][LANGUAGE_NONE][0]['value']
     && $form_state['values']['cp_type'][LANGUAGE_NONE][0]['value'] === 'cp_specialities')) {
       $images = $form_state['values']['cp_image'][LANGUAGE_NONE];
       $img_qty = 0;
@@ -569,7 +569,7 @@ function hitsa_content_page_header_one_image_validate($form, &$form_state) {
         }
       }
       if($img_qty > 1) {
-        form_set_error('cp_image', t('Images: This field cannot hold more than 1 value.'));
+//        form_set_error('cp_image', t('Images: This field cannot hold more than 1 value.'));
       }
     }
   }

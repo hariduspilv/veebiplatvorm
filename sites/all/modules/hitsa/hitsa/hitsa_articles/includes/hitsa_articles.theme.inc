@@ -56,7 +56,14 @@ function hitsa_articles_theme() {
       'node' => NULL,
     ),
   );
-
+  $items['article_multiple_images'] = array(
+    'template' => 'hitsa-articles-multiple-images',
+    'path' => drupal_get_path('theme','hitsa').'/templates/parts',
+    'variables' => array(
+      'images' => NULL,
+      'count' => NULL,
+    ),
+  );
   $items['hitsa_news_output'] = array(
     'template' => 'hitsa-news-output',
     'path' => drupal_get_path('module', 'hitsa_articles') . '/templates',
@@ -80,6 +87,22 @@ function hitsa_articles_preprocess_node(&$variables) {
 
       foreach($variables['article_types_list'] as &$a_type) {
         $a_type = t($a_type);
+      }
+
+      if(!empty($variables['subpage_images'])){
+        $image_style = 'hitsa_core_thumbnail';
+        $images = array();
+        foreach ($variables['subpage_images'] as $subpage_image){
+          $images[] = array(
+            'thumbnail' => image_style_url($image_style,$subpage_image['uri']),
+            'full_url' => file_create_url($subpage_image['uri']),
+            'alt_text' => (!empty($subpage_image['field_file_image_alt_text']))?$subpage_image['field_file_image_alt_text']['und'][0]['value']:'',
+            'title' => (!empty($subpage_image['field_file_image_title_text']))?$subpage_image['field_file_image_title_text']['und'][0]['value']:'',
+            'autor' => (!empty($subpage_image['field_image_author']))?$subpage_image['field_image_author']['und'][0]['value']:''
+          );
+        }
+       $images_styled =  theme('article_multiple_images',array('images'=>$images));
+       $variables['themed_multiple_images'] = $images_styled;
       }
 
       // Get "More articles" block nodes

@@ -601,7 +601,15 @@ function hitsa_events_calendar_page_html()
                <hr />
                <div class="row-spacer"></div>
 
+               <div class="hidden-content" data-plugin="showMore">
+                  <div class="text-center">
+                    <a href="" class="link" data-anchor>'.t('Calendar view').'<span class="before-arrow_down"></span></a>
+                  </div><!--/text-center-->
+                  <div class="hidden-container" data-container>
+                  
                <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
+                </div>
+                </div>
                ';
 
                $output.='
@@ -1032,6 +1040,14 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         }
         // krumo($start_date_date);
         // $date_eventdate = 'data-eventdate="'.date('d/m/Y',$start_date_date).'"';
+
+      global $user;
+      if($user->uid>0) {
+        $edit_url = url('node/' . $event->nid . '/edit');
+
+        $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
+        $output .= $edit_links;
+      }
         $output .= '<div id="' . rawurlencode($event->nid) . '" class="object object-event ' . $object_class . '" '. $date_eventdate.'>';
         $output .= '<div class="object-inner">';
         $output .= '<a href="#" onclick="event.preventDefault();" class="object-date">';
@@ -1629,8 +1645,14 @@ function hitsa_events_training_calendar()
                <div class="row-spacer-xs"></div>
                <hr />
                <div class="row-spacer"></div>
+                <div class="hidden-content" data-plugin="showMore">
+                  <div class="text-center">
+                    <a href="" class="link" data-anchor>'.t('Calendar view').'<span class="before-arrow_down"></span></a>
+                  </div><!--/text-center-->
+                  <div class="hidden-container" data-container>
                <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
-
+                </div>
+                </div>
                <div class="row-spacer"></div>
                <div class="row">
                   <div class="col-12">
