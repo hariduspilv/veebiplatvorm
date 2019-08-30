@@ -697,6 +697,9 @@ function hitsa_core_save_coordinates($form,&$form_state){
         }
       }
     }
+    else{
+      hitsa_core_clear_map('place_'.$form_state['nid'].'_map');
+    }
   }
 }
 
@@ -1012,15 +1015,22 @@ function hitsa_core_js_alter(&$javascript)
 function hitsa_core_search($q = null)
 {
   $query = search_api_query('hitsa_search_index');
+//  dpm($q);
 
+//  dpm($query);
   if (!empty($q['query'])) {
     $query->keys($q['query']);
+  }
+  if (!empty($q['query'])) {
+//    $query->condition('body:value','%'.$q['query'].'%','LIKE');
   }
 
   if (!empty($q['title'])) {
     $query->condition('title', $q['title']);
   }
-
+//  if(!empty($q['query'])){
+//    $query->condition('')
+//  }
   // Category filter
   if (!empty($q['category'])) {
     $categories = explode(',', $q['category']);
@@ -1057,7 +1067,7 @@ function hitsa_core_search($q = null)
   }
 
   $data = $query->execute();
-
+//  krumo($data);
   return $data;
 }
 
@@ -1204,4 +1214,7 @@ function hitsa_core_get_coordinates($address=null,$area =null,$nid=null ){
       }
     }
   }
+}
+function hitsa_core_clear_map($where){
+  variable_set($where,'');
 }

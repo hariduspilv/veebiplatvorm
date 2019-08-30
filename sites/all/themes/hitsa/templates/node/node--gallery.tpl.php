@@ -40,6 +40,8 @@
 									<div class="swiper-slide" data-image="?image?">
                     <a class="gallery-image" href="?href?" data-fancybox="gallery" data-caption="?caption?">
 										<div class="gallery-image">
+
+                      <span class="before-picture"></span>
 											<img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-gallery.gif'; ?>">
 										</div><!--/gallery-image-->
                     </a><!--/gallery-image-->
