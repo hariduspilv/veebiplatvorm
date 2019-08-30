@@ -240,7 +240,11 @@ function hitsa_cron_run_update()
     '42',
     '43',
     '44',
-    '45'
+    '45',
+    '46',
+    '47',
+    '48'
+
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -2491,5 +2495,293 @@ function hitsa_cron_up_46(){
   }
   // Translatables
   // Included for use with string extractors like potx.
+  return TRUE;
+}
+function hitsa_cron_up_47()
+{
+  $image_style = image_style_load('hitsa_core_logo');
+  if (!empty($image_style['effects'])) {
+    foreach ($image_style['effects'] as $effect_key => $effect) {
+      if ($effect['name'] == 'image_scale_and_crop') {
+        $image_effect = image_effect_load($effect_key, 'hitsa_core_logo');
+        if (!empty($image_effect['data'])) {
+          $image_effect['data']['width'] = '1305';
+          $image_effect['data']['height'] = '282';
+        }
+        image_effect_delete($image_effect);
+      }
+    }
+    $effect = array(
+      'name' => 'image_scale',
+      'data' => array(
+        'width' => '1305',
+        'height' => '282'
+      ),
+      'isid' => $image_style['isid'],
+    );
+    image_effect_save($effect);
+  }
+  $field_bases = array();
+
+  // Exported field_base: 'field_hitsa_place_address'.
+  $field_bases['field_extra_name'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_extra_name',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'entity_translation_sync' => FALSE,
+      'max_length' => 2550,
+    ),
+    'translatable' => 1,
+    'type' => 'text',
+  );
+  $field_bases['field_extra_info'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_extra_info',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+  foreach ($field_bases as $field) {
+
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+      field_create_field($field);
+    }
+  }
+  $field_instances = array();
+
+  // Exported field_instance: 'node-contact_location-field_hitsa_place_address'.
+  $field_instances['taxonomy_term-fields-field_extra_name'] = array(
+    'bundle' => 'fields',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Lisanimetus kuvatakse esilehel valdkonna nimetuse all. Mitu väärtust kuvatakse samuti üksteise all.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_extra_name',
+    'label' => 'Lisanimetus',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 1,
+    ),
+  );
+  $field_instances['node-contact-field_extra_info'] = array(
+    'bundle' => 'contact',
+    'default_value' => array(
+      0 => array(
+        'value' => 'Lisainfo tekst',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 13,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_extra_info',
+    'label' => 'Lisainformatsioon',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 1000,
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 5,
+    ),
+  );
+  // Translatables
+  // Included for use with string extractors like potx.
+  foreach ($field_instances as $field_instance) {
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_create_instance($field_instance);
+    };
+  }
+  // Translatables
+  // Included for use with string extractors like potx.
+
+  $field_update = field_info_field('cp_image');
+  $field_update['cardinality'] = -1;
+  field_update_field($field_update);
+  $field_update = field_info_field('subpage_images');
+  $field_update['cardinality'] = -1;
+  field_update_field($field_update);
+  return TRUE;
+}
+function hitsa_cron_up_48(){
+//  dpm('HERE');
+  $image_style = image_style_load('hitsa_article_thumbnail');
+  if (!empty($image_style['effects'])) {
+    foreach ($image_style['effects'] as $effect_key => $effect) {
+      if ($effect['name'] == 'image_scale_and_crop') {
+        $image_effect = image_effect_load($effect_key, 'hitsa_article_thumbnail');
+        image_effect_delete($image_effect);
+      }
+    }
+  }
+    $effect = array(
+      'name' => 'manualcrop_crop_and_scale',
+      'data' => array(
+        'width' => 720,
+        'height' => 428,
+        'upscale' => 0,
+        'respectminimum' => 1,
+        'onlyscaleifcrop' => 0,
+        'style_name' => 'hitsa_article_thumbnail',
+      ),
+      'isid' => $image_style['isid'],
+      'weight' => -1,
+    );
+    image_effect_save($effect);
+    $field_instance_info = field_info_instance('node','subpage_images','article');
+    $field_instance_info['widget'] = array(
+    'active' => 1,
+    'module' => 'media',
+    'settings' => array(
+      'allowed_schemes' => array(
+        'public' => 'public',
+        'youtube' => 0,
+      ),
+      'allowed_types' => array(
+        'audio' => 0,
+        'document' => 0,
+        'image' => 'image',
+        'video' => 0,
+      ),
+      'browser_plugins' => array(
+        'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
+        'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+        'media_default--media_browser_1' => 0,
+        'media_default--media_browser_my_files' => 0,
+        'media_internet' => 0,
+        'upload' => 'upload',
+      ),
+      'manualcrop_crop_info' => 1,
+      'manualcrop_default_crop_area' => 1,
+      'manualcrop_enable' => 1,
+      'manualcrop_inline_crop' => 0,
+      'manualcrop_instant_crop' => FALSE,
+      'manualcrop_instant_preview' => 1,
+      'manualcrop_keyboard' => 1,
+      'manualcrop_maximize_default_crop_area' => 0,
+      'manualcrop_require_cropping' => array(),
+      'manualcrop_styles_list' => array(
+        'hitsa_article_thumbnail' => 'hitsa_article_thumbnail',
+      ),
+      'manualcrop_styles_mode' => 'include',
+      'manualcrop_thumblist' => 0,
+    ),
+    'type' => 'media_generic',
+    'weight' => 45,
+  );
+  field_update_instance($field_instance_info);
+  $field_instance_info = field_info_instance('node','cp_image','content_page');
+  $field_instance_info['widget'] = array(
+    'active' => 1,
+    'module' => 'media',
+    'settings' => array(
+      'allowed_schemes' => array(
+        'public' => 'public',
+        'youtube' => 0,
+      ),
+      'allowed_types' => array(
+        'audio' => 0,
+        'document' => 0,
+        'image' => 'image',
+        'video' => 0,
+      ),
+      'browser_plugins' => array(
+        'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
+        'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
+        'media_default--media_browser_1' => 0,
+        'media_default--media_browser_my_files' => 0,
+        'media_internet' => 0,
+        'upload' => 'upload',
+      ),
+      'manualcrop_crop_info' => 1,
+      'manualcrop_default_crop_area' => 1,
+      'manualcrop_enable' => 1,
+      'manualcrop_inline_crop' => 0,
+      'manualcrop_instant_crop' => FALSE,
+      'manualcrop_instant_preview' => 1,
+      'manualcrop_keyboard' => 1,
+      'manualcrop_maximize_default_crop_area' => 0,
+      'manualcrop_require_cropping' => array(),
+      'manualcrop_styles_list' => array(
+        'hitsa_article_thumbnail' => 'hitsa_article_thumbnail',
+      ),
+      'manualcrop_styles_mode' => 'include',
+      'manualcrop_thumblist' => 0,
+    ),
+    'type' => 'media_generic',
+    'weight' => 45,
+  );
+  field_update_instance($field_instance_info);
   return TRUE;
 }

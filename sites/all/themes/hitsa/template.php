@@ -1463,6 +1463,30 @@ function hitsa_preprocess_html(&$variables){
   }
 
 function hitsa_preprocess_node(&$variables){
+  if(!empty($variables['subpage_images'])||!empty($variables['cp_image'])){
+    if(!empty($variables['subpage_images'])){
+      $image_field = 'subpage_images';
+    }
+    elseif(!empty($variables['cp_image'])){
+      $image_field = 'cp_image';
+    }
+    $image_style = 'hitsa_article_thumbnail';
+    $images = array();
+    foreach ($variables[$image_field] as $subpage_image){
+
+      $images[] = array(
+        'thumbnail' => image_style_url($image_style,$subpage_image['uri']),
+        'full_url' => file_create_url($subpage_image['uri']),
+        'alt_text' => (!empty($subpage_image['field_file_image_alt_text']))?$subpage_image['field_file_image_alt_text']['und'][0]['value']:'',
+        'title' => (!empty($subpage_image['field_file_image_title_text']))?$subpage_image['field_file_image_title_text']['und'][0]['value']:'',
+        'autor' => (!empty($subpage_image['field_image_author']))?$subpage_image['field_image_author']['und'][0]['value']:''
+      );
+    }
+    $images_styled =  theme('article_multiple_images',array('images'=>$images));
+    $variables['themed_multiple_images'] = $images_styled;
+
+//    krumo($variables);
+  }
   if (!empty($variables['field_school_selections'])){
     $page_type = $variables['field_school_selections'][0]['value'];
     if (module_exists('hitsa_curriculum')){

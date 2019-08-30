@@ -44,7 +44,7 @@
 </a><!--/map-->
 <?php endif; ?>
 <?php if(!empty($footer_map)):?>
-<?php print $footer_map?>
+  <?php print $footer_map?>
 <?php endif?>
 <div class="inline">
   <div class="row">

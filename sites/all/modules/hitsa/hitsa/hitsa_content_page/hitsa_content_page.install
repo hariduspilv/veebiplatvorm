@@ -138,7 +138,7 @@ function _hitsa_content_page_fields() {
       'field_name' => 'subpage_images',
       'label' => $t('Images'),
       'type' => 'image',
-      'cardinality' => 2,
+      'cardinality' => -1,
     ),
     // Contact information Paragraph
     'cinfo_homepage_url' => array(

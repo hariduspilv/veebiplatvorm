@@ -434,7 +434,7 @@ function hitsa_events_get_dates($type = null){
  * @return array
  */
 function getDatesFromRange($start, $end, $format = 'Y-m-d')
-{   
+{
     $array = array();
     $interval = new DateInterval('P1D');
     $realEnd = new DateTime($end);
@@ -601,7 +601,15 @@ function hitsa_events_calendar_page_html()
                <hr />
                <div class="row-spacer"></div>
 
+               <div class="hidden-content" data-plugin="showMore">
+                  <div class="text-center">
+                    <a href="" class="link" data-anchor>'.t('Calendar view').'<span class="before-arrow_down"></span></a>
+                  </div><!--/text-center-->
+                  <div class="hidden-container" data-container>
+                  
                <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
+                </div>
+                </div>
                ';
 
                $output.='
@@ -643,7 +651,7 @@ function hitsa_events_calendar_page_html()
     if (empty($_REQUEST)) {
         if (!empty($periods)) {
             $output .= hitsa_events_htmlize_periods($periods);
-            
+
         }
     } else {
         $output .= hitsa_events_endpoint('loaded_page');
@@ -741,7 +749,6 @@ function hitsa_events_endpoint($loaded_page = null)
         $start_date = strtotime(str_replace('/', '-', $dates[0]));
         $end_date = strtotime(str_replace('/', '-', $dates[1]));
         $q->join('field_data_event_date', 'fded', 'fded.entity_id=n.nid');
-
         $db_or = db_or();
         $db_or->condition('fded.event_date_value', $start_date, '>=');
         $db_or->condition('fded.event_date_value2', $start_date, '>=');
@@ -753,6 +760,21 @@ function hitsa_events_endpoint($loaded_page = null)
     $r = $q->execute();
     $nodes = array();
     foreach ($r as $key => $node) {
+      if(!empty($node-> event_date_value)){
+        if(!empty($start_date)){
+          $start_date_readable = date('d-m-Y',$start_date);
+          $start_date_readable = strtotime($start_date_readable);
+          $end_date_readable = date('d-m-Y',$end_date);
+          $end_date_readable = strtotime($end_date_readable);
+          $node_date_readable = date('d-m-Y',$node-> event_date_value);
+          $node_date_readable = strtotime($node_date_readable);
+          if($node_date_readable<=$end_date_readable&& $node_date_readable>=$start_date_readable){
+          }
+          else{
+            continue;
+          }
+        }
+      }
         $nodes[$node->nid] = node_load($node->nid);
     }
     if (!empty($nodes)) {
@@ -1018,6 +1040,14 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         }
         // krumo($start_date_date);
         // $date_eventdate = 'data-eventdate="'.date('d/m/Y',$start_date_date).'"';
+
+      global $user;
+      if($user->uid>0) {
+        $edit_url = url('node/' . $event->nid . '/edit');
+
+        $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
+        $output .= $edit_links;
+      }
         $output .= '<div id="' . rawurlencode($event->nid) . '" class="object object-event ' . $object_class . '" '. $date_eventdate.'>';
         $output .= '<div class="object-inner">';
         $output .= '<a href="#" onclick="event.preventDefault();" class="object-date">';
@@ -1615,8 +1645,14 @@ function hitsa_events_training_calendar()
                <div class="row-spacer-xs"></div>
                <hr />
                <div class="row-spacer"></div>
+                <div class="hidden-content" data-plugin="showMore">
+                  <div class="text-center">
+                    <a href="" class="link" data-anchor>'.t('Calendar view').'<span class="before-arrow_down"></span></a>
+                  </div><!--/text-center-->
+                  <div class="hidden-container" data-container>
                <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
-
+                </div>
+                </div>
                <div class="row-spacer"></div>
                <div class="row">
                   <div class="col-12">

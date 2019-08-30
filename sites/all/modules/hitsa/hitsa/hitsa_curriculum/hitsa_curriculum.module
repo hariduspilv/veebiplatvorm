@@ -1566,6 +1566,7 @@ function hitsa_curriculum_generate_header($header)
         }
         $output_image = '';
         $output_image .= '  <figure class="sm-hide">';
+
         $output_image .= '    <img src="' . $image_url . '" alt="">';
         $output_image .= '    <figcaption>' . $picture_text . '</figcaption>';
         $output_image .= '   </figure>';
@@ -1776,6 +1777,21 @@ $output.='
     $output.='     <i>'.t('Last changed').': '.$changed_date.'</i>';
   }
 if(!empty($header->cp_image)){
+  if(!empty($header->cp_image)){
+    $image_style = 'hitsa_core_thumbnail';
+    $images = array();
+    foreach ($header->cp_image['und'] as $subpage_image){
+
+      $images[] = array(
+        'thumbnail' => image_style_url($image_style,$subpage_image['uri']),
+        'full_url' => file_create_url($subpage_image['uri']),
+        'alt_text' => (!empty($subpage_image['field_file_image_alt_text']))?$subpage_image['field_file_image_alt_text']['und'][0]['value']:'',
+        'title' => (!empty($subpage_image['field_file_image_title_text']))?$subpage_image['field_file_image_title_text']['und'][0]['value']:'',
+        'autor' => (!empty($subpage_image['field_image_author']))?$subpage_image['field_image_author']['und'][0]['value']:''
+      );
+    }
+    $images_styled =  theme('article_multible_images',array('images'=>$images));
+  }
   $image = $header->cp_image['und'][0];
   $image['full_url'] = file_create_url($image['uri']);
   $image['thumbnail'] = image_style_url('hitsa_core_thumbnail',$image['uri']);
@@ -1797,7 +1813,10 @@ $output.='
 ';
   if(!empty($image)) {
     $image_html = hitsa_core_generate_single_image_figure($image);
-    $output.= $image_html;
+    if(!empty($images_styled)){
+      $output.=$images_styled;
+    }
+//    $output.= $image_html;
   }
   if(!empty($header->changed)){
   $changed_date = date('d.m.Y',$header->changed);
@@ -1931,12 +1950,19 @@ function hitsa_curriculum_fp_subject_fields()
                     if (!empty($loaded_speciality)) {
                         $link = url('node/' . $loaded_speciality->nid);
                     }
+
+                    $name_out = $term->name;
+                    if(!empty($term->field_extra_name)){
+                      foreach ($term->field_extra_name['und'] as $name){
+                        $name_out.= '<br>'.$name['value'];
+                      }
+                    }
                     if (!empty($link)) {
                         $output_slides[] = '<div class="col-3">
                     <a href="' . $link . '" class="block">
                        <span class="caroussel_profession">
                           <span class="caroussel_profession-icon ' . $class . '"></span>
-                          <span class="caroussel_profession-title">' . $term->name . '</span>
+                          <span class="caroussel_profession-title">' . $name_out .'</span>
                           <div class="caroussel_profession-btn_wrapper">
                           <span class="btn">' . t('Look at specialities') . '</span>
                           </div><!--caroussel_profession-btn_wrapper-->

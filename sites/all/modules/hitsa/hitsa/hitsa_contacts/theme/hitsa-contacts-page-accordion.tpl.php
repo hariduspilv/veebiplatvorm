@@ -1,7 +1,7 @@
 <script>/*global Drupal */ Drupal.behaviors.spamspan.attach();</script>
 <?php if(!empty($contact_departments)): // General contact search output ?>
 <div class="accordion" data-plugin="accordion">
-  <?php foreach($contact_departments as $contact_department): 
+  <?php foreach($contact_departments as $contact_department):
     if(empty($nodes[$contact_department->tid])) continue;
     $current_nodes = $nodes[$contact_department->tid];
   ?>
@@ -20,7 +20,7 @@
 </div><!--/accordion-->
 <?php else: // Consultation times search output ?>
   <?php if(!empty($nodes)): ?>
-    <?php 
+    <?php
     $i = 0;
     while(!empty($nodes[$i])): ?>
     <div class="col-12">
