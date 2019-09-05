@@ -2797,4 +2797,10 @@ function hitsa_cron_up_49(){
       }
     }
   }
+  $instance_info = field_info_instance('node', 'field_extra_info', 'contact');
+  if(!empty($instance_info['default_value'])){
+    unset($instance_info['default_value']);
+    field_update_instance($instance_info);
+  }
+  return TRUE;
 }

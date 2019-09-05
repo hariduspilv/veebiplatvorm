@@ -729,6 +729,7 @@ function hitsa_curriculum_contacts($contacts)
 
 function hitsa_curriculum_generate_left_f_titles($areas)
 {
+
     if (is_array($areas)) {
         $output = '<div class="col-3 d-flex no-print">';
         $output .= '<ul class="side-menu">';
@@ -1068,6 +1069,16 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                             'subpoints' => array($area_key => $area_value),
                             'weight' => $loaded_field->weight,
                         );
+                        if(!empty($loaded_field->field_extra_name)){
+                          foreach ($loaded_field->field_extra_name['und'] as $extra_name){
+                            if(!empty($fields[$field_id]['name'])){
+                              $fields[$field_id]['name'].=', '.$extra_name['value'];
+                            }
+                            else{
+                              $fields[$field_id]['name'].=$extra_name['value'];
+                            }
+                          }
+                        }
                     } else {
                         $fields[$field_id]['subpoints'][$area_key] = $area_value;
                     }

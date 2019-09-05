@@ -629,7 +629,12 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
       unset($form['actions']['preview']);
     }
   }
-  if (!empty($form['body']) && $form['#node']->type !== 'curriculum') {
+  if (!empty($form['#node']) && $form['#node']->type == 'contact') {
+    $form['field_extra_info']['und'][0]['#maxlength'] = 1000;
+    $form['field_extra_info']['und'][0]['#maxlength_js'] = TRUE;
+    $form['field_extra_info']['und'][0]['#attributes'] = array(
+      'maxlength_js_label' => '<b> @remaining </b> tähemärki järel.'
+    );
     //$form['body'][LANGUAGE_NONE][0]['#required'] = TRUE;
     //$form['body'][LANGUAGE_NONE][0]['summary']['#required'] = TRUE;
     //$form['body'][LANGUAGE_NONE][0]['summary']['#description'] = ''; // Hide summary description
@@ -657,6 +662,7 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
     //$form['#theme'] = 'main_menu_overview_form';
   }
   switch ($form_id) {
+
     case 'taxonomy_form_term':
       $form['description']['#access'] = false;
       $form['description']['#format'] = 'text_plain'; // Gets rid of translation text format warning.
@@ -1217,4 +1223,13 @@ function hitsa_core_get_coordinates($address=null,$area =null,$nid=null ){
 }
 function hitsa_core_clear_map($where){
   variable_set($where,'');
+}
+function hitsa_core_taxonomy_term_presave($term){
+  global $language;
+  if(!empty($term->field_extra_name)){
+    if(!empty($term->field_extra_name[$language->language])){
+      $term->field_extra_name['und'] = $term->field_extra_name[$language->language];
+    }
+  }
+
 }

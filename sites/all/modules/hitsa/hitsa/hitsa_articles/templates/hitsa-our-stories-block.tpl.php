@@ -3,7 +3,7 @@
   <h2 class="block-title"><?php print $our_stories_title; ?></h2>
   <?php endif; ?>
   <div class="row pull-up">
-    
+
     <?php foreach($nodes as $node): ?>
     <div class="col-12">
       <?php if((node_access("update", $node, $user) === TRUE)): ?>
@@ -15,7 +15,7 @@
       <a href="<?php print url('node/' . $node->nid); ?>" class="object object-small">
         <span class="object-inner">
           <?php if(!empty($node->subpage_images[LANGUAGE_NONE][0])): ?>
-          <span class="object-image" style="background-image:url(<?php print image_style_url('hitsa_core_thumbnail', $node->subpage_images[LANGUAGE_NONE][0]['uri']); ?>);">
+          <span class="object-image" style="background-image:url(<?php print image_style_url('hitsa_article_thumbnail', $node->subpage_images[LANGUAGE_NONE][0]['uri']); ?>);">
             <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>">
           </span>
           <?php endif; ?>
