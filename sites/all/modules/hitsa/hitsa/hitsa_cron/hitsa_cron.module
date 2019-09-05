@@ -243,7 +243,8 @@ function hitsa_cron_run_update()
     '45',
     '46',
     '47',
-    '48'
+    '48',
+    '49'
 
   ];
   if (!empty($updates)) {
@@ -2784,4 +2785,16 @@ function hitsa_cron_up_48(){
   );
   field_update_instance($field_instance_info);
   return TRUE;
+}
+
+function hitsa_cron_up_49(){
+  $image_style = image_style_load('hitsa_core_logo');
+  if (!empty($image_style['effects'])) {
+    foreach ($image_style['effects'] as $effect_key => $effect) {
+      $image_effect = image_effect_load($effect_key, 'hitsa_core_logo');
+      if($image_effect['data']['width']=='435'){
+        image_effect_delete($image_effect);
+      }
+    }
+  }
 }
