@@ -647,6 +647,7 @@ function hitsa_events_calendar_page_html()
   if (!empty($calendar_dates)) {
     $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
     $output.=$date_div;
+    $output.= '<script> $(window).trigger("calendar_update"); </script>';
   }
     if (empty($_REQUEST)) {
         if (!empty($periods)) {
@@ -667,6 +668,8 @@ function hitsa_events_calendar_page_html()
     $output .= '
   <div data-url="' . $api . '"></div>
   ';
+
+  $output.='<script>$(window).trigger("calendar_update"); </script>';
     return ($output);
 }
 
@@ -789,6 +792,7 @@ function hitsa_events_endpoint($loaded_page = null)
             if (!empty($calendar_dates)) {
               $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
               $textured_nodes.=$date_div;
+              $textured_nodes.='<script>$(window).trigger("calendar_update"); </script>';
             }
             print($textured_nodes);
         }
@@ -797,6 +801,7 @@ function hitsa_events_endpoint($loaded_page = null)
             if (!empty($calendar_dates)) {
               $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
               $textured_nodes.=$date_div;
+              $textured_nodes.='<script>$(window).trigger("calendar_update"); </script>';
             }
             print($textured_nodes);
         }
@@ -806,6 +811,7 @@ function hitsa_events_endpoint($loaded_page = null)
             if (!empty($calendar_dates)) {
               $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
               $textured_nodes.=$date_div;
+              $textured_nodes.='<script>$(window).trigger("calendar_update"); </script>';
             }
             return $textured_nodes;
         }
@@ -814,6 +820,7 @@ function hitsa_events_endpoint($loaded_page = null)
             if (!empty($calendar_dates)) {
               $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
               $textured_nodes.=$date_div;
+              $textured_nodes.='<script>$(window).trigger("calendar_update"); </script>';
             }
             return ($textured_nodes);
         }
@@ -1755,6 +1762,7 @@ function hitsa_events_training_calendar()
             if (!empty($calendar_dates)) {
                 $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
                 $output .= $date_div;
+                $output.='<script>$(window).trigger("calendar_update"); </script>';
             }
         }
     } else {
@@ -1764,6 +1772,7 @@ function hitsa_events_training_calendar()
     if (!empty($calendar_dates)) {
         $date_div = '<div data-eventdate="' . $calendar_dates . '"></div>';
         $output .= $date_div;
+        $output.='<script>$(window).trigger("calendar_update"); </script>';
     }
     $output .= '</div><!--/col-12-->';
     $output .= '</div><!--/row-->';

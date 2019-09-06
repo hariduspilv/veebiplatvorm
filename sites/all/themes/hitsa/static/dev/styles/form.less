@@ -125,18 +125,21 @@
 					
           &:hover{span{border-radius:0 32px 32px 0;} 
             &+.event:before{content: none;}
+            &+.event:after{content: none;}
           }
           &.end-date:hover span{border-radius:32px;}
           &.end-date+.event{
             &:before{content: none;}
+            &:after{content: none;}
           }
           &+.event{
-            &:before{content:" "; position: absolute; top:0; bottom:2px; left:0; width:50%; background:@base-1;}
+            &:after{content:" "; position: absolute; top:0; bottom:2px; left:0; width:50%; background:@base-1;}
           }
 				}
 				
 				&.in-range:hover+.in-range{
-					&:before{display: none;}
+          &:before{content: none;}
+          // &:after{content: none;}
 					span{border-radius:32px 0 0 32px;}
 					&:last-child span{border-radius:32px;}
           &.end-date span{border-radius:32px;}

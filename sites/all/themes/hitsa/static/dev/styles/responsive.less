@@ -346,6 +346,28 @@ html{
     }
     .hidden-container{display: none;}
   }
+  .fancybox-container{
+    .fancybox-infobar{font-size: 14px; padding: 6px 0 0 12px;}
+    .fancybox-toolbar{
+      .fancybox-button{font-size: 12px;
+        &--close{padding: 20px 20px;}
+        &--download{padding: 14px 16px; text-decoration: none;}
+        &--share{padding: 20px 16px;}
+        &--print{display: none;}
+      }
+    }
+    .fancybox-navigation{
+      .fancybox-button{font-size: 20px;
+        &--arrow_right{padding-right: 16px; padding-left: 16px;}
+        &--arrow_left{padding-right: 16px; padding-left: 16px;}
+      }
+    }
+  }
+  .swiper-holder.swiper-gallery{margin-left: 0;
+    .gallery-image [class*="before-"]{width: 24px; height: 24px; font-size: 12px; top: 16px; right: 16px;}
+    .gallery-description .gallery-title{margin-right: 16px;}
+    .swiper-button-next, .swiper-button-prev{width: 26px; height: 26px; line-height: 22px; font-size: 12px; display: none;}
+  }
 }
 
 @media screen and (max-width: 480px) {

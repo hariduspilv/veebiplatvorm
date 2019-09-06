@@ -411,7 +411,7 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
    img{width:100%; display: block; margin:0 0 9px 0;}
 	figcaption{padding:0 3px;}
 	a{display:block; position: relative; text-decoration: none;
-		&[data-closeButton]{
+		&[data-closeButton],&[data-fancybox]{
 			&:before{position: absolute; top:10px; right:9px;  width:30px; height:30px; line-height:30px; border-radius: 30px; background:@base-2; box-shadow:0 2px 4px 0 rgba(0,0,0,0.5);  text-align: center; color:@text-1; transition:transform 0.25s;}
 			&[href*='youtube']{ .before-camera;}
       &[href*='.html']{ .before-gallery;}
@@ -461,7 +461,7 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
 }
 
 
-.swiper-holder.swiper-gallery{margin-left:15px;
+.swiper-holder.swiper-gallery{margin-left:15px; margin-top: 0;
    .swiper-button-prev{left:10px;}
    .swiper-button-next{right:10px;}
 }
@@ -480,7 +480,8 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
       }
    }
 }
-.gallery-image{display:block; background:center center no-repeat; background-size:contain; 
+.gallery-image{display:block; background:center center no-repeat; background-size:contain; position: relative;
+  [class*="before-"]{position: absolute; top: 28px; right: 28px; font-size: 16px; width: 33px; height: 33px; border-radius: 100%; background: @base-2; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); color: @text-1; display: flex; justify-content: center; align-items: center;}
    img{display:block; width:100%;}
 	.print_img{display: none;}
 }
@@ -695,4 +696,54 @@ figure{display: block; font-size:14px; line-height:120%; font-weight: 100; margi
 }
 .hidden-content{
   .link{display: none;}
+}
+.mobile-thumbnails{
+  &-holder{overflow: auto; height: 80px; width: 100%; -webkit-overflow-scrolling: touch;}
+  ul{display: flex;
+    li{margin: 0 10px;
+      &:first-child{margin-left: 0;}
+      &:last-child{margin-right: 0;}
+      &.active{
+        a{box-shadow: inset 0px 0px 0px 4px @highlight-1;
+          &:before{content: ""; position: absolute; top: 4px; right: 4px; bottom: 4px; left: 4px; background: rgba(255,255,255,0.5);}
+        }
+      }
+      a{display: block; background-position: 50% 50%; background-repeat: no-repeat; background-size: cover; position: relative;
+        img{display: block; width: 96px; height: 64px;}
+      }
+    }
+  }
+}
+.fancybox-container{
+  &.fancybox-is-open .fancybox-bg{opacity: 1;}
+  .fancybox-navigation{position: absolute; top: 50%; margin-top: -50px; width: 100%;
+    .fancybox-button{font-size: 32px; color: @base-2; background: transparent;
+      &[disabled]{color: #888;}
+      &--arrow_left{padding-left: 48px; width: auto;}
+      &--arrow_right{padding-right: 48px; width: auto;}
+    }
+  }
+  .fancybox-infobar{color: @base-2; font-size: 20px; padding: 12px 0 0 48px; height: auto;}
+  .fancybox-toolbar{
+    .fancybox-button{background: transparent; font-size: 24px; color: @base-2;
+      &--close{height: auto; width: auto; padding: 20px 48px;}
+      &--download{height: auto; width: auto; font-size: 28px; padding: 22px 16px;}
+      &--share{height: auto; width: auto; font-size: 26px; padding: 18px 16px;}
+      &--print{height: auto; width: auto; font-size: 26px; padding: 22px 16px; text-decoration: none;}
+    }
+  }
+  .fancybox-slide--image{padding: 72px 0;}
+}
+.detail-pictures{
+  figure{margin: 0;
+    &.little{height: 0; padding-bottom: 72%; overflow: hidden; margin-bottom: 0;
+      a{background-repeat: no-repeat; background-position: 50% 50%; background-size: cover; position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+        &:before{width: 20px; height: 20px; line-height: 20px; font-size: 12px;}
+      }
+    }
+    &.overlay-little{
+      &:after{content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); pointer-events: none;}
+      .overlay-little__text{position: absolute; color: @text-2; z-index: 1; width: 100%; height: 100%; top: 0; left: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; pointer-events: none; pointer-events: none; padding: 8px;}
+    }
+  }
 }

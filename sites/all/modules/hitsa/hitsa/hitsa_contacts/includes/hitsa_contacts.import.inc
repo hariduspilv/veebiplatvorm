@@ -150,7 +150,12 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
   $emw_node->last_name = $contact_array[2]; // Last name
   $emw_node->phone_nr = explode('|',$contact_array[4]); // Phone Nr.
   $emw_node->e_mail = $contact_array[5]; // E-Mail
-  //$emw_node->additional_info = $contact_array[6]; // Additional info
+//  krumo($contact_array);
+//  exit();
+//  $emw_node->field_extra_info = $contact_array[6]; // Additional info
+  $emw_node->field_extra_info = array(
+    'value' => $contact_array[6],
+  );
   $emw_node->reception_times = explode('|', $contact_array[7]); // Reception times
   $emw_node->contact_cv = array('url' => $contact_array[8]); // CV Link
   // krumo($emw_node);

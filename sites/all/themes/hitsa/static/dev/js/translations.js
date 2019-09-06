@@ -46,5 +46,6 @@ var translations = {
 			prefix: "https://twitter.com/share?url=",
 			text: "Jaga Twitteris"
 		}
-	]
+  ],
+  viewAllPhotos: "Vaata kõiki pilte",
 };

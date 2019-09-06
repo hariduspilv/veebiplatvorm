@@ -1,10 +1,61 @@
 $(document).ready(function(){
-   setTimeout(function() {
-      $(window).anchorScroll();
-   }, 0);
+  setTimeout(function() {
+    $(window).anchorScroll();
+  }, 0);
   $('.email-tooltip').tooltipster({
     trigger: 'click',
     interactive: true
+  });
+  $('[data-fancybox="fancybox"]').fancybox({
+    idleTime: false,
+    btnTpl: {
+      arrowLeft:
+        '<button data-fancybox-prev class="fancybox-button fancybox-button--arrow_left" title="{{PREV}}">' +
+        '<span class="before-arrow_left"></span>' +
+        "</button>",
+      arrowRight:
+        '<button data-fancybox-next class="fancybox-button fancybox-button--arrow_right" title="{{NEXT}}">' +
+        '<span class="before-arrow_right"></span>' +
+        "</button>",
+      close:
+        '<button data-fancybox-close class="fancybox-button fancybox-button--close" title="{{CLOSE}}">' +
+        '<span class="before-close"></span>' +
+        "</button>",
+      download:
+        '<a download data-fancybox-download class="fancybox-button fancybox-button--download" title="{{DOWNLOAD}}" href="javascript:;">' +
+        '<span class="before-download"></span>' +
+        "</a>",
+      share:
+        '<button data-fancybox-share class="fancybox-button fancybox-button--share" title="{{SHARE}}">' +
+        '<span class="before-share"></span>' +
+        "</button>",
+      print:
+        '<a href="javascript:window.print();" class="fancybox-button fancybox-button--print" title="{{PRINT}}">' +
+        '<span class="before-print"></span>' +
+        "</a>",
+    },
+    buttons: [
+      "share",
+      "print",
+      "download",
+      "close"
+    ],
+    share: {
+      tpl:
+        '<div class="fancybox-share">' +
+        "<h1>{{SHARE}}</h1>" +
+        "<p>" +
+        '<a class="fancybox-share__button fancybox-share__button--fb" href="https://www.facebook.com/sharer/sharer.php?u={{url}}">' +
+        '<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="m287 456v-299c0-21 6-35 35-35h38v-63c-7-1-29-3-55-3-54 0-91 33-91 94v306m143-254h-205v72h196" /></svg>' +
+        "<span>Facebook</span>" +
+        "</a>" +
+        '<a class="fancybox-share__button fancybox-share__button--tw" href="https://twitter.com/intent/tweet?url={{url}}&text={{descr}}">' +
+        '<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="m456 133c-14 7-31 11-47 13 17-10 30-27 37-46-15 10-34 16-52 20-61-62-157-7-141 75-68-3-129-35-169-85-22 37-11 86 26 109-13 0-26-4-37-9 0 39 28 72 65 80-12 3-25 4-37 2 10 33 41 57 77 57-42 30-77 38-122 34 170 111 378-32 359-208 16-11 30-25 41-42z" /></svg>' +
+        "<span>Twitter</span>" +
+        "</a>" +
+        "</p>" +
+        "</div>"
+    },
   });
 });
 
@@ -36,6 +87,112 @@ if (hasTouch()) { // remove all :hover stylesheets
         }
     } catch (ex) {}
 }
+
+$.fn.swipeDetector = function (options) {
+  // States: 0 - no swipe, 1 - swipe started, 2 - swipe released
+  var swipeState = 0;
+  // Coordinates when swipe started
+  var startX = 0;
+  var startY = 0;
+  // Distance of swipe
+  var pixelOffsetX = 0;
+  var pixelOffsetY = 0;
+  // Target element which should detect swipes.
+  var swipeTarget = this;
+  var defaultSettings = {
+    // Amount of pixels, when swipe don't count.
+    swipeThreshold: 70,
+    // Flag that indicates that plugin should react only on touch events.
+    // Not on mouse events too.
+    useOnlyTouch: false
+  };
+  
+  // Initializer
+  (function init() {
+    options = $.extend(defaultSettings, options);
+    // Support touch and mouse as well.
+    swipeTarget.on('mousedown touchstart', swipeStart);
+    $('html').on('mouseup touchend', swipeEnd);
+    $('html').on('mousemove touchmove', swiping);
+  })();
+  
+  function swipeStart(event) {
+    if (options.useOnlyTouch && !event.originalEvent.touches)
+      return;
+    
+    if (event.originalEvent.touches)
+      event = event.originalEvent.touches[0];
+    
+    if (swipeState === 0) {
+      swipeState = 1;
+      startX = event.clientX;
+      startY = event.clientY;
+    }
+  }
+  
+  function swipeEnd(event) {
+    if (swipeState === 2) {
+      swipeState = 0;
+      
+      if (Math.abs(pixelOffsetX) > Math.abs(pixelOffsetY) &&
+          Math.abs(pixelOffsetX) > options.swipeThreshold) { // Horizontal Swipe
+        if (pixelOffsetX < 0) {
+          swipeTarget.trigger($.Event('swipeLeft.sd'));
+        } else {
+          swipeTarget.trigger($.Event('swipeRight.sd'));
+        }
+      } else if (Math.abs(pixelOffsetY) > options.swipeThreshold) { // Vertical swipe
+        if (pixelOffsetY < 0) {
+          swipeTarget.trigger($.Event('swipeUp.sd'));
+        } else {
+          swipeTarget.trigger($.Event('swipeDown.sd'));
+        }
+      }
+    }
+  }
+  
+  function swiping(event) {
+    // If swipe don't occuring, do nothing.
+    if (swipeState !== 1) 
+      return;
+    
+    
+    if (event.originalEvent.touches) {
+      event = event.originalEvent.touches[0];
+    }
+    
+    var swipeOffsetX = event.clientX - startX;
+    var swipeOffsetY = event.clientY - startY;
+    
+    if ((Math.abs(swipeOffsetX) > options.swipeThreshold) ||
+        (Math.abs(swipeOffsetY) > options.swipeThreshold)) {
+      swipeState = 2;
+      pixelOffsetX = swipeOffsetX;
+      pixelOffsetY = swipeOffsetY;
+      //console.log(pixelOffsetX);
+    }
+  }
+  
+  return swipeTarget; // Return element available for chaining.
+}
+
+$.fn.detailPictures = function(){
+  var main = $(this);
+  var thumbs = main.find("figure.little");
+  var thumbsText = '<div class="overlay-little__text">'+translations.viewAllPhotos+' ('+(thumbs.length+1)+')</div>';
+  if (thumbs.length > 2) {
+    thumbs.each(function(index){
+      var obj = $(this);
+      if (index == 1) {
+        obj.addClass("overlay-little");
+        obj.append(thumbsText);
+      }
+      if (index > 1) {
+        obj.parent().addClass("d-none");
+      }
+    });
+  }
+};
 
 $.fn.scrollIfID = function(){
 	var main = $(this);
@@ -650,7 +807,11 @@ $.fn.datepickerRange = function(){
       main.val(picker.startDate.format('DD/MM/YYYY') + " - " + picker.endDate.format('DD/MM/YYYY'));
     });
     
-    $(window).on("querychange calendar:update", function(){
+    /* $(window).on("querychange calendar:update", function(){
+      updateCalendar();
+    }); */
+
+    $(window).on("calendar_update", function(){
       updateCalendar();
     });
 
