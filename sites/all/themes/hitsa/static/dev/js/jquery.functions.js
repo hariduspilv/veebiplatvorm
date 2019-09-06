@@ -1,6 +1,7 @@
 $(document).ready(function(){
   setTimeout(function() {
     $(window).anchorScroll();
+    $(window).trigger("calendar_update");
   }, 0);
   $('.email-tooltip').tooltipster({
     trigger: 'click',

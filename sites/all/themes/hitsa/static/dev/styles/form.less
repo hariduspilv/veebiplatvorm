@@ -168,6 +168,9 @@
           &+.end-date{
             &:after{content:" "; position: absolute; top:0; bottom:2px; left: 0%; width:50%; background:@base-1;}
           }
+          &+.active{
+            &:after{content: none;}
+          }
         }
         &.start-date{
           &+.event.in-range{
