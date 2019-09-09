@@ -76,7 +76,7 @@ function hitsa_color_change_form($form, &$form_state)
               '#type' => 'submit',
               '#value' =>'import_css',
             );
-        }   
+        }
         return $form;
     } else {
         drupal_set_message('Vajalikku faili ei eksisteeri');
@@ -99,7 +99,7 @@ function hitsa_color_change($form, &$form_state)
         }
     }
     if (strpos($output, 'highlight-1') !== false) {
-        
+
     }
     else{
         $output ='@highlight-1:;'.$output;
@@ -134,13 +134,14 @@ function hitsa_color_change($form, &$form_state)
     return $file;
 }
 function hitsa_import_js($form,&$form_state){
-    
+
     $files = array(
         'device.min.js',
         'fastclick.js',
         'jquery-1.10.2.min.js',
         'jquery.daterangepicker.js',
         'jquery.filter.js',
+        'jquery.fancybox.js',
         'jquery.functions.js',
         'jquery.gallery.js',
         'jquery.modal.js',
@@ -205,6 +206,7 @@ function hitsa_import_css_update()
         'buttons.less',
         'elements.less',
         'footer.less',
+        'fancybox.min.less',
         'form.less',
         'grid.less',
         'header.less',
@@ -215,7 +217,8 @@ function hitsa_import_css_update()
         'sumoSelect.less',
         'swiper.less',
         'theme.less',
-        'tooltipster.bundle.less'
+        'tooltipster.bundle.less',
+        'fancybox.min.less'
       );
     $files_location = 'sites/all/themes/hitsa/static/dev/styles';
     $conf_path = conf_path();

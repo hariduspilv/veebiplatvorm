@@ -417,11 +417,6 @@ function _hitsa_contacts_field_instances() {
     ),
     'node-contact-field_extra_info' => array(
       'bundle' => 'contact',
-      'default_value' => array(
-        0 => array(
-          'value' => 'Lisainfo tekst',
-        ),
-      ),
       'deleted' => 0,
       'description' => '',
       'display' => array(
