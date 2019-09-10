@@ -176,7 +176,22 @@ function hitsa_import_js($form,&$form_state){
 function hitsa_import_css($form, &$form_state)
 {
     $files = array(
-        'article.less','build.less','buttons.less','elements.less','footer.less','form.less','grid.less','header.less','print.less','reset.less','responsive.less','sumoSelect.less','swiper.less','theme.less','tooltipster.bundle.less'
+        'article.less',
+        'build.less',
+        'buttons.less',
+        'elements.less',
+        'footer.less',
+        'form.less',
+        'grid.less',
+        'header.less',
+        'print.less',
+        'reset.less',
+        'responsive.less',
+        'sumoSelect.less',
+        'swiper.less',
+        'theme.less',
+        'tooltipster.bundle.less',
+        'fancybox.min.less'
       );
     $files_location = 'sites/all/themes/hitsa/static/dev/styles';
     $conf_path = conf_path();
@@ -206,7 +221,6 @@ function hitsa_import_css_update()
         'buttons.less',
         'elements.less',
         'footer.less',
-        'fancybox.min.less',
         'form.less',
         'grid.less',
         'header.less',

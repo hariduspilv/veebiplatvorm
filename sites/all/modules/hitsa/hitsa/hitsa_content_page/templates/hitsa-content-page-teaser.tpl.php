@@ -3,11 +3,11 @@
   <ul class="tabs primary">
     <li><a href="<?php print url('node/' . $node->nid . '/edit'); ?>"><?php print t('Edit'); ?></a></li>
     <li><a href="<?php print url('node/' . $node->nid . '/translate'); ?>"><?php print t('Translate'); ?></a></li>
-  </ul>          
+  </ul>
   <?php endif; ?>
-  <a href="<?php print url('node/' . $node->nid); ?><?php if($node->type === 'gallery') print '?type=modal'; ?>" class="object"<?php if($node->type === 'gallery') print ' data-plugin="modal" data-modal="gallery-' . $node->nid . '"'; ?>>
+  <a href="<?php print url('node/' . $node->nid); ?>" class="object">
     <span class="object-inner">
-      <?php 
+      <?php
       if($node->type === 'article') {
         $image = $node->subpage_images;
       } else if($node->type === 'gallery') {
@@ -29,7 +29,7 @@
         <span class="object-title"><?php print check_plain($node->title); ?></span>
         <span class="object-footer">
           <span class="before-calendar"><?php print format_date($node->created, 'hitsa_date_month'); ?></span>
-          <?php if($node->type === 'article'): 
+          <?php if($node->type === 'article'):
             $author_name = !empty($node->field_author_custom) ?
               $node->field_author_custom[LANGUAGE_NONE][0]['value'] : $author->name;
           ?>
