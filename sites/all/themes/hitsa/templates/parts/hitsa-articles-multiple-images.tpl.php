@@ -9,7 +9,7 @@
       <div class="col-12">
         <figure>
           <a href="<?php print $image['full_url']?>" data-fancybox="fancybox" data-caption="<?php print $image['title']?>">
-            <img src="<?php print $image['thumbnail']?>" alt="<?php print $image['alt_text']?>">
+            <img src="<?php print $image['full_url']?>" alt="<?php print $image['alt_text']?>">
           </a>
           <?php else:?>
       <div class="col-6">
