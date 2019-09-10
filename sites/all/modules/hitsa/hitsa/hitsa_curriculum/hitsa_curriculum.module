@@ -1070,12 +1070,29 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                             'weight' => $loaded_field->weight,
                         );
                         if(!empty($loaded_field->field_extra_name)){
+                          $row_names = [];
+                          $row_names[0] = $fields[$field_id]['name'];
+                          $k=0;
                           foreach ($loaded_field->field_extra_name['und'] as $extra_name){
-                            if(!empty($fields[$field_id]['name'])){
-                              $fields[$field_id]['name'].=', '.$extra_name['value'];
+                            $strlen = mb_strlen($row_names[$k].$extra_name['value']);
+                            if($strlen>20){
+                              $k++;
+                            }
+                            if(!empty($row_names[$k])){
+                              $row_names[$k].=', '.$extra_name['value'];
                             }
                             else{
-                              $fields[$field_id]['name'].=$extra_name['value'];
+                              $row_names[$k]=$extra_name['value'];
+                            }
+
+                          }
+                          $fields[$field_id]['name'] = '';
+                          foreach ($row_names as $row_name){
+                            if(empty($fields[$field_id]['name'])) {
+                              $fields[$field_id]['name'] = $row_name;
+                            }
+                            else{
+                              $fields[$field_id]['name'] .= '<br>'.$row_name;
                             }
                           }
                         }
@@ -1114,7 +1131,7 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
                     else{
                         $javascript_link = 'href="javascript:void(0);"';
                     }
-                    $list_item .= '<a '.$javascript_link.'>' . $fields_value['name'] . '</a>';
+                    $list_item .= '<a  '.$javascript_link.'>' . $fields_value['name'] . '</a>';
                 }
                 if (!empty($fields_value['subpoints'])) {
                     $list_item .= '<ul>';
