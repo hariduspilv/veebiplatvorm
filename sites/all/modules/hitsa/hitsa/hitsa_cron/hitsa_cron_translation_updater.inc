@@ -17,7 +17,8 @@ function hitsa_cron_update_translations()
     '11',
     '12',
     '13',
-    '14'
+    '14',
+    '15'
 
 
   ];
@@ -299,7 +300,7 @@ function hitsa_cron_trans_up_6(){
       'et' => 'september',
     ),
     'October' => array(
-      'et' => 'october',
+      'et' => 'oktoober',
     ),
     'November' => array(
       'et' => 'november',
@@ -439,4 +440,48 @@ function hitsa_cron_trans_up_14(){
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
   hitsa_translations_importer_translations($words);
   drupal_flush_all_caches();
+}
+function hitsa_cron_trans_up_15(){
+  $words = array(
+    'January' => array(
+      'et' => 'jaanuar',
+    ),
+    'February' => array(
+      'et' => 'veebruar',
+    ),
+    'March' => array(
+      'et' => 'märts',
+    ),
+    'April' => array(
+      'et' => 'aprill',
+    ),
+    'May' => array(
+      'et' => 'mai',
+    ),
+    'June' => array(
+      'et' => 'juuni',
+    ),
+    'July' => array(
+      'et' => 'juuli',
+    ),
+    'August' => array(
+      'et' => 'august',
+    ),
+    'September' => array(
+      'et' => 'september',
+    ),
+    'October' => array(
+      'et' => 'oktoober',
+    ),
+    'November' => array(
+      'et' => 'november',
+    ),
+    'December' => array(
+      'et' => 'detsember'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words,'Long month name');
+  drupal_flush_all_caches();
+  return TRUE;
 }
