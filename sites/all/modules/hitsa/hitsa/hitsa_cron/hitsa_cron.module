@@ -244,7 +244,8 @@ function hitsa_cron_run_update()
     '46',
     '47',
     '48',
-    '49'
+    '49',
+    '50'
 
   ];
   if (!empty($updates)) {
@@ -2802,5 +2803,74 @@ function hitsa_cron_up_49(){
     unset($instance_info['default_value']);
     field_update_instance($instance_info);
   }
+  return TRUE;
+}
+function hitsa_cron_up_50(){
+  $field_instance_info = field_info_instance('node','field_extra_info','contact');
+  $field_instances['node-contact-field_extra_info'] = array(
+    'bundle' => 'contact',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 13,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_extra_info',
+    'label' => 'Lisainformatsioon',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 1000,
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 5,
+    ),
+  );
+
+  field_update_instance($field_instances['node-contact-field_extra_info']);
+  $field_bases['field_extra_info'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_extra_info',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+  field_update_field($field_bases['field_extra_info']);
   return TRUE;
 }
