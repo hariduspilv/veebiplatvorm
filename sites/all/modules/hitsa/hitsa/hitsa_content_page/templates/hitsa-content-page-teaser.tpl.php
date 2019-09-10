@@ -14,7 +14,7 @@
         $image = $node->gallery_images;
       }
       if(!empty($image[LANGUAGE_NONE][0])): ?>
-      <span class="object-image" style="background-image:url(<?php print image_style_url('hitsa_core_thumbnail', $image[LANGUAGE_NONE][0]['uri']); ?>);">
+      <span class="object-image" style="background-image:url(<?php print image_style_url('hitsa_article_thumbnail', $image[LANGUAGE_NONE][0]['uri']); ?>);">
         <img alt="" src="<?php print '/' . drupal_get_path('theme', $GLOBALS['theme']) . '/static/assets/imgs/placeholder-56.gif'; ?>">
       </span>
       <?php else: ?>
