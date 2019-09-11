@@ -1225,16 +1225,17 @@ function hitsa_core_clear_map($where){
   variable_set($where,'');
 }
 function hitsa_core_taxonomy_term_presave($term){
-
   global $language;
-  if(!empty($term->field_extra_name)){
-    if(!empty($term->field_extra_name[$language->language])){
-      if(count($term->field_extra_name['und'])>count($term->field_extra_name[$language->language])){
-        return $term;
+  if($term->vocabulary_machine_name=='fields'){
+    if(empty($term->tid)){
+      if(!empty($term->field_extra_name)){
+        if(!empty($term->field_extra_name[$language->language])) {
+          $term->field_extra_name['und'] = $term->field_extra_name[$language->language];
+        }
       }
-      $term->field_extra_name['und'] = $term->field_extra_name[$language->language];
     }
   }
+
   return $term;
 }
 

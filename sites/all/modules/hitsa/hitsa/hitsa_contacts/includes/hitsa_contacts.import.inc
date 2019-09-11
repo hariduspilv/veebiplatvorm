@@ -84,6 +84,7 @@ function hitsa_contacts_import_form_submit($form, &$form_state) {
 function hitsa_contacts_import($csv_content) {
   $csv_contacts = hitsa_contacts_parse_csv_file($csv_content);
   $existings_nodes = hitsa_contacts_get_existing_contact_nodes();
+
   foreach($csv_contacts as $csv_contact) {
     hitsa_contacts_create_update_contact($csv_contact, $existings_nodes);
   }
@@ -103,6 +104,7 @@ function hitsa_contacts_get_existing_contact_nodes() {
 }
 
 function hitsa_contacts_parse_csv_file($csv_content) {
+
   $output = array();
   $contacts = explode("\n", $csv_content);
   foreach($contacts as $c) {
@@ -127,6 +129,15 @@ function hitsa_contacts_parse_csv_file($csv_content) {
 
 function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes) {
   global $user;
+  $all_empty = "true";
+  foreach ($contact_array as $field){
+    if(!empty($field)){
+      $all_empty = "false";
+    }
+  }
+  if($all_empty == "true"){
+    return true;
+  }
   $contact_id = $contact_array[0];
   if(isset($existings_nodes[$contact_id])) {
     // Node exists, update existing node
@@ -157,7 +168,9 @@ function hitsa_contacts_create_update_contact($contact_array, &$existings_nodes)
     'value' => $contact_array[6],
   );
   $emw_node->reception_times = explode('|', $contact_array[7]); // Reception times
-  $emw_node->contact_cv = array('url' => $contact_array[8]); // CV Link
+  if(!empty($contact_array[8])) {
+    $emw_node->contact_cv = array('url' => $contact_array[8]); // CV Link
+  }
   // krumo($emw_node);
   /* Taxonomy input */
   // Job position
