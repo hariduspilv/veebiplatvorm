@@ -812,7 +812,7 @@ $.fn.datepickerRange = function(){
       updateCalendar();
     }); */
 
-    $(window).on("calendar_update", function(){
+    $(window).on("calendar_update calendar:update", function(){
       updateCalendar();
     });
 

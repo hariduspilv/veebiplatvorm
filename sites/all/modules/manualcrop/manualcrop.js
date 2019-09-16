@@ -114,7 +114,7 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
       var elementSettings = Drupal.settings.manualcrop.elements[identifier] || null;
 
       // Get the destination element and the current selection.
-      ManualCrop.output = $('#manualcrop-area-' + fid + '-' + styleName);
+      ManualCrop.output = $('.manualcrop-area-' + fid + '-' + styleName);
       ManualCrop.oldSelection = ManualCrop.parseStringSelection(ManualCrop.output.val());
 
       // Create the croptool.
@@ -609,8 +609,17 @@ ManualCrop.selectionStored = function(element, fid, styleName) {
     // Change the elements if Media is detected.
     var media = $('.manualcrop-preview-' + fid + ' .media-item[data-fid] .media-thumbnail');
 
-    if (media.length) {
+    if (media.length == 1) {
       media.prepend(previewHolder);
+    }
+    else if(media.length > 1) {
+      $('.manualcrop-preview-' + fid + ' .media-item[data-fid] .media-thumbnail').each(function( index ) {
+        if(!($(this).find('> div.manualcrop-preview-cropped').length)) {
+          $(this).prepend('<div class="manualcrop-preview-cropped"></div>');
+        }
+      });
+    }
+    if (media.length) {
       previewHolder = media.find('.manualcrop-preview-cropped');
       defaultPreview = $('.manualcrop-preview-' + fid + ' .media-item[data-fid] .media-thumbnail > img');
     }
@@ -677,7 +686,7 @@ ManualCrop.selectionStored = function(element, fid, styleName) {
           toolOpener.val(toolOpener.val() + ' ' + Drupal.t('(cropped)'));
         }
         else {
-          toolOpener.text(toolOpener.text() + ' ' + Drupal.t('(cropped)'));
+          toolOpener.text(toolOpener.first().text() + ' ' + Drupal.t('(cropped)'));
         }
       }
     } else if (hasClass) {

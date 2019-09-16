@@ -132,7 +132,6 @@ function hitsa_content_page_preprocess_node(&$variables)
     $current_host = $_SERVER['HTTP_HOST'];
     $inital_url = variable_get('hitsa_initial_path');
 
-
       $variables['body_no_table'] = '';
       foreach ($variables['body'] as $body_key => $body_value) {
         if(!empty($inital_url)) {
@@ -140,7 +139,6 @@ function hitsa_content_page_preprocess_node(&$variables)
         $variables['body'][$body_key]['value'] = str_replace($inital_url, $current_host, $body_value['value']);
         $variables['body'][$body_key]['summary'] = str_replace($inital_url, $current_host, $body_value['summary']);
         $variables['body'][$body_key]['safe_summary'] = str_replace($inital_url, $current_host, $body_value['safe_summary']);
-
         }
         $new_summary = $body_value['safe_summary'];
         $new_summary = htmlentities($new_summary);
@@ -159,7 +157,10 @@ function hitsa_content_page_preprocess_node(&$variables)
 
         $tables = '';
         $doc_summary = new DOMDocument();
-        $decoded_summary = utf8_decode($body_value['summary']);
+        global $language;
+        if($language->language !='ru') {
+          $decoded_summary = utf8_decode($body_value['summary']);
+        }
         $doc_summary->loadHTML($decoded_summary);
         $doc_summary->preserveWhiteSpace = false;
         $table  = $doc_summary->getElementsByTagName('table');
@@ -202,7 +203,14 @@ function hitsa_content_page_preprocess_node(&$variables)
         }
 
         $doc = new DOMDocument();
-        $decoded = utf8_decode($body_value['value']);
+
+        if($language->language !='ru') {
+          $decoded = utf8_decode($body_value['value']);
+        }
+        else{
+          $decoded = $body_value['value'];
+        }
+
         $doc->loadHTML($decoded);
         $doc->preserveWhiteSpace = false;
         $table  = $doc->getElementsByTagName('table');
@@ -233,7 +241,6 @@ function hitsa_content_page_preprocess_node(&$variables)
         $body_no_table = $doc->saveHTML();
         $body_no_table_original = $body_no_table;
       }
-
 
     $body_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>','',$body_no_table);

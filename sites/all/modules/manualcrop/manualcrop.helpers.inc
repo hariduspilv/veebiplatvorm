@@ -435,18 +435,23 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
   // Image style options.
   $style_options = array('' => t('Select a style to crop'));
 
+  $allstyles = manualcrop_styles_with_crop();
   // Hidden fields to save the crop selection, one for each image style.
-  foreach ($styles as $style_name => $info) {
+  foreach ($allstyles as $style_name => $info) {
     $element['manualcrop_selections'][$style_name] = array(
       '#type' => 'hidden',
       '#default_value' => (isset($value['manualcrop_selections'][$style_name]) ? $value['manualcrop_selections'][$style_name] : ''),
       '#attributes' => array(
         'id' => 'manualcrop-area-' . $fid . '-' . $style_name,
-        'class' => array('manualcrop-cropdata'),
+        'class' => array(
+          'manualcrop-cropdata',
+          'manualcrop-area-' . $fid . '-' . $style_name
+        ),
         'onchange' => 'ManualCrop.selectionStored(this, ' . $fid . ', \'' . $style_name . '\');',
       ),
     );
-
+  }
+  foreach ($styles as $style_name => $info) {
     $style_options[$style_name] = $info['label'];
   }
 
@@ -496,7 +501,7 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
         'images' => $style_options,
       )),
     ));
-  }
+  }/* button makes trouble when having more than one image of same fid
   elseif (count($style_options) == 2) {
     // Only one style, display a button.
     end($style_options);
@@ -513,7 +518,7 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
       '#prefix' => '<div class="manualcrop-style-button-holder">',
       '#suffix' => '</div>',
     ));
-  }
+  }*/
   else {
     // Style selection list.
     $element['manualcrop_style'] = array_merge($defaults, array(

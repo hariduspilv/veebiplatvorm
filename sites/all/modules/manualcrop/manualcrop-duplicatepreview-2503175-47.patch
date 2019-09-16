@@ -1,0 +1,90 @@
+diff --git a/manualcrop.helpers.inc b/manualcrop.helpers.inc
+index dcd38f6..b024c4e 100644
+--- a/manualcrop.helpers.inc
++++ b/manualcrop.helpers.inc
+@@ -435,18 +435,23 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
+   // Image style options.
+   $style_options = array('' => t('Select a style to crop'));
+ 
++  $allstyles = manualcrop_styles_with_crop();
+   // Hidden fields to save the crop selection, one for each image style.
+-  foreach ($styles as $style_name => $info) {
++  foreach ($allstyles as $style_name => $info) {
+     $element['manualcrop_selections'][$style_name] = array(
+       '#type' => 'hidden',
+       '#default_value' => (isset($value['manualcrop_selections'][$style_name]) ? $value['manualcrop_selections'][$style_name] : ''),
+       '#attributes' => array(
+         'id' => 'manualcrop-area-' . $fid . '-' . $style_name,
+-        'class' => array('manualcrop-cropdata'),
++        'class' => array(
++          'manualcrop-cropdata',
++          'manualcrop-area-' . $fid . '-' . $style_name
++        ),
+         'onchange' => 'ManualCrop.selectionStored(this, ' . $fid . ', \'' . $style_name . '\');',
+       ),
+     );
+-
++  }
++  foreach ($styles as $style_name => $info) {
+     $style_options[$style_name] = $info['label'];
+   }
+ 
+@@ -496,7 +501,7 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
+         'images' => $style_options,
+       )),
+     ));
+-  }
++  }/* button makes trouble when having more than one image of same fid
+   elseif (count($style_options) == 2) {
+     // Only one style, display a button.
+     end($style_options);
+@@ -513,7 +518,7 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
+       '#prefix' => '<div class="manualcrop-style-button-holder">',
+       '#suffix' => '</div>',
+     ));
+-  }
++  }*/
+   else {
+     // Style selection list.
+     $element['manualcrop_style'] = array_merge($defaults, array(
+diff --git a/manualcrop.js b/manualcrop.js
+index 05abd3a..60a9ccb 100644
+--- a/manualcrop.js
++++ b/manualcrop.js
+@@ -114,7 +114,7 @@ ManualCrop.showCroptool = function(identifier, style, fid) {
+       var elementSettings = Drupal.settings.manualcrop.elements[identifier] || null;
+ 
+       // Get the destination element and the current selection.
+-      ManualCrop.output = $('#manualcrop-area-' + fid + '-' + styleName);
++      ManualCrop.output = $('.manualcrop-area-' + fid + '-' + styleName);
+       ManualCrop.oldSelection = ManualCrop.parseStringSelection(ManualCrop.output.val());
+ 
+       // Create the croptool.
+@@ -609,8 +609,17 @@ ManualCrop.selectionStored = function(element, fid, styleName) {
+     // Change the elements if Media is detected.
+     var media = $('.manualcrop-preview-' + fid + ' .media-item[data-fid] .media-thumbnail');
+ 
+-    if (media.length) {
++    if (media.length == 1) {
+       media.prepend(previewHolder);
++    }
++    else if(media.length > 1) {
++      $('.manualcrop-preview-' + fid + ' .media-item[data-fid] .media-thumbnail').each(function( index ) {
++        if(!($(this).find('> div.manualcrop-preview-cropped').length)) {
++          $(this).prepend('<div class="manualcrop-preview-cropped"></div>');
++        }
++      });
++    }
++    if (media.length) {
+       previewHolder = media.find('.manualcrop-preview-cropped');
+       defaultPreview = $('.manualcrop-preview-' + fid + ' .media-item[data-fid] .media-thumbnail > img');
+     }
+@@ -677,7 +686,7 @@ ManualCrop.selectionStored = function(element, fid, styleName) {
+           toolOpener.val(toolOpener.val() + ' ' + Drupal.t('(cropped)'));
+         }
+         else {
+-          toolOpener.text(toolOpener.text() + ' ' + Drupal.t('(cropped)'));
++          toolOpener.text(toolOpener.first().text() + ' ' + Drupal.t('(cropped)'));
+         }
+       }
+     } else if (hasClass) {
