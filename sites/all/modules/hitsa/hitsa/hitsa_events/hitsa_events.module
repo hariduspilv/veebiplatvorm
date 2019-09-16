@@ -342,7 +342,7 @@ function hitsa_events_get_dates($type = null){
         $categories = explode(',',$_REQUEST['category']);
       }
       if(!empty($_REQUEST['training-category'])) {
-        $categories = explode(',',$_REQUEST['category']);
+        $categories = explode(',',$_REQUEST['training-category']);
       }
     }
     $result = $query->execute();
