@@ -177,9 +177,12 @@ function hitsa_content_page_preprocess_node(&$variables)
         $doc = new DOMDocument();
         $tables_count = substr_count($body_value['value'],'<table');
           $table_start = mb_strpos($body_value['value'],'<table');
+          if($table_start>0){
+            $table_start-1;
+          }
           $table_end = mb_strpos($body_value['value'],'</table>')+9;
           $table_length = $table_end-$table_start;
-          $full_table = mb_substr($body_value['value'],$table_start-1,$table_length);
+          $full_table = mb_substr($body_value['value'],$table_start,$table_length);
           if(!empty($full_table)){
             $tables.=$full_table;
           }
@@ -219,7 +222,7 @@ function hitsa_content_page_preprocess_node(&$variables)
     else{
       $variables['start'] = $body_no_table;
     }
-    if(!empty($full_table)){
+    if(!empty($tables)){
       if(!empty($variables['end'])) {
         $variables['end'] .= $tables;
       }
