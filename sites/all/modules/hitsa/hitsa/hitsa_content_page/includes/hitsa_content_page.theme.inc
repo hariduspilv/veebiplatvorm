@@ -156,43 +156,15 @@ function hitsa_content_page_preprocess_node(&$variables)
         }
 
         $tables = '';
-        $doc_summary = new DOMDocument();
         global $language;
-        if($language->language !='ru') {
-          $decoded_summary = utf8_decode($body_value['summary']);
+        $table_start_sum = mb_strpos($body_value['summary'],'<table');
+        $table_end_sum = mb_strpos($body_value['summary'],'</table>')+9;
+        $table_length_sum = $table_end_sum-$table_start_sum;
+        $full_table_sum = mb_substr($body_value['summary'],$table_start_sum-1,$table_length_sum);
+        if(!empty($full_table_sum)){
+          $tables.=$full_table_sum;
         }
-        $doc_summary->loadHTML($decoded_summary);
-        $doc_summary->preserveWhiteSpace = false;
-        $table  = $doc_summary->getElementsByTagName('table');
-        $i=0;
-        foreach ($table as $part){
-          $tables.='<table>';
-          $rows = $part->getElementsByTagName('tr');
-          foreach ($rows as $row){
-            $tables.='<tr>';
-            $cols = $row->getElementsByTagName('td');
-            foreach ($cols as $col){
-              $value = $col->nodeValue;
-              $tables.='<td>'.$value.'</td>';
-            }
-            $tables.='</tr>';
-          }
-          $tables.='</table>';
-        }
-
-        $xpath_summary = new DOMXPath($doc_summary);
-        foreach ($xpath_summary->query('//table') as $summary) {
-          $summary->parentNode->removeChild($summary);
-        }
-        $summary_no_table = $doc_summary->saveHTML();
-        $summary_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><body>','',$summary_no_table);
-        $summary_no_table = str_replace('</body></html>','',$summary_no_table);
-        $summary_no_table = str_replace('&nbsp', '', strval( $summary_no_table));
-        $summary_no_table = str_replace('<p>', '', strval( $summary_no_table));
-        $summary_no_table = str_replace("</p>", '', strval( $summary_no_table));
-        $summary_no_table = str_replace(";", '', strval( $summary_no_table));
-        $summary_no_table = trim($summary_no_table);
+        $summary_no_table = str_replace($full_table_sum,'',$body_value['summary']);
         if(empty($summary_no_table)){
           $variables['only_table'] = true;
         }
@@ -203,59 +175,32 @@ function hitsa_content_page_preprocess_node(&$variables)
         }
 
         $doc = new DOMDocument();
+        $tables_count = substr_count($body_value['value'],'<table');
+          $table_start = mb_strpos($body_value['value'],'<table');
+          $table_end = mb_strpos($body_value['value'],'</table>')+9;
+          $table_length = $table_end-$table_start;
+          $full_table = mb_substr($body_value['value'],$table_start-1,$table_length);
+          if(!empty($full_table)){
+            $tables.=$full_table;
+          }
+          $body_without_table = str_replace($full_table,'',$body_value['value']);
 
-        if($language->language !='ru') {
-          $decoded = utf8_decode($body_value['value']);
-        }
-        else{
-          $decoded = $body_value['value'];
-        }
-
+        $decoded = utf8_decode($body_value['value']);
         $doc->loadHTML($decoded);
         $doc->preserveWhiteSpace = false;
-        $table  = $doc->getElementsByTagName('table');
 //        $tables = '';
         $i=0;
-        foreach ($table as $part){
-          $tables.='<table>';
-          $rows = $part->getElementsByTagName('tr');
-          foreach ($rows as $row){
-            $tables.='<tr>';
-            $cols = $row->getElementsByTagName('td');
-            foreach ($cols as $col){
-              $value = $col->nodeValue;
-              $tables.='<td>'.$value.'</td>';
-            }
-            $tables.='</tr>';
-          }
-          $tables.='</table>';
-
-        }
         if(!empty($tables)){
           $variables['tables'] = $tables;
         }
-        $xpath = new DOMXPath($doc);
-        foreach ($xpath->query('//table') as $node) {
-          $node->parentNode->removeChild($node);
-        }
-        $body_no_table = $doc->saveHTML();
-        $body_no_table_original = $body_no_table;
-      }
 
-    $body_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><body>','',$body_no_table);
-    $body_no_table = str_replace('</body></html>','',$body_no_table);
-    $body_no_table = str_replace('&nbsp', '', strval( $body_no_table));
-    $body_no_table = str_replace('<p>', '', strval( $body_no_table));
-    $body_no_table = str_replace("</p>", '', strval( $body_no_table));
-    $body_no_table = str_replace(";", '', strval( $body_no_table));
-    $body_no_table = trim($body_no_table);
+      }
+      $body_no_table = $body_without_table;
     if(empty($body_no_table)){
       $variables['mobile_body'][$body_key]['safe_value'] = '';
       $variables['mobile_body'][$body_key]['value'] = '';
     }
     else{
-      $body_no_table = $body_no_table_original;
       $body_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html><body>','',$body_no_table);
       $body_no_table = str_replace('</body></html>','',$body_no_table);
@@ -268,15 +213,13 @@ function hitsa_content_page_preprocess_node(&$variables)
         $break_point = mb_strrpos(mb_substr($body_no_table, 0, $your_desired_width,'UTF-8'), ' ');
         $start = mb_substr($body_no_table, 0, $break_point,'UTF-8');
         $end = mb_substr($body_no_table, $break_point,  mb_strlen($body_no_table,'UTF-8'));
-        $start = utf8_encode($start);
-        $end = utf8_encode($end);
         $variables['start'] = $start;
         $variables['end']=$end;
     }
     else{
       $variables['start'] = $body_no_table;
     }
-    if(!empty($tables)){
+    if(!empty($full_table)){
       if(!empty($variables['end'])) {
         $variables['end'] .= $tables;
       }
