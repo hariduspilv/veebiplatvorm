@@ -158,9 +158,12 @@ function hitsa_content_page_preprocess_node(&$variables)
         $tables = '';
         global $language;
         $table_start_sum = mb_strpos($body_value['summary'],'<table');
+        if($table_start_sum!=0){
+          $table_start_sum-1;
+        }
         $table_end_sum = mb_strpos($body_value['summary'],'</table>')+9;
         $table_length_sum = $table_end_sum-$table_start_sum;
-        $full_table_sum = mb_substr($body_value['summary'],$table_start_sum-1,$table_length_sum);
+        $full_table_sum = mb_substr($body_value['summary'],$table_start_sum,$table_length_sum);
         if(!empty($full_table_sum)){
           $tables.=$full_table_sum;
         }
@@ -174,8 +177,8 @@ function hitsa_content_page_preprocess_node(&$variables)
           $variables['header_table']= true;
         }
 
-        $doc = new DOMDocument();
         $tables_count = substr_count($body_value['value'],'<table');
+
           $table_start = mb_strpos($body_value['value'],'<table');
           if($table_start>0){
             $table_start-1;
@@ -183,16 +186,16 @@ function hitsa_content_page_preprocess_node(&$variables)
           $table_end = mb_strpos($body_value['value'],'</table>')+9;
           $table_length = $table_end-$table_start;
           $full_table = mb_substr($body_value['value'],$table_start,$table_length);
-          if(!empty($full_table)){
-            $tables.=$full_table;
-          }
-          $body_without_table = str_replace($full_table,'',$body_value['value']);
 
-        $decoded = utf8_decode($body_value['value']);
-        $doc->loadHTML($decoded);
-        $doc->preserveWhiteSpace = false;
-//        $tables = '';
-        $i=0;
+          if($tables_count>0) {
+            $body_without_table = str_replace($full_table, '', $body_value['value']);
+            if(!empty($full_table)){
+              $tables.=$full_table;
+            }
+          }
+          else{
+            $body_without_table = $body_value['value'];
+          }
         if(!empty($tables)){
           $variables['tables'] = $tables;
         }
@@ -202,14 +205,6 @@ function hitsa_content_page_preprocess_node(&$variables)
     if(empty($body_no_table)){
       $variables['mobile_body'][$body_key]['safe_value'] = '';
       $variables['mobile_body'][$body_key]['value'] = '';
-    }
-    else{
-      $body_no_table= str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
-<html><body>','',$body_no_table);
-      $body_no_table = str_replace('</body></html>','',$body_no_table);
-
-      $body_no_table = str_replace('&nbsp;', '', strval( $body_no_table));
-
     }
     if(strlen($body_no_table)>1000){
       $your_desired_width = 1000;
