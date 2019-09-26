@@ -245,7 +245,8 @@ function hitsa_cron_run_update()
     '47',
     '48',
     '49',
-    '50'
+    '50',
+    '51',
 
   ];
   if (!empty($updates)) {
@@ -2872,5 +2873,43 @@ function hitsa_cron_up_50(){
     'type' => 'text_long',
   );
   field_update_field($field_bases['field_extra_info']);
+  return TRUE;
+}
+function hitsa_cron_up_51(){
+  $permissions_modules = user_permission_get_modules();
+  $roles = [
+    'hitsa admin','hitsa editor'
+  ];
+  foreach ($roles as $role_name){
+    $role = user_role_load_by_name($role_name);
+    $roles[$role->rid] = $role_name;
+    $permissions = ['allow seo check failures'];
+    user_role_grant_permissions($role->rid,$permissions);
+
+
+  }
+  $modules = array('xmlsitemap', 'xmlsitemap_menu','xmlsitemap_node');
+  foreach ($modules as $module) {
+    if (!module_exists($module)) {
+      module_enable(array($module));
+    }
+  }
+  $enablexmllist= [
+    'xmlsitemap_settings_menu_link_hitsa-main-menu'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_settings_node_article'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_settings_node_catering'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_settings_node_content_page'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_settings_node_curriculum'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_regenerate_needed' =>TRUE,
+  ];
+  foreach ($enablexmllist as $key => $item) {
+    variable_set($key,$item);
+  }
+
+  module_load_include('generate.inc', 'xmlsitemap');
+  $types = xmlsitemap_get_rebuildable_link_types();
+  xmlsitemap_run_unprogressive_batch('xmlsitemap_rebuild_batch', $types, TRUE);
+
+//  drupal_flush_all_caches();
   return TRUE;
 }

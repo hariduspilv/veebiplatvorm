@@ -67,6 +67,9 @@ dependencies[] = hitsa_rss
 dependencies[] = image_exif_autorotate
 dependencies[] = imagecache_autorotate
 dependencies[] = robotstxt
+dependencies[] = xmlsitemap
+dependencies[] = xmlsitemap_menu
+dependencies[] = xmlsitemap_node
 
 ; Information added by Drupal.org packaging script on 2017-06-21
 version = "7.56"

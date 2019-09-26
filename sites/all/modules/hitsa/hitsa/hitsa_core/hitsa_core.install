@@ -649,6 +649,21 @@ function hitsa_core_set_default_variables()
       'media_internet',
     )
   );
+  $enablexmllist= [
+    'xmlsitemap_settings_menu_link_hitsa-main-menu'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_settings_node_article'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_settings_node_catering'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_settings_node_content_page'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_settings_node_curriculum'=> ['status'=>1,'priority'=>0.5],
+    'xmlsitemap_regenerate_needed' =>TRUE,
+  ];
+  foreach ($enablexmllist as $key => $item) {
+    variable_set($key,$item);
+  }
+
+  module_load_include('generate.inc', 'xmlsitemap');
+  $types = xmlsitemap_get_rebuildable_link_types();
+  xmlsitemap_run_unprogressive_batch('xmlsitemap_rebuild_batch', $types, TRUE);
 }
 
 function hitsa_core_set_default_patterns()
