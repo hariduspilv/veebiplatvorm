@@ -1064,7 +1064,6 @@ function hitsa_core_search($q = null)
   if (!empty($q['title'])) {
     $query->condition('title', $q['title']);
   }
-  dpm($query->getIndex());
 //  if(!empty($q['query'])){
 //    $query->condition('')
 //  }
