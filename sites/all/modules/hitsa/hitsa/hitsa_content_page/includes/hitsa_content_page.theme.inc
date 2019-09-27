@@ -157,22 +157,26 @@ function hitsa_content_page_preprocess_node(&$variables)
 
         $tables = '';
         global $language;
-        $table_start_sum = mb_strpos($body_value['summary'],'<table');
-        if($table_start_sum!=0){
-          $table_start_sum-1;
+        $tables_count_sum = substr_count($body_value['summary'],'<table');
+        if($tables_count_sum>0) {
+          $table_start_sum = mb_strpos($body_value['summary'], '<table');
+          if ($table_start_sum != 0) {
+            $table_start_sum - 1;
+          }
+          $table_end_sum = mb_strpos($body_value['summary'], '</table>') + 9;
+          $table_length_sum = $table_end_sum - $table_start_sum;
+          $full_table_sum = mb_substr($body_value['summary'], $table_start_sum, $table_length_sum);
+          if (!empty($full_table_sum)) {
+            $tables .= $full_table_sum;
+          }
+          $summary_no_table = str_replace($full_table_sum, '', $body_value['summary']);
+          if(empty($summary_no_table)){
+            $variables['only_table'] = true;
+          }
+
+          $variables['body'][$body_key]['safe_summary']=str_replace('<table','<table class="sm-hide" ',$variables['body'][$body_key]['safe_summary']);
+          $variables['body'][$body_key]['safe_value']=str_replace('<table','<table class="sm-hide" ',$variables['body'][$body_key]['safe_value']);
         }
-        $table_end_sum = mb_strpos($body_value['summary'],'</table>')+9;
-        $table_length_sum = $table_end_sum-$table_start_sum;
-        $full_table_sum = mb_substr($body_value['summary'],$table_start_sum,$table_length_sum);
-        if(!empty($full_table_sum)){
-          $tables.=$full_table_sum;
-        }
-        $summary_no_table = str_replace($full_table_sum,'',$body_value['summary']);
-        if(empty($summary_no_table)){
-          $variables['only_table'] = true;
-        }
-        $variables['body'][$body_key]['safe_summary']=str_replace('<table','<table class="sm-hide" ',$variables['body'][$body_key]['safe_summary']);
-        $variables['body'][$body_key]['safe_value']=str_replace('<table','<table class="sm-hide" ',$variables['body'][$body_key]['safe_value']);
         if (strpos($variables['body'][$body_key]['safe_summary'], '<table') !== false) {
           $variables['header_table']= true;
         }
@@ -186,7 +190,6 @@ function hitsa_content_page_preprocess_node(&$variables)
           $table_end = mb_strpos($body_value['value'],'</table>')+9;
           $table_length = $table_end-$table_start;
           $full_table = mb_substr($body_value['value'],$table_start,$table_length);
-
           if($tables_count>0) {
             $body_without_table = str_replace($full_table, '', $body_value['value']);
             if(!empty($full_table)){
