@@ -863,7 +863,6 @@ function hitsa_core_default_search_api_server()
 
   return $defaults;
 }
-
 function hitsa_core_default_search_api_index()
 {
   $defaults['hitsa_search_index'] = entity_create('search_api_index', array(
@@ -920,6 +919,28 @@ function hitsa_core_default_search_api_index()
             'highlight_partial' => 1,
           ),
         ),
+        'search_api_tokenizer' => array(
+          'status' => 1,
+          'weight' => 20,
+          'settings' => array(
+            'spaces' => '[^[:alnum:]]',
+            'ignorable' => '[\']',
+          ),
+          'fields' => array(
+            'title'=>TRUE,
+            'gallery_author'=>TRUE,
+            'first_name'=>TRUE,
+            'last_name'=>TRUE,
+            'body:value'=>TRUE,
+            'body:summary'=>TRUE,
+            'gallery_images:file:name'=>TRUE,
+            'gallery_images:file:field_file_image_alt_text'=>TRUE,
+            'gallery_images:file:field_file_image_title_text'=>TRUE,
+            'gallery_images:file:field_image_author'=>TRUE,
+          ),
+
+        ),
+
       ),
       'fields' => array(
         'title' => array(
@@ -1021,19 +1042,29 @@ function hitsa_core_js_alter(&$javascript)
 function hitsa_core_search($q = null)
 {
   $query = search_api_query('hitsa_search_index');
-//  dpm($q);
 
 //  dpm($query);
   if (!empty($q['query'])) {
     $query->keys($q['query']);
-  }
-  if (!empty($q['query'])) {
-//    $query->condition('body:value','%'.$q['query'].'%','LIKE');
-  }
 
+//    $query->keys(array(
+////      'body:value' => $q['query'],
+//      'body' => $q['query'],
+//      '#conjunction'=>'OR'
+//    ));
+//    $query->keys(array(
+////      'body:value' => $q['query'],
+//      'title' => $q['query'],
+//      '#conjunction'=>'OR'
+//    ));;
+//    $query->setOption('conjunction','OR');
+//    $query->setOption('parse mode','single');
+  }
+//$query->condition('body:value',$q['query']);
   if (!empty($q['title'])) {
     $query->condition('title', $q['title']);
   }
+  dpm($query->getIndex());
 //  if(!empty($q['query'])){
 //    $query->condition('')
 //  }
@@ -1071,7 +1102,6 @@ function hitsa_core_search($q = null)
     $query->condition('created', $date_from->getTimestamp(), '>=');
     $query->condition('created', $date_to->getTimestamp(), '<=');
   }
-
   $data = $query->execute();
 //  krumo($data);
   return $data;

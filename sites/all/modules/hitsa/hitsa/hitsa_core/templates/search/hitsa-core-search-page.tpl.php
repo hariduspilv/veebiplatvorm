@@ -46,7 +46,7 @@
 
              <div class="form-item after-search form-item_rounded form-item-stretch">
                 <div class="form-item_title"><?php print t('Search by title'); ?></div>
-                <input type="text" name="title" placeholder="<?php print t('Start typing'); ?>" data-url="api/autocomplete.json" data-onSubmit="true" autocomplete="off">
+                <input type="text" name="query" placeholder="<?php print t('Start typing'); ?>" data-url="api/autocomplete.json" data-onSubmit="true" autocomplete="off">
              </div><!--/form-item-->
 
              <div class="form-item form-item_rounded after-calendar form-item-stretch">
