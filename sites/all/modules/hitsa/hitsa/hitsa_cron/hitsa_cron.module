@@ -247,7 +247,8 @@ function hitsa_cron_run_update()
     '49',
     '50',
     '51',
-    '52'
+    '52',
+    '53'
 
   ];
   if (!empty($updates)) {
@@ -2915,6 +2916,16 @@ function hitsa_cron_up_51(){
   return TRUE;
 }
 function hitsa_cron_up_52(){
+  search_api_index_delete('hitsa_search_index');
+
+  search_api_index_reindex('hitsa_search_index');
+
+  $index = search_api_index_load('hitsa_search_index');
+  search_api_index_items($index,-1) ;
+  return TRUE;
+}
+
+function hitsa_cron_up_53(){
   search_api_index_delete('hitsa_search_index');
 
   search_api_index_reindex('hitsa_search_index');

@@ -41,7 +41,7 @@
           <div class="col-6">
 
             <?php if(!empty($site_logo)): ?>
-            <a href="<?php print url('<front>'); ?>" class="header-logo"><img alt="" src="<?php print $site_logo; ?>" /></a>
+            <a href="<?php print url('<front>'); ?>" class="header-logo"><img style="max-width: 140%" alt="" src="<?php print $site_logo; ?>" /></a>
             <?php endif; ?>
           </div><!--/col-9-->
           <div class="col-6">

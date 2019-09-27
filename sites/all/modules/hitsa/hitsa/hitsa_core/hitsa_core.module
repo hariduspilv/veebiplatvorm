@@ -940,6 +940,25 @@ function hitsa_core_default_search_api_index()
           ),
 
         ),
+        'search_api_transliteration' => array(
+          'status' => 1,
+          'weight' => 15,
+          'settings' => array(
+            'fields' => array(
+              'title'=>TRUE,
+              'gallery_author'=>TRUE,
+              'first_name'=>TRUE,
+              'last_name'=>TRUE,
+              'body:value'=>TRUE,
+              'body:summary'=>TRUE,
+              'gallery_images:file:name'=>TRUE,
+              'gallery_images:file:field_file_image_alt_text'=>TRUE,
+              'gallery_images:file:field_file_image_title_text'=>TRUE,
+              'gallery_images:file:field_image_author'=>TRUE,
+            ),
+          ),
+
+        ),
 
       ),
       'fields' => array(
