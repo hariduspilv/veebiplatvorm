@@ -2,6 +2,9 @@
 
   <?php if($our_stories_title = variable_get_value('front_gallery_title', array('default' => t('Gallery')))): ?>
   <h2 class="block-title sm-borderless"><?php print $our_stories_title; ?></h2>
+  <?php else:?>
+
+    <h2 class="block-title sm-borderless"><?php print t('Gallery'); ?></h2>
   <?php endif; ?>
 
   <div class="row">
