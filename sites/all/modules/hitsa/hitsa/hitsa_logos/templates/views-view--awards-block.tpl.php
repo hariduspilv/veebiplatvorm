@@ -28,7 +28,11 @@
  */
 ?>
 <div class="block block-narrow sm-hide">
-  <h2 class="block-title"><?php print t('Awards'); ?></h2>
+  <?php if($title = variable_get_value('front_confirmation_title', array('default' => t('Awards')))): ?>
+  <h2 class="block-title"><?php print $title; ?></h2>
+  <?php else:?>
+    <h2 class="block-title"><?php print t('Awards'); ?></h2>
+  <?php endif;?>
   <?php if ($rows): ?>
   <div class="row pull-up">
     <?php print $rows; ?>

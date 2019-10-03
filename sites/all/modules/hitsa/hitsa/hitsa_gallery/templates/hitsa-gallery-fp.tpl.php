@@ -1,11 +1,11 @@
 <div class="block">
-  
+
   <?php if($our_stories_title = variable_get_value('front_gallery_title', array('default' => t('Gallery')))): ?>
-  <h2 class="block-title sm-borderless"><?php print t('Gallery'); ?></h2>
+  <h2 class="block-title sm-borderless"><?php print $our_stories_title; ?></h2>
   <?php endif; ?>
-  
+
   <div class="row">
-    <?php if(!empty($nodes[0])): 
+    <?php if(!empty($nodes[0])):
     $node = $nodes[0];
     ?>
     <?php if((node_access("update", $node['#node'], $user) === TRUE)): ?>
@@ -29,12 +29,12 @@
      </div><!--/col-12-->
      <?php endif; ?>
   </div><!--/row-->
-  
+
   <?php if(count($nodes) > 1): ?>
   <div class="row-spacer"></div>
-  
+
   <div class="row">
-    <?php foreach($nodes as $delta => $node): 
+    <?php foreach($nodes as $delta => $node):
     if($delta == 0) continue;
     ?>
     <div class="col-6 sm-12">
@@ -59,9 +59,9 @@
     <?php endforeach; ?>
   </div><!--/row-->
   <?php endif; ?>
-  
+
   <div class="row-spacer-m"></div>
-  
+
   <div class="row">
      <div class="col-12">
         <a href="<?php print url('gallery'); ?>" class="btn sm-stretch"><?php print t('All galleries'); ?></a>
