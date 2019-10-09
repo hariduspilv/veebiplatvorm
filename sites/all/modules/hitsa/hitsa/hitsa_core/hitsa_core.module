@@ -984,7 +984,7 @@ function hitsa_core_default_search_api_index()
           'type' => 'text',
         ),
         'field_event_type' => array(
-          'type' => 'string',
+          'type' => 'text',
         ),
         'search_api_language' => array(
           'type' => 'string',

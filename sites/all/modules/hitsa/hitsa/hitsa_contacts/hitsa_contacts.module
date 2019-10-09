@@ -93,12 +93,12 @@ function hitsa_contacts_block_view($delta = '') {
 
 function hitsa_contacts_page_view() {
   global $language;
-
   // Contact Departments
   $department_vocab_vid = variable_get('hitsa_contacts_department_vid');
   $contact_departments = i18n_taxonomy_localize_terms(taxonomy_get_tree($department_vocab_vid));
   // Contact Job positions
   $job_position_vocab_vid = variable_get('hitsa_contacts_job_position_vid');
+
   $job_positions_array = i18n_taxonomy_localize_terms(taxonomy_get_tree($job_position_vocab_vid));
   foreach($job_positions_array as $j) {
     $job_positions[$j->tid] = $j;
@@ -237,8 +237,11 @@ function hitsa_contacts_filter_widget($nid = NULL) {
     foreach($emw_node->cp_contacts->getIterator() as $contact) {
       // Get Job positions
       if(!empty($contact->job_position)) {
+
         $j = $contact->job_position->value();
-        $filter_values['job_positions'][$j->tid] = $j;
+        foreach ($j as $one_position) {
+          $filter_values['job_positions'][$one_position->tid] = $one_position;
+        }
       }
       // Get departments
       if(!empty($contact->contact_departments)) {
@@ -428,7 +431,7 @@ function hitsa_contacts_form_alter(&$form, &$form_state, $form_id) {
     $form['#validate'][] = 'hitsa_contacts_validate_phone_number';
     $form['phone_nr'][LANGUAGE_NONE][0]['value']['#attributes']['autocomplete'] = 'off';
   }
-  
+
   switch($form_id) {
     case 'contact_node_form':
       // Hide duplicate reception time descriptions
