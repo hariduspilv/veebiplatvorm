@@ -995,6 +995,9 @@ function hitsa_core_default_search_api_index()
         'status' => array(
           'type' => 'integer',
         ),
+        'search_api_access_node' => array(
+          'type' => 'text',
+        ),
         'created' => array(
           'type' => 'date',
         ),

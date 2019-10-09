@@ -248,7 +248,8 @@ function hitsa_cron_run_update()
     '50',
     '51',
     '52',
-    '53'
+    '53',
+    '54'
 
   ];
   if (!empty($updates)) {
@@ -2932,5 +2933,16 @@ function hitsa_cron_up_53(){
 
   $index = search_api_index_load('hitsa_search_index');
   search_api_index_items($index,-1) ;
+  return TRUE;
+}
+
+function hitsa_cron_up_54(){
+  search_api_index_delete('hitsa_search_index');
+
+  search_api_index_reindex('hitsa_search_index');
+
+  $index = search_api_index_load('hitsa_search_index');
+  search_api_index_items($index,-1) ;
+  variable_set('xmlsitemap_settings_menu_link_hitsa-main-menu',['status'=>0,'priority'=>0.5]);
   return TRUE;
 }
