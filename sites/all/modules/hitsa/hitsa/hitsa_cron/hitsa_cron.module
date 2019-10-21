@@ -249,7 +249,8 @@ function hitsa_cron_run_update()
     '51',
     '52',
     '53',
-    '54'
+    '54',
+    '55'
 
   ];
   if (!empty($updates)) {
@@ -1114,8 +1115,8 @@ function hitsa_cron_up_13()
     }
     if ($loaded_menu['title'] == 'Main menu' && $loaded_menu['menu_name'] == 'hitsa-main-menu') {
       $loaded_menu['title'] = 'Peamenüü';
-      menu_save($loaded_menu);
     }
+      menu_save($loaded_menu);
     if ($loaded_menu['title'] == 'Quicklinks') {
       $loaded_menu['title'] = 'Kiirlingid';
       menu_save($loaded_menu);
@@ -2944,5 +2945,95 @@ function hitsa_cron_up_54(){
   $index = search_api_index_load('hitsa_search_index');
   search_api_index_items($index,-1) ;
   variable_set('xmlsitemap_settings_menu_link_hitsa-main-menu',['status'=>0,'priority'=>0.5]);
+  return TRUE;
+}
+function hitsa_cron_up_55(){
+
+  $image_style = image_style_load('hitsa_article_thumbnail');
+  $have_scale = false;
+  if (!empty($image_style['effects'])) {
+
+    foreach ($image_style['effects'] as $effect_key => $effect) {
+      if ($effect['name'] == 'manualcrop_crop_and_scale') {
+        $image_effect = image_effect_load($effect_key, 'hitsa_article_thumbnail');
+        image_effect_delete($image_effect);
+      }
+      if($effect['name']=='image_scale'){
+        $have_scale= true;
+      }
+    }
+  }
+  $effect = array(
+    'name' => 'manualcrop_crop_and_scale',
+    'data' => array(
+      'width' => 720,
+      'height' => 428,
+      'upscale' => 0,
+      'respectminimum' => 1,
+      'onlyscaleifcrop' => 1,
+      'style_name' => 'hitsa_article_thumbnail',
+    ),
+    'isid' => $image_style['isid'],
+    'weight' => -1,
+  );
+  image_effect_save($effect);
+  if(!$have_scale) {
+    $effect = array(
+      'name' => 'image_scale',
+      'data' => array(
+        'width' => 720,
+        'height' => 428,
+        'style_name' => 'hitsa_article_thumbnail',
+      ),
+      'isid' => $image_style['isid'],
+      'weight' => 5,
+    );
+    image_effect_save($effect);
+  }
+  $image_style = image_style_load('hitsa_gallery_menu_teaser');
+  $have_scale = false;
+  if (!empty($image_style['effects'])) {
+
+    foreach ($image_style['effects'] as $effect_key => $effect) {
+      if ($effect['name'] == 'manualcrop_crop_and_scale') {
+        $image_effect = image_effect_load($effect_key, 'hitsa_gallery_menu_teaser');
+        image_effect_delete($image_effect);
+      }
+      if ($effect['name'] == 'manualcrop_reuse') {
+        $image_effect = image_effect_load($effect_key, 'hitsa_gallery_menu_teaser');
+        image_effect_delete($image_effect);
+      }
+      if($effect['name']=='image_scale'){
+        $have_scale= true;
+      }
+    }
+  }
+  $effect = array(
+    'name' => 'manualcrop_crop_and_scale',
+    'data' => array(
+      'width' => 1000,
+      'height' => 500,
+      'upscale' => 0,
+      'respectminimum' => 1,
+      'onlyscaleifcrop' => 1,
+      'style_name' => 'hitsa_gallery_menu_teaser',
+    ),
+    'isid' => $image_style['isid'],
+    'weight' => -1,
+  );
+  image_effect_save($effect);
+  if(!$have_scale) {
+    $effect = array(
+      'name' => 'image_scale',
+      'data' => array(
+        'width' => 1000,
+        'height' => 500,
+        'style_name' => 'hitsa_gallery_menu_teaser',
+      ),
+      'isid' => $image_style['isid'],
+      'weight' => 5,
+    );
+    image_effect_save($effect);
+  }
   return TRUE;
 }

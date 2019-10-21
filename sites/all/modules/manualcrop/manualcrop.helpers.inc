@@ -151,7 +151,7 @@ function manualcrop_instance_required_styles($settings) {
 function manualcrop_croptool_process(&$form, &$form_state, &$element, $file, $settings = array(), $instance = NULL, $preview = 'preview') {
   static $processed_forms;
 
-  if (user_access('use manualcrop') && $styles = manualcrop_styles_with_crop()) {
+  if (_manualcrop_supported_file($file) && user_access('use manualcrop') && $styles = manualcrop_styles_with_crop()) {
     // Merge-in the instance or default settings.
     if (is_array($instance)) {
       $settings += $instance['widget']['settings'];
@@ -435,23 +435,18 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
   // Image style options.
   $style_options = array('' => t('Select a style to crop'));
 
-  $allstyles = manualcrop_styles_with_crop();
   // Hidden fields to save the crop selection, one for each image style.
-  foreach ($allstyles as $style_name => $info) {
+  foreach ($styles as $style_name => $info) {
     $element['manualcrop_selections'][$style_name] = array(
       '#type' => 'hidden',
       '#default_value' => (isset($value['manualcrop_selections'][$style_name]) ? $value['manualcrop_selections'][$style_name] : ''),
       '#attributes' => array(
         'id' => 'manualcrop-area-' . $fid . '-' . $style_name,
-        'class' => array(
-          'manualcrop-cropdata',
-          'manualcrop-area-' . $fid . '-' . $style_name
-        ),
+        'class' => array('manualcrop-cropdata'),
         'onchange' => 'ManualCrop.selectionStored(this, ' . $fid . ', \'' . $style_name . '\');',
       ),
     );
-  }
-  foreach ($styles as $style_name => $info) {
+
     $style_options[$style_name] = $info['label'];
   }
 
@@ -501,7 +496,7 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
         'images' => $style_options,
       )),
     ));
-  }/* button makes trouble when having more than one image of same fid
+  }
   elseif (count($style_options) == 2) {
     // Only one style, display a button.
     end($style_options);
@@ -518,7 +513,7 @@ function _manualcrop_add_croptool(&$element, $value, &$form_state, $fid, $js_ide
       '#prefix' => '<div class="manualcrop-style-button-holder">',
       '#suffix' => '</div>',
     ));
-  }*/
+  }
   else {
     // Style selection list.
     $element['manualcrop_style'] = array_merge($defaults, array(
@@ -1015,4 +1010,21 @@ function _manualcrop_update_style_name_in_image_effect($style_name, $new_style_n
       }
     }
   }
+}
+
+/**
+ * Determine if a file supports cropping.
+ *
+ * @param $file
+ *   The file object.
+ *
+ * @return
+ *   TRUE if the file support cropping, FALSE otherwise.
+ */
+function _manualcrop_supported_file($file) {
+  if (empty($file->filemime)) {
+    return FALSE;
+  }
+
+  return strpos($file->filemime, 'image') === 0;
 }

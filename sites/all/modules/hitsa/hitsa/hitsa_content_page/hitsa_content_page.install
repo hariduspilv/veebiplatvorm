@@ -951,11 +951,13 @@ function _hitsa_content_page_image_styles() {
 		    'label' => 'Article thumbnail (380x214)'
 		  ),
 		  'effect' => array(
-		    'name' => 'image_scale_and_crop',
+		    'name' => 'manualcrop_crop_and_scale',
 		    'data' => array(
-		      'width' => 720,
-		      'height' => 428,
-		      'upscale' => FALSE,
+          'width' => 720,
+          'height' => 428,
+          'upscale' => 0,
+          'respectminimum' => 1,
+          'onlyscaleifcrop' => 1,
 		    ),
 		  ),
 		),
