@@ -212,13 +212,22 @@ function hitsa_content_page_preprocess_node(&$variables)
     if(strlen($body_no_table)>1000){
         $your_desired_width = 1000;
         $break_point = mb_strrpos(mb_substr($body_no_table, 0, $your_desired_width,'UTF-8'), ' ');
+      preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $body_no_table, $result);
         $start = mb_substr($body_no_table, 0, $break_point,'UTF-8');
+//        dpm($start);
+      $acheck = substr($start, -2);
+        if($acheck=='<a'){
+          $start.='>';
+        }
       if (strpos($start, '<ul>') !== false) {
         if (strpos($start, '</ul>') == false) {
           $start.='</ul>';
         }
       }
         $end = mb_substr($body_no_table, $break_point,  mb_strlen($body_no_table,'UTF-8'));
+      if($acheck=='<a'){
+        $end='<a '.$end;
+      }
         $variables['start'] = $start;
         $variables['end']=$end;
     }
@@ -285,7 +294,25 @@ function hitsa_content_page_preprocess_node(&$variables)
     }
   }
 }
-
+function closetags($html) {
+  preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
+  $openedtags = $result[1];
+  preg_match_all('#</([a-z]+)>#iU', $html, $result);
+  $closedtags = $result[1];
+  $len_opened = count($openedtags);
+  if (count($closedtags) == $len_opened) {
+    return $html;
+  }
+  $openedtags = array_reverse($openedtags);
+  for ($i=0; $i < $len_opened; $i++) {
+    if (!in_array($openedtags[$i], $closedtags)) {
+      $html .= '</'.$openedtags[$i].'>';
+    } else {
+      unset($closedtags[array_search($openedtags[$i], $closedtags)]);
+    }
+  }
+  return $html;
+}
 function hitsa_content_page_preprocess_content_page_grid(&$variables)
 {
 }
