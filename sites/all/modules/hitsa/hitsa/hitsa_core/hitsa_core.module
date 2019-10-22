@@ -689,9 +689,33 @@ function hitsa_core_form_alter(&$form, &$form_state, $form_id)
       $form['from_address_option']['#title'] = t('E-mail reply to address');
       $form['from_address_option']['#options']['custom'] = t('Reply to');
       break;
+    case 'locale_languages_overview_form':
+      $form['#submit'][] = 'hitsa_core_hide_wrong_content';
+
+      drupal_flush_all_caches();
+      break;
   }
 }
-
+function hitsa_core_hide_wrong_content(){
+  $languages_list = language_list();
+  foreach($languages_list as $language) {
+    if($language->enabled == 0) {
+      $q = db_select('node', 'n');
+      $q->fields('n');
+      $q->condition('n.language', $language->language, '=');
+      $results = $q->execute();
+      $nodes = [];
+      while ($row = $results->fetchAssoc()) {
+        $node = node_load($row['nid']);
+        $node->status = 0;
+        node_save($node);
+      }
+    }
+  }
+  module_load_include('generate.inc', 'xmlsitemap');
+  $types = xmlsitemap_get_rebuildable_link_types();
+  xmlsitemap_run_unprogressive_batch('xmlsitemap_rebuild_batch', $types, TRUE);
+}
 function hitsa_core_save_coordinates($form,&$form_state){
   if(!empty($form_state['input'])){
 
@@ -871,6 +895,7 @@ function hitsa_core_default_search_api_index()
     'item_type' => 'node',
     'server' => 'hitsa_search_server',
     'enabled' => 1,
+    'status' => 3,
     'options' => array(
       'datasource' => array(
         'bundles' => array(
@@ -896,53 +921,57 @@ function hitsa_core_default_search_api_index()
           'status' => 1,
           'weight' => -43,
         ),
+        'search_api_alter_add_aggregation' => array(
+          'status' => 1,
+        )
       ),
       'processors' => array(
         'search_api_case_ignore' => array(
           'status' => 1,
-          'weight' => 0,
-        ),
-        'search_api_porter_stemmer' => array(
-          'status' => 1,
-          'weight' => 35,
-        ),
-        'search_api_highlighting' => array(
-          'status' => 1,
-          'weight' => 40,
+          'weight' => "0",
           'settings' => array(
-            'prefix' => '<u>',
-            'suffix' => '</u>',
-            'excerpt' => 1,
-            'excerpt_length' => '256',
-            'exclude_fields' => array(),
-            'highlight' => 'always',
-            'highlight_partial' => 1,
+            'fields' => array(
+              'title'=>TRUE,
+              'gallery_author'=>TRUE,
+              'field_event_type'=> TRUE,
+              'first_name'=>TRUE,
+              'last_name'=>TRUE,
+              'search_api_access_node' => TRUE,
+              'body:value'=>TRUE,
+              'body:summary'=>TRUE,
+              'gallery_images:file:name'=>TRUE,
+              'gallery_images:file:field_file_image_alt_text'=>TRUE,
+              'gallery_images:file:field_file_image_title_text'=>TRUE,
+              'gallery_images:file:field_image_author'=>TRUE,
+            ),
           ),
         ),
-        'search_api_tokenizer' => array(
-          'status' => 1,
-          'weight' => 20,
+        'search_api_html_filter' => array(
+          'status' => 0,
+          'weight' => "10",
           'settings' => array(
-            'spaces' => '[^[:alnum:]]',
-            'ignorable' => '[\']',
+            'fields' => array(
+              'title'=>TRUE,
+              'gallery_author'=>TRUE,
+              'field_event_type'=> TRUE,
+              'first_name'=>TRUE,
+              'last_name'=>TRUE,
+              'search_api_access_node' => TRUE,
+              'body:value'=>TRUE,
+              'body:summary'=>TRUE,
+              'gallery_images:file:name'=>TRUE,
+              'gallery_images:file:field_file_image_alt_text'=>TRUE,
+              'gallery_images:file:field_file_image_title_text'=>TRUE,
+              'gallery_images:file:field_image_author'=>TRUE,
+            ),
+            'title' => 0,
+            'alt' => 1,
+            'tags' =>  "h1 = 5\r\nh2 = 3\r\nh3 = 2\r\nstrong = 2\r\nb = 2\r\nem = 1.5\r\nu = 1.5",
           ),
-          'fields' => array(
-            'title'=>TRUE,
-            'gallery_author'=>TRUE,
-            'first_name'=>TRUE,
-            'last_name'=>TRUE,
-            'body:value'=>TRUE,
-            'body:summary'=>TRUE,
-            'gallery_images:file:name'=>TRUE,
-            'gallery_images:file:field_file_image_alt_text'=>TRUE,
-            'gallery_images:file:field_file_image_title_text'=>TRUE,
-            'gallery_images:file:field_image_author'=>TRUE,
-          ),
-
         ),
         'search_api_transliteration' => array(
           'status' => 1,
-          'weight' => 15,
+          'weight' => "15",
           'settings' => array(
             'fields' => array(
               'title'=>TRUE,
@@ -958,6 +987,84 @@ function hitsa_core_default_search_api_index()
             ),
           ),
 
+        ),
+        'search_api_tokenizer' => array(
+          'status' => 1,
+          'weight' => "20",
+          'settings' => array(
+            'fields' => array(
+              'title'=>TRUE,
+              'gallery_author'=>TRUE,
+              'field_event_type'=> TRUE,
+              'first_name'=>TRUE,
+              'last_name'=>TRUE,
+              'search_api_access_node' => TRUE,
+              'body:value'=>TRUE,
+              'body:summary'=>TRUE,
+              'gallery_images:file:name'=>TRUE,
+              'gallery_images:file:field_file_image_alt_text'=>TRUE,
+              'gallery_images:file:field_file_image_title_text'=>TRUE,
+              'gallery_images:file:field_image_author'=>TRUE,
+            ),
+            'spaces' => "[^[:alnum:]]",
+            'ignorable' => "[']",
+          ),
+        ),
+        'search_api_stopwords' => array(
+          'status' => 0,
+          'weight' => "30",
+          'settings' => array(
+            'fields' => array(
+              'title'=>TRUE,
+              'gallery_author'=>TRUE,
+              'field_event_type'=> TRUE,
+              'first_name'=>TRUE,
+              'last_name'=>TRUE,
+              'search_api_access_node' => TRUE,
+              'body:value'=>TRUE,
+              'body:summary'=>TRUE,
+              'gallery_images:file:name'=>TRUE,
+              'gallery_images:file:field_file_image_alt_text'=>TRUE,
+              'gallery_images:file:field_file_image_title_text'=>TRUE,
+              'gallery_images:file:field_image_author'=>TRUE,
+            ),
+            "file" => "",
+            'stopwords' => "but\r\ndid\r\nthe this that those\r\netc"
+          ),
+        ),
+        'search_api_porter_stemmer' => array(
+          'status' => 1,
+          'weight' => "35",
+          'settings' => array(
+            'fields' => array(
+              'title'=>TRUE,
+              'gallery_author'=>TRUE,
+              'field_event_type'=> TRUE,
+              'first_name'=>TRUE,
+              'last_name'=>TRUE,
+              'search_api_access_node' => TRUE,
+              'body:value'=>TRUE,
+              'body:summary'=>TRUE,
+              'gallery_images:file:name'=>TRUE,
+              'gallery_images:file:field_file_image_alt_text'=>TRUE,
+              'gallery_images:file:field_file_image_title_text'=>TRUE,
+              'gallery_images:file:field_image_author'=>TRUE,
+            ),
+            'exceptions' => 'texan=texa'
+          ),
+        ),
+        'search_api_highlighting' => array(
+          'status' => 1,
+          'weight' => "40",
+          'settings' => array(
+            'prefix' => '<u>',
+            'suffix' => '</u>',
+            'excerpt' => 1,
+            'excerpt_length' => '256',
+            'exclude_fields' => array(),
+            'highlight' => 'always',
+            'highlight_partial' => 1,
+          ),
         ),
 
       ),
