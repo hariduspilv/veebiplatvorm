@@ -210,9 +210,14 @@ function hitsa_content_page_preprocess_node(&$variables)
       $variables['mobile_body'][$body_key]['value'] = '';
     }
     if(strlen($body_no_table)>1000){
-      $your_desired_width = 1000;
+        $your_desired_width = 1000;
         $break_point = mb_strrpos(mb_substr($body_no_table, 0, $your_desired_width,'UTF-8'), ' ');
         $start = mb_substr($body_no_table, 0, $break_point,'UTF-8');
+      if (strpos($start, '<ul>') !== false) {
+        if (strpos($start, '</ul>') == false) {
+          $start.='</ul>';
+        }
+      }
         $end = mb_substr($body_no_table, $break_point,  mb_strlen($body_no_table,'UTF-8'));
         $variables['start'] = $start;
         $variables['end']=$end;

@@ -494,7 +494,7 @@ function hitsa_menu_link__hitsa_main_menu($variables)
 }
 
 /* Header menu render functions */
-function hitsa_header_menu_tree__hitsa_header_menu($variables)
+function hitsa_header_menu_tree__hitsa_header_menu(&$variables)
 {
     return '<ul class="bullet-links">' . $variables['tree']['#children'] . '</ul>';
 }
@@ -732,6 +732,27 @@ function hitsa_preprocess_menu_link(&$variables)
     $hook = $variables['theme_hook_original'];
     switch ($hook) {
         case 'menu_link__hitsa_header_menu':
+            if (isset($variables['element']['#attributes']['class'])) unset($variables['element']['#attributes']['class']);
+
+            if (!empty($variables['element']['#original_link']['options'])) {
+
+                if (!empty($variables['element']['#original_link']['options']['attributes'])) {
+
+                    if (!empty($variables['element']['#original_link']['options']['attributes']['title'])) {
+                        unset($variables['element']['#original_link']['options']['attributes']['title']);
+
+                    }
+                }
+            }
+            if (!empty($variables['element']['#localized_options'])) {
+                if (!empty($variables['element']['#localized_options']['attributes'])) {
+                    if (!empty($variables['element']['#localized_options']['attributes']['title'])) {
+                        unset($variables['element']['#localized_options']['attributes']['title']);
+                    }
+                }
+            }
+            break;
+        case 'menu_link__Päise menüü':
             if (isset($variables['element']['#attributes']['class'])) unset($variables['element']['#attributes']['class']);
 
             if (!empty($variables['element']['#original_link']['options'])) {
