@@ -1818,7 +1818,7 @@ if(!empty($header->cp_image)){
         'autor' => (!empty($subpage_image['field_image_author']))?$subpage_image['field_image_author']['und'][0]['value']:''
       );
     }
-    $images_styled =  theme('article_multible_images',array('images'=>$images));
+    $images_styled =  theme('article_multiple_images',array('images'=>$images));
   }
   $image = $header->cp_image['und'][0];
   $image['full_url'] = file_create_url($image['uri']);
