@@ -342,12 +342,14 @@ function l10n_update_get_interface_translation_files($projects = array(), $langc
   $files = array();
   $projects = $projects ? $projects : array_keys(l10n_update_get_projects());
   $langcodes = $langcodes ? $langcodes : array_keys(l10n_update_translatable_language_list());
+
   // Scan the translations directory for files matching a name pattern
   // containing a project name and language code: {project}.{langcode}.po or
   // {project}-{version}.{langcode}.po.
   // Only files of known projects and languages will be returned.
   $directory = variable_get('l10n_update_download_store', L10N_UPDATE_DEFAULT_TRANSLATION_PATH);
   $result = file_scan_directory($directory, '![a-z_]+(\-[0-9a-z\.\-\+]+|)\.[^\./]+\.po$!', array('recurse' => FALSE));
+
   foreach ($result as $file) {
     // Update the file object with project name and version from the file name.
     $file = l10n_update_file_attach_properties($file);

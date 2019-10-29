@@ -302,7 +302,7 @@ class SearchApiServer extends Entity {
    * @see SearchApiServiceInterface::removeIndex()
    * @see search_api_server_tasks_add()
    */
-  public function removeIndex($index) {
+    public function removeIndex($index) {
     // When removing an index from a server, it doesn't make any sense anymore to
     // delete items from it, or react to other changes.
     search_api_server_tasks_delete(NULL, $this, $index);
