@@ -250,7 +250,8 @@ function hitsa_cron_run_update()
     '52',
     '53',
     '54',
-    '55'
+    '55',
+    '56'
 
   ];
   if (!empty($updates)) {
@@ -3035,5 +3036,27 @@ function hitsa_cron_up_55(){
     );
     image_effect_save($effect);
   }
+  return TRUE;
+}
+function hitsa_cron_up_56(){
+
+  $languages_list = language_list();
+  foreach($languages_list as $language) {
+    if($language->enabled == 0) {
+      $q = db_select('node', 'n');
+      $q->fields('n');
+      $q->condition('n.language', $language->language, '=');
+      $results = $q->execute();
+      $nodes = [];
+      while ($row = $results->fetchAssoc()) {
+        $node = node_load($row['nid']);
+        $node->status = 0;
+        node_save($node);
+      }
+    }
+  }
+  module_load_include('generate.inc', 'xmlsitemap');
+  $types = xmlsitemap_get_rebuildable_link_types();
+  xmlsitemap_run_unprogressive_batch('xmlsitemap_rebuild_batch', $types, TRUE);
   return TRUE;
 }
