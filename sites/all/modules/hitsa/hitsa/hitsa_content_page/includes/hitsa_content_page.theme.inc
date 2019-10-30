@@ -213,8 +213,12 @@ function hitsa_content_page_preprocess_node(&$variables)
         $your_desired_width = 1000;
         $break_point = mb_strrpos(mb_substr($body_no_table, 0, $your_desired_width,'UTF-8'), ' ');
       preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $body_no_table, $result);
-        $start = mb_substr($body_no_table, 0, $break_point,'UTF-8');
+//        $start = mb_substr($body_no_table, 0, $break_point,'UTF-8');
 //        dpm($start);
+//      $start = cut_html($body_no_table,1000);
+      $start = (text_summary($body_no_table,NULL,1000));
+//      dpm($start);
+//      dpm(str_replace($start,'',$body_no_table));
       $acheck = substr($start, -2);
         if($acheck=='<a'){
           $start.='>';
@@ -224,7 +228,12 @@ function hitsa_content_page_preprocess_node(&$variables)
           $start.='</ul>';
         }
       }
-        $end = mb_substr($body_no_table, $break_point,  mb_strlen($body_no_table,'UTF-8'));
+//        $end = mb_substr($body_no_table, $break_point,  mb_strlen($body_no_table,'UTF-8'));
+        $end = str_replace($start,'',$body_no_table);
+//      dpm($body_no_table);
+//      dpm(str_replace($start,'',$body_no_table));
+//      dpm($start);
+//      dpm($end);
       if($acheck=='<a'){
         $end='<a '.$end;
       }
@@ -293,6 +302,41 @@ function hitsa_content_page_preprocess_node(&$variables)
       }
     }
   }
+}
+
+function cut_html ($html, $limit) {
+  $dom = new DOMDocument();
+  $dom->loadHTML(mb_convert_encoding("<div>{$html}</div>", "HTML-ENTITIES", "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  cut_html_recursive($dom->documentElement, $limit);
+  return substr($dom->saveHTML($dom->documentElement), 5, -6);
+}
+
+function cut_html_recursive ($element, $limit) {
+  if($limit > 0) {
+    if($element->nodeType == 3) {
+      $limit -= strlen($element->nodeValue);
+      if($limit < 0) {
+        $element->nodeValue = substr($element->nodeValue, 0, strlen($element->nodeValue) + $limit);
+      }
+    }
+    else {
+      for($i = 0; $i < $element->childNodes->length; $i++) {
+        if($limit > 0) {
+          $limit = cut_html_recursive($element->childNodes->item($i), $limit);
+        }
+        else {
+          $element->removeChild($element->childNodes->item($i));
+          $i--;
+        }
+      }
+    }
+  }
+  return $limit;
+}
+function trim_word($text, $length, $startPoint=0, $allowedTags=""){
+  $text = html_entity_decode(htmlspecialchars_decode($text));
+  $text = strip_tags($text, $allowedTags);
+  return $text = mb_substr($text, $startPoint, $length);
 }
 function closetags($html) {
   preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
