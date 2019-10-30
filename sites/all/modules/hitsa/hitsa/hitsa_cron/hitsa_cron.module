@@ -252,7 +252,8 @@ function hitsa_cron_run_update()
     '54',
     '55',
     '56',
-    '57'
+    '57',
+    '58'
 
   ];
   if (!empty($updates)) {
@@ -3065,7 +3066,16 @@ function hitsa_cron_up_57(){
   l10n_update_ensure_htaccess();
 
   db_update('system')
-    ->fields(array('schema_version' => '7002'))
+    ->fields(array('schema_version' => '7210'))
+    ->condition('name', 'l10n_update', '=')
+    ->execute();
+  return TRUE;
+}
+function hitsa_cron_up_58(){
+  l10n_update_ensure_htaccess();
+
+  db_update('system')
+    ->fields(array('schema_version' => '7210'))
     ->condition('name', 'l10n_update', '=')
     ->execute();
   return TRUE;
