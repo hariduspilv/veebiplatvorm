@@ -868,6 +868,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
     }
     if (!empty($real_content)) {
         if (empty($active_id)) {
+
             foreach ($real_content as $real_key => $real_value) {
                 $active_id = $real_key;
                 break;
@@ -888,8 +889,27 @@ function hitsa_curriculum_custom_block($curriculum_type)
                             }
                         }
                         if (empty($content)) {
+                          usort($real_content, function ($a, $b) {
+                            if(!empty($a->field_tab_weight) && !empty($b->field_tab_weight)){
+                              $aweight = $a->field_tab_weight['und'][0]['value'];
+                              $bweight = $b->field_tab_weight['und'][0]['value'];
+                              return $aweight-$bweight;
+                            }
+                          });
+                          usort($real_content, function ($a, $b) {
+                           if(!empty($a->field_field)&&!empty($b->field_field)){
+                             $afield = taxonomy_term_load($a->field_field['und'][0]['target_id']);
+                             $bfield = taxonomy_term_load($b->field_field['und'][0]['target_id']);
+                             if($afield==$bfield){
+                               $aweight = $a->field_tab_weight['und'][0]['value'];
+                               $bweight = $b->field_tab_weight['und'][0]['value'];
+                               return $aweight-$bweight;
+                             }
+                             return $afield->weight-$bfield->weight;
+                           }
+                          });
                             foreach ($real_content as $real_content_key => $real_content_value) {
-                                $active_id = $real_content_key;
+                                $active_id = $real_content_value->nid;
                                 break;
                             }
                         }
@@ -1114,7 +1134,6 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
             }
             $output = '';
             $output .= '<ul class="side-menu" data-plugin="dropdownMenu">';
-
             usort($fields, function ($a, $b) {
                 return $a['weight'] - $b['weight'];
             });
