@@ -205,6 +205,7 @@ function hitsa_content_page_preprocess_node(&$variables)
 
       }
       $body_no_table = $body_without_table;
+      $body_no_table = str_replace($inital_url, $current_host, $body_no_table);
     if(empty($body_no_table)){
       $variables['mobile_body'][$body_key]['safe_value'] = '';
       $variables['mobile_body'][$body_key]['value'] = '';

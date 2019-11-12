@@ -104,6 +104,18 @@ function hitsa_color_change($form, &$form_state)
     else{
         $output ='@highlight-1:;'.$output;
     }
+    if (strpos($output, '@border-radius') !== false) {
+
+    }
+    else{
+        $output ='@border-radius:;'.$output;
+    }
+    if (strpos($output, 'block-border-radius') !== false) {
+
+    }
+    else{
+        $output ='@block-border-radius:;'.$output;
+    }
     //exec($_SERVER['DOCUMENT_ROOT'].'/sites/all/themes/hitsa/static/Gruntfile.js');
     //putenv('PATH=' . getenv('PATH') . '/home/ubuntu/nodejs /home/ubuntu/workspace/sites/all/themes/hitsa/static/Gruntfile.js');
     //exec(' cd /sites/all/themes/hitsa/static && grunt 2>&1');
