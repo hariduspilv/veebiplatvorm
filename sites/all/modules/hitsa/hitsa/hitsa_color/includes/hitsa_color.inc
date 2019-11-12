@@ -97,6 +97,10 @@ function hitsa_color_change($form, &$form_state)
         if (!empty($form_state['values'][$class])) {
             $output .= $class . ':' . $form_state['values'][$class] . ';';
         }
+        else{
+          drupal_set_message('Väljade väärtused ei tohi olla tühjad või 0');
+          $output.=$class.':' . $form_state['complete form'][$class]['#default_value'].';';
+        }
     }
     if (strpos($output, 'highlight-1') !== false) {
 
