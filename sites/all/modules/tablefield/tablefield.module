@@ -2583,6 +2583,5 @@ function array_to_xml($data, &$xml_data) {
 function tablefield_post_exceeds_max_input_vars() {
   $posted_vars = count($_POST, COUNT_RECURSIVE);
   $max_input_vars = get_cfg_var('max_input_vars');
-
   return ($posted_vars > $max_input_vars) ? TRUE : FALSE;
 }

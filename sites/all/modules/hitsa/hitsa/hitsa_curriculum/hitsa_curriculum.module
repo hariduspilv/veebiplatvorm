@@ -1030,7 +1030,7 @@ function hitsa_curriculum_generate_left_custom_titles($areas, $type = null, $id 
               return $a->tab_weight - $b->tab_weight;
           }
           else{
-              return $b->changed - $a->changed;
+              return $a->created - $b->created;
           }
       });
       if(is_array($new_areas)){
