@@ -122,6 +122,40 @@ function hitsa_cron_activate_update()
     variable_set('robotstxt', $robots_text);
   }
 }
+function hitsa_cron_cron(){
+  $current_time = time();
+  $current_hour = date('G',$current_time);
+  $current_minute = date('i',$current_time);
+  $random_time = variable_get('hitsa_cron_random_time');
+  if (empty($random_time)) {
+    $random_time = rand(1, 60);
+    variable_set('hitsa_cron_random_time', $random_time);
+  }
+  if($current_hour==2){
+    if($current_minute>=$random_time) {
+      hitsa_cron_run_update();
+      $what_ran = 'General updates';
+    }
+  }
+  elseif ($current_hour==3){
+    if($current_minute>=$random_time) {
+      module_load_include('inc', 'hitsa_color', 'includes/hitsa_color');
+      hitsa_color_grunt_runner();
+      $what_ran = 'Grunt ran';
+    }
+  }
+  elseif ($current_hour==4){
+    if($current_minute>=$random_time) {
+      module_load_include('inc', 'hitsa_cron', 'hitsa_cron_translation_updater');
+      hitsa_cron_update_translations();
+      $what_ran = 'Translations were updated';
+    }
+  }
+  if(!empty($what_ran)){
+    watchdog('Cron',$what_ran,array(),WATCHDOG_NOTICE);
+  }
+
+}
 /**
  * Implements hook_cronapi().
  */
@@ -141,40 +175,51 @@ function hitsa_cron_cronapi()
     $random_time = rand(1, 60);
     variable_set('hitsa_cron_random_time', $random_time);
   }
-  $items['hitsa_cron_grunt_runner'] = [
-    'title' => t('Grunt runner'),
-    'description' => 'Grunt compiler and runner',
-    'callback' => 'hitsa_cron_run_grunt',
-    'scheduler' => [
-      'name' => 'crontab',
-      'crontab' => [
-        'rules' => [strval($random_time) . ' 2 * * *'],
-      ],
-    ],
-  ];
-  $items['hitsa_cron_translation_updater'] = [
-    'title' => t('Translation Updater'),
-    'description' => 'Updates translations',
-    'file' => 'hitsa_cron_translation_updater.inc',
-    'callback' => 'hitsa_cron_update_translations',
-    'scheduler' => [
-      'name' => 'crontab',
-      'crontab' => [
-        'rules' => [strval($random_time) . ' 4 * * *'],
-      ],
-    ],
-  ];
-  $items['hitsa_cron_update_runner'] = [
-    'title' => t('Update runner'),
-    'description' => 'Update runner',
-    'callback' => 'hitsa_cron_run_updates',
-    'scheduler' => [
-      'name' => 'crontab',
-      'crontab' => [
-        'rules' => [strval($random_time) . ' 3 * * *'],
-      ],
-    ],
-  ];
+//  $items['hitsa_cron_grunt_runner'] = [
+//    'title' => t('Grunt runner'),
+//    'description' => 'Grunt compiler and runner',
+//    'callback' => 'hitsa_cron_run_grunt',
+//    'scheduler' => [
+//      'name' => 'crontab',
+//      'crontab' => [
+//        'rules' => [strval($random_time) . ' 2 * * *'],
+//      ],
+//    ],
+//  ];
+//  $items['hitsa_cron_translation_updater'] = [
+//    'title' => t('Translation Updater'),
+//    'description' => 'Updates translations',
+//    'file' => 'hitsa_cron_translation_updater.inc',
+//    'callback' => 'hitsa_cron_update_translations',
+//    'scheduler' => [
+//      'name' => 'crontab',
+//      'crontab' => [
+//        'rules' => [strval($random_time) . ' 4 * * *'],
+//      ],
+//    ],
+//  ];
+//  $items['hitsa_cron_update_runner'] = [
+//    'title' => t('Update runner'),
+//    'description' => 'Update runner',
+//    'callback' => 'hitsa_cron_run_update',
+//    'scheduler' => [
+//      'name' => 'crontab',
+//      'crontab' => [
+//        'rules' => [strval($random_time) . ' 3 * * *'],
+//      ],
+//    ],
+//  ];
+//  $items['hitsa_cron_update_runner'] = [
+//    'title' => t('Update runner'),
+//    'description' => 'Update runner',
+//    'callback' => 'hitsa_cron_run_update',
+//    'scheduler' => [
+//      'name' => 'crontab',
+//      'crontab' => [
+//        'rules' => [strval($random_time) . ' 3 * * *'],
+//      ],
+//    ],
+//  ];
 
   return $items;
 }
