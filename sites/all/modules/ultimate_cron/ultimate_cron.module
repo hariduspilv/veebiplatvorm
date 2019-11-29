@@ -255,6 +255,11 @@ function _ultimate_cron_plugin_require($type, $name) {
   $object = _ultimate_cron_plugin_load($type, $name);
 
   if (!is_object($object)) {
+    drupal_flush_all_caches();
+    drupal_flush_all_caches();
+    $object = _ultimate_cron_plugin_load($type, $name);
+  }
+  if (!is_object($object)) {
     throw new \RuntimeException(t('Ultimate Cron failed to require ctools "!type" plugin "!name"', array('!type' => $type, '!name' => $name)));
   }
 

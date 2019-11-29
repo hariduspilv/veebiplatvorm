@@ -153,6 +153,7 @@ function hitsa_cron_cron(){
   }
   if(!empty($what_ran)){
     watchdog('Cron',$what_ran,array(),WATCHDOG_NOTICE);
+    drupal_flush_all_caches();
   }
 
 }
