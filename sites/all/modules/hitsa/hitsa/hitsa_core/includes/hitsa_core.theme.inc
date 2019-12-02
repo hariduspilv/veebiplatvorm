@@ -390,7 +390,7 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
          if(empty($zoomlevel)){
            $zoomlevel = 1000;
          }
-         $footer_map = '<iframe height="500" width="100%" frameborder="0" src="https://xgis.maaamet.ee/xgis2/page/app/rmk_core?plugin=true&punkt='.$x.','.$y.'&moot='.$zoomlevel.'&tooltip='.$tooltip.'"></iframe>';
+         $footer_map = '<iframe height="500" width="100%" frameborder="0" src="https://xgis.maaamet.ee/xgis2/page/link/PbkL0WcY?plugin=true&punkt='.$x.','.$y.'&moot='.$zoomlevel.'&tooltip='.$tooltip.'"></iframe>';
 
        $variables['footer_map'] = $footer_map;
       }
