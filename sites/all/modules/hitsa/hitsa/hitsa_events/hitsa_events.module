@@ -617,7 +617,7 @@ function hitsa_events_calendar_page_html()
                     <a href="" class="link" data-anchor>'.t('Calendar view').'<span class="before-arrow_down"></span></a>
                   </div><!--/text-center-->
                   <div class="hidden-container" data-container>
-                  
+
                <div id="calendar_daterangepicker" class="calendar-datepicker"></div>
                 </div>
                 </div>
@@ -1353,7 +1353,7 @@ function hitsa_events_front_page_block($type_override=null)
                 }
                 $output .= '                <div class="object object-event">';
                 $output .= '                   <div class="object-inner">';
-                $output .= '                      <a href="" class="object-date">';
+                $output .= '                      <a href="' . url('calendar') . '#anchor=' . rawurlencode($event->nid) . '" class="object-date">';
                 if($start_readable_day==$end_readable_day) {
                   $output .= '                         <span class="object-date_day">' . $start_readable_day . '</span>';
                 }
