@@ -304,6 +304,7 @@ function hitsa_cron_run_update()
     '57',
     '58',
     '59',
+    '60'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -3137,5 +3138,11 @@ function hitsa_cron_up_59(){
     }
   }
   variable_set('date_first_day',"1");
+  return TRUE;
+}
+function hitsa_cron_up_60(){
+  $field_instance = field_info_instance('node','field_specialitiy_table','curriculum');
+  $field_instance['required'] = 0;
+  field_update_instance($field_instance);
   return TRUE;
 }

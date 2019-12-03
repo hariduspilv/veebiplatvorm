@@ -2471,7 +2471,7 @@ function _hitsa_curriculum_installed_node_instances()
         'entity_type' => 'node',
         'field_name' => 'field_specialitiy_table',
         'label' => 'Erialade tabel',
-        'required' => 1,
+        'required' => 0,
         'settings' => array(
             'entity_translation_sync' => false,
             'user_register_form' => false,

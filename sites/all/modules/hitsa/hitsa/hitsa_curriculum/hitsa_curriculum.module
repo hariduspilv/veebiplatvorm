@@ -647,6 +647,7 @@ function hitsa_curriculum_logo_area($logo){
         <img src="'.$image_style_url.'" alt="'.$alt_text.'">
             <figcaption></figcaption>
         </figure>
+        <div class="sm-show row-spacer"></div>
   </div><!--/col-6-->
  </div>';
   return $output;
