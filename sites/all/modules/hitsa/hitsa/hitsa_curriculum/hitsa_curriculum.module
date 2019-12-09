@@ -2115,6 +2115,11 @@ function hitsa_curriculu_fp_mobile_fields()
                 }
                 if (!empty($loaded_speciality)) {
                     $term = taxonomy_term_load($taxonomy_value->tid);
+                    if(!empty($term->field_field_picture)){
+                      $picture = $term->field_field_picture['und'][0];
+                      $image_style = 'hc_pictures';
+                      $image_url = image_style_url($image_style, $picture['uri']);
+                    }
                     if (module_exists('i18n_taxonomy')) { //To not break your site if module is not installed
                         $term = i18n_taxonomy_localize_terms($term); // The important part!
                         if (!empty($term->field_icon_choice)) {

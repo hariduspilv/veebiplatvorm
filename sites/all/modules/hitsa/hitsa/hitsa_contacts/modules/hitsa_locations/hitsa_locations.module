@@ -83,40 +83,7 @@ function hitsa_locations_block_content($type = 'primary')
                 $y = $coordinates->addresses[0]->viitepunkt_y;
                 if (!empty($x) && !empty($y)) {
 
-                  $locations[$location_key]->full_map = '
-
-        <div id="map_' . $location->nid . '" class="dg-mapframe map-wrapper map" style="height:100%; width:100%" ></div>
-<script>
-  Dogis.Map.Containers["map_' . $location->nid . '"] = new Dogis.Map(document.getElementById(
-    "map_' . $location->nid . '"), {
-    "app": "maainfo",
-    // "bookmark": "CTQDX8Gj",
-    "proxy": "https://xgis.maaamet.ee/xgis2/mod",
-    "plugin": true,
-    "params": {
-      // "aadress": "L. Koidula tn 1, Rakvere linn, Lääne-Viru maakond",
-      // "searchid": "KATASTRIYKSUS",
-      "adfit": 1,
-      "adshow": 1,
-      "punkt": "' . $x . ', ' . $y . '",
-      "moot": 1000,
-      "tooltip": "' . $tooltip . '",
-      "OTSINGUVALJANIMI": "kaaas",
-    "components": {
-      "navigation": {
-        "settings": {
-          "hidden": true,
-        }
-      },
-      "scalebar": {
-        "settings": {
-          "hidden": true,
-        }
-      }
-    },
-    }
-  })
-</script>';
+                  $locations[$location_key]->full_map = '<iframe height="300" width="100%" src="https://xgis.maaamet.ee/xgis2/page/app/maainfo?punkt='.$x.','.$y.'&moot='.$zoomlevel.'&tooltip='.$tooltip.'"></iframe>';
                 }
               }
             }
@@ -141,20 +108,30 @@ function hitsa_locations_block_content($type = 'primary')
           }
           $coordinates = variable_get('place_' . $location->nid . '_map');
           $coordinates = json_decode($coordinates);
-          if(!empty($coordinates->addresses)){
+          if(!empty($location->field_maa_coordinates)){
+            $coordinates_entered = $location->field_maa_coordinates['und'][0]['value'];
+            $xycoords = explode(',',$coordinates_entered);
+            if(!empty($xycoords[0])){
+              $x = $xycoords[0];
+            }
+            if(!empty($xycoords[1])){
+              $y = $xycoords[1];
+            }
+          }
+          if(!empty($coordinates->addresses)&&empty($location->field_maa_coordinates)){
             if(!empty($coordinates->addresses[0])){
               if(!empty($coordinates->addresses[0]->viitepunkt_x)){
                 $x = $coordinates->addresses[0]->viitepunkt_x;
                 $y = $coordinates->addresses[0]->viitepunkt_y;
-                if(!empty($x) && !empty($y)){
 
-                  $locations[$location_key]->full_map = '<iframe height="300" width="100%" src="https://xgis.maaamet.ee/xgis2/page/app/maainfo?punkt='.$x.','.$y.'&moot='.$zoomlevel.'&tooltip='.$tooltip.'"></iframe>';
-
-                }
               }
             }
           }
+          if(!empty($x) && !empty($y)){
 
+            $locations[$location_key]->full_map = '<iframe height="300" width="100%" src="https://xgis.maaamet.ee/xgis2/page/app/maainfo?punkt='.$x.','.$y.'&moot='.$zoomlevel.'&tooltip='.$tooltip.'"></iframe>';
+
+          }
         }
       }
       return theme('locations_block', array('locations' => $locations, 'type' => 'secondary'));
