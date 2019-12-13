@@ -22,7 +22,6 @@
   <?php endif; ?>
 
   <div class="row-spacer-xs sm-hide"></div>
-
   <div class="row" <?php if (!empty($contact_filter)) {
                       print ' data-posturl="' . url('api/contact') . '" data-plugin="filterContents"';
                     } ?>>
@@ -104,7 +103,6 @@
                   <?php endif ?>
 
 
-
                   <?php if (!empty($body)) : ?>
                     <?php if (!empty($body[0]['safe_summary'])) : ?>
                       <div class="intro">
@@ -117,6 +115,7 @@
                       <?php if (!empty($body[0]['value'])) : ?>
                         <?php print $body[0]['value']; ?>
                       <?php endif; ?>
+                    </div>
                     </div>
                     <div class="sm-show">
                       <?php if (!empty($body[0]['safe_summary']) && !isset($only_table)) : ?>
@@ -163,7 +162,7 @@
                         <?php endif ?>
                       <?php endif ?>
                     <?php endif; ?>
-                  </div>
+<!--                  </div>-->
                   <?php if (!empty($cinfo_company)) : ?>
                     <p>
                       <b><?php print check_plain($cinfo_company[0]['safe_value']); ?></b>
@@ -258,8 +257,9 @@
                 </div>
                 <?php if ($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images') : ?>
                 <?php else : ?>
+
                   <div class="col-4 sm-12 col-offset-1 sm-offset-0">
-                  <?php endif ?>
+                <?php endif ?>
 
                   <?php if (empty($field_school_selections)) : ?>
 
