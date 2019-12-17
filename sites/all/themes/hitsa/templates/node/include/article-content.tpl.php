@@ -117,8 +117,9 @@
                       <?php endif; ?>
                     </div>
                     </div>
-                    <div class="sm-show">
                       <?php if (!empty($body[0]['safe_summary']) && !isset($only_table)) : ?>
+
+                  <div class="sm-show">
                         <div class="hidden-content" data-plugin="showMore">
                           <div class="text-center">
                             <a href="" class="link" data-anchor><?php print t('Read more') ?><span class="before-arrow_down"></span></a>
@@ -248,11 +249,11 @@
                   <?php if (!empty($contacts_block)) : ?>
                     <?php print $contacts_block ?>
                   <?php endif ?>
-                  <div class="row-spacer"></div>
-                  <div class="row-spacer"></div>
-                  <span class="article-date sm-hide">
-                    <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
-                  </span>
+<!--                  <div class="row-spacer"></div>-->
+<!--                  <div class="row-spacer"></div>-->
+<!--                  <span class="article-date sm-hide">-->
+<!--                    <i>--><?php //print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?><!--</i>-->
+<!--                  </span>-->
 
                 </div>
                 <?php if ($node->type === 'content_page' && $node->cp_type[LANGUAGE_NONE][0]['value'] === 'cp_simple_without_images') : ?>
@@ -325,11 +326,14 @@
 <!--                    </figure>-->
                   <?php endif; ?>
 
-                  <span class="article-date sm-show">
-                    <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
-                  </span>
+
 
                 </div>
+                  <div class="row-spacer"></div>
+                  <div class="row-spacer"></div>
+                  <span class="article-date">
+                    <i><?php print t('Last changed') . ': ' . date('d.m.Y', $node->changed); ?></i>
+                  </span>
                 <!--/col-4-->
 
               </div>

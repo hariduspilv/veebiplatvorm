@@ -1919,6 +1919,7 @@ function hitsa_events_htmlize_periods($periods)
         $today_month = date('m');
         $lastElement = end($period->events);
         foreach ($period->events as $key => $event_html) {
+          dpm($event_html);
           if (strval($period->active) == 'TRUE') {
             $days_start = date('d',$event_html['dates']['start']);
             $month_start = date('m',$event_html['dates']['start']);
@@ -1945,7 +1946,12 @@ function hitsa_events_htmlize_periods($periods)
                   $previous_periods[$period->tid]->events[] = $event_html;
                 }
 //              dpm($period->events[$key]);
-                continue;
+                if($event_html['dates']['end']!=$time){
+                  continue;
+                }
+                elseif($event_html['dates']['end']==$time){
+                  $event_html['html'] = str_replace('object-event object-inactive', 'object-event object-active',$event_html['html']);
+                }
               }
             }
 
@@ -3079,15 +3085,18 @@ function hitsa_events_attach_period_to_date($events = null, $periods = null, $ty
             }
             $ed = hitsa_events_get_event_date($event);
             $edm = hitsa_events_get_midnight($ed);
+
             foreach ($periods as $tid => $period) {
                 $pd = hitsa_events_get_period_dates($period);
                 // krumo('Sundmuse algus: ' . $ed['start']);
-                // krumo('Perioodi algus: ' . $pd['start']);
-                // krumo('Perioodi lopp: ' . $pd['end']);
                 $in_period = 'FALSE';
 //                krumo(date('d.m.Y',$pd['start']));
 //                krumo(date('d.m.Y',$pd['end']));
 //                krumo(date('d.m.Y',$edm['start']));
+              $tonight = (strtotime('midnight today'));
+                if($edm['end']==$tonight){
+                  $in_period = 'TRUE';
+                }
                 if ($edm['start'] >= $pd['start'] && $edm['start'] <= $pd['end']) {
                     $in_period = 'TRUE';
                 }

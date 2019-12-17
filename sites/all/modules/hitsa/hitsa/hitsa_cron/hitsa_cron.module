@@ -307,7 +307,8 @@ function hitsa_cron_run_update()
     '60',
     '61',
     '62',
-    '63'
+    '63',
+    '64'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -3321,7 +3322,7 @@ function hitsa_cron_up_63(){
     'bundle' => 'contact_location',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Siia sisestada maaameti koha koordinaadid kujul 6582339.93, 634569.68 <br> Kui on täidetud nii aadress kui koordinaadid eelistatakse koordinaate.',
+    'description' => 'Siia sisestada maaameti koha koordinaadid kujul 6582339.93, 634569.68 <br> Kui on täidetud nii aadress kui koordinaadid, siis eelistatakse koordinaate.<br> Koordinaadid on võimalik leida maaameti kaardilt <a target="_blank" href="https://xgis.maaamet.ee/xgis2/page/app/maainfo">Maa amet</a>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -3370,6 +3371,61 @@ function hitsa_cron_up_63(){
   foreach ($field_instances as $field_instance) {
     if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
       field_create_instance($field_instance);
+    };
+  }
+  return TRUE;
+}
+
+function hitsa_cron_up_64(){
+
+
+  $field_instances = array();
+
+  // Exported field_instance: 'node-contact_location-field_maa_coordinates'.
+  $field_instances['node-contact_location-field_maa_coordinates'] = array(
+    'bundle' => 'contact_location',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Siia sisestada maaameti koha koordinaadid kujul 6582339.93, 634569.68 <br> Kui on täidetud nii aadress kui koordinaadid, siis eelistatakse koordinaate.<br> Koordinaadid on võimalik leida maaameti kaardilt <a target="_blank" href="https://xgis.maaamet.ee/xgis2/page/app/maainfo">Maa amet</a>',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 19,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_maa_coordinates',
+    'label' => 'Maa ameti koordinaadid',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 5,
+    ),
+  );
+  foreach ($field_instances as $field_instance) {
+    if (!empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_update_instance($field_instance);
     };
   }
   return TRUE;
