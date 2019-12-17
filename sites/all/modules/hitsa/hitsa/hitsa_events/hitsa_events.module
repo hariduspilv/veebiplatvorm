@@ -1919,7 +1919,6 @@ function hitsa_events_htmlize_periods($periods)
         $today_month = date('m');
         $lastElement = end($period->events);
         foreach ($period->events as $key => $event_html) {
-          dpm($event_html);
           if (strval($period->active) == 'TRUE') {
             $days_start = date('d',$event_html['dates']['start']);
             $month_start = date('m',$event_html['dates']['start']);
