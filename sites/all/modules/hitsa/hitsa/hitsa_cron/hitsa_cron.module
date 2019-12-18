@@ -308,7 +308,8 @@ function hitsa_cron_run_update()
     '61',
     '62',
     '63',
-    '64'
+    '64',
+    '65'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -3421,6 +3422,328 @@ function hitsa_cron_up_64(){
       ),
       'type' => 'text_textfield',
       'weight' => 5,
+    ),
+  );
+  foreach ($field_instances as $field_instance) {
+    if (!empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_update_instance($field_instance);
+    };
+  }
+  return TRUE;
+}
+function hitsa_cron_up_65(){
+  $field_instances = array();
+  $field_instances['phone_nr'] = array(
+    'field_name' => 'phone_nr',
+    'entity_type' => 'node',
+    'bundle' => 'contact_location',
+    'label' => t('Phone Nr.'),
+    'description' => t('Example') . ': +372 55555555',
+    'required' => TRUE,
+    'widget' => array(
+      'type' => 'text_textfield',
+      'module' => 'text',
+      'weight' => 22,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+      )
+    )
+  );
+  $field_instances['e_mail'] = array(
+    'field_name' => 'e_mail',
+    'entity_type' => 'node',
+    'bundle' => 'contact_location',
+    'label' => t('E-Mail'),
+    'required' => TRUE,
+    'widget' => array(
+      'type' => 'email_textfield',
+      'module' => 'email',
+      'weight' => 23,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'email_default',
+      )
+    ));
+  $field_instances['location_address'] = array(
+    'field_name' => 'location_address',
+    'entity_type' => 'node',
+    'bundle' => 'contact_location',
+    'label' => t('Address'),
+    'required' => TRUE,
+    'widget' => array(
+      'type' => 'text_textfield',
+      'module' => 'text',
+      'weight' => 24,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+      )
+    )
+  );
+  $field_instances['location_visiting_hours'] = array(
+    'field_name' => 'location_visiting_hours',
+    'bundle' => 'contact_location',
+    'entity_type' => 'node',
+    'label' => t('Visiting hours'),
+    'description' => t('Example') . ': E-R kell 15-18',
+    'required' => TRUE,
+    'widget' => array(
+      'type' => 'text_textfield',
+      'module' => 'text',
+      'weight' => 25,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+      )
+    )
+  );
+  $field_instances['location_parking'] = array(
+    'field_name' => 'location_parking',
+    'bundle' => 'contact_location',
+    'entity_type' => 'node',
+    'label' => t('Parking'),
+    'widget' => array(
+      'type' => 'text_textarea',
+      'module' => 'text',
+      'weight' => 26,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+      )
+    )
+  );
+  $field_instances['location_parking_attachment'] = array(
+    'field_name' => 'location_parking_attachment',
+    'bundle' => 'contact_location',
+    'entity_type' => 'node',
+    'label' => t('Parking - Attachment'),
+    'widget' => array(
+      'type' => 'media_generic',
+      'weight' => 27,
+    ),
+    'settings' => array(
+      'description_field' => 1,
+      'file_extensions' => 'pdf doc docx rtf txt odt xls xlsx ods csv ppt odp pptx jpg jpeg png gif',
+    ),
+  );
+  $field_instances['location_transport'] = array(
+    'field_name' => 'location_transport',
+    'bundle' => 'contact_location',
+    'entity_type' => 'node',
+    'label' => t('Transportation'),
+    'widget' => array(
+      'type' => 'text_textarea',
+      'module' => 'text',
+      'weight' => 28,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+      )
+    )
+  );
+  $field_instances['location_coordinates'] = array(
+    'field_name' => 'location_coordinates',
+    'bundle' => 'contact_location',
+    'entity_type' => 'node',
+    'label' => t('Coordinates'),
+    'required' => 0,
+    'widget' => array(
+      'type' => 'geolocation_googlemap',
+      'module' => 'geolocation_googlemaps',
+      'weight' => 29,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'geolocation_text',
+      )
+    ));
+  // Exported field_instance: 'node-contact_location-field_hitsa_place_address'.
+  $field_instances['node-contact_location-field_hitsa_place_address'] = array(
+    'bundle' => 'contact_location',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 8,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_hitsa_place_address',
+    'label' => 'Maaameti aadress',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 30,
+    ),
+  );
+
+  // Exported field_instance: 'node-contact_location-field_hitsa_place_tooltip'.
+  $field_instances['node-contact_location-field_hitsa_place_tooltip'] = array(
+    'bundle' => 'contact_location',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 9,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_hitsa_place_tooltip',
+    'label' => 'Kaardi tooltip',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 31,
+    ),
+  );
+
+  // Exported field_instance: 'node-contact_location-field_hitsa_place_zoom'.
+  $field_instances['node-contact_location-field_hitsa_place_zoom'] = array(
+    'bundle' => 'contact_location',
+    'default_value' => array(
+      0 => array(
+        'value' => 1000,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 10,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_hitsa_place_zoom',
+    'label' => 'Kaardi suurendus',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 32,
+    ),
+  );
+
+  // Exported field_instance: 'node-contact_location-field_maa_coordinates'.
+  $field_instances['node-contact_location-field_maa_coordinates'] = array(
+    'bundle' => 'contact_location',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Siia sisestada maaameti koha koordinaadid kujul 6582339.93, 634569.68 <br> Kui on täidetud nii aadress kui koordinaadid, siis eelistatakse koordinaate.<br> Koordinaadid on võimalik leida maa-ameti kaardilt <a target="_blank" href="https://xgis.maaamet.ee/xgis2/page/app/maainfo">Maa-amet</a>',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 19,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_maa_coordinates',
+    'label' => 'Maa ameti koordinaadid',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 33,
     ),
   );
   foreach ($field_instances as $field_instance) {
