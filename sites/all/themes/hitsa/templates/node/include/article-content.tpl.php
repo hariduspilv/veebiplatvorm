@@ -116,54 +116,57 @@
                         <?php print $body[0]['value']; ?>
                       <?php endif; ?>
                     </div>
-                    </div>
                       <?php if (!empty($body[0]['safe_summary']) && !isset($only_table)) : ?>
+                        <div class="sm-show">
+                          <div class="hidden-content" data-plugin="showMore">
+                            <div class="text-center">
+                              <a href="" class="link" data-anchor><?php print t('Read more') ?><span class="before-arrow_down"></span></a>
+                            </div>
 
-                  <div class="sm-show">
-                        <div class="hidden-content" data-plugin="showMore">
-                          <div class="text-center">
-                            <a href="" class="link" data-anchor><?php print t('Read more') ?><span class="before-arrow_down"></span></a>
+                            <!--/text-center-->
+                            <div class="hidden-container" data-container>
+
+                              <?php print $body[0]['safe_value'] ?>
+                              <br>
+                              <?php if(!empty($tables)):?>
+                              <?php print $tables?>
+                              <?php endif?>
+                            </div>
+                            <!--/hidden-container-->
                           </div>
-
-                          <!--/text-center-->
-                          <div class="hidden-container" data-container>
-
-                            <?php print $body[0]['safe_value'] ?>
-                            <br>
-                            <?php if(!empty($tables)):?>
-                            <?php print $tables?>
-                            <?php endif?>
-                          </div>
-                          <!--/hidden-container-->
                         </div>
                         <!--/showMore-->
                       <?php else : ?>
                         <?php if (!isset($end)) : ?>
                           <?php if (!empty($start)) : ?>
+                          <div class="sm-show">
                             <?php print $start ?>
-
+                          </div>
                           <?php endif; ?>
                         <?php else : ?>
                           <?php if (!empty($start)) : ?>
+                            <div class="sm-show">
                             <?php print $start ?>
+                            </div>
                           <?php endif; ?>
                           <?php if (!empty($end)) : ?>
-                            <div class="hidden-content" data-plugin="showMore">
-                              <div class="text-center">
-                                <a href="" class="link" data-anchor><?php print t('Read more') ?><span class="before-arrow_down"></span></a>
+                            <div class="sm-show">
+                              <div class="hidden-content" data-plugin="showMore">
+                                <div class="text-center">
+                                  <a href="" class="link" data-anchor><?php print t('Read more') ?><span class="before-arrow_down"></span></a>
+                                </div>
+                                <!--/text-center-->
+                                <div class="hidden-container" data-container>
+                                  <?php print $end ?>
+                                </div>
+                                <!--/hidden-container-->
                               </div>
-                              <!--/text-center-->
-                              <div class="hidden-container" data-container>
-                                <?php print $end ?>
-                              </div>
-                              <!--/hidden-container-->
                             </div>
                             <!--/showMore-->
                           <?php endif; ?>
                         <?php endif ?>
                       <?php endif ?>
                     <?php endif; ?>
-<!--                  </div>-->
                   <?php if (!empty($cinfo_company)) : ?>
                     <p>
                       <b><?php print check_plain($cinfo_company[0]['safe_value']); ?></b>
