@@ -291,13 +291,13 @@
             
             <div class="block sm-opaque"  data-plugin="gallery" data-modal="true">
                
-               <h1 class="block-title">Kevadine spordipäev <a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a></h1>
+               <h1 class="block-title">Kevadine spordipäev <!--<a href="javascript:void(0);" data-close="true" class="btn btn-transparent pull-right after-close">Sulge</a>--></h1>
                
 					<div class="gallery-wrapper">
 						<div class="row">
 							<div class="col-12">
 								<div class="btn-bar align-right">
-									<a href="javscript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
+									<a href="javascript:void(0);" class="btn-circle before-share" data-plugin="share"></a>
 									<a href="javascript:window.print();" class="btn-circle before-print sm-hide"></a>
 									<a href="" id="download-link" target="_blank" class="btn-circle before-download"></a>
 								</div>
@@ -309,8 +309,8 @@
 
 								<ul class="gallery-thumbs">
 
-									<li><a href="javascript:void(0);" style="background-image:url(assets/tmp/object-1.jpg)" data-image="assets/tmp/object-1.jpg" data-download="assets/tmp/object-133.jpg" data-id="26988" title="Lorem ipsum dolor sit amet"><img src="assets/imgs/placeholder-1.gif" alt="Lorem ipsum dolor sit amet"></a></li>
-									<li><a href="javascript:void(0);" style="background-image:url(assets/tmp/object-2.jpg)" data-image="assets/tmp/object-2.jpg" data-download="assets/tmp/object-2.jpg" data-id="47494" title="Lorem ipsum dolor sit amet"><img src="assets/imgs/placeholder-1.gif" alt="Lorem ipsum dolor sit amet"></a></li>
+									<li><a href="javascript:void(0);" style="background-image:url(assets/tmp/pilt-1.jpeg)" data-image="assets/tmp/pilt-1.jpeg" data-download="assets/tmp/pilt-1.jpeg" data-id="26988" title="Lorem ipsum dolor sit amet"><img src="assets/imgs/placeholder-1.gif" alt="Lorem ipsum dolor sit amet"></a></li>
+									<li><a href="javascript:void(0);" style="background-image:url(assets/tmp/pilt-2.jpg)" data-image="assets/tmp/pilt-2.jpg" data-download="assets/tmp/pilt-2.jpg" data-id="47494" title="Lorem ipsum dolor sit amet"><img src="assets/imgs/placeholder-1.gif" alt="Lorem ipsum dolor sit amet"></a></li>
 									<li><a href="javascript:void(0);" style="background-image:url(assets/tmp/object-3.jpg)" data-image="assets/tmp/object-3.jpg" data-download="assets/tmp/object-3.jpg" data-id="43235" title="Metsas elasid põder, mutionu ja saiu küpsetav päka."><img src="assets/imgs/placeholder-1.gif" alt="Metsas elasid põder, mutionu ja saiu küpsetav päka."></a></li>
 									<li><a href="javascript:void(0);" style="background-image:url(assets/tmp/object-4.jpg)" data-image="assets/tmp/object-4.jpg" data-download="assets/tmp/object-4.jpg" data-id="34284" title="Dolor ipsum lorem amet"><img src="assets/imgs/placeholder-1.gif" alt="Dolor ipsum lorem amet"></a></li>
 									<li><a href="javascript:void(0);" style="background-image:url(assets/tmp/object-5.jpg)" data-image="assets/tmp/object-5.jpg" data-download="assets/tmp/object-5.jpg" data-id="32015" title="Dolor ipsum lorem amet"><img src="assets/imgs/placeholder-1.gif" alt="Dolor ipsum lorem amet"></a></li>
@@ -628,9 +628,10 @@
 										<div class="swiper-wrapper">
 
 											<div class="swiper-slide" data-image="?image?">
-												<div class="gallery-image" >
+												<a class="gallery-image" href="?href?" data-fancybox="gallery" data-caption="?caption?">
+                          <span class="before-picture"></span>
 													<img src="assets/imgs/placeholder-gallery.gif" />
-												</div><!--/gallery-image-->
+                        </a><!--/gallery-image-->
 												<div class="gallery-description">
 													<div class="gallery-title">?title?</div>
 													<div class="gallery-page">?currentImage?/?totalImages?</div>

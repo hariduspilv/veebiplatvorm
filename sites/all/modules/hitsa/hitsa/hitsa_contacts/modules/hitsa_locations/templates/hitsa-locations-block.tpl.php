@@ -109,7 +109,14 @@
         </div><!--/accordion-content-->
       </div><!--/accordion-entry-->
       <?php endif; ?>
-
+      <?php if(!empty($location->field_extra_info)):?>
+      <div class="accordion-entry">
+        <div class="accordion-title"><?php print t('Extra information'); ?></div>
+        <div class="accordion-content">
+          <?php print $location->field_extra_info[LANGUAGE_NONE][0]['safe_value']?>
+        </div>
+      </div>
+      <?php endif;?>
     </div><!--/accordion-->
 
   </div><!--/block-->

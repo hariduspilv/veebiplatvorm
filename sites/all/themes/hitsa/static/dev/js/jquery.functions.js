@@ -177,6 +177,21 @@ $.fn.swipeDetector = function (options) {
   return swipeTarget; // Return element available for chaining.
 }
 
+$.fn.checkHashScroll = function(){
+  var main = $(this);
+  function checkHashOnLoad() {
+    setTimeout(function() {
+      var orgScroll = main.offset().top;
+      var headerHeight = $(".header-nav").height();
+      var topScroll = orgScroll - headerHeight - 20;
+      if (window.location.hash) {
+        $(window).scrollTop(topScroll);
+      }
+    }, 250);
+  }
+  checkHashOnLoad();
+}
+
 $.fn.detailPictures = function(){
   var main = $(this);
   var thumbs = main.find("figure.little");

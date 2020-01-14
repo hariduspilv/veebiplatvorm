@@ -815,9 +815,11 @@ function hitsa_curriculum_custom_block($curriculum_type)
                 if (!is_object($menu_items['page_arguments'][0])) {
                     if (!empty($menu_items['page_arguments'][0])) {
                         $type = $menu_items['page_arguments'][0];
+                        print_r($type);
                     }
                     if (!empty($menu_items['page_arguments'][1])) {
                         $active_id = $menu_items['page_arguments'][1];
+                        print_r($active_id);
                     }
                 } else {
                     $node = $menu_items['page_arguments'][0];
@@ -882,7 +884,6 @@ function hitsa_curriculum_custom_block($curriculum_type)
             } else {
                 global $user;
                 if (!empty($user)) {
-                    if ($user->uid > 0) {
                         $content = null;
                         if (!empty($real_content)) {
                             if (!empty($real_content[is_object($active_id) ? $active_id->nid : $active_id])) {
@@ -909,15 +910,13 @@ function hitsa_curriculum_custom_block($curriculum_type)
                              return $afield->weight-$bfield->weight;
                            }
                           });
-                            foreach ($real_content as $real_content_key => $real_content_value) {
-                                $active_id = $real_content_value->nid;
-                                break;
-                            }
                         }
+
+                  if ($user->uid > 0) {
                         $edit_url = url('node/' . $active_id . '/edit');
                         $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
                         $tabs = $edit_links;
-                    }
+                  }
                 }
             }
         } else {
@@ -938,22 +937,39 @@ function hitsa_curriculum_custom_block($curriculum_type)
             }
         }
         $base_page=FALSE;
+        foreach ($real_content as $conn_key => $conntentt){
+          if(isset($conntentt->field_tab_weight)){
+            $conn_weight=$conntentt->field_tab_weight['und'][0]['value'];
+          }
+          $real_content[$conn_key]->tab_weight = $conn_weight;
+        }
+
+        usort($real_content, function ($a, $b) {
+          if($a->tab_weight!=$b->tab_weight) {
+            return $a->tab_weight - $b->tab_weight;
+          }
+          else{
+            return $a->created - $b->created;
+          }
+        });
         if (!empty($real_content)) {
             if (!empty($active_id) && node_load($active_id)->type!='curriculum') {
                 foreach ($real_content as $real_key => $real_value) {
-                    $active_id = $real_key;
+                    $active_id = $real_value->nid;
                     $base_page=TRUE;
                     break;
-            }
-        }
+                }
+          }
         }
         $left_side = hitsa_curriculum_generate_left_custom_titles($real_content, $type, $active_id);
         $content = null;
         if (!empty($active_id)) {
             if (!empty($real_content)) {
-                if (!empty($real_content[is_object($active_id) ? $active_id->nid : $active_id])) {
-                    $content = $real_content[is_object($active_id) ? $active_id->nid : $active_id];
+              foreach ($real_content as $pos_content){
+                if($pos_content->nid == $active_id){
+                  $content = $pos_content;
                 }
+              }
             }
         }
         if (empty($content)) {
@@ -976,7 +992,7 @@ function hitsa_curriculum_custom_block($curriculum_type)
 
             $output.='<div class="row-spacer"></div>';
         }
-        $output .= '<div class="block no-padding" ' . $id_block . ' data-plugin="scrollIfID">';
+        $output .= '<div class="block no-padding" ' . $id_block . ' data-plugin="checkHashScroll">';
         if(!empty($mobile_block)){
           $output.=$mobile_block;
         }
