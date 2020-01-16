@@ -3837,7 +3837,7 @@ function hitsa_cron_up_67(){
 
   foreach ($field_instances as $field_instance) {
     if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
-      field_update_instance($field_instance);
+      field_create_instance($field_instance);
     };
   }
   foreach ($field_bases as $field) {

@@ -923,19 +923,6 @@ function hitsa_curriculum_custom_block($curriculum_type)
             $tabs = menu_local_tabs();
             $tabs = drupal_render($tabs);
         }
-        if (empty($tabs)) {
-            if (!empty($active_id)) {
-                $edit_url = url('node/' . $active_id . '/edit');
-                $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
-                $tabs = $edit_links;
-            }
-        }
-        global $user;
-        if ($user->uid != 0) {
-            if (!empty($tabs)) {
-                $output .= $tabs;
-            }
-        }
         $base_page=FALSE;
         foreach ($real_content as $conn_key => $conntentt){
           if(isset($conntentt->field_tab_weight)){
@@ -959,6 +946,19 @@ function hitsa_curriculum_custom_block($curriculum_type)
                     $base_page=TRUE;
                     break;
                 }
+          }
+        }
+
+          if (!empty($active_id)) {
+            $edit_url = url('node/' . $active_id . '/edit');
+            $edit_links = '<ul class="tabs primary"><li><a href="' . $edit_url . '">' . t('Edit') . '</a></li></ul>';
+            $tabs = $edit_links;
+          }
+        
+        global $user;
+        if ($user->uid != 0) {
+          if (!empty($tabs)) {
+            $output .= $tabs;
           }
         }
         $left_side = hitsa_curriculum_generate_left_custom_titles($real_content, $type, $active_id);
