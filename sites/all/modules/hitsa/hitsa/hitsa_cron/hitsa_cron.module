@@ -3835,16 +3835,16 @@ function hitsa_cron_up_67(){
     ),
   );
 
-  foreach ($field_instances as $field_instance) {
-    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
-      field_create_instance($field_instance);
-    };
-  }
   foreach ($field_bases as $field) {
     $field_test = field_info_field($field['field_name']);
     if (empty($field_test)) {
       field_create_field($field);
     }
+  }
+  foreach ($field_instances as $field_instance) {
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_create_instance($field_instance);
+    };
   }
   return TRUE;
 }
