@@ -3096,6 +3096,12 @@ function hitsa_events_attach_period_to_date($events = null, $periods = null, $ty
                 if($edm['end']==$tonight){
                   $in_period = 'TRUE';
                 }
+                if($tonight<$pd['start'] && $tonight<$pd['end']){
+                  $in_period = 'FALSE';
+                }
+                if($tonight>$pd['start'] && $tonight>$pd['end']){
+                  $in_period = 'FALSE';
+                }
                 if ($edm['start'] >= $pd['start'] && $edm['start'] <= $pd['end']) {
                     $in_period = 'TRUE';
                 }
