@@ -125,10 +125,18 @@
 
                             <!--/text-center-->
                             <div class="hidden-container" data-container>
-
+                              <?php if (empty($start) && empty($tables)):?>
                               <?php print $body[0]['safe_value'] ?>
+                              <?php else:?>
+                              <?php if (!empty($start)):?>
+                                <?php print $start?>
+                              <?php endif;?>
+                              <?php if (!empty($end) && !empty($tables)):?>
+                                <?php print $end?>
+                              <?php endif;?>
+                              <?php endif;?>
                               <br>
-                              <?php if(!empty($tables)):?>
+                              <?php if(!empty($tables) &&empty($end)):?>
                               <?php print $tables?>
                               <?php endif?>
                             </div>
