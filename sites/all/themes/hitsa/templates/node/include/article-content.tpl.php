@@ -139,6 +139,11 @@
                               <?php if(!empty($tables) &&empty($end)):?>
                               <?php print $tables?>
                               <?php endif?>
+                              <?php if(!empty($body[0]['summary']) && !empty($start)&& empty($tables)):?>
+                              <?php if(!empty($end)):?>
+                                  <?php print $end?>
+                                <?php endif;?>
+                              <?php endif;?>
                             </div>
                             <!--/hidden-container-->
                           </div>
