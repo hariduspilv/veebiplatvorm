@@ -44,7 +44,6 @@ dependencies[] = geocoder
 dependencies[] = googleanalytics
 dependencies[] = google_tag
 dependencies[] = site_verify
-dependencies[] = ultimate_cron
 dependencies[] = hitsa_core
 dependencies[] = hitsa_contacts
 dependencies[] = hitsa_locations

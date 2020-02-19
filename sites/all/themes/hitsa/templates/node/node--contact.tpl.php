@@ -134,8 +134,17 @@
       </div><!--/object-content_col-->
       <div class="object-content_col">
         <?php if(!empty($content['field_extra_info'])):?>
-        <?php print render($content['field_extra_info'])?>
-        <?php endif?>
+        <?php if(!empty($content['field_extra_info'][0])):?>
+        <?php if(!empty($content['field_extra_info'][0]['#markup'])):?>
+        <?php if(strpos($content['field_extra_info'][0]['#markup'],'Lisainfo tekst')!==false):?>
+        <?php else:?>
+                <?php if(!empty($content['field_extra_info'])):?>
+                  <?php print render($content['field_extra_info'])?>
+                <?php endif?>
+            <?php endif;?>
+        <?php endif ?>
+        <?php endif ?>
+        <?php endif ?>
         <?php if(!empty($content['reception_times'])): ?>
         <?php $reception = '';?>
 

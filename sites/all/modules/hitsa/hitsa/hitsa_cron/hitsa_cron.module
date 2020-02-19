@@ -123,38 +123,44 @@ function hitsa_cron_activate_update()
   }
 }
 function hitsa_cron_cron(){
-  $current_time = time();
-  $current_hour = date('G',$current_time);
-  $current_minute = date('i',$current_time);
-  $random_time = variable_get('hitsa_cron_random_time');
-  if (empty($random_time)) {
-    $random_time = rand(1, 60);
-    variable_set('hitsa_cron_random_time', $random_time);
-  }
-  if($current_hour==2){
-    if($current_minute>=$random_time) {
-      hitsa_cron_run_update();
-      $what_ran = 'General updates';
-    }
-  }
-  elseif ($current_hour==3){
-    if($current_minute>=$random_time) {
-      module_load_include('inc', 'hitsa_color', 'includes/hitsa_color');
-      hitsa_color_grunt_runner();
-      $what_ran = 'Grunt ran';
-    }
-  }
-  elseif ($current_hour==4){
-    if($current_minute>=$random_time) {
-      module_load_include('inc', 'hitsa_cron', 'hitsa_cron_translation_updater');
-      hitsa_cron_update_translations();
-      $what_ran = 'Translations were updated';
-    }
-  }
-  if(!empty($what_ran)){
-    watchdog('Cron',$what_ran,array(),WATCHDOG_NOTICE);
-    drupal_flush_all_caches();
-  }
+
+  hitsa_cron_run_update();
+  module_load_include('inc', 'hitsa_color', 'includes/hitsa_color');
+  hitsa_color_grunt_runner();
+//  module_load_include('inc', 'hitsa_cron', 'hitsa_cron_translation_updater');
+//  hitsa_cron_update_translations();
+//  $current_time = time();
+//  $current_hour = date('G',$current_time);
+//  $current_minute = date('i',$current_time);
+//  $random_time = variable_get('hitsa_cron_random_time');
+//  if (empty($random_time)) {
+//    $random_time = rand(1, 60);
+//    variable_set('hitsa_cron_random_time', $random_time);
+//  }
+//  if($current_hour==2){
+//    if($current_minute>=$random_time) {
+//      hitsa_cron_run_update();
+//      $what_ran = 'General updates';
+//    }
+//  }
+//  elseif ($current_hour==3){
+//    if($current_minute>=$random_time) {
+//      module_load_include('inc', 'hitsa_color', 'includes/hitsa_color');
+//      hitsa_color_grunt_runner();
+//      $what_ran = 'Grunt ran';
+//    }
+//  }
+//  elseif ($current_hour==4){
+//    if($current_minute>=$random_time) {
+//      module_load_include('inc', 'hitsa_cron', 'hitsa_cron_translation_updater');
+//      hitsa_cron_update_translations();
+//      $what_ran = 'Translations were updated';
+//    }
+//  }
+//  if(!empty($what_ran)){
+//    watchdog('Cron',$what_ran,array(),WATCHDOG_NOTICE);
+//    drupal_flush_all_caches();
+//  }
 
 }
 /**
@@ -311,7 +317,9 @@ function hitsa_cron_run_update()
     '64',
     '65',
     '66',
-    '67'
+    '67',
+    '68',
+    '69'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -3846,5 +3854,97 @@ function hitsa_cron_up_67(){
       field_create_instance($field_instance);
     };
   }
+  return TRUE;
+}
+function hitsa_cron_up_68(){
+  $field_instances = array();
+
+  // Exported field_instance: 'node-contact_location-field_extra_info_title'.
+  $field_instances['node-contact_location-field_extra_info_title'] = array(
+    'bundle' => 'contact_location',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 37,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_extra_info_title',
+    'label' => 'Lisainfo pealkiri',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 16,
+    ),
+  );
+  $field_bases['field_extra_info_title'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_extra_info_title',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'entity_translation_sync' => FALSE,
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+  foreach ($field_bases as $field) {
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+      field_create_field($field);
+    }
+  }
+  foreach ($field_instances as $field_instance) {
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_create_instance($field_instance);
+    };
+  }
+  return TRUE;
+}
+function hitsa_cron_up_69(){
+  $modules = array(
+    'ultimate_cron'
+  );
+  foreach ($modules as $module) {
+    if (module_exists($module)) {
+      module_disable(array($module));
+    }
+  }
+  variable_set('cron_safe_threshold','43200');
+
   return TRUE;
 }

@@ -111,7 +111,11 @@
       <?php endif; ?>
       <?php if(!empty($location->field_extra_info)):?>
       <div class="accordion-entry">
+        <?php if(!empty($location->field_extra_info_title)):?>
+          <div class="accordion-title"><?php print $location->field_extra_info_title[LANGUAGE_NONE][0]['safe_value'] ?></div>
+        <?php else:?>
         <div class="accordion-title"><?php print t('Extra information'); ?></div>
+        <?php endif?>
         <div class="accordion-content">
           <?php print $location->field_extra_info[LANGUAGE_NONE][0]['safe_value']?>
         </div>

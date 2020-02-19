@@ -1028,10 +1028,10 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
                 $type = 'training';
             }
         }
-        if ($type == 'training') {
-            if (!empty($event->field_training_cost)) {
-                $training_cost = '<span class="before-money">' . $event->field_training_cost['und'][0]['value'] . ' €</span>';
-            }
+      if (!empty($event->field_training_cost)) {
+        $training_cost = '<span class="before-money">' . $event->field_training_cost['und'][0]['value'] . ' €</span>';
+      }
+
             if (!empty($event->field_training_tags)) {
                 $tags = array();
                 foreach ($event->field_training_tags['und'] as $training_tag) {
@@ -1045,7 +1045,7 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
                     $training_tags .= '<li><a href="">' . $tag . '</a></li>';
                 }
             }
-        }
+
         if ($type == 'training' || $type == 'event') {
             if (!empty($event->field_registration_form)) {
                 $reg_form_id = $event->field_registration_form['und'][0]['target_id'];
@@ -1114,7 +1114,8 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         }
         $output .= (!empty($time_hours_minutes_all)) ? $time_hours_minutes_all . ' ' : '';
         $output .= (!empty($time_hours_minutes)) ? $time_hours_minutes . '' : '';
-        $output .= ($type == 'training' && !empty($training_cost)) ? ' ' . $training_cost . ' ' : '';
+
+        $output .= (!empty($training_cost)) ? ' ' . $training_cost . ' ' : '';
 //        $output.= ($type!='training')?'<a class="before-calendar">'.t('Add to calendar').'</a>':'';
         if (!empty($time_hours_minutes_all) || !empty($time_hours_minutes) || !empty($location_ready)) {
             $output .= '<br />';
