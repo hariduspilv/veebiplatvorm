@@ -252,6 +252,29 @@ function hitsa_content_page_preprocess_node(&$variables)
         $variables['end']=$tables;
       }
     }
+    if(!empty($variables['end'])){
+      $text = $variables['end'];
+      $pattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
+      preg_match_all($pattern, $text, $matches);
+      $emails = $matches[0];
+      foreach ($emails as $email){
+        $new_mail = hitsa_core_email_obfuscator_link($email,'email');
+        $text = str_replace($email,$new_mail,$text);
+      }
+
+      $variables['end']=$text;
+    }
+    if(!empty($variables['start'])){
+      $text = $variables['start'];
+      $pattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
+      preg_match_all($pattern, $text, $matches);
+      $emails = $matches[0];
+      foreach ($emails as $email){
+        $new_mail = hitsa_core_email_obfuscator_link($email,'email');
+        $text = str_replace($email,$new_mail,$text);
+      }
+      $variables['start']=$text;
+    }
   }
   if ($variables['type'] === 'content_page') {
     if ($variables['view_mode'] === 'full') {

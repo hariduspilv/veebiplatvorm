@@ -12,12 +12,12 @@
        <?php print nl2br($subpage->subpage_body[LANGUAGE_NONE][0]['safe_summary']); ?>
     </div><!--/intro-->
     <?php endif; ?>
-    
+
     <?php if(!empty($subpage->subpage_body[LANGUAGE_NONE][0]['safe_value'])): ?>
       <?php print nl2br($subpage->subpage_body[LANGUAGE_NONE][0]['safe_value']); ?>
     <?php endif; ?>
   <?php endif; ?>
-  
+
   <?php if(!empty($subpage->subpage_images)): ?>
     <div class="row">
     <?php foreach($subpage->subpage_images[LANGUAGE_NONE] as $image): ?>
@@ -30,7 +30,7 @@
     <?php endforeach; ?>
     </div>
   <?php endif; ?>
-  
+
   <?php if(!empty($subpage->cinfo_contact_person)): ?>
     <p>
       <b><?php print check_plain($subpage->cinfo_contact_person[LANGUAGE_NONE][0]['safe_value']); ?></b>
@@ -54,9 +54,7 @@
        <div class="before-envelope"></div>
        <div class="list-details_text">
           <p>
-            <a href="mailto:<?php print check_plain($subpage->cinfo_e_mail[LANGUAGE_NONE][0]['email']); ?>">
-              <?php print check_plain($subpage->cinfo_e_mail[LANGUAGE_NONE][0]['email']); ?>
-            </a>
+            <?php print hitsa_core_email_obfuscator_link($subpage->cinfo_e_mail['und'][0]['email'],'mailto')?>
           </p>
        </div><!--/list-details_text-->
     </li>

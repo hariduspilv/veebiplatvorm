@@ -65,7 +65,6 @@ function hitsa_preprocess_page(&$variables)
         drupal_add_html_head_link(array('rel' => 'icon', 'href' => drupal_strip_dangerous_protocols($favicon), 'type' => $type));
     }
 }
-
 function hitsa_preprocess_hitsa_front_content(&$variables)
 {
     if (module_exists('hitsa_articles')) { // HITSA Articles module
@@ -1484,6 +1483,17 @@ function hitsa_preprocess_html(&$variables){
   }
 
 function hitsa_preprocess_node(&$variables){
+  if(!empty($variables['body'])){
+    $body = $variables['body'][0]['value'];
+    $pattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
+    preg_match_all($pattern, $body, $matches);
+    $emails = $matches[0];
+    foreach ($emails as $email){
+     $new_mail = hitsa_core_email_obfuscator_link($email,'email');
+     $body = str_replace($email,$new_mail,$body);
+      $variables['body'][0]['value']=$body;
+    }
+  }
   if(!empty($variables['subpage_images'])||!empty($variables['cp_image'])){
     if(!empty($variables['subpage_images'])){
       $image_field = 'subpage_images';

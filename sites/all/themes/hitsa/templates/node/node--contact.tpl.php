@@ -123,7 +123,7 @@
             <?php print check_plain($p['safe_value']); ?><br />
           <?php endforeach; endif; ?>
           <?php if(!empty($node->e_mail[LANGUAGE_NONE][0]['email'])): // E-mail ?>
-          <?php print spamspan(check_plain($node->e_mail[LANGUAGE_NONE][0]['email'])); ?>
+            <?php print hitsa_core_email_obfuscator_link($node->e_mail['und'][0]['email'],'mailto')?>
           <?php endif; ?>
           <?php if(!empty($node->field_contact_education[LANGUAGE_NONE][0]['value'])): // Education info ?>
             <p>

@@ -217,7 +217,6 @@ function hitsa_contacts_filter() {
       $nodes[] = node_view($n);
     }
   }
-
   $contact_accordion = theme('contacts_page_accordion',
     array(
       'nodes' => !empty($nodes_grouped) ? $nodes_grouped : $nodes,
@@ -380,6 +379,9 @@ function _hitsa_contacts_group_by_department($nids_array) {
     $nodes = node_load_multiple($nids);
     $contact_department_node_values = _hitsa_contacts_get_department_node_values();
     foreach($nodes as $node) {
+//      if(!empty($node->e_mail)){
+//        $node->e_mail = hitsa_core_email_obfuscator_link($node->e_mail['und'][0]['email'],'mailto');
+//      }
       if(!empty($node->contact_departments[LANGUAGE_NONE])) {
         $node_departments = $node->contact_departments[LANGUAGE_NONE];
         foreach($node_departments as $d) {

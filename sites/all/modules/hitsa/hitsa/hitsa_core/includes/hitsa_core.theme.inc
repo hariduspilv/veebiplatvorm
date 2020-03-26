@@ -341,14 +341,15 @@ function hitsa_core_preprocess_hitsa_footer(&$variables)
   $general_contact_address = variable_get_value('general_contact_address');
   $general_contact_phone_nr = variable_get_value('general_contact_phone_nr');
   $general_contact_email = variable_get_value('general_contact_email');
+  $new_mail = hitsa_core_email_obfuscator_link($general_contact_email,'mailto');
+
   $variables['footer_general_contact'] = sprintf(
     '%s<br>%s<br>%s<br>%s',
     check_plain($general_contact_name),
     check_plain($general_contact_address),
     check_plain($general_contact_phone_nr),
-    spamspan(check_plain($general_contact_email))
+    $new_mail
   );
-
 
   // Important contacts
   $important_contacts = '';

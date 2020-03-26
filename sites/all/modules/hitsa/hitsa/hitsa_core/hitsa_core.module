@@ -1409,3 +1409,48 @@ function hitsa_core_taxonomy_term_update($term){
   }
   return $term;
 }
+
+/**
+ * @param null $email Email address to obfuscate
+ * @param null $format Type to obfuscate also to include mailto or not
+ */
+function hitsa_core_email_obfuscator($email=null,$format=null){
+  $crackme = "";
+  $crackme_mailto = "";
+  $email_mailto = "";
+  if($format=='mailto') {
+    $email_mailto = 'mailto:' . $email;
+    for ($i=0; $i<strlen($email_mailto); $i++){
+      $crackme_mailto .= "&#" . ord($email_mailto[$i]) . ";";
+    }
+  }
+  for ($i=0; $i<strlen($email); $i++){
+    $crackme .= "&#" . ord($email[$i]) . ";";
+  }
+  return array(
+    'email' => $crackme,
+    'mailto' => $crackme_mailto
+  );
+}
+
+function hitsa_core_email_obfuscator_link($email,$mailto){
+  global $language;
+  if(isset ($email['und'])){
+    $email = $email['und'][0]['email'];
+  }
+  elseif(isset ($email[$language->language])){
+    $email = $email[$language->language][0]['email'];
+  }
+  $emails = hitsa_core_email_obfuscator($email,$mailto);
+  $output = '';
+  if(!empty($emails['email'])){
+    if(!empty($emails['mailto'])){
+      $output.= '<a href="'.$emails['mailto'].'">'.$emails['email'].'</a>';
+    }
+    else{
+      $output = $emails['email'];
+    }
+  }
+  return $output;
+
+}

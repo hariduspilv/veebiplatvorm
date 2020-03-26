@@ -44,7 +44,7 @@
                 </p>
                 <div class="d-none">
                                   <div id="email-<?php print $i?>" class="tooltip-content">
-                                    <a href="mailto:vkhk@vkhk.ee" class="highlight-1"> <?php print spamspan(check_plain($location->e_mail[LANGUAGE_NONE][0]['email'])); ?></a>
+                                    <?php print hitsa_core_email_obfuscator_link($location->e_mail,'mailto')?>
                                   </div><!--tooltip-content-->
                                  </div><!--/d-none-->
               </div><!--/list-details_text-->
