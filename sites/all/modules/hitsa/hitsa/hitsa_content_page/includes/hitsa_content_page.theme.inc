@@ -73,8 +73,15 @@ function hitsa_content_page_preprocess_node(&$variables)
   if ($variables['type'] === 'event') {
     $dates = $variables['event_date'][0];
     $variables['start_date'] = date('d', $dates['value']);
+
     if ($dates['value'] != $dates['value2']) {
-      $variables['end_date'] = format_date($dates['value'], 'custom', 'd. ' . t('M'));
+      $variables['end_date'] = format_date($dates['value2'], 'custom', 'd. ' . t('M'));
+    }
+    else{
+      $variables['start_date'] = format_date($dates['value'], 'custom', 'd. ' . t('M').' Y');
+    }
+    if(empty($dates['value2'])){
+      $variables['start_date'] = format_date($dates['value'], 'custom', 'd. ' . t('M').' Y');
     }
     if (!empty($variables['field_event_type'])) {
       $have_event = FALSE;

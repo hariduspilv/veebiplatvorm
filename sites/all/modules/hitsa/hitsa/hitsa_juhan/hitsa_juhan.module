@@ -1,0 +1,575 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function hitsa_juhan_menu()
+{
+  $items = [];
+  $items['admin/hitsa/juhan_settings'] = array(
+    'title' => t('Juhan seaded'),
+    'position' => 'left',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -19,
+    'page callback' => 'hitsa_juhan_settings',
+    'access arguments' => array('administer hitsa page settings'),
+    'file' => 'includes/hitsa_juhan.admin.inc',
+  );
+  $items['juhan/request_trainings']=array(
+    'title' => t('This will get Juhan trainings'),
+    'page callback' => 'hitsa_juhan_get_trainings',
+    'access arguments' => true,
+  );
+  return $items;
+}
+function hitsa_juhan_cron(){
+  hitsa_juhan_get_trainings();
+}
+function hitsa_juhan_get_trainings(){
+  $url = 'https://koolitus.edu.ee/api/';
+  $saved_url = variable_get('juhan_url');
+  if(!empty($saved_url)){
+    $url = $saved_url;
+  }
+  $what_to_get = 'trainings';
+  $url .=$what_to_get;
+  $api_key = variable_get('juhan_api_key');
+  $options = [
+    'headers'=>[
+      'Authorization'=> 'Bearer '.$api_key
+    ],
+    'method' => 'GET'
+  ];
+  if(!empty($api_key)) {
+    $request = drupal_http_request($url, $options);
+  }
+  else{
+    $request = drupal_http_request($url);
+  }
+//  krumo($request);
+  if($request->code==200){
+    if(!empty($request->data)){
+      $data = $request->data;
+      $trainings = json_decode($data);
+      unset($data);
+      hitsa_juhan_loop_trainings($trainings);
+    }
+  }
+  else{
+    watchdog('error','Juhaniga ühenduse saamisel tekkis viga');
+  }
+}
+
+/**
+ * @param $trainings - JUHANIST tulevad koolitused.
+ * Function that loops trough trainins
+ */
+function hitsa_juhan_loop_trainings($trainings){
+  if(is_array($trainings)){
+    $count = 0;
+    $statuses = [];
+    foreach ($trainings as $training){
+      if(!empty($training->status)){
+        if($training->status=='F' || $training->status=='H' || $training->status=='D' || $training->status=='A' || $training->status=='X'){
+          continue;
+        }
+      }
+      $statuses[$training->status] = $training->status;
+      $old = hitsa_juhan_look_for_old($training->id);
+
+      $language_list = language_list();
+      $language = reset($language_list);
+
+      if(empty($old)){
+      $node =  new stdClass();
+      $node-> type = 'event';
+      if(!empty($language)){
+        $node->language = $language-> language;
+      }
+      else{
+        $node->language = 'et';
+      }
+
+      $node-> field_event_type['und'][0]['value'] = 'training';
+      $node-> field_juhan_koolitus['und'][0]['value'] = 1 ;
+      node_object_prepare($node);
+        if(!empty($training->venueName)){
+          $vid = taxonomy_vocabulary_machine_name_load('hitsa_locations')->vid;
+          $taxonomy_tree = taxonomy_get_tree($vid,0,NULL,TRUE);
+          if(!empty($taxonomy_tree)){
+            $taxonomy_tree_by_name = [];
+            foreach ($taxonomy_tree as $term){
+              $taxonomy_tree_by_name[$term->name] = $term->tid;
+            }
+            if(isset($taxonomy_tree_by_name[$training->venueName])){
+              $tid = hitsa_juhan_check_term($training,$vid,'hitsa_locations',$taxonomy_tree_by_name[$training->venueName]);
+            }
+            else{
+              $tid = hitsa_juhan_check_term($training,$vid,'hitsa_locations',null);
+            }
+          }
+          else{
+            $tid = hitsa_juhan_check_term($training,$vid,'hitsa_locations',null);
+          }
+          if(!empty($tid)){
+                $node->locations['et'][0]['tid'] = $tid;
+          }
+        }
+      if(!empty($training->startingDate)){
+        $start_date = $training->startingDate;
+        $start_date = hitsa_juhan_change_date($start_date);
+        $node->event_date['und'][0]['value'] = $start_date;
+      }
+      if(!empty($training->endingDate)){
+        $end_date =  $training->endingDate;
+        $end_date = hitsa_juhan_change_date($end_date);
+        $node->event_date['und'][0]['value2'] = $end_date;
+      }
+      if(!empty($training->courseDescription)){
+        $body = '';
+        $description = $training->courseDescription;
+        if(!empty($description->trainingName)){
+          $node->title = $description->trainingName;
+        }
+        /// Seda ilmselt pole vaja
+//        if(!empty($description->fullDescription)){
+//          $body .= $description->fullDescription;
+//        }
+
+        if(!empty($description->pricePerParticipant)){
+            $node->field_training_cost['und'][0]['value'] = $description->pricePerParticipant;
+        }
+        if(!empty($description->description)){
+          $body .= $description->description;
+        }
+        if(!empty($description->lead)){
+          $node->body['und'][0]['summary'] = $description->lead;
+        }
+        if(!empty($description->targetGroupText)){
+          $body.= '<br> <b>Sihtgrupid:</b>';
+          $body.= '<br>'.$description->targetGroupText;
+        }
+        if(!empty($description->academicHours)){
+          $body.= '<br><b>Maht:</b> '. $description->academicHours.' akad. tundi';
+        }
+        if(!empty($description->academicHoursAuditorium) || !empty($description->academicHoursPractical)|| !empty($description->academicHoursIndependent)){
+          $body.='<ul>';
+          if(!empty($description->academicHoursAuditorium)){
+            $body.='<li>'.'Auditoorne: '.$description->academicHoursAuditorium.' akad. tundi</li>';
+          }
+          if(!empty($description->academicHoursPractical)){
+            $body.='<li>'.'Praktika: '.$description->academicHoursPractical.' akad. tundi</li>';
+          }
+          if(!empty($description->academicHoursIndependent)){
+            $body.='<li>'.'Iseseisev töö: '.$description->academicHoursIndependent.' akad. tundi</li>';
+          }
+          $body.='</ul>';
+        }
+
+        if(!empty($description->institution)){
+          if(!empty($description->institution->name)){
+            $node->field_juhan_organiser['und'][0]['value'] =  $description->institution->name;
+          }
+        }
+      }
+      if(!empty($training->id)){
+        $node->field_juhani_id['und'][0]['value'] = $training->id;
+      }
+        if(!empty($training->publicUrl)){
+          $juhan_url = $training->publicUrl;
+        }
+        else{
+          $juhan_url = 'https://koolitus.edu.ee/training/'.$training->id;
+        }
+      if(!empty($juhan_url)){
+        $node->field_juhan_url['und'][0]['value'] = $juhan_url;
+      }
+        $current_time= time();
+
+        if($end_date>$current_time) {
+          if (!empty($training->registrationOpened)) {
+//          $regStart = hitsa_juhan_change_date($training->registrationOpened);
+            $body .= '<br/><b> Registreerimine avatud: </b>' . $training->registrationOpened;
+          }
+          if (!empty($training->registrationClosed)) {
+//          $regStart = hitsa_juhan_change_date($training->registrationOpened);
+            $body .= '<br/><b> Registreerimine suletud alates: </b>' . $training->registrationClosed;
+          }
+        }
+
+        if ($training->status=='C'){
+          $body.= '<br><b>Tühistatud</b>';
+        }
+
+        if(isset($training->esf)){
+          if($training->esf==true){
+            $body.='<div class="row">';
+            $body.='<div class="col-6">';
+            $body.='<br/><img style="width: 100%" src="/sites/all/themes/hitsa/static/assets/imgs/ESF.jpg" title="ESF Logo">';
+            $body.='</div>';
+            $body.='</div>';
+          }
+        }
+        $body .= '<br/><br/><a target="_blank" href = "'.$juhan_url.'"class="btn sm-strech">Lisainfo</a>';
+      if(!empty($body)){
+        $node->body['und'][0]['value'] = $body;
+        $node->body['und'][0]['safe_value'] = check_plain($body);
+      }
+
+      node_save($node);
+//      if(!empty($training->projectManager)) {
+//
+//        $entity = entity_create('paragraphs_item', array('field_name' => 'field_contacts', 'bundle' => 'contacts'));
+//        $projectManager = $training->projectManager;
+//        if(!empty($projectManager->projectManagerFullName)) {
+//          $entity->field_contact_title['und'][0]['value'] = $projectManager->projectManagerFullName;
+//        }
+//        if(!empty($projectManager->email)) {
+//          $entity->field_contact_email['und'][0]['email'] = $projectManager->email;
+//        }
+//        if(!empty($projectManager->phone)) {
+//          $entity->field_phone_number['und'][0]['value'] = $projectManager->phone;
+//        }
+//        if(!empty($training->venueFullAddress)){
+//          $entity->field_address['und'][0]['value'] = $training->venueFullAddress;
+//        }
+//        $entity->setHostEntity('node', $node);
+//        $entity->save();
+//      }
+      }
+      else{
+        hitsa_juhan_check_if_changed($old,$training);
+      }
+      $count++;
+      if($count==10){
+//        break;
+      }
+    }
+//    exit();
+  }
+}
+function hitsa_juhan_change_date($date){
+  if(!empty($date)){
+    return strtotime($date);
+  }
+
+}
+function hitsa_juhan_check_term($content,$vid,$voc,$tid=null){
+  if($voc =='hitsa_locations'){
+    $changed = false;
+    if(empty($tid)) {
+      $term = new stdClass();
+    }
+    else{
+      $term = taxonomy_term_load($tid);
+    }
+    if(!empty($content->venueName)){
+      if(empty($term->name)) {
+        $term->name = $content->venueName;
+        $changed = true;
+      }
+      else{
+        if($term->name!=$content->venueName){
+          $changed = true;
+        }
+      }
+      if(empty($tid)) {
+        $term->vid = $vid;
+        $changed = true;
+      }
+      $address = '';
+      if(!empty($content->venueAddress)){
+        $address.= $content->venueAddress;
+        if(!empty($content->venueCity)||!empty($content->venueCounty)){
+          $address.=', ';
+        }
+      }
+      if(!empty($content->venueCity)){
+        $address.= $content->venueCity;
+        if(!empty($content->venueCounty)){
+          $address.=', ';
+        }
+      }
+      if(!empty($content->venueCounty)){
+        $address.= $content->venueCounty;
+      }
+      if(empty($term->field_address)) {
+        if (!empty($address)) {
+          $term->field_address['und'][0]['value'] = $address;
+        }
+      }
+      else{
+        if( $term->field_address['und'][0]['value'] != $address){
+          $term->field_address['und'][0]['value'] = $address;
+          $changed = true;
+        }
+      }
+      if($changed) {
+        taxonomy_term_save($term);
+      }
+      if(!empty($term)){
+        $tid = $term->tid;
+      }
+    }
+  }
+  if(!empty($tid)){
+    return $tid;
+  }
+}
+/**
+ * @param $old -Old saved training id
+ * @param $training - Trainging from JUHAN
+ */
+function hitsa_juhan_check_if_changed($old,$training){
+  if(!empty($old)){
+    $node = node_load($old);
+    if(!empty($training->status)){
+      if($training->status=='D'||$training->status=='A'|| $training->status=='H'){
+        node_delete($node->nid);
+        return;
+      }
+    }
+    if(!empty($node->body['und'][0]['value'])) {
+      $existing_body = $node->body['und'][0]['value'];
+    }
+    else{
+      $existing_body = '';
+    }
+
+    $changed=false;
+    $body = '';
+    if(!empty($training->venueName)){
+      $vid = taxonomy_vocabulary_machine_name_load('hitsa_locations')->vid;
+      $taxonomy_tree = taxonomy_get_tree($vid,0,NULL,TRUE);
+      if(!empty($taxonomy_tree)){
+        $taxonomy_tree_by_name = [];
+        foreach ($taxonomy_tree as $term){
+          $taxonomy_tree_by_name[$term->name] = $term->tid;
+        }
+        if(isset($taxonomy_tree_by_name[$training->venueName])){
+          $tid = hitsa_juhan_check_term($training,$vid,'hitsa_locations',$taxonomy_tree_by_name[$training->venueName]);
+        }
+        else{
+          $tid = hitsa_juhan_check_term($training,$vid,'hitsa_locations',null);
+        }
+      }
+      else{
+        $tid = hitsa_juhan_check_term($training,$vid,'hitsa_locations',null);
+      }
+      if(!empty($tid)){
+        if(empty($node->locations)){
+          $node->locations['et'][0]['tid'] = $tid;
+          $changed = true;
+        }
+        else{
+          if($node->locations['et'][0]['tid'] != $tid){
+            $node->locations['et'][0]['tid'] = $tid;
+            $changed = true;
+          }
+        }
+      }
+    }
+    if(!empty($training->courseDescription)){
+      $description = $training->courseDescription;
+
+      if(!empty($description->trainingName)){
+        if($node -> title!=$description->trainingName) {
+          $node -> title = $description->trainingName;
+          $changed = true;
+        }
+      }
+      if(!empty($description->fullDescription)){
+        $body .= $description->fullDescription;
+      }
+      if(!empty($description->description)){
+        $body .= $description->description;
+      }
+      if(!empty($description->targetGroupText)){
+        $body.= '<br> <b>Sihtgrupid:</b>';
+        $body.= '<br>'.$description->targetGroupText;
+      }
+      if(!empty($description->academicHours)){
+        $body.= '<br><b>Maht:</b> '. $description->academicHours.' akad. tundi';
+      }
+      if(!empty($description->academicHoursAuditorium) || !empty($description->academicHoursPractical)|| !empty($description->academicHoursIndependent)){
+        $body.='<ul>';
+        if(!empty($description->academicHoursAuditorium)){
+          $body.='<li>'.'Auditoorne: '.$description->academicHoursAuditorium.' akad. tundi</li>';
+        }
+        if(!empty($description->academicHoursPractical)){
+          $body.='<li>'.'Praktika: '.$description->academicHoursPractical.' akad. tundi</li>';
+        }
+        if(!empty($description->academicHoursIndependent)){
+          $body.='<li>'.'Iseseisev töö: '.$description->academicHoursIndependent.' akad. tundi</li>';
+        }
+        $body.='</ul>';
+      }
+      if(!empty($description->lead)){
+        if($node->body['und'][0]['summary'] != $description->lead) {
+          $node->body['und'][0]['summary'] = $description->lead;
+          $changed = true;
+        }
+      }
+      if(!empty($description->pricePerParticipant)){
+        if($node->field_training_cost['und'][0]['value'] != $description->pricePerParticipant) {
+          $node->field_training_cost['und'][0]['value'] = $description->pricePerParticipant;
+          $changed = true;
+        }
+      }
+      if(!empty($description->institution)){
+        if(!empty($description->institution->name)) {
+          if(!empty($node->field_juhan_organiser)) {
+            if ($node->field_juhan_organiser['und'][0]['value'] != $description->institution->name) {
+              $node->field_juhan_organiser['und'][0]['value'] = $description->institution->name;
+              $changed = true;
+            }
+          }
+          else{
+            $node->field_juhan_organiser['und'][0]['value'] = $description->institution->name;
+            $changed = true;
+          }
+        }
+      }
+    }
+
+    if(!empty($training->publicUrl)){
+      $juhan_url = $training->publicUrl;
+    }
+    else{
+      $juhan_url = 'https://koolitus.edu.ee/training/'.$training->id;
+    }
+    if(!empty($node->field_juhan_url)) {
+      if($node->field_juhan_url['und'][0]['value'] != $juhan_url) {
+        $node->field_juhan_url['und'][0]['value'] =$juhan_url;
+        $changed = true;
+      }
+    }
+    else{
+      $node->field_juhan_url['und'][0]['value'] = $juhan_url;
+      $changed  = true;
+    }
+    $current_time = time();
+    if(!empty($training->startingDate)){
+      $start_date = $training->startingDate;
+      $start_date = hitsa_juhan_change_date($start_date);
+      if($node->event_date['und'][0]['value'] != $start_date) {
+        $node->event_date['und'][0]['value'] = $start_date;
+        $changed = true;
+      }
+    }
+    if(!empty($training->endingDate)){
+      $end_date =  $training->endingDate;
+      $end_date = hitsa_juhan_change_date($end_date);
+      if($node->event_date['und'][0]['value2'] != $end_date) {
+        $node->event_date['und'][0]['value2'] = $end_date;
+      }
+    }
+    if($end_date>$current_time) {
+      if (!empty($training->registrationOpened)) {
+
+        $body .= '<br/><b> Registreerimine avatud </b>' . $training->registrationOpened;
+
+      }
+      if (!empty($training->registrationClosed)) {
+        $body .= '<br/><b> Registreerimine suletud alates </b>' . $training->registrationClosed;
+
+      }
+    }
+    if ($training->status=='C'){
+      $body.= '<br><b>Tühistatud</b>';
+    }
+
+    if(isset($training->esf)){
+      if($training->esf==true){
+        $body.='<div class="row">';
+        $body.='<div class="col-6">';
+        $body.='<br/><img style="width: 100%" src="/sites/all/themes/hitsa/static/assets/imgs/ESF.jpg" title="ESF Logo">';
+        $body.='</div>';
+        $body.='</div>';
+      }
+    }
+    $body .= '<br/><br/><a target="_blank" href = "'.$juhan_url.'"class="btn sm-strech">Lisainfo</a>';
+//    if(!empty($node->field_contacts)){
+//      $pid = $node->field_contacts['und'][0]['value'];
+//      $paragraph = entity_load_single('paragraphs_item',$pid);
+//      $paragraph_changed = false;
+////        if(!empty($training->projectManager)) {
+////          $projectManager = $training->projectManager;
+////          if (!empty($projectManager->projectManagerFullName)) {
+////            if (!empty($paragraph->field_contact_title)) {
+////              if ($paragraph->field_contact_title['und'][0]['value'] != $projectManager->projectManagerFullName) {
+////                $paragraph->field_contact_title['und'][0]['value'] = $projectManager->projectManagerFullName;
+////                $paragraph_changed = true;
+////              }
+////            } else {
+////              $paragraph->field_contact_title['und'][0]['value'] = $projectManager->projectManagerFullName;
+////              $paragraph_changed = true;
+////            }
+////          }
+////          if (!empty($projectManager->phone)) {
+////            if (!empty($paragraph->field_phone_number)) {
+////              if ($paragraph->field_phone_number['und'][0]['value'] != $projectManager->phone) {
+////                $paragraph->field_phone_number['und'][0]['value'] = $projectManager->phone;
+////                $paragraph_changed = true;
+////              }
+////            } else {
+////              $paragraph->field_phone_number['und'][0]['value'] = $projectManager->phone;
+////              $paragraph_changed = true;
+////            }
+////          }
+////          if(!empty($projectManager->email)){
+////            if(!empty($paragraph->field_contact_email)){
+////              if($paragraph->field_contact_email['und'][0]['email'] != $projectManager->email){
+////                $paragraph->field_contact_email['und'][0]['email'] = $projectManager->email;
+////                $paragraph_changed = true;
+////              }
+////            }
+////            else{
+////              $paragraph->field_contact_email['und'][0]['email'] = $projectManager->email;
+////              $paragraph_changed = true;
+////            }
+////          }
+////          if(!empty($training->venueFullAddress)){
+////            if (!empty($paragraph->field_address)) {
+////              if ($paragraph->field_address['und'][0]['value'] != $training->venueFullAddress) {
+////                $paragraph->field_address['und'][0]['value'] = $training->venueFullAddress;
+////                $paragraph_changed = true;
+////              }
+////            } else {
+////              $paragraph->field_address['und'][0]['value'] = $training->venueFullAddress;
+////              $paragraph_changed = true;
+////            }
+////          }
+////        }
+////      if($paragraph_changed){
+////        $paragraph->revision = false;
+////        $paragraph->save();
+////      }
+//    }
+    if($existing_body!=$body){
+      $node->body['und'][0]['value']= $body;
+      $node->body['und'][0]['safe_value']= check_plain($body);
+      $changed = true;
+    }
+    if($changed){
+      node_save($node);
+    }
+    else{
+//      krumo($training);
+    }
+  }
+}
+function hitsa_juhan_look_for_old($id){
+  $db = db_select('field_data_field_juhani_id','fdfji');
+  $db-> condition('field_juhani_id_value',$id,'=');
+  $db->fields('fdfji');
+  $results = $db->execute();
+  while($row=$results->fetchAssoc()){
+    if(!empty($row)){
+      if(!empty($row['entity_id'])){
+        return $row['entity_id'];
+      }
+    }
+  }
+  return "";
+}

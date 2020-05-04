@@ -1506,7 +1506,6 @@ function hitsa_events_training_calendar()
 
     if (empty($_REQUEST)) {
         $events = hitsa_core_get_content_by_type('node', 'event', $language->language, $conditions = array('event_type' => 'training'));
-
         if (isset($events['node'])) {
             $event_nids = array_keys($events['node']);
             $events = entity_load('node', $event_nids);

@@ -321,7 +321,8 @@ function hitsa_cron_run_update()
     '68',
     '69',
     '70',
-    '71'
+    '71',
+    '72'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -5035,4 +5036,225 @@ function hitsa_cron_up_71(){
   }
   return TRUE;
 
+}
+function hitsa_cron_up_72(){
+  $field_bases = array();
+
+  // Exported field_base: 'field_juhan_koolitus'.
+  $field_bases['field_juhan_koolitus'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_juhan_koolitus',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => '',
+        1 => '',
+      ),
+      'allowed_values_function' => '',
+      'allowed_values_no_localization' => 0,
+      'entity_translation_sync' => FALSE,
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
+  // Exported field_base: 'field_juhan_url'.
+  $field_bases['field_juhan_url'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_juhan_url',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'max_length' => 2550,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+
+  // Exported field_base: 'field_juhani_id'.
+  $field_bases['field_juhani_id'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_juhani_id',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'entity_translation_sync' => FALSE,
+      'max_length' => 2550,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+  $field_instances = array();
+
+  // Exported field_instance: 'node-event-field_juhan_koolitus'.
+  $field_instances['node-event-field_juhan_koolitus'] = array(
+    'bundle' => 'event',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 25,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_juhan_koolitus',
+    'label' => 'Juhan koolitus',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 66,
+    ),
+  );
+
+  // Exported field_instance: 'node-event-field_juhan_url'.
+  $field_instances['node-event-field_juhan_url'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 18,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_juhan_url',
+    'label' => 'Juhan koolituse url',
+    'required' => FALSE,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 59,
+    ),
+  );
+
+  // Exported field_instance: 'node-event-field_juhani_id'.
+  $field_instances['node-event-field_juhani_id'] = array(
+    'bundle' => 'event',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 16,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_juhani_id',
+    'label' => 'Juhani objekti ID',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 57,
+    ),
+  );
+
+  foreach ($field_bases as $field) {
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+      field_create_field($field);
+    }
+  }
+  foreach ($field_instances as $field_instance) {
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_create_instance($field_instance);
+    };
+  }
+  $module = ['hitsa_juhan'];
+  if(!module_exists('hitsa_juhan')){
+    module_enable($module);
+  }
+  hitsa_juhan_get_trainings();
+  return TRUE;
 }
