@@ -22,7 +22,9 @@ function hitsa_juhan_settings_form($form,&$form_state){
   return system_settings_form($form);
 }
 function hitsa_juhan_update_submit($form,&$form_state){
-  if($form_state['clicked_button'] == 'Uuenda juhani koolitusi'){
-    hitsa_juhan_get_trainings();
+  if (!empty($form_state['clicked_button'])) {
+    if ($form_state['clicked_button']['#value'] == 'Uuenda juhani koolitusi') {
+      hitsa_juhan_get_trainings();
+    }
   }
 }

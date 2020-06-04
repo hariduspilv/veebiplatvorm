@@ -46,7 +46,6 @@ function hitsa_juhan_get_trainings(){
   else{
     $request = drupal_http_request($url);
   }
-//  krumo($request);
   if($request->code==200){
     if(!empty($request->data)){
       $data = $request->data;
