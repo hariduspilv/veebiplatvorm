@@ -321,7 +321,8 @@ function hitsa_cron_run_update()
     '68',
     '69',
     '70',
-    '71'
+    '71',
+    '72'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -5035,4 +5036,27 @@ function hitsa_cron_up_71(){
   }
   return TRUE;
 
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function hitsa_cron_up_72()
+{
+  module_load_include('install','system','system');
+
+  system_update_7083();
+  system_update_7084();
+
+  db_update('system')
+    ->fields(array('schema_version' => '7084'))
+    ->condition('name', 'system', '=')
+    ->execute();
+  module_load_include('install','i18n_string','i18n_string');
+  i18n_string_update_7004();
+  db_update('system')
+    ->fields(array('schema_version' => '7004'))
+    ->condition('name', 'i18n_string', '=')
+    ->execute();
+  return TRUE;
 }

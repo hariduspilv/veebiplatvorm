@@ -703,9 +703,19 @@ class i18n_string_textgroup_default {
       // Create source string so we get an lid
       $this->save_source($string);
     }
+
+    // Convert objectid to objectkey if it's numeric.
     if (!isset($string->objectkey)) {
-      $string->objectkey = (int)$string->objectid;
+      if (is_numeric($string->objectid)) {
+        $string->objectkey = (int)$string->objectid;
+      }
     }
+
+    // Make sure objectkey is numeric.
+    if (!is_numeric($string->objectkey)) {
+      $string->objectkey = 0;
+    }
+
     if (!isset($string->format)) {
       $string->format = '';
     }
@@ -1488,7 +1498,12 @@ class i18n_string_textgroup_cached extends i18n_string_textgroup_default {
       foreach ($context as $key => $value) {
         if ($value != '*') {
           $try = array_merge($context, array($key => '*'));
-          return $this->multiple_cache_get($try);
+          $cached_results = $this->multiple_cache_get($try);
+          // Now filter the ones that actually match.
+          if (!empty($cached_results)) {
+            $cached_results = $this->string_filter($cached_results, $context);
+          }
+          return $cached_results;
         }
       }
     }
