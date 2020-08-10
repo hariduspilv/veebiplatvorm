@@ -22,7 +22,9 @@
           <span class="object-content">
             <span class="object-title"><?php print check_plain($node->title); ?></span>
             <span class="object-footer">
-              <?php if(!empty($authors[$node->uid]->name)): ?>
+              <?php if (!empty($node->field_author_custom)):?>
+                <span class="before-user"><?php print $node->field_author_custom['und'][0]['value'] ?></span>
+              <?php elseif(!empty($authors[$node->uid]->name)): ?>
               <span class="before-user"><?php print $authors[$node->uid]->name; ?></span>
               <?php endif; ?>
             </span><!--/object-footer-->
