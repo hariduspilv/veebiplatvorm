@@ -127,8 +127,8 @@
                             <?php else : ?>
                                 <div class="col-12 sm-12">
                                 <?php endif ?>
-                                <?php if (!empty($body[0]['safe_value'])) : ?>
-                                    <?php print $body[0]['safe_value']; ?>
+                                <?php if (!empty($body[0]['value'])) : ?>
+                                    <?php print $body[0]['value']; ?>
                                 <?php endif; ?>
 
 
