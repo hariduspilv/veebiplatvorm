@@ -127,8 +127,8 @@ function hitsa_cron_cron(){
   hitsa_cron_run_update();
   module_load_include('inc', 'hitsa_color', 'includes/hitsa_color');
   hitsa_color_grunt_runner();
-//  module_load_include('inc', 'hitsa_cron', 'hitsa_cron_translation_updater');
-//  hitsa_cron_update_translations();
+  module_load_include('inc', 'hitsa_cron', 'hitsa_cron_translation_updater');
+  hitsa_cron_update_translations();
 //  $current_time = time();
 //  $current_hour = date('G',$current_time);
 //  $current_minute = date('i',$current_time);
@@ -322,7 +322,8 @@ function hitsa_cron_run_update()
     '69',
     '70',
     '71',
-    '72'
+    '72',
+    '73'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -5060,7 +5061,7 @@ function hitsa_cron_up_72()
     ->execute();
   return TRUE;
 }
-function hitsa_cron_up_72(){
+function hitsa_cron_up_73(){
   $field_bases = array();
 
   // Exported field_base: 'field_juhan_koolitus'.
@@ -5278,6 +5279,18 @@ function hitsa_cron_up_72(){
   if(!module_exists('hitsa_juhan')){
     module_enable($module);
   }
-  hitsa_juhan_get_trainings();
+  $words = array(
+    'Organizers' => array(
+      'et' => 'Korraldajad',
+    ),
+    'Organizer' => array(
+      'et' => 'Korraldaja'
+    ),
+    'Project manager' => array(
+      'et' =>  'Projektijuht'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
   return TRUE;
 }

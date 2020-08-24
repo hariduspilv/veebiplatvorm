@@ -19,7 +19,8 @@ function hitsa_cron_update_translations()
     '13',
     '14',
     '15',
-    '16'
+    '16',
+    '17'
 
 
   ];
@@ -497,5 +498,21 @@ function hitsa_cron_trans_up_16(){
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
   hitsa_translations_importer_translations($words);
   drupal_flush_all_caches();
+  return TRUE;
+}
+function hitsa_cron_trans_up_17(){
+  $words = array(
+    'Organizers' => array(
+      'et' => 'Korraldajad',
+    ),
+    'Organizer' => array(
+      'et' => 'Korraldaja'
+    ),
+    'Project manager' => array(
+      'et' =>  'Projektijuht'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
   return TRUE;
 }

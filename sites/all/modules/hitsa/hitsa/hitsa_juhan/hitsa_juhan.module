@@ -88,7 +88,12 @@ function hitsa_juhan_loop_trainings($trainings){
       else{
         $node->language = 'et';
       }
-
+      if(isset($language_list[$training->language])){
+        $node->language = $training->language;
+      }
+      else{
+        continue;
+      }
       $node-> field_event_type['und'][0]['value'] = 'training';
       $node-> field_juhan_koolitus['und'][0]['value'] = 1 ;
       node_object_prepare($node);
@@ -199,7 +204,22 @@ function hitsa_juhan_loop_trainings($trainings){
         if ($training->status=='C'){
           $body.= '<br><b>Tühistatud</b>';
         }
+        if($training->organizers){
+          $org_count = count($training->organizers);
+          foreach ($training-> organizers as $organizer){
+            $body.='<br>';
+            if($org_count>1){
+            $body.= '<strong>'.t('Organizers') .'</strong>: '. $organizer->firstName.' '. $organizer->familyName;}
+            else{
+              $body.= '<strong>'.t('Organizer') .'</strong>: '. $organizer->firstName.' '. $organizer->familyName;
+            }
+          }
+        }
+        if($training->projectManager){
+            $body.='<br>';
+            $body.= '<strong>'.t('Project manager') .'</strong>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
 
+        }
         if(isset($training->esf)){
           if($training->esf==true){
             $body.='<div class="row">';
@@ -478,6 +498,22 @@ function hitsa_juhan_check_if_changed($old,$training){
       $body.= '<br><b>Tühistatud</b>';
     }
 
+    if($training->organizers){
+      $org_count = count($training->organizers);
+      foreach ($training-> organizers as $organizer){
+        $body.='<br>';
+        if($org_count>1){
+          $body.= '<strong>'.t('Organizers') .'</strong>: '. $organizer->firstName.' '. $organizer->familyName;}
+        else{
+          $body.= '<strong>'.t('Organizer') .'</strong>: '. $organizer->firstName.' '. $organizer->familyName;
+        }
+      }
+    }
+    if($training->projectManager){
+      $body.='<br>';
+      $body.= '<strong>'.t('Project manager') .'</strong>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
+
+    }
     if(isset($training->esf)){
       if($training->esf==true){
         $body.='<div class="row">';
