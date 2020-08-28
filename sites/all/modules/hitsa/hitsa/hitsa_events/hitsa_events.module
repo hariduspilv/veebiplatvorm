@@ -995,6 +995,9 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
                 $tag = i18n_taxonomy_term_get_translation($location, $language->language);
                 $translated = i18n_string_translate("taxonomy:term:$tag->tid:name", $tag->name);
                 $locations[$location->name] = $translated;
+                if(!empty($location->field_address)){
+                  $locations[$location->name].= ', '.$location->field_address['und'][0]['value'];
+                }
             }
             $location_ready = '';
             foreach ($locations as $location) {

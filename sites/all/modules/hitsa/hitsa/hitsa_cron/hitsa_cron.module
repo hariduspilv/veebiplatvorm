@@ -323,7 +323,8 @@ function hitsa_cron_run_update()
     '70',
     '71',
     '72',
-    '73'
+    '73',
+    '74'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -5293,4 +5294,79 @@ function hitsa_cron_up_73(){
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
   hitsa_translations_importer_translations($words);
   return TRUE;
+}
+function hitsa_cron_up_74(){
+  $field_bases = array();
+
+  // Exported field_base: 'field_address'.
+  $field_bases['field_address'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_address',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(
+      'add_row_localization_source' => 'Add another item',
+      'entity_translation_sync' => FALSE,
+      'max_length' => 255,
+    ),
+    'translatable' => 0,
+    'type' => 'text',
+  );
+  $field_instances = array();
+
+  // Exported field_instance: 'taxonomy_term-hitsa_locations-field_address'.
+  $field_instances['taxonomy_term-hitsa_locations-field_address'] = array(
+    'bundle' => 'hitsa_locations',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'taxonomy_term',
+    'field_name' => 'field_address',
+    'label' => 'Address',
+    'required' => 0,
+    'settings' => array(
+      'entity_translation_sync' => FALSE,
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'maxlength_js' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 32,
+    ),
+  );
+  foreach ($field_bases as $field) {
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+      field_create_field($field);
+    }
+  }
+  foreach ($field_instances as $field_instance) {
+    if (empty(field_info_instance($field_instance['entity_type'], $field_instance['field_name'], $field_instance['bundle']))) {
+      field_create_instance($field_instance);
+    };
+  }
 }
