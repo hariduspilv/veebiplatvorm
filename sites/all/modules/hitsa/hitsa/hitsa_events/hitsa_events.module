@@ -348,6 +348,7 @@ function hitsa_events_get_dates($type = null){
     $result = $query->execute();
     $dates_array = array();
     foreach ($result->fetchAll() as $key => $value) {
+      $in_category = false;
         $node = node_load($value->nid);
 
       if($type == 'training'){
