@@ -153,6 +153,9 @@ function hitsa_juhan_loop_trainings($trainings){
         }
         if(!empty($description->description)){
           $body_text = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/si",'<$1$2>', $description->description);
+          $body_text = str_replace('<td>','<td style="border-width: thin; border-style: solid">',$body_text);
+          $body_text = str_replace('<h5>','<p>',$body_text);
+          $body_text = str_replace('</h5>','</p>',$body_text);
           $body .= $body_text;
         }
         if(!empty($description->lead)){
@@ -445,6 +448,8 @@ function hitsa_juhan_check_if_changed($old,$training){
       if(!empty($description->description)){
         $body_text = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/si",'<$1$2>', $description->description);
         $body_text = str_replace('<td>','<td style="border-width: thin; border-style: solid">',$body_text);
+        $body_text = str_replace('<h5>','<p>',$body_text);
+        $body_text = str_replace('</h5>','</p>',$body_text);
 //        krumo($body_text);
 //        exit();
         $body .= $body_text;
