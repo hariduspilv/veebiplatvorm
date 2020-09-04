@@ -20,7 +20,8 @@ function hitsa_cron_update_translations()
     '14',
     '15',
     '16',
-    '17'
+    '17',
+    '18'
 
 
   ];
@@ -510,6 +511,19 @@ function hitsa_cron_trans_up_17(){
     ),
     'Project manager' => array(
       'et' =>  'Projektijuht'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  return TRUE;
+}
+function hitsa_cron_trans_up_18(){
+  $words = array(
+    'Trainers' => array(
+      'et' => 'Koolitajad',
+    ),
+    'Trainer' => array(
+      'et' => 'Koolitaja'
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');

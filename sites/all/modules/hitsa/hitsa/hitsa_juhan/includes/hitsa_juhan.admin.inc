@@ -16,14 +16,14 @@ function hitsa_juhan_settings_form($form,&$form_state){
   );
   $form['update'] = array(
     '#type' => 'submit',
-    '#value' => 'Uuenda juhani koolitusi',
+    '#value' => 'Uuenda Juhani koolitusi',
     '#submit' => array('hitsa_juhan_update_submit')
   );
   return system_settings_form($form);
 }
 function hitsa_juhan_update_submit($form,&$form_state){
   if (!empty($form_state['clicked_button'])) {
-    if ($form_state['clicked_button']['#value'] == 'Uuenda juhani koolitusi') {
+    if ($form_state['clicked_button']['#value'] == 'Uuenda Juhani koolitusi') {
       hitsa_juhan_get_trainings();
     }
   }

@@ -75,7 +75,15 @@ function hitsa_juhan_loop_trainings($trainings){
       }
       $statuses[$training->status] = $training->status;
       $old = hitsa_juhan_look_for_old($training->id);
-
+//      if ($training->id==4430){
+//        krumo(preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/si",'<$1$2>', $training->courseDescription->description));
+//        krumo($training);
+//        exit();
+//      }
+      if ($training->id==4271){
+//        krumo($training);
+//        exit();
+      }
       $language_list = language_list();
       $language = reset($language_list);
 
@@ -144,7 +152,8 @@ function hitsa_juhan_loop_trainings($trainings){
             $node->field_training_cost['und'][0]['value'] = $description->pricePerParticipant;
         }
         if(!empty($description->description)){
-          $body .= $description->description;
+          $body_text = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/si",'<$1$2>', $description->description);
+          $body .= $body_text;
         }
         if(!empty($description->lead)){
           $node->body['und'][0]['summary'] = $description->lead;
@@ -205,24 +214,57 @@ function hitsa_juhan_loop_trainings($trainings){
           $body.= '<br><b>Tühistatud</b>';
         }
         if($training->organizers){
-          $org_count = count($training->organizers);
-          foreach ($training-> organizers as $organizer){
-            $body.='<br>';
-            if($org_count>1){
-            $body.= '<strong>'.t('Organizers') .'</strong>: '. $organizer->firstName.' '. $organizer->familyName;}
-            else{
-              $body.= '<strong>'.t('Organizer') .'</strong>: '. $organizer->firstName.' '. $organizer->familyName;
-            }
+          if ($training->id==4269){
+//        krumo($training);
+//        exit();
           }
+//
+//      krumo($training);
+//      exit();
+
+          $new_org = [];
+          foreach ($training->organizers as $organizer){
+            $new_org[$organizer->id] = $organizer;
+          }
+          $org_count = count($new_org);
+          $bstyle = 'style="float:left"';
+          $ullist = '<ul style="float:left; margin-left: 10px">';
+          $body.='<br/><div style="display: flex">';
+          if($org_count>1){
+            $body.= '<b '.$bstyle.'>'.t('Trainers') .'</b> ';
+          }
+          else{
+            $body.= '<b '.$bstyle.'>'.t('Trainer') .'</b> ';
+          }
+          $body.='<b '.$bstyle.'>:</b>';
+          $body.=$ullist;
+          foreach ($new_org as $organizer){
+//            $body.='<br>';
+            $body.='<li>';
+            $body .= $organizer->firstName.' '. $organizer->familyName;
+            $body.='</li>';
+          }
+          $body.='</ul></div><br/>';
         }
         if($training->projectManager){
+          $body.='<br>';
+          $pemail = $training->projectManager->email;
+          $pemail = '<a href="mailto:'.$pemail.'">'.$pemail.'</a>';
+          $body.= '<b>'.t('Project manager') .'</b>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
+          $body.= ', '.$pemail;
+        }
+        if($training->courseDescription){
+          if ($training->courseDescription->projectManager){
             $body.='<br>';
-            $body.= '<strong>'.t('Project manager') .'</strong>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
-
+            $pemail = $training->courseDescription->projectManager->email;
+            $pemail = '<a href="mailto:'.$pemail.'">'.$pemail.'</a>';
+            $body.= '<b>'.t('Project manager') .'</b>: '. $training->courseDescription->projectManager->firstName.' '. $training->courseDescription->projectManager->familyName;
+            $body.= ', '.$pemail;
+          }
         }
         if(isset($training->esf)){
           if($training->esf==true){
-            $body.='<div class="row">';
+            $body.='<div class="row" style="display: block">';
             $body.='<div class="col-6">';
             $body.='<br/><img style="width: 100%" src="/sites/all/themes/hitsa/static/assets/imgs/ESF.jpg" title="ESF Logo">';
             $body.='</div>';
@@ -401,7 +443,11 @@ function hitsa_juhan_check_if_changed($old,$training){
         $body .= $description->fullDescription;
       }
       if(!empty($description->description)){
-        $body .= $description->description;
+        $body_text = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/si",'<$1$2>', $description->description);
+        $body_text = str_replace('<td>','<td style="border-width: thin; border-style: solid">',$body_text);
+//        krumo($body_text);
+//        exit();
+        $body .= $body_text;
       }
       if(!empty($description->targetGroupText)){
         $body.= '<br> <b>Sihtgrupid:</b>';
@@ -499,24 +545,57 @@ function hitsa_juhan_check_if_changed($old,$training){
     }
 
     if($training->organizers){
-      $org_count = count($training->organizers);
-      foreach ($training-> organizers as $organizer){
-        $body.='<br>';
-        if($org_count>1){
-          $body.= '<strong>'.t('Organizers') .'</strong>: '. $organizer->firstName.' '. $organizer->familyName;}
-        else{
-          $body.= '<strong>'.t('Organizer') .'</strong>: '. $organizer->firstName.' '. $organizer->familyName;
-        }
+      if ($training->id==4269){
+//        krumo($training);
+//        exit();
       }
+//
+//      krumo($training);
+//      exit();
+
+      $new_org = [];
+      foreach ($training->organizers as $organizer){
+        $new_org[$organizer->id] = $organizer;
+      }
+      $org_count = count($new_org);
+      $bstyle = 'style="float:left"';
+      $ullist = '<ul style="float:left; margin-left: 10px">';
+      $body.='<br/><div style="display: flex">';
+      if($org_count>1){
+        $body.= '<b '.$bstyle.'>'.t('Trainers') .'</b> ';
+      }
+      else{
+        $body.= '<b '.$bstyle.'>'.t('Trainer') .'</b> ';
+      }
+      $body.='<b '.$bstyle.'>:</b>';
+      $body.=$ullist;
+      foreach ($new_org as $organizer){
+//            $body.='<br>';
+        $body.='<li>';
+        $body .= $organizer->firstName.' '. $organizer->familyName;
+        $body.='</li>';
+      }
+      $body.='</ul></div><br/>';
     }
     if($training->projectManager){
       $body.='<br>';
-      $body.= '<strong>'.t('Project manager') .'</strong>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
-
+      $pemail = $training->projectManager->email;
+      $pemail = '<a href="mailto:'.$pemail.'">'.$pemail.'</a>';
+      $body.= '<b>'.t('Project manager') .'</b>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
+      $body.= ', '.$pemail;
+    }
+    if($training->courseDescription){
+      if ($training->courseDescription->projectManager){
+        $body.='<br>';
+        $pemail = $training->courseDescription->projectManager->email;
+        $pemail = '<a href="mailto:'.$pemail.'">'.$pemail.'</a>';
+        $body.= '<b>'.t('Project manager') .'</b>: '. $training->courseDescription->projectManager->firstName.' '. $training->courseDescription->projectManager->familyName;
+        $body.= ', '.$pemail;
+      }
     }
     if(isset($training->esf)){
       if($training->esf==true){
-        $body.='<div class="row">';
+        $body.='<div class="row" style="display: block">';
         $body.='<div class="col-6">';
         $body.='<br/><img style="width: 100%" src="/sites/all/themes/hitsa/static/assets/imgs/ESF.jpg" title="ESF Logo">';
         $body.='</div>';
