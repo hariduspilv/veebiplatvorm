@@ -253,7 +253,7 @@ function hitsa_juhan_loop_trainings($trainings){
           $body.= '<b>'.t('Project manager') .'</b>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
           $body.= ', '.$pemail;
         }
-        if($training->courseDescription){
+        elseif($training->courseDescription){
           if ($training->courseDescription->projectManager){
             $body.='<br>';
             $pemail = $training->courseDescription->projectManager->email;
@@ -584,7 +584,7 @@ function hitsa_juhan_check_if_changed($old,$training){
       $body.= '<b>'.t('Project manager') .'</b>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
       $body.= ', '.$pemail;
     }
-    if($training->courseDescription){
+    elseif($training->courseDescription){
       if ($training->courseDescription->projectManager){
         $body.='<br>';
         $pemail = $training->courseDescription->projectManager->email;
