@@ -247,10 +247,10 @@ function hitsa_juhan_loop_trainings($trainings){
             $body .= $organizer->firstName.' '. $organizer->familyName;
             $body.='</li>';
           }
-          $body.='</ul></div><br/>';
+          $body.='</ul></div>';
         }
         if($training->projectManager){
-          $body.='<br>';
+          // $body.='<br>';
           $pemail = $training->projectManager->email;
           $pemail = '<a href="mailto:'.$pemail.'">'.$pemail.'</a>';
           $body.= '<b>'.t('Project manager') .'</b>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
@@ -258,7 +258,7 @@ function hitsa_juhan_loop_trainings($trainings){
         }
         elseif($training->courseDescription){
           if ($training->courseDescription->projectManager){
-            $body.='<br>';
+            // $body.='<br>';
             $pemail = $training->courseDescription->projectManager->email;
             $pemail = '<a href="mailto:'.$pemail.'">'.$pemail.'</a>';
             $body.= '<b>'.t('Project manager') .'</b>: '. $training->courseDescription->projectManager->firstName.' '. $training->courseDescription->projectManager->familyName;
@@ -580,10 +580,10 @@ function hitsa_juhan_check_if_changed($old,$training){
         $body .= $organizer->firstName.' '. $organizer->familyName;
         $body.='</li>';
       }
-      $body.='</ul></div><br/>';
+      $body.='</ul></div>';
     }
     if($training->projectManager){
-      $body.='<br>';
+      // $body.='<br>';
       $pemail = $training->projectManager->email;
       $pemail = '<a href="mailto:'.$pemail.'">'.$pemail.'</a>';
       $body.= '<b>'.t('Project manager') .'</b>: '. $training->projectManager->firstName.' '. $training->projectManager->familyName;
@@ -591,7 +591,7 @@ function hitsa_juhan_check_if_changed($old,$training){
     }
     elseif($training->courseDescription){
       if ($training->courseDescription->projectManager){
-        $body.='<br>';
+        // $body.='<br>';
         $pemail = $training->courseDescription->projectManager->email;
         $pemail = '<a href="mailto:'.$pemail.'">'.$pemail.'</a>';
         $body.= '<b>'.t('Project manager') .'</b>: '. $training->courseDescription->projectManager->firstName.' '. $training->courseDescription->projectManager->familyName;

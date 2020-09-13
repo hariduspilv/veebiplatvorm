@@ -111,7 +111,10 @@ function hitsa_events_add_taxonomy_fields($name = null)
 {
 
   foreach (hitsa_events_add_custom_taxonomy_field_base($name) as $field) {
-    field_create_field($field);
+    $field_test = field_info_field($field['field_name']);
+    if (empty($field_test)) {
+        field_create_field($field);
+    }
   }
   foreach (hitsa_events_add_custom_taxonomy_field_instance($name) as $field_instance) {
     field_create_instance($field_instance);

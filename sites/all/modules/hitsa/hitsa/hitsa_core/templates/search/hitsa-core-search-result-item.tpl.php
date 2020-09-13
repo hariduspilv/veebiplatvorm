@@ -1,10 +1,10 @@
-<?php if($result_item['entity']->type === 'contact'): 
+<?php if($result_item['entity']->type === 'contact'):
   $contact_view = node_view($result_item['entity']);
 ?>
 <?php print render($contact_view); ?>
 <?php elseif($result_item['entity']->type === 'event' || $result_item['entity']->type === 'training'): ?>
 <div class="col-12">
-  <?php 
+  <?php
   global $language;
   //$result_item['entity']->event_tags[$language->language] = $result_item['entity']->event_tags[LANGUAGE_NONE];
   $node_rendered = hitsa_events_event_html($result_item['entity'], $result_item['entity']->field_event_type[LANGUAGE_NONE][0]['value'], $result_item['entity']->event_date[LANGUAGE_NONE][0]['value'], TRUE);
@@ -18,10 +18,10 @@
 				<span class="object-title"><?php print $result_item['entity']->title; ?></span>
 				<span class="object-footer">
 					<span class="before-calendar"><?php print format_date($result_item['entity']->created, 'hitsa_date_month'); ?></span>
-					<?php 
-					$author_name = !empty($result_item['entity']->field_author_custom) ? 
+					<?php
+					$author_name = !empty($result_item['entity']->field_author_custom) ?
 						$result_item['entity']->field_author_custom[LANGUAGE_NONE][0]['safe_value'] : NULL;
-						
+
 					if(!empty($author_name)): ?>
 					<span class="before-user"><?php print $author_name; ?></span>
 					<?php endif; ?>
