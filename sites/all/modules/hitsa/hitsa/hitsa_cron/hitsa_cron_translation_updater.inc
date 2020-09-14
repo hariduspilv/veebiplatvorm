@@ -21,7 +21,8 @@ function hitsa_cron_update_translations()
     '15',
     '16',
     '17',
-    '18'
+    '18',
+    '19'
 
 
   ];
@@ -524,6 +525,16 @@ function hitsa_cron_trans_up_18(){
     ),
     'Trainer' => array(
       'et' => 'Koolitaja'
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  return TRUE;
+}
+function hitsa_cron_trans_up_19(){
+  $words = array(
+    'Previous events' => array(
+      'et' => 'Möödunud sündmused',
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
