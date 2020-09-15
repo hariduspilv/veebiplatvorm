@@ -56,9 +56,9 @@ function hitsa_juhan_get_trainings(){
   }
   else{
     watchdog('error','Juhaniga ühenduse saamisel tekkis viga');
-    drupal_set_message('Sündmuste uuendamisel tekkis viga');
+    drupal_set_message('Sündmuste uuendamisel tekkis viga','warning');
     if($request->code == 401){
-      drupal_set_message('Sisestatud API võtmega puudub  ligipääs Juhani teenusele');
+      drupal_set_message('Sisestatud API võtmega puudub  ligipääs Juhani teenusele','warning');
     }
   }
 }
