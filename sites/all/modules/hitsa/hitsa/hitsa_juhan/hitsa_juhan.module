@@ -56,6 +56,10 @@ function hitsa_juhan_get_trainings(){
   }
   else{
     watchdog('error','Juhaniga ühenduse saamisel tekkis viga');
+    drupal_set_message('Sündmuste uuendamisel tekkis viga');
+    if($request->code == 401){
+      drupal_set_message('Sisestatud API võtmega puudub  ligipääs Juhani teenusele');
+    }
   }
 }
 
@@ -68,6 +72,7 @@ function hitsa_juhan_loop_trainings($trainings){
     $count = 0;
     $statuses = [];
     foreach ($trainings as $training){
+
       if(!empty($training->status)){
         if($training->status=='F' || $training->status=='H' || $training->status=='D' || $training->status=='A' || $training->status=='X'){
           continue;
@@ -216,6 +221,8 @@ function hitsa_juhan_loop_trainings($trainings){
         if ($training->status=='C'){
           $body.= '<br><b>Tühistatud</b>';
         }
+
+        $body .= '</br>';
         if($training->organizers){
           if ($training->id==4269){
 //        krumo($training);
@@ -232,7 +239,7 @@ function hitsa_juhan_loop_trainings($trainings){
           $org_count = count($new_org);
           $bstyle = 'style="float:left"';
           $ullist = '<ul style="float:left; margin-left: 10px">';
-          $body.='<br/><div style="display: flex">';
+          $body.='<div style="display: flex">';
           if($org_count>1){
             $body.= '<b '.$bstyle.'>'.t('Trainers') .'</b> ';
           }
@@ -549,6 +556,7 @@ function hitsa_juhan_check_if_changed($old,$training){
       $body.= '<br><b>Tühistatud</b>';
     }
 
+    $body .= '</br>';
     if($training->organizers){
       if ($training->id==4269){
 //        krumo($training);
@@ -565,7 +573,7 @@ function hitsa_juhan_check_if_changed($old,$training){
       $org_count = count($new_org);
       $bstyle = 'style="float:left"';
       $ullist = '<ul style="float:left; margin-left: 10px">';
-      $body.='<br/><div style="display: flex">';
+      $body.='<div style="display: flex">';
       if($org_count>1){
         $body.= '<b '.$bstyle.'>'.t('Trainers') .'</b> ';
       }
