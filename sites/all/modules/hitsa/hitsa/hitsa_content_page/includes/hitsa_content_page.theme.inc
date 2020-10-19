@@ -76,12 +76,11 @@ function hitsa_content_page_preprocess_node(&$variables)
 
     if ($dates['value'] != $dates['value2']) {
       $variables['end_date'] = format_date($dates['value2'], 'custom', 'd. ' . t('M'));
+    } else {
+      $variables['start_date'] = format_date($dates['value'], 'custom', 'd. ' . t('M') . ' Y');
     }
-    else{
-      $variables['start_date'] = format_date($dates['value'], 'custom', 'd. ' . t('M').' Y');
-    }
-    if(empty($dates['value2'])){
-      $variables['start_date'] = format_date($dates['value'], 'custom', 'd. ' . t('M').' Y');
+    if (empty($dates['value2'])) {
+      $variables['start_date'] = format_date($dates['value'], 'custom', 'd. ' . t('M') . ' Y');
     }
     if (!empty($variables['field_event_type'])) {
       $have_event = FALSE;
@@ -89,13 +88,12 @@ function hitsa_content_page_preprocess_node(&$variables)
       foreach ($variables['field_event_type'] as $type_event) {
         if ($type_event['value'] == 'event') {
           $have_event = TRUE;
-        }
-        elseif ($type_event['value'] == 'training'){
+        } elseif ($type_event['value'] == 'training') {
           $have_training = TRUE;
         }
       }
       $variables['event_tags_correct'] = '';
-      if ($have_training==TRUE) {
+      if ($have_training == TRUE) {
         if (!empty($variables['field_training_tags'])) {
           foreach ($variables['field_training_tags'] as $training_tag) {
             $variables['event_tags_correct'] .= empty($variables['event_tags_correct']) ? $training_tag['entity']->name : ', ' .
@@ -103,7 +101,7 @@ function hitsa_content_page_preprocess_node(&$variables)
           }
         }
       }
-      if($have_event==TRUE){
+      if ($have_event == TRUE) {
         if (!empty($variables['event_tags'])) {
           foreach ($variables['event_tags'] as $event_tag) {
             $variables['event_tags_correct'] .= empty($variables['event_tags_correct']) ? $event_tag['taxonomy_term']->name : ', ' .
@@ -116,7 +114,7 @@ function hitsa_content_page_preprocess_node(&$variables)
           $variables['field_pictures'][$pic_key] = hitsa_core_generate_single_image_figure($field_picture);
         }
       }
-      if(!empty($variables['field_contacts'])){
+      if (!empty($variables['field_contacts'])) {
         $variables['field_contacts'] = hitsa_curriculum_contacts($variables['field_contacts']);
       }
       if (!empty($variables['locations'])) {
@@ -127,176 +125,178 @@ function hitsa_content_page_preprocess_node(&$variables)
         }
         if (!empty($locations)) {
           $variables['locations'] = $locations;
-        }
-        else {
+        } else {
           unset($variables['locations']);
         }
       }
-//      krumo($variables);
+      //      krumo($variables);
     }
   }
-  if(!empty($variables['body'])){
+  if (!empty($variables['body'])) {
     $current_host = $_SERVER['HTTP_HOST'];
     $inital_url = variable_get('hitsa_initial_path');
 
-      $variables['body_no_table'] = '';
-      foreach ($variables['body'] as $body_key => $body_value) {
-        if(!empty($inital_url)) {
+    $variables['body_no_table'] = '';
+    foreach ($variables['body'] as $body_key => $body_value) {
+      if (!empty($inital_url)) {
         $variables['body'][$body_key]['safe_value'] = str_replace($inital_url, $current_host, $body_value['safe_value']);
         $variables['body'][$body_key]['value'] = str_replace($inital_url, $current_host, $body_value['value']);
         $variables['body'][$body_key]['summary'] = str_replace($inital_url, $current_host, $body_value['summary']);
         $variables['body'][$body_key]['safe_summary'] = str_replace($inital_url, $current_host, $body_value['safe_summary']);
-        }
-        $new_summary = $body_value['safe_summary'];
-        $new_summary = htmlentities($new_summary);
-        $new_summary = str_replace(' ','',$new_summary);
-        $new_summary = str_replace( '&nbsp','',strval($new_summary));
-        $new_summary = str_replace( '<p>','',strval($new_summary));
-        $new_summary = str_replace( "</p>",'',strval($new_summary));
-        $new_summary = str_replace( '&lt;','',strval($new_summary));
-        $new_summary = str_replace( 'p&gt;','',strval($new_summary));
-        $new_summary = str_replace( ';/','',strval($new_summary));
-        $new_summary = rtrim($new_summary);
-        $new_summary = trim($new_summary);
-        if(empty($new_summary)){
-          $variables['body'][$body_key]['safe_summary']='';
-        }
-
-        $tables = '';
-        global $language;
-        $tables_count_sum = substr_count($body_value['summary'],'<table');
-        if($tables_count_sum>0) {
-          $table_start_sum = mb_strpos($body_value['summary'], '<table');
-          if ($table_start_sum != 0) {
-            $table_start_sum - 1;
-          }
-          $table_end_sum = mb_strpos($body_value['summary'], '</table>') + 9;
-          $table_length_sum = $table_end_sum - $table_start_sum;
-          $full_table_sum = mb_substr($body_value['summary'], $table_start_sum, $table_length_sum);
-          if (!empty($full_table_sum)) {
-            $tables .= $full_table_sum;
-          }
-          $summary_no_table = str_replace($full_table_sum, '', $body_value['summary']);
-          if(empty($summary_no_table)){
-            $variables['only_table'] = true;
-          }
-
-          $variables['body'][$body_key]['safe_summary']=str_replace('<table','<table class="sm-hide" ',$variables['body'][$body_key]['safe_summary']);
-          $variables['body'][$body_key]['safe_value']=str_replace('<table','<table class="sm-hide" ',$variables['body'][$body_key]['safe_value']);
-        }
-        if (strpos($variables['body'][$body_key]['safe_summary'], '<table') !== false) {
-          $variables['header_table']= true;
-        }
-
-        $tables_count = substr_count($body_value['value'],'<table');
-
-          $table_start = mb_strpos($body_value['value'],'<table');
-          if($table_start>0){
-            $table_start-1;
-          }
-          $table_end = mb_strpos($body_value['value'],'</table>')+9;
-          $table_length = $table_end-$table_start;
-          $full_table = mb_substr($body_value['value'],$table_start,$table_length);
-          if($tables_count>0) {
-            $body_without_table = str_replace($full_table, '', $body_value['value']);
-            if(!empty($full_table)){
-              $tables.=$full_table;
-            }
-          }
-          else{
-            $body_without_table = $body_value['value'];
-          }
-        if(!empty($tables)){
-          $variables['tables'] = $tables;
-        }
-
       }
-      $body_no_table = $body_without_table;
-      $body_no_table = str_replace($inital_url, $current_host, $body_no_table);
-    if(empty($body_no_table)){
+      $new_summary = $body_value['safe_summary'];
+      $new_summary = htmlentities($new_summary);
+      $new_summary = str_replace(' ', '', $new_summary);
+      $new_summary = str_replace('&nbsp', '', strval($new_summary));
+      $new_summary = str_replace('<p>', '', strval($new_summary));
+      $new_summary = str_replace("</p>", '', strval($new_summary));
+      $new_summary = str_replace('&lt;', '', strval($new_summary));
+      $new_summary = str_replace('p&gt;', '', strval($new_summary));
+      $new_summary = str_replace(';/', '', strval($new_summary));
+      $new_summary = rtrim($new_summary);
+      $new_summary = trim($new_summary);
+      if (empty($new_summary)) {
+        $variables['body'][$body_key]['safe_summary'] = '';
+      }
+
+      $tables = '';
+      global $language;
+      $tables_count_sum = substr_count($body_value['summary'], '<table');
+      if ($tables_count_sum > 0) {
+        $table_start_sum = mb_strpos($body_value['summary'], '<table');
+        if ($table_start_sum != 0) {
+          $table_start_sum - 1;
+        }
+        $table_end_sum = mb_strpos($body_value['summary'], '</table>') + 9;
+        $table_length_sum = $table_end_sum - $table_start_sum;
+        $full_table_sum = mb_substr($body_value['summary'], $table_start_sum, $table_length_sum);
+        if (!empty($full_table_sum)) {
+          $tables .= $full_table_sum;
+        }
+        $summary_no_table = str_replace($full_table_sum, '', $body_value['summary']);
+        if (empty($summary_no_table)) {
+          $variables['only_table'] = true;
+        }
+
+        $variables['body'][$body_key]['safe_summary'] = str_replace('<table', '<table class="sm-hide" ', $variables['body'][$body_key]['safe_summary']);
+        $variables['body'][$body_key]['safe_value'] = str_replace('<table', '<table class="sm-hide" ', $variables['body'][$body_key]['safe_value']);
+      }
+      if (strpos($variables['body'][$body_key]['safe_summary'], '<table') !== false) {
+        $variables['header_table'] = true;
+      }
+
+      $tables_count = substr_count($body_value['value'], '<table');
+
+      $table_start = mb_strpos($body_value['value'], '<table');
+      if ($table_start > 0) {
+        $table_start - 1;
+      }
+      $table_end = mb_strpos($body_value['value'], '</table>') + 9;
+      $table_length = $table_end - $table_start;
+      $full_table = mb_substr($body_value['value'], $table_start, $table_length);
+      if ($tables_count > 0) {
+        $body_without_table = str_replace($full_table, '', $body_value['value']);
+        if (!empty($full_table)) {
+          $tables .= $full_table;
+        }
+      } else {
+        $body_without_table = $body_value['value'];
+      }
+      if (!empty($tables)) {
+        $variables['tables'] = $tables;
+      }
+    }
+    $body_no_table = $body_without_table;
+    $body_no_table = str_replace($inital_url, $current_host, $body_no_table);
+    if (empty($body_no_table)) {
       $variables['mobile_body'][$body_key]['safe_value'] = '';
       $variables['mobile_body'][$body_key]['value'] = '';
     }
-    if(strlen($body_no_table)>1000){
-        $your_desired_width = 1000;
-        $break_point = mb_strrpos(mb_substr($body_no_table, 0, $your_desired_width,'UTF-8'), ' ');
-      preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $body_no_table, $result);
-//        $start = mb_substr($body_no_table, 0, $break_point,'UTF-8');
-//        dpm($start);
-//      $start = cut_html($body_no_table,1000);
-      $start = (text_summary($body_no_table,NULL,1000));
-//      dpm($start);
-//      dpm(str_replace($start,'',$body_no_table));
-      $acheck = substr($start, -2);
-        if($acheck=='<a'){
-          $start.='>';
-        }
-      if (strpos($start, '<ul>') !== false) {
-        if (strpos($start, '</ul>') == false) {
-          $start.='</ul>';
+    if (strlen($body_no_table) > 1000) {
+      $your_desired_width = 1000;
+      $dom = new DOMDocument();
+      $dom->loadHTML($body_no_table);
+      $list = $dom->getElementsByTagName('ol');
+      $have_list_dont = false;
+      if(!empty($list)){
+        if ($list->count()>0) {
+          $have_list_dont = true;
         }
       }
-//        $end = mb_substr($body_no_table, $break_point,  mb_strlen($body_no_table,'UTF-8'));
-        $end = str_replace($start,'',$body_no_table);
-//      dpm($body_no_table);
-//      dpm(str_replace($start,'',$body_no_table));
-//      dpm($start);
-//      dpm($end);
-      if($acheck=='<a'){
-        $end='<a '.$end;
-      }
+      if (!$have_list_dont) {
+        preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $body_no_table, $result);
+        $start = (text_summary($body_no_table, NULL, 1000));
+        $acheck = substr($start, -2);
+        if ($acheck == '<a') {
+          $start .= '>';
+        }
+        if (strpos($start, '<ul>') !== false) {
+          if (strpos($start, '</ul>') == false) {
+            $start .= '</ul>';
+          }
+        }
+        $pos = strpos($body_no_table, $start);
+        if ($pos !== false) {
+          $end = substr_replace($body_no_table, '', $pos, strlen($start));
+        }
+/*         $end = str_replace($start, '', $body_no_table); */
+        if ($acheck == '<a') {
+          $end = '<a ' . $end;
+        }
         $variables['start'] = $start;
-        $variables['end']=$end;
-    }
-    else{
-      $variables['start'] = $body_no_table;
-    }
-    if(!empty($tables)){
-      if(!empty($variables['end'])) {
-        $variables['end'] .= $tables;
+        $variables['end'] = $end;
       }
       else{
-        $variables['end']=$tables;
+        $variables['start'] = $body_no_table;
+      }
+
+    } else {
+      $variables['start'] = $body_no_table;
+    }
+    if (!empty($tables)) {
+      if (!empty($variables['end'])) {
+        $variables['end'] .= $tables;
+      } else {
+        $variables['end'] = $tables;
       }
     }
-    if(!empty($variables['end'])){
+    if (!empty($variables['end'])) {
       $text = $variables['end'];
       $pattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
       preg_match_all($pattern, $text, $matches);
       $emails = $matches[0];
-      foreach ($emails as $email){
-        $new_mail = hitsa_core_email_obfuscator_link($email,'email');
-        $text = str_replace($email,$new_mail,$text);
+      foreach ($emails as $email) {
+        $new_mail = hitsa_core_email_obfuscator_link($email, 'email');
+        $text = str_replace($email, $new_mail, $text);
       }
 
-      $variables['end']=$text;
+      $variables['end'] = $text;
     }
-    if(!empty($variables['start'])){
+    if (!empty($variables['start'])) {
       $text = $variables['start'];
       $pattern = '/[a-z0-9_\-\+\.]+@[a-z0-9\-]+\.([a-z]{2,4})(?:\.[a-z]{2})?/i';
       preg_match_all($pattern, $text, $matches);
       $emails = $matches[0];
-      foreach ($emails as $email){
-        $new_mail = hitsa_core_email_obfuscator_link($email,'email');
-        $text = str_replace($email,$new_mail,$text);
+      foreach ($emails as $email) {
+        $new_mail = hitsa_core_email_obfuscator_link($email, 'email');
+        $text = str_replace($email, $new_mail, $text);
       }
-      $variables['start']=$text;
+      $variables['start'] = $text;
     }
   }
   if ($variables['type'] === 'content_page') {
     if ($variables['view_mode'] === 'full') {
-      if(!empty($variables['field_catering_file'])){
+      if (!empty($variables['field_catering_file'])) {
         $catering_array = array();
-        foreach($variables['field_catering_file'] as $catering_file){
+        foreach ($variables['field_catering_file'] as $catering_file) {
           $file = $catering_file['uri'];
           $file_url = file_create_url($file);
-          if(empty($catering_file['title'])){
+          if (empty($catering_file['title'])) {
             $name = $catering_file['filename'];
-          }
-          else{
+          } else {
             $name = $catering_file['title'];
           }
-          $catering_array[] = array( 'url' => $file_url,'name' => $name);
+          $catering_array[] = array('url' => $file_url, 'name' => $name);
         }
         $variables['field_catering_file'] = $catering_array;
       }
@@ -310,13 +310,13 @@ function hitsa_content_page_preprocess_node(&$variables)
         $variables['more_services_title'] = t('More services');
         $variables['more_services_link'] = '<a href="' . url('services') . '" class="btn sm-stretch">' . t('All services') . '</a>';
       }
-      if(!empty($variables['field_contacts'])){
-        if(function_exists('hitsa_curriculum_contacts')){
+      if (!empty($variables['field_contacts'])) {
+        if (function_exists('hitsa_curriculum_contacts')) {
           $variables['contacts_block'] = hitsa_curriculum_contacts($variables['field_contacts']);
         }
       }
-      if(!empty($variables['cp_image'])){
-          $variables['image_from_template'] = hitsa_core_generate_single_image_figure($variables['cp_image'][0]);
+      if (!empty($variables['cp_image'])) {
+        $variables['image_from_template'] = hitsa_core_generate_single_image_figure($variables['cp_image'][0]);
       }
       // Add webform
       if (!empty($variables['cp_webform_ref'])) {
@@ -335,27 +335,27 @@ function hitsa_content_page_preprocess_node(&$variables)
   }
 }
 
-function cut_html ($html, $limit) {
+function cut_html($html, $limit)
+{
   $dom = new DOMDocument();
   $dom->loadHTML(mb_convert_encoding("<div>{$html}</div>", "HTML-ENTITIES", "UTF-8"), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
   cut_html_recursive($dom->documentElement, $limit);
   return substr($dom->saveHTML($dom->documentElement), 5, -6);
 }
 
-function cut_html_recursive ($element, $limit) {
-  if($limit > 0) {
-    if($element->nodeType == 3) {
+function cut_html_recursive($element, $limit)
+{
+  if ($limit > 0) {
+    if ($element->nodeType == 3) {
       $limit -= strlen($element->nodeValue);
-      if($limit < 0) {
+      if ($limit < 0) {
         $element->nodeValue = substr($element->nodeValue, 0, strlen($element->nodeValue) + $limit);
       }
-    }
-    else {
-      for($i = 0; $i < $element->childNodes->length; $i++) {
-        if($limit > 0) {
+    } else {
+      for ($i = 0; $i < $element->childNodes->length; $i++) {
+        if ($limit > 0) {
           $limit = cut_html_recursive($element->childNodes->item($i), $limit);
-        }
-        else {
+        } else {
           $element->removeChild($element->childNodes->item($i));
           $i--;
         }
@@ -364,12 +364,14 @@ function cut_html_recursive ($element, $limit) {
   }
   return $limit;
 }
-function trim_word($text, $length, $startPoint=0, $allowedTags=""){
+function trim_word($text, $length, $startPoint = 0, $allowedTags = "")
+{
   $text = html_entity_decode(htmlspecialchars_decode($text));
   $text = strip_tags($text, $allowedTags);
   return $text = mb_substr($text, $startPoint, $length);
 }
-function closetags($html) {
+function closetags($html)
+{
   preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $html, $result);
   $openedtags = $result[1];
   preg_match_all('#</([a-z]+)>#iU', $html, $result);
@@ -379,9 +381,9 @@ function closetags($html) {
     return $html;
   }
   $openedtags = array_reverse($openedtags);
-  for ($i=0; $i < $len_opened; $i++) {
+  for ($i = 0; $i < $len_opened; $i++) {
     if (!in_array($openedtags[$i], $closedtags)) {
-      $html .= '</'.$openedtags[$i].'>';
+      $html .= '</' . $openedtags[$i] . '>';
     } else {
       unset($closedtags[array_search($openedtags[$i], $closedtags)]);
     }
@@ -511,7 +513,6 @@ function hitsa_services_page_view($query = array())
       }
       $services_output .= '</div>';
     }
-
   }
 
   return theme(
@@ -556,7 +557,6 @@ function hitsa_content_page_view($query = array(), $filter = false, $type = null
         $articles_grouped_sorted[$academic_year->tid] = array_merge($articles_grouped[$academic_year->tid]);
       }
     }
-
   }
   // Pager
   $quantity = ceil($result['count'] / 12);
@@ -611,5 +611,4 @@ function hitsa_content_page_view($query = array(), $filter = false, $type = null
       )
     );
   }
-
 }
