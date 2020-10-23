@@ -324,7 +324,7 @@ function hitsa_cron_run_update()
     '71',
     '72',
     '73',
-    '74'
+    '75'
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -5369,4 +5369,9 @@ function hitsa_cron_up_74(){
       field_create_instance($field_instance);
     };
   }
+  return TRUE;
+}
+function  hitsa_cron_up_75(){
+  drupal_flush_all_caches();
+  return TRUE;
 }
