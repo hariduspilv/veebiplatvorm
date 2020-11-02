@@ -223,6 +223,15 @@ function hitsa_content_page_preprocess_node(&$variables)
           $have_list_dont = true;
         }
       }
+      $dom = new DOMDocument();
+      $dom->loadHTML($body_no_table);
+      $list = $dom->getElementsByTagName('ul');
+      $have_list_dont = false;
+      if(!empty($list)){
+        if ($list->count()>0) {
+          $have_list_dont = true;
+        }
+      }
       if (!$have_list_dont) {
         preg_match_all('#<([a-z]+)(?: .*)?(?<![/|/ ])>#iU', $body_no_table, $result);
         $start = (text_summary($body_no_table, NULL, 1000));
