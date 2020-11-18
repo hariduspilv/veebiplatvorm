@@ -237,7 +237,11 @@ function hitsa_core_preprocess_hitsa_header(&$variables)
   $hitsa_header_menu_name = variable_get('hitsa_header_menu_name');
   if (!empty($hitsa_header_menu_name)) {
     $header_menu = i18n_menu_localize_tree(menu_tree_all_data($hitsa_header_menu_name));
+
     foreach ($header_menu as $menu_item_key => $menu_item) {
+  if($menu_item['link']['language'] !=='und' and $menu_item['link']['language'] !==$language->language ){
+    unset($header_menu[$menu_item_key]);
+  }
       if (!empty($menu_item['link'])) {
         if (!empty($menu_item['link']['options'])) {
           if (!empty($menu_item['link']['options']['attributes'])) {
