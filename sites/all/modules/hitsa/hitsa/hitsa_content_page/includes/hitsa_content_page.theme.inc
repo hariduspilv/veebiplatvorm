@@ -135,10 +135,16 @@ function hitsa_content_page_preprocess_node(&$variables)
   if (!empty($variables['body'])) {
     $current_host = $_SERVER['HTTP_HOST'];
     $inital_url = variable_get('hitsa_initial_path');
-
+    $conf_path = conf_path();
     $variables['body_no_table'] = '';
+
     foreach ($variables['body'] as $body_key => $body_value) {
       if (!empty($inital_url)) {
+
+        $variables['body'][$body_key]['safe_value'] = str_replace('sites/www.'.$inital_url, $conf_path, $body_value['safe_value']);
+        $variables['body'][$body_key]['value'] = str_replace('sites/www.'.$inital_url,$conf_path, $body_value['value']);
+        $variables['body'][$body_key]['summary'] = str_replace('sites/www.'.$inital_url,$conf_path, $body_value['summary']);
+        $variables['body'][$body_key]['safe_summary'] = str_replace('sites/www.'.$inital_url,$conf_path, $body_value['safe_summary']);
         $variables['body'][$body_key]['safe_value'] = str_replace($inital_url, $current_host, $body_value['safe_value']);
         $variables['body'][$body_key]['value'] = str_replace($inital_url, $current_host, $body_value['value']);
         $variables['body'][$body_key]['summary'] = str_replace($inital_url, $current_host, $body_value['summary']);
