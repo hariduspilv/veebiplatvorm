@@ -140,14 +140,14 @@ function hitsa_core_add_vocabularies($installed_vocabularies = array(), $module 
       // Add generic terms
       foreach($v['terms'] as $term) {
         $term->vid = $vocab->vid;
-        
+
         if(!empty($term->translations)) {
          $term_translations = $term->translations;
          unset($term->translations);
         }
-        
+
         taxonomy_term_save($term);
-        
+
         if(!empty($term_translations)) {
           foreach($term_translations as $lang => $t)  {
             _hitsa_core_profile_create_term_translation($term, $lang, $t);
@@ -307,9 +307,9 @@ function hitsa_core_add_menu_links($installed_menu_links = array(), $module = NU
       $translations = $link['translations'];
       unset($link['translations']);
     }
-    
+
     $mlid = menu_link_save($link);
-    
+
     if(!empty($translations)) {
       foreach($translations as $lang => $t) {
         _hitsa_core_profile_create_menu_translation($mlid, $lang, $t);

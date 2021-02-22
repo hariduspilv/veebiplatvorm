@@ -658,6 +658,7 @@ function hitsa_curriculum_pictures($pictures)
         $output = '';
         $output .= '<div class="row-spacer"></div>';
         $output .= '<div class="row print-flex">';
+        dpm($pictures);
         foreach ($pictures as $key => $picture) {
             $picture_text = '';
             $image_style = 'hc_pictures';
@@ -665,9 +666,15 @@ function hitsa_curriculum_pictures($pictures)
             if (!empty($picture['field_file_image_title_text'])) {
                 $picture_text = $picture['field_file_image_title_text']['und'][0]['value'];
             }
+            if (!empty($picture['field_file_image_alt_text'])) {
+                $alt_text = 'alt="'.$picture['field_file_image_alt_text']['und'][0]['value'].'"';
+            }
+            else{
+              $alt_text = '';
+            }
             $output .= '  <div class="col-6 sm-12">';
             $output .= '  <figure>';
-            $output .= '    <img src="' . $image_url . '" alt="">';
+            $output .= '    <img src="' . $image_url . '" '.$alt_text.'>';
             $output .= '    <figcaption>' . $picture_text . '</figcaption>';
             $output .= '   </figure>';
             $output .= ' </div><!--/col-6-->';

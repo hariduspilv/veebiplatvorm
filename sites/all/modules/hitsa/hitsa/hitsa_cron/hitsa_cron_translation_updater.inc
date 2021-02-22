@@ -22,7 +22,9 @@ function hitsa_cron_update_translations()
     '16',
     '17',
     '18',
-    '19'
+    '19',
+    '20',
+    '21'
 
 
   ];
@@ -535,6 +537,26 @@ function hitsa_cron_trans_up_19(){
   $words = array(
     'Previous events' => array(
       'et' => 'Möödunud sündmused',
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  return TRUE;
+}
+function hitsa_cron_trans_up_20(){
+  $words = array(
+    'December' => array(
+      'et' => 'Detsember',
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words,'Long month name');
+  return TRUE;
+}
+function hitsa_cron_trans_up_21(){
+  $words = array(
+    'December' => array(
+      'et' => 'Detsember',
     ),
   );
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
