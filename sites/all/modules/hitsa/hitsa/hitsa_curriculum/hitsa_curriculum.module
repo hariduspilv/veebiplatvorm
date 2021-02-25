@@ -658,7 +658,6 @@ function hitsa_curriculum_pictures($pictures)
         $output = '';
         $output .= '<div class="row-spacer"></div>';
         $output .= '<div class="row print-flex">';
-        dpm($pictures);
         foreach ($pictures as $key => $picture) {
             $picture_text = '';
             $image_style = 'hc_pictures';

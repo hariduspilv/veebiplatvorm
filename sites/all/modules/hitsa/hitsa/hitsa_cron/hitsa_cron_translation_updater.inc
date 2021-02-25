@@ -24,7 +24,8 @@ function hitsa_cron_update_translations()
     '18',
     '19',
     '20',
-    '21'
+    '21',
+    '22'
 
 
   ];
@@ -561,5 +562,22 @@ function hitsa_cron_trans_up_21(){
   );
   module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
   hitsa_translations_importer_translations($words);
+  return TRUE;
+}
+function hitsa_cron_trans_up_22(){
+  $words = array(
+    'December' => array(
+      'et' => 'detsember',
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words);
+  $words = array(
+    'December' => array(
+      'et' => 'detsember',
+    ),
+  );
+  module_load_include('inc', 'hitsa_translation_importer', '/includes/hitsa_translation_importer.admin');
+  hitsa_translations_importer_translations($words,'Long month name');
   return TRUE;
 }
