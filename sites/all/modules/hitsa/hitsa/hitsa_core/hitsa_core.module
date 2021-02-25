@@ -153,6 +153,11 @@ function hitsa_core_rss_feeds() {
       'title' => t($lng->name) .' uudise feed',
       'desc' => 'Uudiste feedi link näitab viimast 20'
     );
+    $feeds[] = array(
+      'link' => url('events-feed-start.xml',array('language'=>$lng)),
+      'title' => t($lng->name) .' sündmsute feed algusekuupäeva järgi',
+      'desc' => 'Sündmuste feed näitab viimased 20 sünmdust sündmuse algusekuupäeva alusel'
+    );
   }
   $build = array();
 
