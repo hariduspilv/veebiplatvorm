@@ -27,12 +27,14 @@
             </li>
             <?php endif; ?>
             <?php if(!empty($location->phone_nr)): ?>
+            <?php foreach ($location->phone_nr[LANGUAGE_NONE] as $phone_number):?>
             <li>
             <div class="before-phone"></div>
             <div class="list-details_text">
-              <p><?php print check_plain($location->phone_nr[LANGUAGE_NONE][0]['safe_value']); ?></p>
+              <p><?php print check_plain($phone_number['safe_value']); ?></p>
             </div><!--/list-details_text-->
             </li>
+            <?php endforeach; ?>
             <?php endif; ?>
             <?php if(!empty($location->e_mail)): ?>
             <li>
