@@ -326,7 +326,8 @@ function hitsa_cron_run_update()
     '73',
     '75',
     '76',
-    '77'
+    '77',
+    '78',
   ];
   if (!empty($updates)) {
     $updated = variable_get('hitsa_updated');
@@ -5384,6 +5385,10 @@ function  hitsa_cron_up_76(){
 }
 
 function  hitsa_cron_up_77(){
+  drupal_flush_all_caches();
+  return TRUE;
+}
+function  hitsa_cron_up_78(){
   drupal_flush_all_caches();
   return TRUE;
 }
