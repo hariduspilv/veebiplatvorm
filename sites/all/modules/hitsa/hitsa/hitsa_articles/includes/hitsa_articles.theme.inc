@@ -169,6 +169,7 @@ function hitsa_articles_preprocess_views_view_fields(&$vars) {
 function hitsa_articles_page_view($type, $filter = FALSE) {
   $query = drupal_get_query_parameters();
   $query['article_type'] = empty($query['article_type']) ? $type : $query['article_type'];
+  $query['article_type'] = filter_var($query['article_type'],FILTER_VALIDATE_URL);
   $query['range'] = empty($query['range']) ? array(0, 12) : $query['range'];
   $query['pager'] = 12;
   $query['entity_type'] = 'node';

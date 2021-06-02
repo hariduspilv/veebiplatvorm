@@ -1100,26 +1100,29 @@ function hitsa_events_event_html($event = null, $type = null, $start_date_date =
         $output .= '</a><!--/object-date-->';
         $output .= '<div class="object-content">';
         if (!empty($_REQUEST)) {
-            
+
             if (!empty($_REQUEST['type'])) {
                 $ev_type = $_REQUEST['type'];
                 if($ev_type=='training'){
                     $curr_path = 'training-calendar';
                 }
                 elseif ($ev_type == 'event') {
-                    
+
                     $curr_path = 'calendar';
                 }
                 else{
                 $curr_path = 'calendar';
                 }
+                $curr_path = filter_var($curr_path,FILTER_VALIDATE_URL);
                 $output .= '<a href="' . $curr_path . '#anchor=' . ($event->nid) . '"" onclick="event.preventDefault();" class="object-title">';
             } else {
-                $output .= '<a href="' . current_path() . '#anchor=' . ($event->nid) . '"" onclick="event.preventDefault();" class="object-title">';
+              $curr_path = filter_var(current_path(),FILTER_VALIDATE_URL);
+                $output .= '<a href="' . $curr_path . '#anchor=' . ($event->nid) . '"" onclick="event.preventDefault();" class="object-title">';
             }
             # code...
         } else {
-            $output .= '<a href="' . current_path() . '#anchor=' . ($event->nid) . '"" onclick="event.preventDefault();" class="object-title">';
+          $curr_path = filter_var(current_path(),FILTER_VALIDATE_URL);
+            $output .= '<a href="' . $curr_path . '#anchor=' . ($event->nid) . '"" onclick="event.preventDefault();" class="object-title">';
         }
         $output .= $event->title;
         $output .= '</a>';
