@@ -1843,7 +1843,11 @@ function hitsa_events_for_services()
                 $start = $event->event_date['und'][0]['value'];
                 $end = $event->event_date['und'][0]['value2'];
                 if ($start >= $time) {
-                    $new_events[] = $event;
+                  if (count($new_events)>=5){
+                    break;
+                  }
+                  $new_events[] = $event;
+
                 } elseif ($time <= $end) {
                     $new_events[] = $event;
                 }
@@ -1854,8 +1858,15 @@ function hitsa_events_for_services()
         $output = '';
         $events_count = count($new_events);
         $i = 0;
+        $time = strtotime('today midnight');
         usort($new_events, function ($a, $b) {
-            return $a->event_date['und'][0]['value'] - $b->event_date['und'][0]['value'];
+
+          $time = strtotime('today midnight');
+            if ($a->event_date['und'][0]['value']<$time){
+              return $b->event_date['und'][0]['value'] - $a->event_date['und'][0]['value'] ;
+            }else {
+              return $a->event_date['und'][0]['value'] - $b->event_date['und'][0]['value'];
+            }
         });
         if (!empty($new_events)) {
             $output .= ' <div data-tab="tab-2">';
