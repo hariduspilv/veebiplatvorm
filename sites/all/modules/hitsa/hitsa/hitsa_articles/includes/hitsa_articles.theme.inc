@@ -169,13 +169,12 @@ function hitsa_articles_preprocess_views_view_fields(&$vars) {
 function hitsa_articles_page_view($type, $filter = FALSE) {
   $query = drupal_get_query_parameters();
   $query['article_type'] = empty($query['article_type']) ? $type : $query['article_type'];
-  $query['article_type'] = filter_var($query['article_type'],FILTER_VALIDATE_URL);
+  $query['article_type'] = filter_var($query['article_type'],FILTER_SANITIZE_STRING);
   $query['range'] = empty($query['range']) ? array(0, 12) : $query['range'];
   $query['pager'] = 12;
   $query['entity_type'] = 'node';
   $query['bundle'] = 'article';
   $query['status'] = NODE_PUBLISHED;
   $query['order_by'] = array('parameter' => 'created', 'direction' => 'DESC');
-
   return hitsa_content_page_view($query, $filter, 'news');
 }
